@@ -7,6 +7,8 @@ function msdlab_pre_header(){
     print '<div class="pre-header">
         <div class="wrap">';
            do_action('msdlab_pre_header');
+           do_shortcode('[msd-social]');
+           get_search_form();
     print '
         </div>
     </div>';

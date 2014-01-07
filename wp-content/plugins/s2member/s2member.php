@@ -19,8 +19,8 @@
 */
 /* -- This section for WordPress parsing. ------------------------------------------------------------------------------
 
-Version: 131026
-Stable tag: 131026
+Version: 131126
+Stable tag: 131126
 
 SSL Compatible: yes
 bbPress Compatible: yes
@@ -32,10 +32,10 @@ Multisite Blog Farm Compatible: yes
 PayPal Standard Compatible: yes
 PayPal Pro Compatible: yes w/s2Member Pro
 Authorize.Net Compatible: yes w/s2Member Pro
-Google Checkout Compatible: yes w/s2Member Pro
+Google Wallet Compatible: yes w/s2Member Pro
 ClickBank Compatible: yes w/s2Member Pro
 
-Tested up to: 3.7
+Tested up to: 3.7.1
 Requires at least: 3.3
 
 Copyright: © 2009 WebSharks, Inc.
@@ -61,7 +61,7 @@ PayPal Pro Integration: http://www.s2member.com/videos/ED70D90C6749DA3D/
 Professional Installation URI: http://www.s2member.com/professional-installation/
 
 Description: s2Member, a powerful (free) membership plugin for WordPress. Protect/secure members only content with roles/capabilities.
-Tags: s2, s2member, s2 member, membership, users, user, members, member, subscribers, subscriber, members only, roles, capabilities, capability, register, signup, paypal, paypal pro, pay pal, authorize, authorize.net, google checkout, clickbank, click bank, buddypress, buddy press, bbpress, bb press, shopping cart, cart, checkout, ecommerce
+Tags: s2, s2member, s2 member, membership, users, user, members, member, subscribers, subscriber, members only, roles, capabilities, capability, register, signup, paypal, paypal pro, pay pal, authorize, authorize.net, google wallet, clickbank, click bank, buddypress, buddy press, bbpress, bb press, shopping cart, cart, checkout, ecommerce
 
 -- end section for WordPress parsing. ------------------------------------------------------------------------------- */
 if(realpath(__FILE__) === realpath($_SERVER["SCRIPT_FILENAME"]))
@@ -75,7 +75,7 @@ if(realpath(__FILE__) === realpath($_SERVER["SCRIPT_FILENAME"]))
 * @var str
 */
 if(!defined("WS_PLUGIN__S2MEMBER_VERSION"))
-	define("WS_PLUGIN__S2MEMBER_VERSION", "131026" /* !#distro-version#! */);
+	define("WS_PLUGIN__S2MEMBER_VERSION", "131126" /* !#distro-version#! */);
 /**
 * Minimum PHP version required to run s2Member.
 *
@@ -105,7 +105,7 @@ if(!defined("WS_PLUGIN__S2MEMBER_MIN_WP_VERSION"))
 * @var str
 */
 if(!defined("WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION"))
-	define("WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION", "131026" /* !#distro-version#! */);
+	define("WS_PLUGIN__S2MEMBER_MIN_PRO_VERSION", "131126" /* !#distro-version#! */);
 /*
 Several compatibility checks.
 If all pass, load the s2Member plugin.
