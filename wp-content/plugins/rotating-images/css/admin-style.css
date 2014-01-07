@@ -1,0 +1,8 @@
+.wrap table table td, .wrap table table th {
+	border-bottom: 0px;
+	margin: 0px;
+	padding: 0px;
+}
+.form-table td {
+	padding: 10px;
+}

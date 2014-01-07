@@ -1,0 +1,119 @@
+@import 'elements';
+/* Import Fonts
+------------------------------------------------------------ */
+
+@import url(http://fonts.googleapis.com/css?family=Open+Sans);
+
+/* Font Stacks */
+.opensans {
+	font-family: "Open Sans", "Trebuchet MS", Calibri, sans-serif;
+}
+.arial {
+    font-family: "Helvetica Neue", Arial, Helvetica, sans-serif;
+}
+
+/* Colors */
+@red: #f00;
+@orange: #f90;
+@yellow: #ff0;
+@green: #0f0;
+@blue: #00f;
+@purple: #90f;
+@beige: #c96;
+@brown: #630;
+
+@ltred: lighten(@red,20%);
+@dkred: darken(@red, 20%);
+@ltorange: lighten(@orange,20%);
+@dkorange: darken(@orange, 20%);
+@ltyellow: lighten(@yellow,20%);
+@dkyellow: darken(@yellow, 20%);
+@ltgreen: lighten(@green,20%);
+@dkgreen: darken(@green, 20%);
+@ltblue: lighten(@blue,20%);
+@dkblue: darken(@blue, 20%);
+@ltpurple: lighten(@purple,20%);
+@dkpurple: darken(@purple, 20%);
+@ltbeige: lighten(@beige,20%);
+@dkbeige: darken(@beige, 20%);
+@ltbrown: lighten(@brown,20%);
+@dkbrown: darken(@brown, 20%);
+
+/* Neutrals */
+@white: #FFF;
+@ltgrey: #CCC;
+@medgrey: #999;
+@dkgrey: #666;
+@black: #000;
+
+/* Gradients */
+.quickgradient(@color) {
+	.gradient(@color,darken(@color,20%),lighten(@color,20%));
+}
+
+/* Buttons */
+.button(@color:@red) {
+	.gradient(@color,darken(@color,20%),lighten(@color,20%));
+	.rounded(5px);
+	border: .5px solid darken(@color,20%);
+	.drop-shadow(0, 0, 2px, 0.2);
+	padding: 6px 24px;
+	.arial;
+	color: #FFFFFF !important;
+	font-size: 12px;
+	font-weight: normal;
+	text-shadow: 1px 1px 2px #000000;
+    text-transform: uppercase;
+    display: table;
+    margin: 12px auto;
+	text-decoration: none;
+    filter: dropshadow(color=#000000, offx=1, offy=1);
+}
+
+.button:hover,
+.button:visited,
+.button a,
+.button a:hover,
+.button a:visited {
+	color: white;
+	text-decoration: none;
+}
+
+.gradientimage(@imgurl: '',@color: @red) {
+	@start:darken(@color,20%);
+	@stop:lighten(@color,20%);
+  background: url(@imgurl),@color;
+  background: url(@imgurl),-webkit-gradient(linear,
+                               left bottom,
+                               left top,
+                               color-stop(0, @start),
+                               color-stop(1, @stop));
+  background: url(@imgurl),-ms-linear-gradient(bottom,
+                                  @start,
+                                  @stop);
+  background: url(@imgurl),-moz-linear-gradient(center bottom,
+                                   @start 0%,
+                                   @stop 100%);
+}
+
+.iconbutton(@color:@red,@imgurl:''){
+	.button(@color);
+	.gradientimage(@imgurl,@color);
+	background-position: center center, top left;
+	background-repeat: no-repeat, repeat;
+	text-indent: -9999px;
+	display: inline-block;
+	padding: 0;
+	height: 25px;
+	width: 25px;
+	cursor: pointer;
+}
+
+/* Clears */
+.clearfix {
+    content: ".";
+    display: block;
+    height: 0;
+    clear: both;
+    visibility: hidden;
+}

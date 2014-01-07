@@ -1,0 +1,15 @@
+$excerpt_padding = '10'; // Integer padding amount.
+
+$css .= '.featuredposts .next,.featuredposts .previous {';
+$css .= '	top: ' . ( ( round( $options['image_height'] / 2 ) - 20 ) + 50 ) . 'px;';
+$css .= '}';
+
+$css .= '.featuredposts-excerpt {';
+$css .= '	height: ' . ( $options['height'] - ( $options['image_height'] + 70 ) ) . 'px;';
+$css .= '	padding: ' . $excerpt_padding . 'px;';
+$css .= '	width: ' . ( $options['width'] - ( 2 * $excerpt_padding ) ) . 'px !important;';
+$css .= '}';
+
+$css .= 'ul.featuredposts-pagination {';
+$css .= '	width: ' . ( $this->_options['posts_count'] * 22 ) . 'px;';
+$css .= '}';

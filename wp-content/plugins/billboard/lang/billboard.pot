@@ -1,0 +1,65 @@
+# Translation of   by .
+# Copyright (C) 2011 
+# This file is distributed under the same license as the  package.
+# Chris Jean <support@ithemes.com>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/billboard\n"
+"POT-Creation-Date: 2011-10-05 16:41-0500\n"
+"PO-Revision-Date: 2011-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Chris Jean <support@ithemes.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: billboard.php:304
+msgid "Cheatin&#8217; uh?"
+msgstr ""
+
+#: billboard.php:417 billboard.php:635 billboard.php:895 billboard.php:1029
+msgid "error"
+msgid_plural "errors"
+msgstr[0] ""
+msgstr[1] ""
+
+#: billboard.php:568
+msgid "entry"
+msgid_plural "entries"
+msgstr[0] ""
+msgstr[1] ""
+
+#: billboard.php:984
+msgid "Group"
+msgid_plural "Groups"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/file-utility/file-utility.php:162 lib/file-utility/file-utility.php:166
+#: lib/file-utility/file-utility.php:172
+msgid "Resize path invalid"
+msgstr ""
+
+#: lib/updater/get.php:18
+msgid ""
+"ACCESS DENIED! You need higher access to do this. Error #534344 PluginBuddy."
+"com."
+msgstr ""
+
+#: lib/updater/get.php:56
+#, php-format
+msgid ""
+"ERROR #5455. Unable to access PluginBuddy / iThemes updater & licensing "
+"system. Details: %s"
+msgstr ""
+
+#: lib/updater/get.php:73
+msgid "ERROR: UNKNOWN CALLBACK COMMAND! ERROR #85433256."
+msgstr ""
+
+#: lib/updater/licenses.php:103
+msgid "PluginBuddy Licenses"
+msgstr ""

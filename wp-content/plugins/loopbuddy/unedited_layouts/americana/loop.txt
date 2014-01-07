@@ -1,0 +1,92 @@
+<style type="text/css">
+	.post-title, .post-title * {
+		margin: 0;
+		padding: 0;
+	}
+	.post-title h1,
+	.post-title h2,
+	.post-title h3 {
+		clear: both;
+		color: #919191;
+		font-weight: normal;
+		font-size: 2.5em;
+		line-height: 1.1em;
+	}
+	.post-title a {
+		text-decoration: none;
+		color: #919191;
+		font-style: normal;
+	}
+	.post .post-title a:hover {
+		color: #515151;
+	}
+	.post .post-meta,
+	.post .post-meta * {
+		padding: 0;
+		margin: 0;
+	}
+	.post .post-meta {
+		background: url('images/date-bg.png') top right no-repeat;
+		position: absolute;
+		padding-top: 20px;
+		margin-left: -87px;
+		font-size: 1.4em;
+		text-align: center;
+		line-height: 1em;
+		height: 97px;
+		width: 71px;
+	}
+</style>
+
+
+<div>
+	<div class="title">
+		<div class="post-title">{title}</div>
+		<div class="post-meta">{byline}</div>
+	</div>
+	<div class="post-content">
+		{content}
+	</div>
+	<div class="meta-bottom">
+		<div class="alignleft">{categories}</div>
+		<div class="alignright">{comments}</div>
+	</div>
+</div>
+
+<div class="post-49 post type-post hentry category-education category-issues">
+				<!-- title, meta, and date info -->
+				<div class="title clearfix">
+					
+					<div class="post-meta">
+						<span class="month">Nov</span><br />
+						<span class="day">18</span>
+
+					</div>
+					
+					<div class="post-title">
+						<h3 id="post-49"><a href="http://demos.ithemesbuilder.com/americana/learning-about-education-in-oklahoma/">Learning About Higher Education in Oklahoma And How We Compare</a></h3>
+					</div>
+					
+					<div class="author-meta">
+						by <span class="meta-author"><a href="http://demos.ithemesbuilder.com/americana/author/adbrad/" title="Thomas Whitmore">Thomas Whitmore</a></span>					</div>
+				
+				</div>
+
+				
+				<!-- "Read More" link -->
+				<div class="post-content">
+					<div class="post-thumb">
+													<a href="http://demos.ithemesbuilder.com/americana/learning-about-education-in-oklahoma/"><img width="150" height="150" src="http://demos.ithemesbuilder.com/americana/wp-content/uploads/2010/11/education1-150x150.png" class="attachment-thumbnail wp-post-image" alt="education1" title="education1" /></a>
+											</div>
+					<p>Donec congue lacinia dui, a porttitor lectus condimentum laoreet. Nunc eu ullamcorper orci. Quisque eget odio ac lectus vestibulum faucibus eget in metus. In pellentesque faucibus vestibulum. Nulla at nulla justo, eget luctus tortor. Nulla facilisi. Duis aliquet egestas purus in blandit. Curabitur vulputate, ligula lacinia scelerisque tempor, lacus lacus ornare ante, ac egestas est urna sit amet arcu. Class aptent taciti sociosqu ad litora
+<div class="readmore"><a href="http://demos.ithemesbuilder.com/americana/learning-about-education-in-oklahoma/">Read More&#8230;</a></div>
+				</div>
+				
+				<!-- categories, tags and comments -->
+
+				<div class="meta-bottom clearfix">
+					<div class="alignleft">
+					<span class="comments"><a href="http://demos.ithemesbuilder.com/americana/learning-about-education-in-oklahoma/#comments" title="Comment on Learning About Higher Education in Oklahoma And How We Compare">5</a></span>					</div>
+				</div>
+				
+			</div>

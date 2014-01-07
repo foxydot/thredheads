@@ -1,0 +1,138 @@
+<?php
+if ( !class_exists( "PluginBuddyFeaturedBuddy_admin" ) ) {
+    class PluginBuddyFeaturedBuddy_admin {
+	
+		function PluginBuddyFeaturedBuddy_admin(&$parent) {
+			$this->_parent = &$parent;
+			$this->_var = &$parent->_var;
+			$this->_name = &$parent->_name;
+			$this->_options = &$parent->_options;
+			$this->_pluginPath = &$parent->_pluginPath;
+			$this->_pluginURL = &$parent->_pluginURL;
+			$this->_selfLink = &$parent->_selfLink;
+
+			add_action('admin_menu', array(&$this, 'admin_menu')); // Add menu in admin.
+		}
+		function alert( $arg1, $arg2 = false ) {
+			$this->_parent->alert( $arg1, $arg2 );
+		}
+		function nonce() {
+			wp_nonce_field( $this->_parent->_var . '-nonce' );
+		}
+		function savesettings() {
+			check_admin_referer( $this->_parent->_var . '-nonce' );
+			
+			foreach( $_POST as $index => $item ) {
+				if ( substr( $index, 0, 1 ) == '#' ) {
+					$savepoint = '$this->_options' . stripslashes( $_POST['savepoint'] );
+					eval( $savepoint . '[\'' . substr( $index, 1 ) . '\'] = \'' . $item . '\';' );
+				}
+			}
+			
+			$this->_parent->save();
+			$this->alert( 'Settings saved...' );
+		}
+
+		
+		
+		function admin_scripts() {
+			//wp_enqueue_script( 'jquery' );
+			wp_enqueue_script( 'pluginbuddy-tooltip-js', $this->_parent->_pluginURL . '/js/tooltip.js' );
+			wp_print_scripts( 'pluginbuddy-tooltip-js' );
+			wp_enqueue_script( 'pluginbuddy-swiftpopup-js', $this->_parent->_pluginURL . '/js/swiftpopup.js' );
+			wp_print_scripts( 'pluginbuddy-swiftpopup-js' );
+			wp_enqueue_script( 'pluginbuddy-'.$this->_var.'-admin-js', $this->_parent->_pluginURL . '/js/admin.js' );
+			wp_print_scripts( 'pluginbuddy-'.$this->_var.'-admin-js' );
+			echo '<link rel="stylesheet" href="'.$this->_pluginURL . '/css/admin.css" type="text/css" media="all" />';
+		}
+
+		/**
+		 *	get_feed()
+		 *
+		 *	Gets an RSS or other feed and inserts it as a list of links...
+		 *
+		 *	$feed		string		URL to the feed.
+		 *	$limit		integer		Number of items to retrieve.
+		 *	$append		string		HTML to include in the list. Should usually be <li> items including the <li> code.
+		 *	$replace	string		String to replace in every title returned. ie twitter includes your own username at the beginning of each line.
+		 */
+		function get_feed( $feed, $limit, $append = '', $replace = '' ) {
+			require_once(ABSPATH.WPINC.'/feed.php');  
+			$rss = fetch_feed( $feed );
+			if (!is_wp_error( $rss ) ) {
+				$maxitems = $rss->get_item_quantity( $limit ); // Limit 
+				$rss_items = $rss->get_items(0, $maxitems); 
+				
+				echo '<ul class="pluginbuddy-nodecor">';
+
+				$feed_html = get_transient( md5( $feed ) );
+				if ( $feed_html == '' ) {
+					foreach ( (array) $rss_items as $item ) {
+						$feed_html .= '<li>- <a href="' . $item->get_permalink() . '">';
+						$title =  $item->get_title(); //, ENT_NOQUOTES, 'UTF-8');
+						if ( $replace != '' ) {
+							$title = str_replace( $replace, '', $title );
+						}
+						if ( strlen( $title ) < 30 ) {
+							$feed_html .= $title;
+						} else {
+							$feed_html .= substr( $title, 0, 32 ) . ' ...';
+						}
+						$feed_html .= '</a></li>';
+					}
+					set_transient( md5( $feed ), $feed_html, 300 ); // expires in 300secs aka 5min
+				}
+				echo $feed_html;
+				
+				echo $append;
+				echo '</ul>';
+			} else {
+				echo 'Temporarily unable to load feed...';
+			}
+		}
+
+		function view_gettingstarted() {
+			require_once( 'view_gettingstarted.php' );
+		}
+
+
+
+		
+		function view_settings() {
+			require_once( 'view_settings.php' );
+		}
+		
+		
+		/** admin_menu()
+		 *
+		 * Initialize menu for admin section.
+		 *
+		 */		
+		function admin_menu() {
+			// Handle series menu. Create series menu if it does not exist.
+			global $menu;
+			$found_series = false;
+			foreach ( $menu as $menus => $item ) {
+				if ( $item[0] == $this->_parent->_series ) {
+					$found_series = true;
+				}
+			}
+			if ( $found_series === false ) {
+				add_menu_page( $this->_parent->_series . ' Getting Started', $this->_parent->_series, 'administrator', 'pluginbuddy-' . strtolower( $this->_parent->_series ), array(&$this, 'view_gettingstarted'), $this->_parent->_pluginURL.'/images/pluginbuddy.png' );
+				add_submenu_page( 'pluginbuddy-' . strtolower( $this->_parent->_series ), $this->_parent->_name.' Getting Started', 'Getting Started', 'administrator', 'pluginbuddy-' . strtolower( $this->_parent->_series ), array(&$this, 'view_gettingstarted') );
+			}
+			// Register for getting started page
+			global $pluginbuddy_series;
+			if ( !isset( $pluginbuddy_series[ $this->_parent->_series ] ) ) {
+				$pluginbuddy_series[ $this->_parent->_series ] = array();
+			}
+			$pluginbuddy_series[ $this->_parent->_series ][ $this->_parent->_name ] = $this->_pluginPath;
+			
+			add_submenu_page( 'pluginbuddy-' . strtolower( $this->_parent->_series ), $this->_parent->_name, $this->_parent->_name, 'administrator', $this->_parent->_var.'-settings', array(&$this, 'view_settings'));
+		}
+
+
+    } // End class
+	
+	$PluginBuddyFeaturedBuddy_admin = new PluginBuddyFeaturedBuddy_admin($this); // Create instance
+}

@@ -1,0 +1,18 @@
+-,Status Bar
+#height: 16px;
+.pb-copious .comment-bar,background,Background Color
+-,Post Count
+.pb-copious .comment-count,border-width,Border Width
+.pb-copious .comment-count,top,Top Pixel Offset
+.pb-copious .comment-count,background,Background Color
+.pb-copious .comment-count,font-size,Font Size
+.pb-copious .comment-count,color,Text Color
+.pb-copious .comment-count,border-color,Border Color
+#width: 30px;
+#height: 17px;
+#border-style: solid;
+#-moz-border-radius: 15px;
+#-webkit-border-radius: 15px;
+#border-radius: 15px;
+#line-height: 17px;
+#font-weight: bold;

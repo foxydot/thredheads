@@ -1,0 +1,52 @@
+.pb_carousel_default {
+	position: relative;
+}
+.pb_carousel_default img {
+	border: 1px solid #ccc;
+	padding: 9px;
+	background-color: white;
+	margin: 7px;
+	display: block;
+	float: left;
+}
+a.pb_carousel_default_prev, a.pb_carousel_default_next {
+	width: 45px;
+	height: 50px;
+	display: block;
+	position: absolute;
+}
+.pb_carousel_default_prev, .pb_carousel_default_next {
+	margin: 0px;
+}
+a.pb_carousel_default_prev {
+	left: -22px;
+	background-position: 0 0;
+}
+a.pb_carousel_default_prev:hover {
+	background-position: 0 -50px;
+}
+a.pb_carousel_default_next {
+	right: -22px;
+}
+a.pb_carousel_default_next:hover {
+	background-position: -50px -50px;
+}
+a.pb_carousel_default_prev span, a.pb_carousel_default_next span {
+	display: none;
+}
+.pb_carousel_default_pag {
+	text-align: center;
+}
+.pb_carousel_default_pag a {
+	width: 15px;
+	height: 15px;
+	margin: 0 5px 0 0;
+	display: inline-block;
+}
+.pb_carousel_default_pag a.selected {
+	background-position: -25px -300px;
+	cursor: default;
+}
+.pb_carousel_default_pag a span {
+	display: none;
+}

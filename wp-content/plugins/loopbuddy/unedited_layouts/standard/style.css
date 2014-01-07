@@ -1,0 +1,16 @@
+.post-title {
+font-size:20px;
+}
+.post-title, .post-title * {
+margin:0;
+padding:0;
+}
+.post-meta {
+	font-style:italic;
+}
+
+
+.post {
+	padding: 10px;
+	border-bottom: 3px solid #707070;
+}

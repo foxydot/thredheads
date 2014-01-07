@@ -1,0 +1,640 @@
+# Translation of   by .
+# Copyright (C) 2011 
+# This file is distributed under the same license as the  package.
+# Chris Jean <support@ithemes.com>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/accordion\n"
+"POT-Creation-Date: 2011-09-22 14:05-0500\n"
+"PO-Revision-Date: 2011-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Chris Jean <support@ithemes.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: accordion.php:181 classes/view_settings-edit.php:62
+msgid "Accordion Items"
+msgstr ""
+
+#: accordion.php:182 classes/view_accordion_ajax.php:4
+msgid "Accordion Item"
+msgstr ""
+
+#: accordion.php:183
+msgid "Add New Item"
+msgstr ""
+
+#: accordion.php:184
+msgid "Add New Accordion Item"
+msgstr ""
+
+#: accordion.php:185 classes/admin.php:52
+msgid "Edit Accordion Item"
+msgstr ""
+
+#: accordion.php:186
+msgid "New Accordion Item"
+msgstr ""
+
+#: accordion.php:187
+msgid "View Accordion Item"
+msgstr ""
+
+#: accordion.php:188
+msgid "Search Accordion Items"
+msgstr ""
+
+#: accordion.php:189
+msgid "No items found"
+msgstr ""
+
+#: accordion.php:190
+msgid "No items found in Trash"
+msgstr ""
+
+#: accordion.php:233
+msgid "Add Accordion Shortcode"
+msgstr ""
+
+#: accordion.php:241
+msgid "Insert Accordion Shortcode"
+msgstr ""
+
+#: accordion.php:274 accordion.php:701
+msgid ""
+"You must create an Accordion to place this widget. Please do so within the "
+"plugin's page."
+msgstr ""
+
+#: accordion.php:278 accordion.php:705
+msgid "Select an Accordion:"
+msgstr ""
+
+#: accordion.php:290
+msgid "Insert Shortcode"
+msgstr ""
+
+#: classes/admin.php:58
+msgid "No content"
+msgstr ""
+
+#: classes/admin.php:68
+msgid "No post selected"
+msgstr ""
+
+#: classes/admin.php:73
+msgid "Click and drag to reorder"
+msgstr ""
+
+#: classes/admin.php:134
+msgid "Settings saved..."
+msgstr ""
+
+#: classes/view_accordion_ajax.php:106 classes/view_accordion_ajax.php:249
+msgid "Item Title:"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:110
+msgid "Post Type:"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:117 classes/view_accordion_ajax.php:182
+#: classes/view_accordion_ajax.php:259 classes/view_settings-edit.php:333
+msgid "Submit"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:140
+msgid "Search"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:150 classes/view_accordion_ajax.php:151
+msgid "ID"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:150 classes/view_accordion_ajax.php:151
+msgid "Post Title"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:150 classes/view_accordion_ajax.php:151
+msgid "Post Date"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:192
+msgid "No posts were selected"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:209
+msgid "Item has been added."
+msgstr ""
+
+#: classes/view_accordion_ajax.php:245
+msgid "Enter normal post content here, including HTML and shortcodes"
+msgstr ""
+
+#: classes/view_accordion_ajax.php:253
+msgid "Post Content:"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:13
+msgid ""
+"Accordion lets you group several items together in Accordion format (either "
+"horizontal or vertical)\n"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:20
+#, php-format
+msgid ""
+"Click the <a href=\"%s\">Accordion</a> link in the DisplayBuddy menu to "
+"begin creating an Accordion."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:21
+msgid ""
+"After you have created an Accordion, you can select an Accordion to edit or "
+"add Accordion items."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:22
+msgid ""
+"Once you have created several Accordion items and configured your Accordion, "
+"you are ready to display it"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:26
+msgid "Step 2"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:27
+msgid ""
+"Now that you have created an Accordion, it's time to display it on your site."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:30
+msgid ""
+"One way you can display a Accordion on your site is by going to \"Widgets\" "
+"under appearance and add an Accordion into your widget areas."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:31
+#, php-format
+msgid ""
+"Another way to display a Accordion group on your site is by getting the "
+"shortcode snippet from the <a href=\"%s\">Accordion</a> groups table and "
+"adding that shortcode to the content anywhere on your site."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:36 classes/view_settings.php:66
+#: classes/view_settings.php:73
+msgid "Shortcode"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:37
+msgid ""
+"Display your Accordion in style by using the shortcode [pb_accordion id=\"#"
+"\"] or by adding a widget."
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:53
+#: classes/view_gettingstarted_content.php:55
+msgid "Debugging Information"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:71
+msgid "Reset Plugin Settings & Defaults"
+msgstr ""
+
+#: classes/view_gettingstarted_content.php:71
+msgid ""
+"WARNING: This will reset all settings associated with this plugin to their "
+"defaults. Are you sure you want to do this?"
+msgstr ""
+
+#: classes/view_settings-edit.php:23
+msgid ""
+"Accordion item could not be deleted - Security credentials could not be "
+"validated"
+msgstr ""
+
+#: classes/view_settings-edit.php:32
+#, php-format
+msgid "%s accordion item deleted"
+msgid_plural "%s accordion items deleted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/view_settings-edit.php:38
+msgid ""
+"Accordion item could not be sorted - Security credentials could not be "
+"validated"
+msgstr ""
+
+#: classes/view_settings-edit.php:58
+msgid "The Accordion Item order has been updated."
+msgstr ""
+
+#: classes/view_settings-edit.php:81 classes/view_settings-edit.php:134
+msgid "Remove"
+msgstr ""
+
+#: classes/view_settings-edit.php:81 classes/view_settings-edit.php:134
+msgid "Remove this accordion item from this accordion"
+msgstr ""
+
+#: classes/view_settings-edit.php:84 classes/view_settings-edit.php:137
+msgid "Save Order"
+msgstr ""
+
+#: classes/view_settings-edit.php:91 classes/view_settings-edit.php:100
+msgid "Item Title"
+msgstr ""
+
+#: classes/view_settings-edit.php:92 classes/view_settings-edit.php:101
+msgid "Content"
+msgstr ""
+
+#: classes/view_settings-edit.php:93 classes/view_settings-edit.php:102
+msgid "Post ID"
+msgstr ""
+
+#: classes/view_settings-edit.php:94 classes/view_settings-edit.php:103
+msgid "Reorder"
+msgstr ""
+
+#: classes/view_settings-edit.php:142
+msgid "Add Accordion Items"
+msgstr ""
+
+#: classes/view_settings-edit.php:147
+msgid "Add Accordion Item"
+msgstr ""
+
+#: classes/view_settings-edit.php:147
+msgid "Add an Accordion Item"
+msgstr ""
+
+#: classes/view_settings-edit.php:150
+msgid "Edit Accordion Settings"
+msgstr ""
+
+#: classes/view_settings-edit.php:155
+msgid ""
+"Using a Horizontal Theme with an Index of -1 May Result in Unexpected "
+"Behavior"
+msgstr ""
+
+#: classes/view_settings-edit.php:161
+msgid "Accordion settings could not be saved"
+msgstr ""
+
+#: classes/view_settings-edit.php:163
+msgid "Accordion settings saved"
+msgstr ""
+
+#: classes/view_settings-edit.php:214
+msgid "Selected Index"
+msgstr ""
+
+#: classes/view_settings-edit.php:214
+msgid ""
+"Choose which item to display by default - Enter -1 for a closed Accordion, "
+"the closed option only works in verticle mode"
+msgstr ""
+
+#: classes/view_settings-edit.php:218
+msgid "Show Post Thumbnail"
+msgstr ""
+
+#: classes/view_settings-edit.php:218
+msgid "Displays a post's featured image above the Accordion item content"
+msgstr ""
+
+#: classes/view_settings-edit.php:227
+msgid "Thumbnail links to post"
+msgstr ""
+
+#: classes/view_settings-edit.php:227
+msgid "Thumbnail will link back to the original post"
+msgstr ""
+
+#: classes/view_settings-edit.php:236
+msgid "Post Thumbnail Size"
+msgstr ""
+
+#: classes/view_settings-edit.php:236
+msgid ""
+"Select a thumbnail size from some build-in options.  Select custom if you "
+"want to specify your own image width and height."
+msgstr ""
+
+#: classes/view_settings-edit.php:260
+msgid "Thumbnail Width (if custom)"
+msgstr ""
+
+#: classes/view_settings-edit.php:260
+msgid ""
+"Select a maximum width for the thumbnail (this value should be an integer)"
+msgstr ""
+
+#: classes/view_settings-edit.php:264
+msgid "Thumbnail Height (if custom)"
+msgstr ""
+
+#: classes/view_settings-edit.php:264
+msgid ""
+"Select a maximum height for the thumbnail (this value should be an integer)"
+msgstr ""
+
+#: classes/view_settings-edit.php:268
+msgid "Accordion Theme"
+msgstr ""
+
+#: classes/view_settings-edit.php:268
+msgid ""
+"Select which theme you would like this Accordion to have - Select none to "
+"apply your own styles"
+msgstr ""
+
+#: classes/view_settings-edit.php:275
+msgid "None"
+msgstr ""
+
+#: classes/view_settings-edit.php:280
+msgid "Accordion Tab Type (for horizontal themes)"
+msgstr ""
+
+#: classes/view_settings-edit.php:280
+msgid ""
+"For horizontal themes, select whether you want the tab to be text or to use "
+"a post's featured image"
+msgstr ""
+
+#: classes/view_settings-edit.php:289
+msgid "Accordion Max Width (for Vertical and Horizontal themes)"
+msgstr ""
+
+#: classes/view_settings-edit.php:289
+msgid "Choose the maximum width for this Accordion"
+msgstr ""
+
+#: classes/view_settings-edit.php:293
+msgid "Accordion Max Height (for Horizontal themes)"
+msgstr ""
+
+#: classes/view_settings-edit.php:293
+msgid "Choose the maximum height for this Accordion (Horizontal themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:297
+msgid "Accordion Item Max Width (for Horizontal themes)"
+msgstr ""
+
+#: classes/view_settings-edit.php:297
+msgid "Choose the maximum width for Accordion items (Horizontal themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:301
+msgid "Accordion Item Max Height (for Vertical themes)"
+msgstr ""
+
+#: classes/view_settings-edit.php:301
+msgid "Select a maximum height for Accordion items (Vertical themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:306
+msgid "Accordion Slide Up Transition Speed (milliseconds)"
+msgstr ""
+
+#: classes/view_settings-edit.php:306
+msgid ""
+"Select how long (in milliseconds) the Accordion should slide up content (for "
+"Vertical themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:310
+msgid "Accordion Slide Down Transition Speed (milliseconds)"
+msgstr ""
+
+#: classes/view_settings-edit.php:310
+msgid ""
+"Select how long (in milliseconds) the Accordion should slide down content "
+"(for Vertical themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:314
+msgid "Accordion Slide Left Transition Speed (milliseconds)"
+msgstr ""
+
+#: classes/view_settings-edit.php:314
+msgid ""
+"Select how long (in milliseconds) the Accordion should slide left content "
+"(for Horizontal themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:318
+msgid "Accordion Slide Right Transition Speed (milliseconds)"
+msgstr ""
+
+#: classes/view_settings-edit.php:318
+msgid ""
+"Select how long (in milliseconds) the Accordion should slide right content "
+"(for Horizontal themes only)"
+msgstr ""
+
+#: classes/view_settings-edit.php:322
+msgid "Open Items on Hover?"
+msgstr ""
+
+#: classes/view_settings-edit.php:322
+msgid "Would you like the tab items to open on a mouse over?"
+msgstr ""
+
+#: classes/view_settings-edit.php:325
+msgid "Yes"
+msgstr ""
+
+#: classes/view_settings-edit.php:326
+msgid "No"
+msgstr ""
+
+#: classes/view_settings-edit.php:333
+msgid "Submit Accordion Settings"
+msgstr ""
+
+#: classes/view_settings.php:11
+msgid ""
+"Accordion could not be created - Security credentials could not be validated"
+msgstr ""
+
+#: classes/view_settings.php:27
+msgid ""
+"Accordion could not be deleted - Security credentials could not be validated"
+msgstr ""
+
+#: classes/view_settings.php:43
+#, php-format
+msgid "%s accordion deleted"
+msgid_plural "%s accordions deleted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: classes/view_settings.php:53
+#, php-format
+msgid "%s Settings"
+msgstr ""
+
+#: classes/view_settings.php:58 classes/view_settings.php:104
+msgid "Delete"
+msgstr ""
+
+#: classes/view_settings.php:65 classes/view_settings.php:72
+#: classes/view_settings.php:117
+msgid "Accordion Name"
+msgstr ""
+
+#: classes/view_settings.php:90
+msgid "Edit Accordion"
+msgstr ""
+
+#: classes/view_settings.php:113
+#, php-format
+msgid "Add New %s"
+msgstr ""
+
+#: classes/view_settings.php:117
+msgid "Name of the new Accordion to create. This is not publicly displayed."
+msgstr ""
+
+#: classes/view_settings.php:121
+msgid "Add Accordion"
+msgstr ""
+
+#: lib/file-utility/file-utility.php:160 lib/file-utility/file-utility.php:164
+#: lib/file-utility/file-utility.php:170
+msgid "Resize path invalid"
+msgstr ""
+
+#: lib/medialibrary/async-upload.php:37
+msgid "You do not have permission to upload files."
+msgstr ""
+
+#: lib/medialibrary/async-upload.php:56
+msgid "Dismiss"
+msgstr ""
+
+#: lib/medialibrary/async-upload.php:57
+#, php-format
+msgid "&#8220;%s&#8221; has failed to upload due to an error"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:285
+msgid "Title"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:294
+msgid "Caption"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:311
+msgid "Description"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:322
+msgid "Link URL"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:325
+msgid "Enter a link URL or click above for presets."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:333
+msgid "File URL"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:337
+msgid "Location of the uploaded file."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:355
+msgid "Alt text for the image, e.g. &#8220;The Mona Lisa&#8221;"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:360
+msgid "Alternate Text"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:369
+msgid "Alignment"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:457
+#, php-format
+msgid "Sorry, you have filled your storage quota (%s MB)."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:469
+msgid "Select Files"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:553
+msgid "Choose files to upload"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:555
+msgid "Cancel Upload"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:557 lib/medialibrary/medialibrary.php:570
+#, php-format
+msgid "Maximum upload file size: %d%s"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:559
+msgid "After a file has been uploaded, you can add titles and descriptions."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:566 lib/medialibrary/medialibrary.php:567
+msgid "Upload"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:567
+msgid "Cancel"
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:572
+msgid ""
+"If you want to use all capabilities of the uploader, like uploading multiple "
+"files at once, please upgrade to lighttpd 1.5."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:644
+msgid "File type does not meet security guidelines. Try another."
+msgstr ""
+
+#: lib/medialibrary/medialibrary.php:659
+msgid "The uploaded file could not be moved."
+msgstr ""
+
+#: lib/updater/get.php:18
+msgid ""
+"ACCESS DENIED! You need higher access to do this. Error #534344 PluginBuddy."
+"com."
+msgstr ""
+
+#: lib/updater/get.php:56
+#, php-format
+msgid ""
+"ERROR #5455. Unable to access PluginBuddy / iThemes updater & licensing "
+"system. Details: %s"
+msgstr ""
+
+#: lib/updater/get.php:73
+msgid "ERROR: UNKNOWN CALLBACK COMMAND! ERROR #85433256."
+msgstr ""
+
+#: lib/updater/licenses.php:103
+msgid "PluginBuddy Licenses"
+msgstr ""

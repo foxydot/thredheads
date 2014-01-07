@@ -1,0 +1,23 @@
+/*
+ * Left Transparent by PluginBuddy.com
+ *
+ * init.txt sets additional custom CSS styling.
+ *
+ */
+ 
+$output .= '<div>';
+
+$output .= '<div class="featuredposts-image">';
+if ( has_post_thumbnail() ) {
+	// Can NOT always rely on using the named size 'featuredposts' in some situations.
+	$inlayout = $this->_options['layouts'][$this->_options['layout']];
+	$imgsize = 'pb_featuredposts' . $inlayout['image_width'] . 'x' . $inlayout['image_height'];
+	$output .= '<a href="' . get_permalink() . '">' . get_the_post_thumbnail( $post->ID, $imgsize ) . '</a>';
+}
+$output .= '</div>';
+
+$output .= '<div class="featuredposts-excerpt"><h2><a href="' . get_permalink() . '">' . get_the_title() . '</a></h2>';
+$output .= get_the_excerpt();
+$output .= '</div>';
+
+$output .= '</div>';

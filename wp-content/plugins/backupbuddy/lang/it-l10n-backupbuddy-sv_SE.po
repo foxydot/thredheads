@@ -1,0 +1,4007 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: BackupBuddy v3.1.8.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: 2012-12-28 19:37:08+0000\n"
+"Last-Translator: admin <mrboboz@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Poedit-Language: Swedish\n"
+"X-Poedit-Country: SWEDEN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-Bookmarks: \n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Textdomain-Support: yes"
+
+#: classes/backup.php:91
+#: destinations/bootstrap.php:255
+#@ it-l10n-backupbuddy
+msgid "Fatal PHP error encountered:"
+msgstr "Allvarligt PHP fel påträffades:"
+
+#: classes/backup.php:570
+#: classes/backup.php:597
+#: classes/backup.php:615
+#@ it-l10n-backupbuddy
+msgid "Peak memory usage"
+msgstr "Max minnesanvändning"
+
+#: classes/backup.php:139
+#@ it-l10n-backupbuddy
+msgid "Sending scheduled backup start email notification if applicable."
+msgstr "Skickar e-post om start schemalagd säkerhetskopiering om tillämpligt."
+
+#: classes/backup.php:140
+#: classes/backup.php:1067
+#@ it-l10n-backupbuddy
+msgid "Scheduled backup"
+msgstr "Schemalagd säkerhetskopiering"
+
+#: classes/backup.php:183
+#@ it-l10n-backupbuddy
+msgid "Performing pre-backup procedures."
+msgstr "Utför pre-backup förfaranden."
+
+#: classes/backup.php:185
+#@ it-l10n-backupbuddy
+msgid "Full backup mode."
+msgstr "Fullständig säkerhetskopiering."
+
+#: classes/backup.php:187
+#@ it-l10n-backupbuddy
+msgid "Database only backup mode."
+msgstr "Endast databasen säkerhetskopieras."
+
+#: classes/backup.php:189
+#@ it-l10n-backupbuddy
+msgid "Multisite Site Export mode."
+msgstr "Multisite webbplats export läge."
+
+#: classes/backup.php:191
+#@ it-l10n-backupbuddy
+msgid "Unknown backup mode."
+msgstr "Okänt läge för säkerhetskopiering."
+
+#: classes/backup.php:280
+#@ it-l10n-backupbuddy
+msgid "Backup FAILED. Unknown backup type."
+msgstr "Säkerhetskopieringen MISSLYCKADES. Okänd typ av säkerhetskopiering."
+
+#: classes/backup.php:414
+#@ it-l10n-backupbuddy
+msgid "Skipping database dump based on advanced options."
+msgstr "Hoppar över dump av databasen baserat på avancerade alternativ."
+
+#: classes/backup.php:490
+#@ it-l10n-backupbuddy
+msgid "Problem creating DAT file."
+msgstr "Problem vid skapande av DAT fil."
+
+#: classes/backup.php:505
+#@ it-l10n-backupbuddy
+msgid "Finished pre-backup procedures."
+msgstr "Slutfört pre-backup förfaranden."
+
+#: classes/backup.php:587
+#@ default
+msgid "Error #82783745: Invalid function `function`"
+msgstr "Fel #82783745: Ogiltig funktion `function`"
+
+#: classes/backup.php:614
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Finished function `%s`."
+msgstr "Slutfört funktion '% s'."
+
+#: classes/backup.php:675
+#@ it-l10n-backupbuddy
+msgid "Database Server has gone away, unable to schedule next backup step. The backup cannot continue. This is most often caused by mysql running out of memory or timing out far too early. Please contact your host."
+msgstr "Databasservern går inte att nå, det gick inte att schemalägga nästa steg i säkerhetskopieringen. Säkerhetskopieringen kan inte fortsätta. Detta orsakas oftast av att mysql får slut på minne eller en timeout alldeles för tidigt. Kontakta din administratör."
+
+#: classes/backup.php:683
+#: classes/backup.php:940
+#: classes/core.php:1560
+#: classes/core.php:1708
+#@ it-l10n-backupbuddy
+msgid "Database Server connection status unverified."
+msgstr "Anslutningsstatus Databas Server ej verifierad."
+
+#: classes/backup.php:719
+#@ it-l10n-backupbuddy
+msgid "Creating DAT (data) file snapshotting site & backup information."
+msgstr "Skapar DAT (data) fil webbplats för ögonblicksbilder & säkerhetskopieringsinformation."
+
+#: classes/backup.php:800
+#@ it-l10n-backupbuddy
+msgid "Compensating for SSL in siteurl."
+msgstr "Kompensera för SSL i siteurl."
+
+#: classes/backup.php:810
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Error #9017: Temp data file is not creatable/writable. Check your permissions. (%s)"
+msgstr "Fel #9017: Temp-datafilen inte är skapbar/skrivbar. Kontrollera din behörighet. (% s)"
+
+#: classes/backup.php:817
+#@ it-l10n-backupbuddy
+msgid "Finished creating DAT (data) file."
+msgstr "Klar DAT (data) fil."
+
+#: classes/backup.php:835
+#@ it-l10n-backupbuddy
+msgid "Starting database backup process."
+msgstr "Startar databasen säkerhetskopiering."
+
+#: classes/backup.php:856
+#@ default
+msgid "ERROR #9027b: The mySQL server went away at some point during the database dump step. This is almost always caused by mySQL running out of memory or the mysql server timing out far too early. Contact your host. The database dump integrity can no longer be guaranteed so the backup has been halted."
+msgstr "Fel #9027b:  My SQL servern ging inte längre att nå under dump av databasen. Detta orsakas oftast av att mysql får slut på minne eller en timeout alldeles för tidigt. Kontakta din administratör. Integriteten hos databasdumpen kan inte längre garanteras så säkerhetskopieringen har avbrutits"
+
+#: classes/backup.php:905
+#@ it-l10n-backupbuddy
+msgid "Backup ZIP file successfully created."
+msgstr "Säkerhetskopia ZIP-filen har skapats."
+
+#: classes/backup.php:907
+#@ it-l10n-backupbuddy
+msgid "Chmod of ZIP file to 0644 succeeded."
+msgstr "Chmod i ZIP-filen till 0644 lyckades."
+
+#: classes/backup.php:909
+#@ it-l10n-backupbuddy
+msgid "Chmod of ZIP file to 0644 failed."
+msgstr "Det gick inte att chmod ZIP-filen till 0644."
+
+#: classes/backup.php:913
+#@ it-l10n-backupbuddy
+msgid "Error #3382 help: http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#3382"
+msgstr "Fel #3382 hjälp: http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#3382"
+
+#: classes/backup.php:933
+#@ it-l10n-backupbuddy
+msgid "Backup FAILED. Backup file produced but Database Server has gone away, unable to schedule next backup step"
+msgstr "Säkerhetskopieringen MISSLYCKADES. Säkerhetskopia skapad men databasservern går inte att nå, kan inte schemalägga nästa steg i säkerhetskopieringen"
+
+#: classes/backup.php:958
+#@ it-l10n-backupbuddy
+msgid "Trimming old archives (if needed)."
+msgstr "Trimma gamla Arkiv (vid behov)."
+
+#: classes/backup.php:993
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Deleting old archive `%s` due as it causes archives to exceed total number allowed."
+msgstr "Tar bort gamla Arkiv '% s' då antalet arkiv överskrider det tillåtna."
+
+#: classes/backup.php:1007
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Deleting old archive `%s` due as it causes archives to exceed total size allowed."
+msgstr "Tar bort gamla Arkiv '% s' då storleken överskrider det tillåtna."
+
+#: classes/backup.php:1012
+#@ default
+msgid "ERROR #9028: Based on your backup archive limits (size limit) the backup that was just created would be deleted. Skipped deleting this backup. Please update your archive limits."
+msgstr "Fel #9028:  Enligt dina arkivbegränsningar (storlek) skulle den nyligen skapade säkerhetskopian raderas. Hoppade över raderingen. Vänligen uppdatera arkivbegränsningar"
+
+#: classes/backup.php:1034
+#@ it-l10n-backupbuddy
+msgid "Cleaning up after backup."
+msgstr "Städar upp efter säkerhetskopiering."
+
+#: classes/backup.php:1038
+#@ it-l10n-backupbuddy
+msgid "Removing temp data directory."
+msgstr "Tar bort katalogen temp data."
+
+#: classes/backup.php:1043
+#@ it-l10n-backupbuddy
+msgid "Removing temp zip directory."
+msgstr "Tar bort temp zip katalog."
+
+#: classes/backup.php:1066
+#@ it-l10n-backupbuddy
+msgid "Sending scheduled backup complete email notification."
+msgstr "Skickar e-post om slurförd schemalagd säkerhetskopiering."
+
+#: classes/backup.php:1076
+#@ it-l10n-backupbuddy
+msgid "Finished cleaning up."
+msgstr "Klar med städning."
+
+#: classes/backup.php:1054
+#@ it-l10n-backupbuddy
+msgid "Final ZIP file size"
+msgstr "Slutlig ZIP filstorlek"
+
+#: classes/backup.php:1121
+#@ it-l10n-backupbuddy
+msgid "Error. Unable to delete local archive as requested."
+msgstr "Fel. Det gick inte att radera lokala arkiv."
+
+#: classes/backup.php:1124
+#@ it-l10n-backupbuddy
+msgid "Deleted local archive as requested."
+msgstr "Raderade lokala arkiv."
+
+#: classes/core.php:67
+#@ it-l10n-backupbuddy
+msgid "Integrity checking disabled based on settings. This file has not been verified."
+msgstr "Integritetskontroll inaktiverad baserat på inställningar. Den här filen har inte verifierats."
+
+#: classes/core.php:174
+#: classes/core.php:740
+#@ it-l10n-backupbuddy
+msgid "All tests passed."
+msgstr "Klarade alla tester."
+
+#: classes/core.php:259
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ERROR: BackupBuddy requires WordPress version %1$s or higher. You may experience unexpected behavior or complete failure in this environment. Please consider upgrading WordPress."
+msgstr "FEL: BackupBuddy kräver WordPress version %1$ s eller högre. Oväntat beteende eller fullständigt haveri kan uppstå i denna miljö. Överväg att uppgradera WordPress."
+
+#: classes/core.php:268
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ERROR: BackupBuddy requires PHP version %1$s or higher. You may experience unexpected behavior or complete failure in this environment. Please consider upgrading PHP."
+msgstr "FEL: BackupBuddy kräver PHP version %1$ s eller högre. Oväntat beteende eller fullständigt haveri kan uppstå i denna miljö. Överväg att uppgradera PHP."
+
+#: classes/core.php:1702
+#@ it-l10n-backupbuddy
+msgid "Database Server has gone away, unable to update remote destination transfer status. This is most often caused by mysql running out of memory or timing out far too early. Please contact your host."
+msgstr "Databasservern kan inte nås, det gick inte att uppdatera status för fjärr-destinationens överföring. Detta orsakas oftast av att mysql får slut på minne eller en timeout alldeles för tidigt. Kontakta din administratör."
+
+#: destinations/dropbox/init.php:115
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Dropbox remote limit could not delete %s backups."
+msgstr "Dropbox extern gräns kunde inte ta bort %s säkerhetskopiering."
+
+#: destinations/ftp/init.php:173
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "FTP remote limit could not delete %s backups. Please check and verify file permissions."
+msgstr "FTP extern gräns kunde inte ta bort %s säkerhetskopiering. Kontrollera och verifiera filbehörigheter."
+
+#: classes/core.php:620
+#@ it-l10n-backupbuddy
+msgid "Deleted backup(s):"
+msgstr "Borttagna säkerhetskopior:"
+
+#: classes/core.php:708
+#: controllers/pages/scheduling.php:260
+#@ it-l10n-backupbuddy
+msgid "Unknown"
+msgstr "Okänd"
+
+#: classes/core.php:1060
+#@ it-l10n-backupbuddy
+msgid "Running in Alternate WordPress Cron mode. HTTP Loopback Connections are not enabled on this server but you have overridden this in the wp-config.php file (this is a good thing)."
+msgstr "Körs i alternativt WordPress Cron-läge. Http-loopback-anslutningar inte är aktiverade på den här servern men du har åsidosatt detta i filen wp-config.php (detta är bra)."
+
+#: classes/core.php:1060
+#@ it-l10n-backupbuddy
+msgid "Additional Information Here"
+msgstr "Ytterligare Information här"
+
+#: classes/core.php:1062
+#: classes/core.php:1135
+#@ it-l10n-backupbuddy
+msgid "Click for instructions on how to resolve this issue."
+msgstr "Klicka här för instruktioner om hur du löser problemet."
+
+#: classes/core.php:1093
+#@ it-l10n-backupbuddy
+msgid "WordPress may have been detected in one or more subdirectories. Backing up multiple instances of WordPress may result in server timeouts due to increased backup time. You may exclude WordPress directories via the Settings page. Detected non-excluded locations:"
+msgstr "WordPress kan har upptäckts i en eller flera underkataloger. Säkerhetskopiera flera instanser av WordPress kan resultera i server-timeout på grund av ökad tid. Du kan utesluta WordPress kataloger i inställningarna. Upptäckta icke undantagna platser:"
+
+#: classes/core.php:1131
+#@ it-l10n-backupbuddy
+msgid "Directory/file exclusion is not available in this mode so even existing backups will be backed up."
+msgstr "Katalog/fil exkludering är inte tillgängligt i det här läget så även befintliga säkerhetskopior kommer att säkerhetskopieras."
+
+#: classes/core.php:1133
+#@ it-l10n-backupbuddy
+msgid "You may encounter stalled or significantly delayed backups."
+msgstr "Det kan uppstå avstannade eller avsevärt fördröjda säkerhetskopior."
+
+#: destinations/rackspace/init.php:128
+#: destinations/s3/init.php:175
+#@ it-l10n-backupbuddy
+msgid "Missing one or more required fields."
+msgstr "En eller flera obligatoriska fält saknas."
+
+#: destinations/s3/init.php:179
+#@ it-l10n-backupbuddy
+msgid ""
+"Your bucket name must meet certain criteria. It must fulfill the following: \n"
+"\n"
+" Characters may be lowercase letters, numbers, periods (.), and dashes (-). \n"
+" Must start with a number or letter. \n"
+" Must be between 3 and 63 characters long. \n"
+" Must not be formatted as an IP address (e.g., 192.168.5.4). \n"
+" Should be between 3 and 63 characters long. \n"
+" Should not end with a dash. \n"
+" Cannot contain two, adjacent periods. \n"
+" Cannot contain dashes next to periods."
+msgstr ""
+"Bucket namnet måste uppfylla vissa kriterier. Det måste uppfylla följande: \n"
+"\n"
+" tecken kan vara gemener, siffror, punkter (.) och bindestreck (-). \n"
+" Måste börja med en siffra eller bokstav. \n"
+" Måste vara mellan 3 och 63 tecken långa. \n"
+" Kan inte vara formaterad som en IP-adress (t.ex. 192.168.5.4). \n"
+" Bör vara mellan 3 och 63 tecken långa. \n"
+" Kan Inte avslutas med ett streck. \n"
+" Kan inte innehålla två intilliggande punkter. \n"
+" Kan inte innehålla streck intill punkter."
+
+#: destinations/s3/init.php:181
+#@ it-l10n-backupbuddy
+msgid "Your bucket failed one or more things in the check: Starts with a-z or 0-9; middle is a-z, 0-9, -, or .; cannot end in a dash."
+msgstr "Din bucket fallerade en eller flera saker vid kontroll: Börjar med a-z eller 0-9. mitten är a - z, 0-9,-, eller.; kan inte sluta med ett streck."
+
+#: destinations/s3/init.php:184
+#@ it-l10n-backupbuddy
+msgid "Your bucket must be between 3 and 63 characters long."
+msgstr "Din bucket måste vara mellan 3 och 63 tecken långa."
+
+#: destinations/s3/init.php:187
+#@ it-l10n-backupbuddy
+msgid "Your bucket contains a period next to a dash."
+msgstr "Din hink innehåller en punkt intill ett streck."
+
+#: destinations/s3/init.php:205
+#@ it-l10n-backupbuddy
+msgid "Upload test for BackupBuddy for Amazon S3"
+msgstr "Ladda upp test för BackupBuddy för Amazon S3"
+
+#: destinations/s3/init.php:210
+#@ it-l10n-backupbuddy
+msgid "Unable to upload. Verify your keys, bucket name, and account permissions."
+msgstr "Det gick inte att ladda upp. Kontrollera dina nycklar, bucketnamn och behörigheter."
+
+#: destinations/s3/init.php:216
+#@ it-l10n-backupbuddy
+msgid "Partial success. Could not delete temp file."
+msgstr "Partiell framgång. Det gick inte att ta bort temp-filen."
+
+#: destinations/rackspace/init.php:133
+#@ it-l10n-backupbuddy
+msgid "Unable to authenticate. Verify your username/api key."
+msgstr "Det gick inte att autentisera. Kontrollera ditt användarnamn/api-nyckel."
+
+#: destinations/rackspace/init.php:143
+#@ it-l10n-backupbuddy
+msgid "There was a problem selecting the container:"
+msgstr "Det var ett problem markera behållaren:"
+
+#: destinations/rackspace/init.php:148
+#@ it-l10n-backupbuddy
+msgid "BackupBuddy was not able to write the test file."
+msgstr "BackupBuddy kunde inte skriva till testfilen."
+
+#: destinations/rackspace/init.php:153
+#@ it-l10n-backupbuddy
+msgid "Unable to delete file from container."
+msgstr "Det gick inte att radera filen från behållaren."
+
+#: destinations/ftp/init.php:217
+#@ it-l10n-backupbuddy
+msgid "Missing required input."
+msgstr "Obligatorisk indata saknas ."
+
+#: destinations/ftp/init.php:231
+#@ it-l10n-backupbuddy
+msgid "Unable to connect to FTP address `` on port ``."
+msgstr "Det gick inte att ansluta till FTP-adress '' på port ''."
+
+#: destinations/ftp/init.php:239
+#@ it-l10n-backupbuddy
+msgid "Destination server does not support FTPS?"
+msgstr "Målservern har inte stöd för FTPS?"
+
+#: destinations/ftp/init.php:242
+#@ it-l10n-backupbuddy
+msgid "Your web server doesnt support FTPS."
+msgstr "Din webserver stöder FTPS."
+
+#: destinations/ftp/init.php:250
+#@ it-l10n-backupbuddy
+msgid "Unable to login. Bad user/pass."
+msgstr "Det gick inte att logga in. Felaktig användare/lösenord."
+
+#: destinations/ftp/init.php:286
+#@ it-l10n-backupbuddy
+msgid "Failure uploading. Check path & permissions."
+msgstr "Fel vid överföring. Kontrollera sökvägen & behörigheter."
+
+#: classes/core.php:1553
+#@ it-l10n-backupbuddy
+msgid "Database Server has gone away, unable to save remote transfer status."
+msgstr "Databasservern kan inte nås, det gick inte att spara status för extern överföring ."
+
+#: controllers/actions.php:73
+#@ it-l10n-backupbuddy
+msgid "Error #4564658344443: Backup failure"
+msgstr "Fel #4564658344443: Misslyckad säkerhetskopiering"
+
+#: controllers/actions.php:105
+#@ it-l10n-backupbuddy
+msgid "WordPress Updates"
+msgstr "WordPress uppdateringar"
+
+#: controllers/actions.php:105
+#@ it-l10n-backupbuddy
+msgid "Remember to back up your site with BackupBuddy before upgrading!"
+msgstr "Kom ihåg att säkerhetskopiera din webbplats med BackupBuddy innan du uppgraderar!"
+
+#: controllers/actions.php:145
+#@ it-l10n-backupbuddy
+msgid "Full Backup"
+msgstr "Fullständig säkerhetskopiering"
+
+#: controllers/actions.php:145
+#: controllers/pages/settings.php:404
+#@ it-l10n-backupbuddy
+msgid "Database Backup"
+msgstr "Säkerhetskopiering av databasen"
+
+#: controllers/pages/server_info/site_size.php:106
+#: controllers/pages/server_info/site_size.php:115
+#@ it-l10n-backupbuddy
+msgid "Directory"
+msgstr "Katalog"
+
+#: destinations/dropbox/_configure.php:149
+#@ it-l10n-backupbuddy
+msgid "Referral Link"
+msgstr "Referenslänk"
+
+#: destinations/dropbox/_configure.php:70
+#: destinations/dropbox/_configure.php:97
+#@ it-l10n-backupbuddy
+msgid "Add Destination"
+msgstr "Lägg till mål"
+
+#: destinations/dropbox/_configure.php:74
+#@ it-l10n-backupbuddy
+msgid "Re-authenticate Dropbox"
+msgstr "Autentisera Dropbox igen "
+
+#: destinations/dropbox/_configure.php:94
+#@ it-l10n-backupbuddy
+msgid "Connect to Dropbox & Authorize"
+msgstr "Anslut till Dropbox & godkänn"
+
+#: destinations/dropbox/_configure.php:96
+#: destinations/dropbox/_configure.php:109
+#@ it-l10n-backupbuddy
+msgid "Yes, I've Authorized BackupBuddy with Dropbox"
+msgstr "Ja, jag har godkändt BackupBuddy med Dropbox"
+
+#: destinations/dropbox/_configure.php:99
+#@ it-l10n-backupbuddy
+msgid "Connect to Dropbox & Authorize (opens new window)"
+msgstr "Anslut till Dropbox & godkänn (öppnar nytt fönster)"
+
+#: destinations/dropbox/_configure.php:134
+#@ it-l10n-backupbuddy
+msgid "Dropbox Access Denied"
+msgstr "Dropbox åtkomst nekad"
+
+#: destinations/dropbox/_configure.php:148
+#@ it-l10n-backupbuddy
+msgid "Dropbox Owner"
+msgstr "Dropbox ägare"
+
+#: destinations/dropbox/_configure.php:154
+#@ it-l10n-backupbuddy
+msgid "Email"
+msgstr "E-post"
+
+#: destinations/dropbox/_configure.php:160
+#@ it-l10n-backupbuddy
+msgid "Quota Usage"
+msgstr "Kvotanvändning"
+
+#: destinations/dropbox/_configure.php:171
+#: destinations/email/_configure.php:15
+#: destinations/ftp/_configure.php:7
+#: destinations/local/_configure.php:7
+#: destinations/rackspace/_configure.php:7
+#: destinations/s3/_configure.php:15
+#: destinations/stash/_configure.php:184
+#@ it-l10n-backupbuddy
+msgid "Name of the new destination to create. This is for your convenience only."
+msgstr "Namnet på den nya målenheten. Detta är bara för dig."
+
+#: destinations/dropbox/_configure.php:178
+#: destinations/s3/_configure.php:57
+#@ it-l10n-backupbuddy
+msgid "Directory (optional)"
+msgstr "Katalog (tillval)"
+
+#: destinations/dropbox/_configure.php:179
+#@ it-l10n-backupbuddy
+msgid "[Example: backupbuddy or backupbuddy/mysite/ or myfiles/backups/mysite] - Directory (or subdirectory) name to place the backups within."
+msgstr "[Exempel: backupbuddy eller backupbuddy/min site/ eller mina filer/säkerhetskopior/min site] - katalog (eller underkatalog) namn att placera säkerhetskopior hos."
+
+#: destinations/dropbox/_configure.php:187
+#: destinations/ftp/_configure.php:70
+#: destinations/local/_configure.php:49
+#: destinations/rackspace/_configure.php:44
+#: destinations/s3/_configure.php:80
+#@ it-l10n-backupbuddy
+msgid "[Example: 5] - Enter 0 for no limit. This is the maximum number of archives to be stored in this specific destination. If this limit is met the oldest backups will be deleted."
+msgstr "[Exempel: 5] - Ange 0 för ingen gräns. Detta är det högsta antalet Arkiv som lagras i denna specifika målenhet. Om denna gräns uppnås raderas de äldsta säkerhetskopiorna."
+
+#: destinations/email/_configure.php:23
+#@ it-l10n-backupbuddy
+msgid "[Example: your@email.com] - Email address for this destination."
+msgstr "[Exempel: your@email.com] - E-post adress för detta mål."
+
+#: destinations/ftp/_configure.php:22
+#: destinations/rackspace/_configure.php:14
+#@ it-l10n-backupbuddy
+msgid "Username"
+msgstr "Användarnamn"
+
+#: destinations/ftp/_configure.php:15
+#@ it-l10n-backupbuddy
+msgid "[Example: ftp.foo.com] - FTP server address.  Do not include http:// or ftp:// or any other prefixes. You may specify an alternate port in the format of ftp_address:ip_address such as yourftp.com:21"
+msgstr "[Exempel: ftp.foo.com] - FTP serveradress.  Inkludera inte http:// eller ftp: // eller alla andra prefix. Du kan ange en annan port i form av ftp_address:ip_address som yourftp.com:21"
+
+#: destinations/ftp/_configure.php:23
+#@ it-l10n-backupbuddy
+msgid "[Example: foo] - Username to use when connecting to the FTP server."
+msgstr "[Exempel: foo] - Användarnamn när du ansluter till FTP-servern."
+
+#: destinations/ftp/_configure.php:30
+#@ it-l10n-backupbuddy
+msgid "Password"
+msgstr "Lösenord"
+
+#: destinations/ftp/_configure.php:31
+#@ it-l10n-backupbuddy
+msgid "[Example: 1234xyz] - Password to use when connecting to the FTP server."
+msgstr "[Exempel: 1234xyz] - Lösenord för att ansluta till FTP-servern."
+
+#: destinations/ftp/_configure.php:39
+#@ it-l10n-backupbuddy
+msgid "[Example: /public_html/backups] - Remote path to place uploaded files into on the destination FTP server. Make sure this path is correct; if it does not exist BackupBuddy will attempt to create it. No trailing slash is needed."
+msgstr "[Exempel: / public_html/säkerhetskopior] - Fjärrsökväg till enhet för att ladda upp filer på FTP. Kontrollera att sökvägen är korrekt; om den inte finns försöker BackupBuddy skapa den. Det behövs inget avslutande snedstreck."
+
+#: destinations/ftp/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Set a FTP remote directory"
+msgstr "Ange en fjärransluten FTP-katalog"
+
+#: destinations/ftp/_configure.php:84
+#@ it-l10n-backupbuddy
+msgid "[Default: Active] - Determines whether the FTP file transfer happens in FTP active or passive mode.  Some servers or those behind a firewall may need to use PASV, or passive mode as a workaround."
+msgstr "[Standard: aktiva] - Avgör om FTP filöverföring sker i aktivt eller passivt läge.  Vissa servrar eller de som ligger bakom en brandvägg kan behöva använda PASV, eller passivt läge som en lösning."
+
+#: destinations/ftp/_configure.php:93
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - Select whether this connection is for FTP or FTPs (enabled; FTP over SSL). Note that FTPs is NOT the same as sFTP (FTP over SSH) and is not compatible or equal."
+msgstr "[Standard: inaktiverad] - Välj om anslutningen är för FTP eller FTPs (aktiverad, FTP över SSL). Observera att FTPs inte är samma som sFTP (FTP över SSH) och är inte kompatibel eller lika."
+
+#: controllers/pages/_backup-perform.php:549
+#: controllers/pages/_migrate.php:242
+#: controllers/pages/server_info/server.php:176
+#: controllers/pages/server_info/server.php:223
+#: controllers/pages/server_info/server.php:267
+#: controllers/pages/server_info/server.php:284
+#: controllers/pages/server_info/server.php:296
+#: controllers/pages/server_info/server.php:308
+#: views/_backup_listing.php:46
+#@ it-l10n-backupbuddy
+msgid "Loading..."
+msgstr "Laddar..."
+
+#: destinations/rackspace/_configure.php:33
+#@ it-l10n-backupbuddy
+msgid "Container"
+msgstr "Behållare"
+
+#: destinations/rackspace/_configure.php:15
+#@ it-l10n-backupbuddy
+msgid "[Example: badger] - Your Rackspace Cloudfiles username."
+msgstr "[Exempel: badger] - Ditt Rackspace Cloudfiles användarnamn."
+
+#: destinations/rackspace/_configure.php:23
+#@ it-l10n-backupbuddy
+msgid "[Example: 9032jk09jkdspo9sd32jds9swd039dwe] - Log in to your Rackspace Cloudfiles Account and navigate to Your Account: API Access"
+msgstr "[Exempel: 9032jk09jkdspo9sd32jds9swd039dwe] - Logga in på ditt Rackspace Cloudfiles konto och gå till Ditt konto: API tillgång"
+
+#: destinations/rackspace/_configure.php:24
+#@ it-l10n-backupbuddy
+msgid "Get your Rackspace Cloudfiles API key"
+msgstr "Hämta din rackplats Cloudfiles API-nyckel"
+
+#: destinations/rackspace/_configure.php:34
+#@ it-l10n-backupbuddy
+msgid "[Example: wordpress_backups] - This container will NOT be created for you automatically if it does not already exist. Please create it first."
+msgstr "[Exempel: wordpress_backups] - Denna behållare kommer INTE skapas automatiskt om den inte redan finns. Skapa den först."
+
+#: destinations/rackspace/_configure.php:35
+#@ it-l10n-backupbuddy
+msgid "Create a container from the Rackspace Cloudfiles panel"
+msgstr "Skapa en behållare från Rackspace Cloudfiles panelen "
+
+#: destinations/s3/_configure.php:23
+#@ it-l10n-backupbuddy
+msgid "[Example: BSEGHGSDEUOXSQOPGSBE] - Log in to your Amazon S3 AWS Account and navigate to Account: Access Credentials: Security Credentials."
+msgstr "[Exempel: BSEGHGSDEUOXSQOPGSBE] - Logga in på ditt Amazon S3 AWS konto och navigera till Konto: Åtkomstreferenser: säkerhetsreferenser."
+
+#: destinations/s3/_configure.php:37
+#@ it-l10n-backupbuddy
+msgid "[Example: GHOIDDWE56SDSAZXMOPR] - Log in to your Amazon S3 AWS Account and navigate to Account: Access Credentials: Security Credentials."
+msgstr "[Exempel: GHOIDDWE56SDSAZXMOPR]-logga in på kontot Amazon S3 AWS och navigera till konto: Åtkomstuppgifter: Säkerhetsuppgifter."
+
+#: destinations/s3/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Find your Amazon S3 key"
+msgstr "Hitta din Amazon S3 nyckel"
+
+#: destinations/s3/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Opens a new tab where you can get your Amazon S3 key"
+msgstr "Öppnar en ny flik där du kan hämta din Amazon S3 nyckel"
+
+#: destinations/s3/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Get Key"
+msgstr "Hämta nyckel"
+
+#: destinations/s3/_configure.php:48
+#@ it-l10n-backupbuddy
+msgid "[Example: wordpress_backups] - This bucket will be created for you automatically if it does not already exist. Bucket names must be globally unique amongst all Amazon S3 users."
+msgstr "[Exempel: wordpress_backups] - Denna hink kommer att skapas automatiskt om den inte redan finns. Namn på Hink måste vara unikt bland alla Amazon S3 användare."
+
+#: destinations/s3/_configure.php:58
+#@ it-l10n-backupbuddy
+msgid "[Example: backupbuddy] - Directory name to place the backup within."
+msgstr "[Exempel: backupbuddy] - Katalognamn att placera säkerhetskopian i."
+
+#: destinations/s3/_configure.php:49
+#@ it-l10n-backupbuddy
+msgid "Create an Amazon S3 bucket"
+msgstr "Skapa en Amazon S3 bucket"
+
+#: destinations/s3/_configure.php:106
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Please note that encryption introduces overhead and may slow down the transfer. If Amazon S3 sends are failing try disabling this feature to speed up the process.  Note that 32-bit servers cannot encrypt transfers of 2GB or larger with SSL, causing large file transfers to fail."
+msgstr "[Standard: aktiverad] - Om aktiverat kommer alla överföringar krypteras med SSL-kryptering. Observera att kryptering genererar overhead och kan bromsa överföring. Om Amazon S3 överföringar misslyckas försök inaktivera den här funktionen om du vill påskynda processen.  Observera att 32-bitars servrar inte kan kryptera överföringar av 2 GB eller större med SSL, orsakar misslyckade överföringar av stora filer ."
+
+#: controllers/ajax/_hash.php:1
+#@ it-l10n-backupbuddy
+msgid "MD5 Checksum Hash"
+msgstr "MD5-Kontrollsumma Hash"
+
+#: controllers/ajax/_hash.php:3
+#@ it-l10n-backupbuddy
+msgid "This is a string of characters that uniquely represents this file.  If this file is in any way manipulated then this string of characters will change.  This allows you to later verify that the file is intact and uncorrupted.  For instance you may verify the file after uploading it to a new location by making sure the MD5 checksum matches."
+msgstr "Detta är en sträng med tecken som unikt representerar denna fil.  Om den här filen är på något sätt manipuleras kommer denna teckensträng ändras.  Då kan du senare kontrollera att filen är intakt och oskadad.  Du kan till exempel kontrollera filen efter överföring till en ny plats genom att kontrollera att MD5-kontrollsumman matchar."
+
+#: destinations/local/_configure.php:21
+#@ it-l10n-backupbuddy
+msgid "Local file path"
+msgstr "Lokal filsökväg"
+
+#: controllers/ajax.php:84
+#@ it-l10n-backupbuddy
+msgid "Temporary ZIP file size"
+msgstr "Tillfällig ZIP filstorlek"
+
+#: destinations/local/init.php:129
+#@ it-l10n-backupbuddy
+msgid "Failure"
+msgstr "Fel"
+
+#: destinations/local/init.php:159
+#@ it-l10n-backupbuddy
+msgid "Failure. Unable to connect to the provided URL."
+msgstr "Fel. Det gick inte att ansluta till den angivna URL-adressen."
+
+#: controllers/dashboard.php:31
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "You currently have %s stored backups."
+msgstr "Du har för närvarande %s lagrade säkerhetskopior."
+
+#: controllers/dashboard.php:33
+#@ it-l10n-backupbuddy
+msgid "You have not created any backups."
+msgstr "Du har inte skapat några säkerhetskopior."
+
+#: controllers/dashboard.php:35
+#, php-format
+#@ it-l10n-backupbuddy
+msgid " Your most recent backup was %s ago."
+msgstr " Din senaste säkerhetskopia var %s sedan."
+
+#: controllers/dashboard.php:37
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "There have been %s post/page modifications since your last backup."
+msgstr "Det har varit %s inlägg/sida ändringar sedan den senaste säkerhetskopieringen."
+
+#: controllers/dashboard.php:38
+#@ it-l10n-backupbuddy
+msgid "Go create a backup!"
+msgstr "Gör en säkerhetskopia!"
+
+#: controllers/pages/_backup-perform.php:272
+#@ it-l10n-backupbuddy
+msgid "A fatal error has been encountered.  The backup has halted."
+msgstr "Ett allvarligt fel har uppstått.  Säkerhetskopieringen har stannat."
+
+#: controllers/pages/_backup-perform.php:274
+#@ it-l10n-backupbuddy
+msgid "Unknown action"
+msgstr "Okänd händelse"
+
+#: controllers/pages/_backup-perform.php:519
+#@ it-l10n-backupbuddy
+msgid "Settings Export"
+msgstr "Inställningar för Export"
+
+#: controllers/pages/_backup-perform.php:522
+#@ it-l10n-backupbuddy
+msgid "Database Export"
+msgstr "Databasexport"
+
+#: controllers/pages/_backup-perform.php:525
+#@ it-l10n-backupbuddy
+msgid "Files Export"
+msgstr "Filexport"
+
+#: controllers/pages/_backup-perform.php:543
+#@ it-l10n-backupbuddy
+msgid "back to backups"
+msgstr "tillbaka till säkerhetskopior"
+
+#: controllers/ajax.php:868
+#: controllers/pages/_backup-perform.php:548
+#: controllers/pages/server_info/database.php:28
+#: controllers/pages/server_info/database.php:41
+#: controllers/pages/server_info/permissions.php:131
+#: controllers/pages/server_info/permissions.php:142
+#: controllers/pages/server_info/remote_sends.php:81
+#: controllers/pages/server_info/server.php:550
+#: controllers/pages/server_info/server.php:562
+#: views/_backup-home.php:403
+#: views/_backup_listing.php:51
+#: views/scheduling.php:68
+#@ it-l10n-backupbuddy
+msgid "Status"
+msgstr "Status"
+
+#: controllers/pages/_backup-perform.php:550
+#@ it-l10n-backupbuddy
+msgid "Archive size"
+msgstr "Arkivstorlek"
+
+#: controllers/pages/_backup-perform.php:550
+#@ it-l10n-backupbuddy
+msgid "This is the current size of the backup archive as it is being generated. This size will grow until the backup is complete."
+msgstr "Detta är den aktuella storleken av säkerhetskopan medans den skapas. Denna storlek kommer att växa tills säkerhetskopieringen har slutförts."
+
+#: controllers/pages/_backup-perform.php:566
+#@ it-l10n-backupbuddy
+msgid "Running in CLASSIC mode. Leaving this page before the backup completes will lead to a failed backup."
+msgstr "Körs i CLASSIC-läge. Lämnar du denna sida innan säkerhetskopieringen är klar kommer säkerhetskopieringen misslyckas."
+
+#: controllers/pages/_ms_import/_step1.php:12
+#@ it-l10n-backupbuddy
+msgid "Multisite import allows you to import a site from a BackupBuddy backup archive as a new site within this Multisite network with a new URL.  Please upload your BackupBuddy backup archive into the root of your site before proceeding or select an existing backup."
+msgstr "MultiSite import låter dig importera en webbplats från en BackupBuddy säkerhetskopa som en ny webbplats inom detta Multisite nätverk med en ny URL.  Ladda upp din BackupBuddy säkerhetskopia till roten för webbplatsen innan du fortsätter eller välj en befintlig säkerhetskopia."
+
+#: controllers/pages/_ms_import/_step1.php:14
+#@ default
+msgid "Only FULL backups may be imported into a Multisite Network."
+msgstr "Endast FULLSTÄNDIGA säkerhetskopior kan importeras till ett Multisite nätverk"
+
+#: controllers/pages/_ms_import/_step1.php:40
+#@ it-l10n-backupbuddy
+msgid "No BackupBuddy backups found in the root directory of the site."
+msgstr "Inga BackupBuddy säkerhetskopior finns i webbplatsens rotkatalog."
+
+#: controllers/pages/_ms_import/_step1.php:66
+#@ it-l10n-backupbuddy
+msgid "No BackupBuddy backups found in this site's backup directory."
+msgstr "Inga BackupBuddy säkerhetskopior hittades i denna webbplats mapp för säkerhetskopior."
+
+#: controllers/pages/_ms_import/_step1.php:73
+#@ it-l10n-backupbuddy
+msgid "New site address"
+msgstr "Ny webbplatsadress"
+
+#: controllers/pages/_ms_import/_step1.php:76
+#: controllers/pages/_ms_import/_step1.php:78
+#@ it-l10n-backupbuddy
+msgid "Domain"
+msgstr "Domän"
+
+#: controllers/pages/_ms_import/_step1.php:81
+#@ it-l10n-backupbuddy
+msgid "Only the characters a-z and 0-9 recommended."
+msgstr "Endast tecknen a-z och 0-9 rekommenderas."
+
+#: controllers/pages/_ms_import/_step1.php:83
+#@ it-l10n-backupbuddy
+msgid "If the site already exists and is mapped into a different domain, simply use the domain name (e.g., jubyo.com)"
+msgstr "Om webbplatsen redan finns och är mappad till en annan domän, använd helt enkelt domännamnet (t.ex. jubyo.com)"
+
+#: controllers/pages/_ms_import/_step1.php:115
+#: controllers/pages/_ms_import/_step2.php:113
+#: controllers/pages/_ms_import/_step3.php:72
+#: controllers/pages/_ms_import/_step4.php:134
+#: controllers/pages/_ms_import/_step5.php:129
+#: controllers/pages/_ms_import/_step6.php:88
+#@ default
+msgid "Next Step"
+msgstr "Nästa steg"
+
+#: controllers/pages/_ms_import/_step2.php:25
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "The following words are reserved for use by WordPress functions and cannot be used as blog names: <code>%s</code>"
+msgstr "Följande ord är reserverade för användning av WordPress funktioner och kan inte användas som blogg namn:<code>%s</code>"
+
+#: controllers/pages/_ms_import/_step2.php:29
+#@ it-l10n-backupbuddy
+msgid "Missing or invalid site address."
+msgstr "Saknad eller är ogiltig webbplatsadress."
+
+#: controllers/pages/_ms_import/_step2.php:32
+#@ it-l10n-backupbuddy
+msgid "Missing backup file."
+msgstr "Säkerhetskopian saknas."
+
+#: controllers/pages/_ms_import/_step2.php:50
+#@ it-l10n-backupbuddy
+msgid "This site address already exists.  Please choose another name or delete the existing site first."
+msgstr "Denna webbplatsadress finns redan.  Välj ett annat namn eller ta bort den befintliga platsen först."
+
+#: controllers/pages/_ms_import/_step2.php:54
+#@ it-l10n-backupbuddy
+msgid "The site has been created. Click `Continue` to use this site."
+msgstr "Webbplatsen har skapats. Klicka på `Fortsätt` om du vill använda den här webbplatsen."
+
+#: controllers/pages/_ms_import/_step2.php:92
+#@ it-l10n-backupbuddy
+msgid "Please verify that you are sure you would like to import the backed up site into the just-created blank site. This import cannot be undone."
+msgstr "Kontrollera att du är säker på att du vill importera den säkerhetskopierade webbplatsen till den just skapade tomma webbplatsen. Denna import kan inte ångras."
+
+#: controllers/pages/_ms_import/_step3.php:64
+#@ it-l10n-backupbuddy
+msgid "Your files have been extracted to a temporary directory.  Proceed to the next step to copy your media, plugins, and themes into the new site."
+msgstr "Filerna har extraherats till en tillfällig katalog.  Gå vidare till nästa steg för att kopiera media, plugins och teman till den nya platsen."
+
+#: controllers/pages/_ms_import/_step4.php:123
+#@ it-l10n-backupbuddy
+msgid "Files, such as media, plugins, and themes, were successfully migrated."
+msgstr "Filer som media, plugins och teman har migrerats."
+
+#: controllers/pages/_ms_import/_step5.php:111
+#@ it-l10n-backupbuddy
+msgid "Database import failed."
+msgstr "Databasimporten misslyckades."
+
+#: controllers/pages/_ms_import/_step5.php:131
+#@ default
+msgid "Continue Database Import"
+msgstr "Fortsätt databasimport"
+
+#: controllers/pages/_ms_import/_step7.php:241
+#@ default
+msgid "Next"
+msgstr "Nästa"
+
+#: destinations/dropbox/_manage.php:41
+#: destinations/rackspace/_manage.php:42
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Deleted %d file"
+msgid_plural "Deleted %d files"
+msgstr[0] "Borttagen %d fil"
+msgstr[1] "Borttagna %d filer"
+
+#: destinations/dropbox/_manage.php:48
+#: destinations/ftp/_manage.php:73
+#: destinations/rackspace/_manage.php:48
+#: destinations/s3/_manage.php:45
+#: destinations/stash/_manage.php:164
+#, php-format
+#@ it-l10n-backupbuddy
+msgctxt "%1$s and %2$s are open and close <a> tags"
+msgid "The remote file is now being copied to your %1$slocal backups%2$s"
+msgstr "Fjärr-filen kopieras nu till dina %1$ lokala säkerhetskopior % 2$ s"
+
+#: destinations/dropbox/_manage.php:55
+#: destinations/ftp/_manage.php:117
+#@ it-l10n-backupbuddy
+msgid "Viewing"
+msgstr "Visar"
+
+#: destinations/dropbox/_manage.php:62
+#: destinations/dropbox/_manage.php:130
+#@ it-l10n-backupbuddy
+msgid "Delete from Dropbox"
+msgstr "Radera från Dropbox"
+
+#: controllers/pages/server_info/remote_sends.php:77
+#: destinations/dropbox/_manage.php:70
+#: destinations/dropbox/_manage.php:81
+#: destinations/ftp/_manage.php:131
+#: destinations/ftp/_manage.php:141
+#: destinations/s3/_manage.php:66
+#: destinations/s3/_manage.php:77
+#: views/_backup_listing.php:46
+#@ it-l10n-backupbuddy
+msgid "Backup File"
+msgstr "Backup-fil"
+
+#: destinations/dropbox/_manage.php:70
+#: destinations/dropbox/_manage.php:81
+#: destinations/ftp/_manage.php:131
+#: destinations/ftp/_manage.php:141
+#: destinations/s3/_manage.php:66
+#: destinations/s3/_manage.php:77
+#@ it-l10n-backupbuddy
+msgid "Sorted by filename"
+msgstr "Sorterat efter filnamn"
+
+#: destinations/dropbox/_manage.php:71
+#: destinations/dropbox/_manage.php:82
+#: destinations/s3/_manage.php:67
+#: destinations/s3/_manage.php:78
+#@ it-l10n-backupbuddy
+msgid "Last Modified"
+msgstr "Senast uppdaterad"
+
+#: destinations/dropbox/_manage.php:72
+#: destinations/dropbox/_manage.php:83
+#: destinations/ftp/_manage.php:132
+#: destinations/ftp/_manage.php:142
+#: destinations/s3/_manage.php:68
+#: destinations/s3/_manage.php:79
+#: views/_backup_listing.php:48
+#@ it-l10n-backupbuddy
+msgid "File Size"
+msgstr "Filstorlek"
+
+#: destinations/dropbox/_manage.php:73
+#: destinations/dropbox/_manage.php:84
+#: destinations/ftp/_manage.php:133
+#: destinations/ftp/_manage.php:143
+#: destinations/s3/_manage.php:69
+#: destinations/s3/_manage.php:80
+#@ it-l10n-backupbuddy
+msgid "Actions"
+msgstr "Åtgärder"
+
+#: destinations/dropbox/_manage.php:92
+#@ it-l10n-backupbuddy
+msgid "You have not created any dropbox backups yet."
+msgstr "Du har inte skapat några dropbox säkerhetskopior ännu."
+
+#: destinations/dropbox/_manage.php:111
+#: pluginbuddy/classes/format.php:139
+#@ it-l10n-backupbuddy
+msgid "ago"
+msgstr "sedan"
+
+#: destinations/dropbox/_manage.php:118
+#: destinations/s3/_manage.php:117
+#@ it-l10n-backupbuddy
+msgid "Copy to local"
+msgstr "Kopiera till lokal"
+
+#: destinations/ftp/_manage.php:36
+#: destinations/ftp/_manage.php:82
+#@ it-l10n-backupbuddy
+msgid "Could not connect to"
+msgstr "Kunde inte ansluta till"
+
+#: destinations/ftp/_manage.php:65
+#: destinations/s3/_manage.php:39
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Deleted %d file."
+msgid_plural "Deleted %d files."
+msgstr[0] "Borttagen %d fil."
+msgstr[1] "Borttagna %d filer."
+
+#: destinations/ftp/_manage.php:67
+#@ it-l10n-backupbuddy
+msgid "No backups were deleted."
+msgstr "Inga säkerhetskopior raderades."
+
+#: destinations/ftp/_manage.php:123
+#: destinations/ftp/_manage.php:179
+#@ it-l10n-backupbuddy
+msgid "Delete from FTP"
+msgstr "Ta bort från FTP"
+
+#: destinations/ftp/_manage.php:151
+#@ it-l10n-backupbuddy
+msgid "This directory does not have any backups."
+msgstr "Denna katalog har inte några säkerhetskopior."
+
+#: destinations/s3/_manage.php:58
+#@ it-l10n-backupbuddy
+msgid "Delete from S3"
+msgstr "Ta bort från S3"
+
+#: destinations/s3/_manage.php:90
+#@ it-l10n-backupbuddy
+msgid "You have not created any S3 backups yet."
+msgstr "Du har inte skapat några S3 säkerhetskopior ännu."
+
+#: controllers/pages/_remote_client.php:5
+#@ it-l10n-backupbuddy
+msgid "Error #438934894349. Invalid destination ID."
+msgstr "Fel #438934894349. Ogiltig mål-ID."
+
+#: controllers/pages/_zip_viewer.php:21
+#@ it-l10n-backupbuddy
+msgid "Error #4455. ZipArchive is not available on your server. Please contact your host for assistance in enabling this."
+msgstr "Fel #4455. ZipArchive är inte tillgängligt på servern. Kontakta administratorn för hjälp med att aktivera detta."
+
+#: controllers/pages/_zip_viewer.php:29
+#@ it-l10n-backupbuddy
+msgid "Error #628855. Error reading ZIP file."
+msgstr "Fel #628855. Fel vid läsning av ZIP-fil."
+
+#: controllers/pages/malware_scan.php:3
+#: init_admin.php:109
+#: init_admin.php:133
+#: init_admin.php:141
+#@ it-l10n-backupbuddy
+msgid "Malware Scan"
+msgstr "Malware sökning"
+
+#: controllers/pages/malware_scan.php:24
+#@ it-l10n-backupbuddy
+msgid "Malware Scan Powered by Sucuri"
+msgstr "Malware sökning av Sucuri"
+
+#: controllers/pages/malware_scan.php:45
+#@ it-l10n-backupbuddy
+msgid "ERROR: You are currently running your site locally. Your site must be internet accessible to scan."
+msgstr "FEL: Du använder webbplatsen lokalt. Webbplatsen måste vara tillgänglig från internet för genomsökning."
+
+#: controllers/pages/malware_scan.php:65
+#@ it-l10n-backupbuddy
+msgid "Scanning for Malware... Please wait..."
+msgstr "Söker efter skadlig kod... Vänta..."
+
+#: controllers/pages/malware_scan.php:85
+#@ it-l10n-backupbuddy
+msgid "ERROR #24452. Unable to load Malware Scan results. Details:"
+msgstr "FEL #24452. Det gick inte att läsa in resultat från Malware sökningen. Detaljer:"
+
+#: controllers/pages/malware_scan.php:102
+#@ it-l10n-backupbuddy
+msgid "An error was encountered attempting to scan this site."
+msgstr "Ett fel påträffades vid försök att skanna denna webbplats."
+
+#: controllers/pages/malware_scan.php:103
+#@ it-l10n-backupbuddy
+msgid "An internet connection is required and this site must be accessible on the public internet."
+msgstr "En Internetanslutning behövs och denna webbplats måste vara tillgänglig över det offentliga internet."
+
+#: controllers/pages/malware_scan.php:140
+#: controllers/pages/malware_scan.php:167
+#: controllers/pages/malware_scan.php:176
+#: controllers/pages/malware_scan.php:177
+#: controllers/pages/malware_scan.php:178
+#: controllers/pages/malware_scan.php:179
+#: controllers/pages/malware_scan.php:180
+#: controllers/pages/malware_scan.php:188
+#: controllers/pages/malware_scan.php:189
+#: controllers/pages/malware_scan.php:190
+#: controllers/pages/malware_scan.php:191
+#: controllers/pages/malware_scan.php:192
+#: controllers/pages/malware_scan.php:200
+#: controllers/pages/malware_scan.php:208
+#: controllers/pages/malware_scan.php:216
+#: controllers/pages/malware_scan.php:224
+#: controllers/pages/malware_scan.php:232
+#: controllers/pages/server_info/cron.php:123
+#@ it-l10n-backupbuddy
+msgid "none"
+msgstr "ingen"
+
+#: controllers/pages/malware_scan.php:149
+#@ it-l10n-backupbuddy
+msgid "Warning: Possible Malware Detected!"
+msgstr "Varning: Möjligt Malware upptäckt!"
+
+#: controllers/pages/malware_scan.php:149
+#@ it-l10n-backupbuddy
+msgid "See details below."
+msgstr "Se information nedan."
+
+#: controllers/pages/malware_scan.php:149
+#@ it-l10n-backupbuddy
+msgid "Sign up with Sucuri for removal assistance."
+msgstr "Registrera dig hos Sucuri för hjälp med avlägsnande."
+
+#: controllers/pages/malware_scan.php:159
+#: controllers/pages/malware_scan.php:173
+#: controllers/pages/malware_scan.php:197
+#: controllers/pages/malware_scan.php:205
+#: controllers/pages/malware_scan.php:213
+#: controllers/pages/malware_scan.php:221
+#: controllers/pages/malware_scan.php:229
+#@ it-l10n-backupbuddy
+msgid "Click to toggle"
+msgstr "Klicka för att växla"
+
+#: controllers/pages/malware_scan.php:160
+#@ it-l10n-backupbuddy
+msgid "Malware Detected"
+msgstr "Malware upptäcktes"
+
+#: controllers/pages/malware_scan.php:162
+#@ it-l10n-backupbuddy
+msgid "Malware"
+msgstr "Malware"
+
+#: controllers/pages/malware_scan.php:174
+#@ it-l10n-backupbuddy
+msgid "Web server details"
+msgstr "Detaljer webbserver"
+
+#: controllers/pages/malware_scan.php:176
+#@ it-l10n-backupbuddy
+msgid "Site"
+msgstr "Webbplats"
+
+#: controllers/pages/malware_scan.php:177
+#@ it-l10n-backupbuddy
+msgid "Hostname"
+msgstr "Värdnamn"
+
+#: controllers/pages/malware_scan.php:178
+#@ it-l10n-backupbuddy
+msgid "IP Address"
+msgstr "IP-adress"
+
+#: controllers/pages/malware_scan.php:179
+#@ it-l10n-backupbuddy
+msgid "System details"
+msgstr "Information om systemet"
+
+#: controllers/pages/malware_scan.php:180
+#@ it-l10n-backupbuddy
+msgid "Information"
+msgstr "Information"
+
+#: controllers/pages/malware_scan.php:186
+#@ it-l10n-backupbuddy
+msgid "Web application"
+msgstr "Webbprogram"
+
+#: controllers/pages/malware_scan.php:188
+#@ it-l10n-backupbuddy
+msgid "Details"
+msgstr "Detaljer"
+
+#: controllers/pages/malware_scan.php:189
+#@ it-l10n-backupbuddy
+msgid "Versions"
+msgstr "Versioner"
+
+#: controllers/pages/malware_scan.php:190
+#@ it-l10n-backupbuddy
+msgid "Notices"
+msgstr "Meddelanden"
+
+#: controllers/pages/malware_scan.php:191
+#@ it-l10n-backupbuddy
+msgid "Errors"
+msgstr "Fel"
+
+#: controllers/pages/malware_scan.php:192
+#@ it-l10n-backupbuddy
+msgid "Warnings"
+msgstr "Varningar"
+
+#: controllers/pages/malware_scan.php:198
+#@ it-l10n-backupbuddy
+msgid "Links"
+msgstr "Länkar"
+
+#: controllers/pages/malware_scan.php:206
+#@ it-l10n-backupbuddy
+msgid "Local Javascript"
+msgstr "Lokalt Javascript"
+
+#: controllers/pages/malware_scan.php:214
+#@ it-l10n-backupbuddy
+msgid "External Javascript"
+msgstr "Externt Javascript"
+
+#: controllers/pages/malware_scan.php:222
+#@ it-l10n-backupbuddy
+msgid "Iframes Included"
+msgstr "Iframe inkluderat"
+
+#: controllers/pages/malware_scan.php:230
+#@ it-l10n-backupbuddy
+msgid "Blacklisting Status"
+msgstr " Status svartlistning"
+
+#: controllers/pages/malware_scan.php:252
+#@ it-l10n-backupbuddy
+msgid "Malware scan results are cached for one hour."
+msgstr "Malware sökning resultatet lagras i en timme."
+
+#: controllers/pages/malware_scan.php:263
+#@ it-l10n-backupbuddy
+msgid "Perform New Scan Now"
+msgstr "Ny sökning nu"
+
+#: controllers/pages/migrate_restore.php:58
+#@ it-l10n-backupbuddy
+msgid "Website address"
+msgstr "Webbadress"
+
+#: controllers/pages/migrate_restore.php:59
+#@ it-l10n-backupbuddy
+msgid "Website address that corresponds to the FTP path.ß"
+msgstr "Hemsidans adress som motsvarar FTP-sökvägen.ß"
+
+#: controllers/pages/migrate_restore.php:69
+#@ it-l10n-backupbuddy
+msgid "FTP server address"
+msgstr "FTP-serveradress"
+
+#: controllers/pages/migrate_restore.php:70
+#@ it-l10n-backupbuddy
+msgid "FTP server address. This must correspond to the website address URL, including path, to the destination site."
+msgstr "FTP-serveradress. Detta måste motsvara URL adress webbplats, inklusive sökvägen till målwebbplatsen."
+
+#: controllers/pages/migrate_restore.php:78
+#@ it-l10n-backupbuddy
+msgid "FTP username"
+msgstr "FTP användarnamn"
+
+#: controllers/pages/migrate_restore.php:86
+#@ it-l10n-backupbuddy
+msgid "FTP password"
+msgstr "FTP lösenord"
+
+#: controllers/pages/migrate_restore.php:94
+#@ it-l10n-backupbuddy
+msgid "FTP remote path (optional)"
+msgstr "FTP sökvägen (tillval)"
+
+#: controllers/pages/migrate_restore.php:95
+#@ it-l10n-backupbuddy
+msgid "This is the remote path / directory for the server. You may use an FTP client to connect to your FTP to determine the exact path."
+msgstr "Detta är fjärr sökvägen / -katalogen för servern. Du kan använda en FTPklient för att ansluta till din FTP för att bestämma den exakta sökvägen."
+
+#: controllers/pages/migrate_restore.php:104
+#: destinations/ftp/_configure.php:92
+#@ it-l10n-backupbuddy
+msgid "Use FTPs encryption"
+msgstr "Använd FTP kryptering"
+
+#: controllers/pages/multisite_export.php:6
+#: controllers/pages/settings.php:391
+#@ it-l10n-backupbuddy
+msgid "Multisite export"
+msgstr "MultiSite export"
+
+#: controllers/pages/multisite_import.php:3
+#@ it-l10n-backupbuddy
+msgid "Multisite import"
+msgstr "MultiSite importera"
+
+#: controllers/pages/multisite_import.php:36
+#@ it-l10n-backupbuddy
+msgid "You do not have permission to access this page."
+msgstr "Du har inte behörighet att komma åt sidan."
+
+#: controllers/pages/scheduling.php:42
+#@ it-l10n-backupbuddy
+msgid "Deleted schedule(s):"
+msgstr "Radera(t/de) schema(n):"
+
+#: controllers/pages/scheduling.php:49
+#@ it-l10n-backupbuddy
+msgid "Edit Schedule"
+msgstr "Redigera schema"
+
+#: controllers/pages/scheduling.php:61
+#: views/scheduling.php:3
+#@ it-l10n-backupbuddy
+msgid "Remove remote destination from this schedule."
+msgstr "Ta bort fjärr-destinationer från schemat."
+
+#: controllers/pages/scheduling.php:68
+#@ it-l10n-backupbuddy
+msgid "Add New Schedule"
+msgstr "Lägg till nytt schema"
+
+#: controllers/pages/scheduling.php:84
+#@ it-l10n-backupbuddy
+msgid "This is a name for your reference only."
+msgstr "Detta är ett namn för dig själv endast."
+
+#: controllers/pages/scheduling.php:93
+#@ it-l10n-backupbuddy
+msgid "Full backups contain all files (except exclusions) and your database. Database only backups consist of an export of your mysql database; no WordPress files or media. Database backups are typically much smaller and faster to perform and are typically the most quickly changing part of a site."
+msgstr "Fullständiga säkerhetskopior innehåller alla filer (utom undantag) och databasen. Endast säkerhetskopior av databasen består av en export av din mysql databas; Ingen WordPress-filer eller media. Säkerhetskopior av databasen är vanligen mycket mindre och snabbare att utföra och är vanligen den mest föränderliga del av en webbplats."
+
+#: controllers/pages/scheduling.php:107
+#@ it-l10n-backupbuddy
+msgid "Time period between backups."
+msgstr "Tid mellan säkerhetskopior."
+
+#: controllers/pages/scheduling.php:115
+#@ it-l10n-backupbuddy
+msgid "IMPORTANT: For scheduled events to occur someone (or you) must visit this site on or after the scheduled time. If no one visits your site for a long period of time some backup events may not be triggered."
+msgstr "VIKTIGT: För att schemalagda händelser skall inträffa måste någon (eller du) besöka denna webbplats på eller efter den schemalagda tiden. Vissa säkerhetskopieringshändelser kan inte utlösas om ingen besöker webbplatsen under en lång tid."
+
+#: controllers/pages/scheduling.php:118
+#@ it-l10n-backupbuddy
+msgid "Currently"
+msgstr "För närvarande"
+
+#: controllers/pages/scheduling.php:118
+#@ it-l10n-backupbuddy
+msgid "based on"
+msgstr "baserat på"
+
+#: controllers/pages/scheduling.php:118
+#@ it-l10n-backupbuddy
+msgid "WordPress settings"
+msgstr "Inställningar för WordPress"
+
+#: controllers/pages/scheduling.php:126
+#@ it-l10n-backupbuddy
+msgid "Select a Destination"
+msgstr "Välj en Destination"
+
+#: controllers/pages/scheduling.php:126
+#@ it-l10n-backupbuddy
+msgid "+ Add Remote Destination"
+msgstr "+ Lägg till fjärr-destinationer"
+
+#: controllers/pages/scheduling.php:166
+#: controllers/pages/scheduling.php:189
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Invalid time format. Please use the specified format / example %s"
+msgstr "Ogiltigt tidsformat. Använd det angivna formatet / exempel %s"
+
+#: controllers/pages/scheduling.php:255
+#@ it-l10n-backupbuddy
+msgid "Never"
+msgstr "Aldrig"
+
+#: controllers/pages/server_info/cron.php:34
+#@ it-l10n-backupbuddy
+msgid "Deleted sheduled CRON event(s):"
+msgstr "Radeade schenalagda CRON händelse(r):"
+
+#: controllers/pages/server_info/cron.php:101
+#: controllers/pages/server_info/cron.php:108
+#@ it-l10n-backupbuddy
+msgid "one time only"
+msgstr "bara en gång"
+
+#: controllers/pages/server_info/cron.php:154
+#@ it-l10n-backupbuddy
+msgid "Event"
+msgstr "Händelse"
+
+#: controllers/pages/server_info/cron.php:155
+#: views/scheduling.php:67
+#@ it-l10n-backupbuddy
+msgid "Run Time"
+msgstr "Körning"
+
+#: controllers/pages/server_info/cron.php:156
+#@ it-l10n-backupbuddy
+msgid "Period"
+msgstr "Perioden"
+
+#: controllers/pages/server_info/cron.php:157
+#: views/scheduling.php:65
+#@ it-l10n-backupbuddy
+msgid "Interval"
+msgstr "Intervall"
+
+#: controllers/pages/server_info/cron.php:158
+#@ it-l10n-backupbuddy
+msgid "Arguments"
+msgstr "Argument"
+
+#: controllers/pages/server_info/cron.php:177
+#@ it-l10n-backupbuddy
+msgid "Display CRON Debugging Array"
+msgstr "Visa CRON felsökning matris"
+
+#: controllers/pages/server_info/cron.php:177
+#: controllers/pages/server_info/cron.php:182
+#@ it-l10n-backupbuddy
+msgid "Current Time"
+msgstr "Aktuell tid"
+
+#: controllers/pages/server_info/database.php:27
+#: controllers/pages/server_info/database.php:40
+#@ it-l10n-backupbuddy
+msgid "Database Table"
+msgstr "Databastabell"
+
+#: controllers/pages/server_info/database.php:31
+#: controllers/pages/server_info/database.php:44
+#@ it-l10n-backupbuddy
+msgid "Rows"
+msgstr "Rader"
+
+#: controllers/pages/server_info/database.php:32
+#: controllers/pages/server_info/database.php:45
+#@ it-l10n-backupbuddy
+msgid "Size"
+msgstr "Storlek"
+
+#: controllers/pages/server_info/site_size.php:108
+#: controllers/pages/server_info/site_size.php:117
+#@ it-l10n-backupbuddy
+msgid "Size with Exclusions"
+msgstr "Storlek med undantag"
+
+#: controllers/pages/server_info/database.php:153
+#: controllers/pages/server_info/site_size.php:123
+#: controllers/pages/server_info/site_size.php:140
+#@ it-l10n-backupbuddy
+msgid "TOTALS"
+msgstr "SUMMOR"
+
+#: controllers/pages/server_info/permissions.php:11
+#: controllers/pages/server_info/permissions.php:24
+#: controllers/pages/server_info/permissions.php:37
+#: controllers/pages/server_info/permissions.php:50
+#: controllers/pages/server_info/permissions.php:63
+#: controllers/pages/server_info/permissions.php:76
+#: controllers/pages/server_info/permissions.php:89
+#: controllers/pages/server_info/permissions.php:102
+#: controllers/pages/server_info/permissions.php:115
+#: controllers/pages/server_info/permissions.php:161
+#: controllers/pages/server_info/server.php:114
+#: controllers/pages/server_info/server.php:163
+#: controllers/pages/server_info/server.php:203
+#: controllers/pages/server_info/server.php:209
+#: controllers/pages/server_info/server.php:236
+#: controllers/pages/server_info/server.php:252
+#: controllers/pages/server_info/server.php:478
+#: controllers/pages/server_info/server.php:497
+#: controllers/pages/server_info/server.php:516
+#: controllers/pages/server_info/server.php:530
+#: controllers/pages/server_info/server.php:582
+#@ it-l10n-backupbuddy
+msgid "WARNING"
+msgstr "VARNING"
+
+#: controllers/pages/server_info/permissions.php:13
+#: controllers/pages/server_info/permissions.php:26
+#: controllers/pages/server_info/permissions.php:39
+#: controllers/pages/server_info/permissions.php:52
+#: controllers/pages/server_info/permissions.php:65
+#: controllers/pages/server_info/permissions.php:78
+#: controllers/pages/server_info/permissions.php:91
+#: controllers/pages/server_info/permissions.php:104
+#: controllers/pages/server_info/permissions.php:117
+#: controllers/pages/server_info/permissions.php:155
+#: controllers/pages/server_info/server.php:74
+#: controllers/pages/server_info/server.php:89
+#: controllers/pages/server_info/server.php:111
+#: controllers/pages/server_info/server.php:119
+#: controllers/pages/server_info/server.php:150
+#: controllers/pages/server_info/server.php:165
+#: controllers/pages/server_info/server.php:179
+#: controllers/pages/server_info/server.php:205
+#: controllers/pages/server_info/server.php:234
+#: controllers/pages/server_info/server.php:250
+#: controllers/pages/server_info/server.php:270
+#: controllers/pages/server_info/server.php:287
+#: controllers/pages/server_info/server.php:299
+#: controllers/pages/server_info/server.php:311
+#: controllers/pages/server_info/server.php:358
+#: controllers/pages/server_info/server.php:369
+#: controllers/pages/server_info/server.php:405
+#: controllers/pages/server_info/server.php:435
+#: controllers/pages/server_info/server.php:461
+#: controllers/pages/server_info/server.php:480
+#: controllers/pages/server_info/server.php:499
+#: controllers/pages/server_info/server.php:518
+#: controllers/pages/server_info/server.php:532
+#: controllers/pages/server_info/server.php:576
+#@ it-l10n-backupbuddy
+msgid "OK"
+msgstr "Okej"
+
+#: controllers/pages/server_info/permissions.php:127
+#: controllers/pages/server_info/permissions.php:138
+#@ it-l10n-backupbuddy
+msgid "Relative Path"
+msgstr "Relativ sökväg"
+
+#: controllers/pages/server_info/permissions.php:128
+#: controllers/pages/server_info/permissions.php:139
+#: controllers/pages/server_info/server.php:547
+#: controllers/pages/server_info/server.php:559
+#@ it-l10n-backupbuddy
+msgid "Suggestion"
+msgstr "Förslag"
+
+#: controllers/pages/server_info/permissions.php:129
+#: controllers/pages/server_info/permissions.php:140
+#: controllers/pages/server_info/server.php:548
+#: controllers/pages/server_info/server.php:560
+#: controllers/pages/server_info.php:88
+#@ it-l10n-backupbuddy
+msgid "Value"
+msgstr "Värde"
+
+#: controllers/pages/server_info/permissions.php:158
+#: controllers/pages/server_info/server.php:72
+#: controllers/pages/server_info/server.php:87
+#: controllers/pages/server_info/server.php:148
+#: controllers/pages/server_info/server.php:441
+#: controllers/pages/server_info/server.php:459
+#: controllers/pages/server_info/server.php:579
+#@ it-l10n-backupbuddy
+msgid "FAIL"
+msgstr "MISSLYCKAS"
+
+#: controllers/pages/server_info/remote_sends.php:78
+#@ it-l10n-backupbuddy
+msgid "Destination"
+msgstr "Destination"
+
+#: controllers/pages/server_info/remote_sends.php:79
+#: views/_backup-home.php:402
+#@ it-l10n-backupbuddy
+msgid "Trigger"
+msgstr "Utlösare"
+
+#: controllers/pages/server_info/remote_sends.php:80
+#@ it-l10n-backupbuddy
+msgid "Transfer Time"
+msgstr "Överföringstiden"
+
+#: controllers/pages/server_info/server.php:69
+#@ it-l10n-backupbuddy
+msgid "Version of WordPress currently running. It is important to keep your WordPress up to date for security & features."
+msgstr "Version av WordPress som för närvarande körs. Det är viktigt att du håller ditt WordPress  uppdaterat för säkerhet och funktioner."
+
+#: controllers/pages/server_info/server.php:84
+#@ it-l10n-backupbuddy
+msgid "Version of your database server (mysql) as reported to this script by WordPress."
+msgstr "Version av databasservern (mysql) som rapporterades till skriptet av WordPress."
+
+#: controllers/pages/server_info/server.php:98
+#@ it-l10n-backupbuddy
+msgid "If detected then you may have difficulty migrating your site to some hosts without first removing the AddHandler line. Some hosts will malfunction with this line in the .htaccess file."
+msgstr "Du kan ha svårigheter att migrera din webbplats till vissa värdar utan första att ta bort raden AddHandler. Vissa värdar kommer fungera dåligt med denna rad i .htaccess-filen."
+
+#: controllers/pages/server_info/server.php:105
+#@ it-l10n-backupbuddy
+msgid "AddHandler Value"
+msgstr "AddHandler Värde"
+
+#: controllers/pages/server_info/server.php:112
+#@ it-l10n-backupbuddy
+msgid "none, n/a"
+msgstr "Ingen, saknas"
+
+#: controllers/pages/server_info/server.php:115
+#@ it-l10n-backupbuddy
+msgid "exists"
+msgstr "finns"
+
+#: controllers/pages/server_info/server.php:120
+#@ it-l10n-backupbuddy
+msgid "n/a"
+msgstr "saknas"
+
+#: controllers/pages/server_info/server.php:145
+#@ it-l10n-backupbuddy
+msgid "Version of PHP currently running on this site."
+msgstr "Version av PHP körs på den här webbplatsen."
+
+#: controllers/pages/server_info/server.php:160
+#@ it-l10n-backupbuddy
+msgid "Maximum amount of time that PHP allows scripts to run. After this limit is reached the script is killed. The more time available the better. 30 seconds is most common though 60 seconds is ideal."
+msgstr "Maximal tid som PHP tillåtera att skript körs. När denna gräns nås avslutas skriptet. Ju mer tillgänglig tid desto bättre. 30 sekunder är vanligast men 60 sekunder är idealt."
+
+#: controllers/pages/server_info/server.php:195
+#@ it-l10n-backupbuddy
+msgid "The amount of memory this site is allowed to consume."
+msgstr "Mängden minne denna webbplats tillåts använda."
+
+#: controllers/pages/server_info/server.php:231
+#@ it-l10n-backupbuddy
+msgid "Methods your server supports for creating ZIP files. These were tested & verified to operate. Command line is magnitudes better than other methods and operate via exec() or other execution functions. ZipArchive is a PHP extension. PHP-based ZIP compression/extraction is performed via a PHP script called pclzip but it is very slow and memory intensive and should only be used as a last effort."
+msgstr "Metoder som servern stöder för att skapa ZIP-filer. Dessa är testade & kontrolleras för att fungera. Kommandoraden är överlägset bättre än andra metoder och körs via metoderna exec() eller andra exekeveringsfunktioner. ZipArchive är ett PHP extension. PHP baserad ZIP komprimering/dekomprimering utförs via ett PHP skript kallat pclzip men är mycket långsamt och minnesintensivt och bör endast användas som en sista utväg."
+
+#: controllers/pages/server_info/server.php:247
+#@ it-l10n-backupbuddy
+msgid "Methods your server supports for dumping (backing up) your mysql database. These were tested values unless compatibility / troubleshooting settings override."
+msgstr "Metoder som servern stöder för dumpning (Säkerhetskopiering) av din mysql databas. Dessa är testade värden om inte kompatibilitet / felsöknings -inställningar säger annat ."
+
+#: controllers/pages/server_info/server.php:176
+#: controllers/pages/server_info/server.php:223
+#: controllers/pages/server_info/server.php:267
+#: controllers/pages/server_info/server.php:284
+#: controllers/pages/server_info/server.php:296
+#: controllers/pages/server_info/server.php:308
+#@ it-l10n-backupbuddy
+msgid "Refresh"
+msgstr "Uppdatera"
+
+#: controllers/pages/server_info/server.php:268
+#@ it-l10n-backupbuddy
+msgid "Total size of your site (starting in your WordPress main directory) INCLUDING any excluded directories / files."
+msgstr "Total storlek på webbplatsen (med start i WordPress huvudkatalog) inklusive undantagna kataloger / filer."
+
+#: controllers/pages/server_info/server.php:285
+#@ it-l10n-backupbuddy
+msgid "Total size of your site (starting in your WordPress main directory) EXCLUDING any directories / files you have marked for exclusion."
+msgstr "Total storlek på webbplatsen (med start i WordPress huvudkatalog) exklusive alla kataloger / filer du har markerat för uteslutning."
+
+#: controllers/pages/server_info/server.php:297
+#@ it-l10n-backupbuddy
+msgid "Total size of your database INCLUDING any excluded tables."
+msgstr "Totala storleken på din databas inklusive ekluderade tabeller."
+
+#: controllers/pages/server_info/server.php:309
+#@ it-l10n-backupbuddy
+msgid "Total size of your database EXCLUDING any tables you have marked for exclusion."
+msgstr "Totala storleken på din databas exklusive tabeller du har markerat för exkludering."
+
+#: controllers/pages/server_info/server.php:356
+#@ it-l10n-backupbuddy
+msgid "Average ZIP file creation write speed. Backup file sizes divided by the time taken to create each. Samples: ``."
+msgstr "Genomsnittlig tid för skapande av a ZIP fil. Filstorlekar för säkerhetskopia dividerad med tid det tar att skapa varje. Exempel: ``."
+
+#: controllers/pages/server_info/server.php:367
+#@ it-l10n-backupbuddy
+msgid "Calculated estimate of the largest .ZIP backup file that may be created. As ZIP files are compressed the site size that may be backed up should be larger than this."
+msgstr "Uppskattad storlek av de största .ZIP filerna hos säkerhetskopian som kan skapas. Då ZIP-filer är komprimerade bör webbplatsens storlek som kan säkerhetskopieras vara större än detta."
+
+#: controllers/pages/server_info/server.php:432
+#@ it-l10n-backupbuddy
+msgid "Some hosts block certain PHP functions for various reasons. Sometimes hosts block functions that are required for proper functioning of WordPress or plugins."
+msgstr "Vissa värdar blockerar vissa PHP funktioner av olika skäl. Ibland blockera värdar funktioner som krävs för korrekt funktionalitet av WordPress eller dess plugins."
+
+#: controllers/pages/server_info/server.php:456
+#@ it-l10n-backupbuddy
+msgid "Automatically registers user input as variables. HIGHLY discouraged. Removed from PHP in PHP 6 for security."
+msgstr "Automatiskt registrerar indata från användaren som variabler. MYCKET motverkas. Bort från PHP PHP 6 för säkerhet."
+
+#: controllers/pages/server_info/server.php:475
+#: controllers/pages/server_info/server.php:494
+#@ it-l10n-backupbuddy
+msgid "Automatically escapes user inputted data. Not needed when using properly coded software."
+msgstr "filtrera automatiskt inskriven användardata. Behövs inte med korrekt skrivna program."
+
+#: controllers/pages/server_info/server.php:513
+#@ it-l10n-backupbuddy
+msgid "This mode is HIGHLY discouraged and is a sign of a poorly configured host."
+msgstr "Detta läge bör undvikas och är ett tecken på en dåligt konfigurerade server."
+
+#: controllers/pages/server_info/server.php:527
+#@ it-l10n-backupbuddy
+msgid "The server operating system running this site. Linux based systems are encouraged. Windows users may need to perform additional steps to get plugins to perform properly."
+msgstr "Operativsystem som körs på denna webbplats. Linux baserade system uppmuntras. Windows-användare kan behöva vidta ytterligare åtgärder för att få plugins att fungera korrekt."
+
+#: controllers/pages/server_info/server.php:546
+#: controllers/pages/server_info/server.php:558
+#@ it-l10n-backupbuddy
+msgid "Parameter"
+msgstr "Parametern"
+
+#: controllers/pages/server_info/server.php:597
+#@ it-l10n-backupbuddy
+msgid "Response"
+msgstr "Svar"
+
+#: controllers/pages/server_info/server.php:616
+#: controllers/pages/server_info/server.php:619
+#@ it-l10n-backupbuddy
+msgid "Display Extended PHP Settings via phpinfo()"
+msgstr "Visa utökade PHP inställningar via phpinfo()"
+
+#: controllers/pages/server_info/site_size.php:23
+#@ it-l10n-backupbuddy
+msgid "Directory Size Map"
+msgstr "Storlekskarta för katalogen "
+
+#: controllers/pages/server_info/site_size.php:24
+#@ it-l10n-backupbuddy
+msgid ""
+"This option displays an interactive graphical representation of directories and the corresponding size of all contents within, including subdirectories.\n"
+"This is useful for finding where space is being used. Directory boxes are scaled based on size. Click on a directory box to move around. Note that this\n"
+"is a CPU intensive process and may take a while to load and even time out on some servers. Slower computers may have trouble navigating the interactive map."
+msgstr ""
+"Det här alternativet visar en interaktiv grafisk presentation av kataloger och motsvarande storleken på allt innehåll, inklusive underkataloger.\n"
+"Detta är användbart för att hitta var utrymmet används. Katalogrutor skalas baserat på storlek. Klicka på en katalog om du vill titta runt. Observera att detta är en CPU intensiv process och kan ta en stund att ladda och även sluta fungera pga tid på vissa servrar. Långsammare datorer kan ha problem med att navigera i den interaktiva kartan."
+
+#: controllers/pages/server_info/site_size.php:28
+#@ it-l10n-backupbuddy
+msgid "Display Directory Size Map"
+msgstr "Visa katalogens storlekskarta"
+
+#: controllers/pages/server_info/site_size.php:39
+#@ it-l10n-backupbuddy
+msgid "Loading ... Please wait ..."
+msgstr "Laddar... vänta ..."
+
+#: controllers/pages/server_info/site_size.php:44
+#@ it-l10n-backupbuddy
+msgid "Orientation"
+msgstr "Orientering"
+
+#: controllers/pages/server_info/site_size.php:46
+#@ it-l10n-backupbuddy
+msgid "horizontal"
+msgstr "horisontell"
+
+#: controllers/pages/server_info/site_size.php:47
+#@ it-l10n-backupbuddy
+msgid "vertical"
+msgstr "vertikal"
+
+#: controllers/pages/server_info/site_size.php:50
+#@ it-l10n-backupbuddy
+msgid "Max levels"
+msgstr "Max nivåer"
+
+#: controllers/pages/server_info/site_size.php:60
+#@ it-l10n-backupbuddy
+msgid "Go Up"
+msgstr "Gå upp"
+
+#: controllers/pages/server_info/site_size.php:83
+#@ it-l10n-backupbuddy
+msgid "Directory Size Listing"
+msgstr "Storlek kataloglista"
+
+#: controllers/pages/server_info/site_size.php:87
+#@ it-l10n-backupbuddy
+msgid "This option displays a comprehensive listing of directories and the corresponding size of all contents within, including subdirectories.  This is useful for finding where space is being used. Note that this is a CPU intensive process and may take a while to load and even time out on some servers."
+msgstr "Det här alternativet visar en omfattande lista över kataloger och motsvarande storlek på allt innehåll, inklusive underkataloger.  Detta är användbart för att hitta var utrymmet används. Observera att detta är en CPU intensiva process och kan ta en stund att ladda och även sluta fungera pga tid på vissa servrar."
+
+#: controllers/pages/server_info/site_size.php:88
+#@ it-l10n-backupbuddy
+msgid "Display Directory Size Listing"
+msgstr "Visa storlek kataloglista"
+
+#: controllers/pages/server_info/site_size.php:107
+#: controllers/pages/server_info/site_size.php:116
+#@ it-l10n-backupbuddy
+msgid "Size with Children"
+msgstr "Storlek med underkataloger"
+
+#: controllers/pages/server_info.php:7
+#: init_admin.php:108
+#: init_admin.php:140
+#@ it-l10n-backupbuddy
+msgid "Server Information"
+msgstr "Serverinformation"
+
+#: controllers/pages/server_info.php:7
+#@ it-l10n-backupbuddy
+msgid "Server information"
+msgstr "Serverinformation"
+
+#: controllers/pages/server_info.php:12
+#@ it-l10n-backupbuddy
+msgid "Server Configuration"
+msgstr "Serverkonfiguration"
+
+#: controllers/pages/server_info.php:24
+#@ it-l10n-backupbuddy
+msgid "File Permissions"
+msgstr "Filbehörigheter"
+
+#: controllers/pages/server_info.php:30
+#@ it-l10n-backupbuddy
+msgid "Site Size Map"
+msgstr "Översikt storlek webbplat"
+
+#: controllers/pages/server_info.php:36
+#@ it-l10n-backupbuddy
+msgid "Database/table Size"
+msgstr "Storlek databastabell"
+
+#: controllers/pages/server_info.php:42
+#@ it-l10n-backupbuddy
+msgid "WordPress Scheduled Actions (CRON)"
+msgstr "WordPress planerade åtgärder (CRON)"
+
+#: controllers/pages/server_info.php:49
+#@ it-l10n-backupbuddy
+msgid "URLs & Paths"
+msgstr "URL: er och sökvägar"
+
+#: controllers/pages/server_info.php:87
+#@ it-l10n-backupbuddy
+msgid "Setting"
+msgstr "Inställning"
+
+#: controllers/pages/server_info.php:89
+#@ it-l10n-backupbuddy
+msgid "Obtained via"
+msgstr "Erhålls via"
+
+#: controllers/pages/server_info.php:100
+#: controllers/pages/server_tools.php:11
+#@ it-l10n-backupbuddy
+msgid "Database Mass Text Replacement"
+msgstr "Mass Text ersättare databasen "
+
+#: controllers/pages/server_tools.php:6
+#@ it-l10n-backupbuddy
+msgid "Server Tools"
+msgstr "Serververktyg"
+
+#: controllers/pages/settings.php:42
+#@ it-l10n-backupbuddy
+msgid "You cannot exclude /wp-content/, /wp-content/uploads/, or BackupBuddy directories.  However, you may exclude subdirectories within these. BackupBuddy directories such as backupbuddy_backups are automatically excluded and cannot be added to exclusion list."
+msgstr "Du kan inte utelämna /wp-content /, /wp-content/uploads/ eller BackupBuddy kataloger.  Du kan dock undanta underkataloger inom dessa. BackupBuddy kataloger som backupbuddy_backups utesluts automatiskt och kan inte läggas till i undantagslistan."
+
+#: controllers/pages/settings.php:180
+#@ it-l10n-backupbuddy
+msgid "General Options"
+msgstr "Allmänna alternativ"
+
+#: controllers/pages/settings.php:180
+#@ it-l10n-backupbuddy
+msgid "General Options Tutorial"
+msgstr "Självstudier för allmänna alternativ"
+
+#: controllers/pages/settings.php:185
+#@ it-l10n-backupbuddy
+msgid "ImportBuddy password"
+msgstr "ImportBuddy lösenord"
+
+#: controllers/pages/settings.php:186
+#@ it-l10n-backupbuddy
+msgid "[Example: myp@ssw0rD] - Required password for running the ImportBuddy import/migration script. This prevents unauthorized access when using this tool. You should not use your WordPress password here."
+msgstr "[Exempel: myp@ssw0rD] - Obligatoriskt lösenord för att köra ImportBuddy import/migration skriptet. Detta förhindrar obehörig åtkomst när du använder verktyget. Du bör inte använda WordPress lösenord här."
+
+#: controllers/pages/settings.php:194
+#@ it-l10n-backupbuddy
+msgid "RepairBuddy password"
+msgstr "RepairBuddy lösenord"
+
+#: controllers/pages/settings.php:195
+#@ it-l10n-backupbuddy
+msgid "[Example: myp@ssw0rD] - Required password for running the RepairBuddy troubleshooting/repair script. This prevents unauthorized access when using this tool. You should not use your WordPress password here."
+msgstr "[Exempel: myp@ssw0rD] - Obligatoriskt lösenord för att köra RepairBuddy felsökning/reparation skriptet. Detta förhindrar obehörig åtkomst när du använder verktyget. Du bör inte använda WordPress lösenord här."
+
+#: controllers/pages/settings.php:216
+#@ it-l10n-backupbuddy
+msgid "Logging / Debug level"
+msgstr "Loggning / Debug nivå"
+
+#: controllers/pages/settings.php:218
+#@ it-l10n-backupbuddy
+msgid "None"
+msgstr "Ingen"
+
+#: controllers/pages/settings.php:219
+#@ it-l10n-backupbuddy
+msgid "Errors Only"
+msgstr "Fel bara"
+
+#: controllers/pages/settings.php:220
+#@ it-l10n-backupbuddy
+msgid "Errors & Warnings"
+msgstr "Fel och varningar"
+
+#: controllers/pages/settings.php:221
+#@ it-l10n-backupbuddy
+msgid "Everything (debug mode)"
+msgstr "Allt (debug läge)"
+
+#: controllers/pages/settings.php:223
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "[Default: Errors Only] - This option controls how much activity is logged for records or debugging. When in debug mode error emails will contain encrypted debugging data for support. Log file: %s"
+msgstr "[Standard: fel bara] - Alternativet styr hur mycket aktivitet som loggas för poster eller felsökning. När i debug-läge kommer e-post med fel innehålla krypterade felsökningadata för support. Loggfil: %s"
+
+#: controllers/pages/settings.php:231
+#@ it-l10n-backupbuddy
+msgid "Enable backup reminders"
+msgstr "Aktivera påminnelser för säkerhetskopiering"
+
+#: controllers/pages/settings.php:232
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - When enabled links will be displayed upon post or page edits and during WordPress upgrades to remind and allow rapid backing up after modifications or before upgrading."
+msgstr "[Standard: aktiverad] - När aktiverad kommer länkar att visas vid post- eller sidredigeringar och under WordPress uppgraderingar för att påminna och möjliggöra snabb säkerhetskopiering  efter ändringar eller innan du uppgraderar."
+
+#: controllers/pages/settings.php:254
+#@ it-l10n-backupbuddy
+msgid "Email Notification Recipients"
+msgstr "Mottagare E-post notifieringar "
+
+#: controllers/pages/settings.php:254
+#@ it-l10n-backupbuddy
+msgid "Email Notifications Tutorial"
+msgstr "Tutorial E-post notifieringarn"
+
+#: controllers/pages/settings.php:260
+#@ it-l10n-backupbuddy
+msgid "Scheduled backup started email recipient(s)"
+msgstr "Mottagare schemalagd säkerhetskopiering startad"
+
+#: controllers/pages/settings.php:261
+#@ it-l10n-backupbuddy
+msgid "Email address to send notifications to upon scheduled backup starting. Use commas to separate multiple email addresses. Notifications will not be sent for remote destination file transfers."
+msgstr "E-postadress att skicka notifieringar till när schemalagd säkerhetskopiering börjar. Använd semikolon för att avgränsa flera e-postadresser. Aviseringar kommer inte skickas för  filöverföringar till fjärr-destinationer."
+
+#: controllers/pages/settings.php:292
+#@ it-l10n-backupbuddy
+msgid "Scheduled backup completed email recipient(s)"
+msgstr "E-postmottagare för färdig Schemalagd säkerhetskopiering"
+
+#: controllers/pages/settings.php:293
+#@ it-l10n-backupbuddy
+msgid "Email address to send notifications to upon scheduled backup completion. Use commas to separate multiple email addresses."
+msgstr "E-postadress att skicka meddelanden till efter schemalagd säkerhetskopiering. Använd semikolon för att avgränsa flera e-postadresser."
+
+#: controllers/pages/settings.php:326
+#@ it-l10n-backupbuddy
+msgid "Error notification recipient(s)"
+msgstr "Mottagare felanmälan"
+
+#: controllers/pages/settings.php:327
+#@ it-l10n-backupbuddy
+msgid "Email address to send notifications to upon encountering any errors or problems. Use commas to separate multiple email addresses."
+msgstr "E-postadress att skicka meddelanden till vid eventuella fel eller problem. Använd semikolon för att avgränsa flera e-postadresser."
+
+#: controllers/pages/settings.php:359
+#@ it-l10n-backupbuddy
+msgid "Local Archive Storage Limits"
+msgstr "Lagringsgränser lokala arkiv"
+
+#: controllers/pages/settings.php:359
+#@ it-l10n-backupbuddy
+msgid "Archive Storage Limits Tutorial"
+msgstr "Lagringsgränser introduktion"
+
+#: controllers/pages/settings.php:364
+#@ it-l10n-backupbuddy
+msgid "Maximum number of local backups to keep"
+msgstr "Maximalt antal lokala säkerhetskopior att behålla"
+
+#: controllers/pages/settings.php:365
+#@ it-l10n-backupbuddy
+msgid "[Example: 10] - Maximum number of local archived backups to store (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit."
+msgstr "[Exempel: 10] - Max antal lokala arkiverade säkerhetskopior att lagra (Gränser för fjärrarkiv konfigureras per mål på sina respektive inställningssidor). Säkerhetskopior som skapas efter denna gräns är nådd kommer att radera din äldsta säkerhetskopior för att ge plats för de nyare. Ändringar sker när ny säkerhetskopia görs. Anges till noll (0) för ingen gräns."
+
+#: controllers/pages/settings.php:373
+#@ it-l10n-backupbuddy
+msgid "Maximum size of all local backups combined"
+msgstr "Maximal storlek för alla lokala säkerhetskopior kombinerade"
+
+#: controllers/pages/settings.php:374
+#@ it-l10n-backupbuddy
+msgid "[Example: 350] - Maximum size (in MB) to allow your total local archives to reach (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit."
+msgstr "[Exempel: 350] - Max storlek (i MB) totalt för din lokala arkiv (Gränser för fjärrarkiv konfigureras per mål på sina respektive inställningssidor). Säkerhetskopior som skapas efter denna gräns är nådd kommer att radera din äldsta säkerhetskopior för att ge plats för de nyare. Ändringar sker när ny säkerhetskopia görs. Anges till noll (0) för ingen gräns."
+
+#: controllers/pages/settings.php:386
+#@ it-l10n-backupbuddy
+msgid "Multisite"
+msgstr "MultiSite"
+
+#: controllers/pages/settings.php:391
+#@ it-l10n-backupbuddy
+msgid "Allow individual site exports by administrators?"
+msgstr "Tillåt export av enskilda webbplatser av administratörer?"
+
+#: controllers/pages/settings.php:393
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - When enabled individual sites may be exported by Administrators of the individual site. Network Administrators always see this menu (notes with the words SuperAdmin in parentheses in the menu when only SuperAdmins have access to the feature)."
+msgstr "[Standard: inaktiverad] - Aktiverad kan enskilda webbplatser exporteras av administratörer för siten. Nätverksadministratörer ser alltid menyn (noteras med orden SuperAdmin inom parentes i menyn när endast SuperAdmins har tillgång till funktionen)."
+
+#: controllers/pages/settings.php:395
+#@ it-l10n-backupbuddy
+msgid "Check to extend Site Exporting functionality to subsite Administrators."
+msgstr "Markera för att utvidga webbplatsexport till administratörer för underwebbplatser."
+
+#: controllers/pages/settings.php:404
+#@ it-l10n-backupbuddy
+msgid "Database backup settings"
+msgstr "Inställningar säkerhetskopiering databas"
+
+#: controllers/pages/settings.php:412
+#@ it-l10n-backupbuddy
+msgid "<b>Default</b> database tables to backup"
+msgstr "<b>Standard</b> databastabeller att säkerhetskopiera"
+
+#: controllers/pages/settings.php:422
+#@ it-l10n-backupbuddy
+msgid "Additional tables to <b>include</b>"
+msgstr "Ytterligare tabeller att <b>inkludera</b>"
+
+#: controllers/pages/settings.php:422
+#: controllers/pages/settings.php:430
+#@ it-l10n-backupbuddy
+msgid "One table per line."
+msgstr "En tabell per rad."
+
+#: controllers/pages/settings.php:423
+#@ it-l10n-backupbuddy
+msgid "Additional databases tables to INCLUDE in the backup in addition to the defaults."
+msgstr "Ytterligare databastabeller att INKLUDERA i säkerhetskopian utöver standardinställningarna."
+
+#: controllers/pages/settings.php:430
+#@ it-l10n-backupbuddy
+msgid "Additional tables to <b>exclude</b>"
+msgstr "Ytterligare tabeller att <b>utesluta</b>"
+
+#: controllers/pages/settings.php:431
+#@ it-l10n-backupbuddy
+msgid "Additional databases tables to EXCLUDE from the backup. Exclusions are exempted after calculating defaults and additional table includes first. These may include non-WordPress and WordPress tables. WARNING: Excluding WordPress tables results in an incomplete backup and could result in failure in the ability to restore or data loss. Use with caution."
+msgstr "Ytterligare databastabeller att UTESLUTA från säkerhetskopian. Undantag undantas efter kontroll av standard och ytterligare tabeller att inkludera först. Dessa kan innehålla icke-WordPress och WordPress tabeller. Varning: Exkludera WordPress tabeller resulterar i en ofullständig säkerhetskopiering och kan  generar fel i förmåga att återställa eller data förlust. Använd med försiktighet."
+
+#: controllers/pages/settings.php:443
+#@ it-l10n-backupbuddy
+msgid "Backup Directory Excluding Tutorial"
+msgstr "Introduktion till exkludera kataloger från säkerhetskopior"
+
+#: controllers/pages/settings.php:450
+#@ it-l10n-backupbuddy
+msgid "Click on a directory name to navigate directories. Click the red minus sign to the right of a directory to place it in the exclusion list. /wp-content/, /wp-content/uploads/, and BackupBuddy backup & temporary directories cannot be excluded. BackupBuddy directories are automatically excluded."
+msgstr "Klicka på namnet på en katalog för att navigera kataloger. Klicka på det röda minustecknet till höger om en katalog för att placera den i undantagslistan. /wp-content /, /wp-content/uploads/ och BackupBuddy backup & temporära kataloger inte kan uteslutas. BackupBuddy kataloger utesluts automatiskt."
+
+#: controllers/pages/settings.php:457
+#@ it-l10n-backupbuddy
+msgid "List paths relative to the WordPress installation directory to be excluded from backups.  You may use the directory selector to the left to easily exclude directories by ctrl+clicking them.  Paths are relative to root, for example: /wp-content/uploads/junk/"
+msgstr "Ange sökvägar i förhållande till WordPress installationskatalog som skall undantas från säkerhetskopior.  Använd katalogväljaren till vänster för att enkelt Uteslut kataloger genom ctrl + klicka på dem.  Sökvägar är relativa till root, till exempel: / wp-content/uploads/diverse /"
+
+#: controllers/pages/settings.php:466
+#@ it-l10n-backupbuddy
+msgid "Troubleshooting & Compatibility"
+msgstr "Felsökning & kompatibilitet"
+
+#: controllers/pages/settings.php:466
+#@ it-l10n-backupbuddy
+msgid "Troubleshooting options"
+msgstr "Alternativ för felsökning"
+
+#: controllers/pages/settings.php:472
+#@ it-l10n-backupbuddy
+msgid "Lock archive directory (high security)"
+msgstr "Lås dokumentarkiv (hög säkerhet)"
+
+#: controllers/pages/settings.php:473
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - When enabled all downloads of archives via the web will be prevented under all circumstances via .htaccess file. If your server permits it, they will only be unlocked temporarily on click to download. If your server does not support this unlocking then you will have to access the archives via the server (such as by FTP)."
+msgstr "[Standard: inaktiverad] - När aktiverad kommer alla nedladdningar av arkiv via webben att förhindras under alla omständigheter via .htaccess-fil. Om din server tillåter det, kommer de bara vara upplåsta tillfälligt vid klick för att hämta. Om din server inte stöder denna upplåsning kommer du behöva tillgång till arkiv via servern (t.ex. genom FTP)."
+
+#: controllers/pages/settings.php:475
+#@ it-l10n-backupbuddy
+msgid "Check for enhanced security to block backup downloading."
+msgstr "Markera för ökad säkerhet för att blockera nedladdning av säkerhetskopior."
+
+#: controllers/pages/settings.php:482
+#@ it-l10n-backupbuddy
+msgid "Delete all backup archives prior to backups"
+msgstr "Ta bort alla säkerhetskopior före säkerhetskopiering"
+
+#: controllers/pages/settings.php:483
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - When enabled all local backup archives will be deleted prior to each backup. This is useful if in compatibilty mode to prevent backing up existing files."
+msgstr "[Standard: inaktiverad] - När aktiverad kommer alla lokala säkerhetskopior raderas före varje säkerhetskopiering. Detta är användbart i kompatibilitetsläge compatibilty läge för att förhindra att befintliga filer säkerhetskopieras."
+
+#: controllers/pages/settings.php:485
+#@ it-l10n-backupbuddy
+msgid "Check if using compatibilty mode & exclusions are unavailable."
+msgstr "Kontrollera om använder kompatibilitetsläge & undantag är inte tillgänglig."
+
+#: controllers/pages/settings.php:492
+#@ it-l10n-backupbuddy
+msgid "Enable zip compression"
+msgstr "Aktivera zip-komprimering"
+
+#: controllers/pages/settings.php:493
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - ZIP compression decreases file sizes of stored backups. If you are encountering timeouts due to the script running too long, disabling compression may allow the process to complete faster."
+msgstr "[Standard: aktiverad]-ZIP-komprimering minskar filstorlekar hos lagrade säkerhetskopior. Om du får timeout på grund av att skriptet körs för länge, kan inaktivering av komprimering få processen att slutföras snabbare."
+
+#: controllers/pages/settings.php:495
+#@ it-l10n-backupbuddy
+msgid "Uncheck for large sites causing backups to not complete."
+msgstr "Avmarkera för stora webbplatser som orsakar att säkerhetskopiering inte slutföra."
+
+#: controllers/pages/settings.php:502
+#@ it-l10n-backupbuddy
+msgid "Perform integrity check on backup files"
+msgstr "Utför integritetskontroll på säkerhetskopior"
+
+#: controllers/pages/settings.php:503
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - By default each backup file is checked for integrity and completion the first time it is viewed on the Backup page.  On some server configurations this may cause memory problems as the integrity checking process is intensive.  If you are experiencing out of memory errors on the Backup file listing, you can uncheck this to disable this feature."
+msgstr "[Standard: aktiverad] - Varje säkerhetkopie-fil kontrolleras för integritet och färdigställande första gången den visas på sidan för säkerhetskopiering.  Detta kan orsaka minnesproblem på vissa serverkonfigurationer då integritetskontrollen är intensiv .  Om du upplever minnesfel på listan över säkerhetskopiefiler kan du avmarkera om du vill inaktivera den här funktionen."
+
+#: controllers/pages/settings.php:505
+#@ it-l10n-backupbuddy
+msgid "Uncheck if having problems viewing your backup listing."
+msgstr "Avmarkera kryssrutan om har problem med att visa säkerhetskopielistning."
+
+#: controllers/pages/settings.php:512
+#@ it-l10n-backupbuddy
+msgid "Force compatibility mode zip"
+msgstr "Tvinga kompatibilitetsläge-zip"
+
+#: controllers/pages/settings.php:513
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - (WARNING: This forces the potentially slower mode of zip creation. Only use if absolutely necessary. Checking this box can cause backup failures if it is not needed.) Under normal circumstances compatibility mode is automatically entered as needed without user intervention. However under some server configurations the native backup system is unavailable but is incorrectly reported as functioning by the server.  Forcing compatibility may fix problems in this situation by bypassing the native backup system check entirely."
+msgstr "[Standard: inaktiverad]-(VARNING: detta tvingar det potentiellt långsammare lägetet för skapade av zip . Använd bara om det är absolut nödvändigt. Aktivering kan orsaka fel  vid säkerhetskopiering om det inte behövs.) Under normala omständigheter aktiveras automatiskt kompatibilitetsläge om det behövs utan att användaren tillfrågas. För serverkonfigurationer är det inbyggda säkerhetskopiesystemet inte tillgängligt men rapporteras felaktigt som i funktion av servern.  Tvinga kompatibilitet kan korrigera problem i denna situation genom att kringgå den inbyggda  kontrollen av säkerhetskopieringen helt."
+
+#: controllers/pages/settings.php:515
+#@ it-l10n-backupbuddy
+msgid "Check if absolutely necessary or directed by support."
+msgstr "Aktivera om absolut nödvändiga eller angivet av support."
+
+#: controllers/pages/settings.php:522
+#@ it-l10n-backupbuddy
+msgid "Force compatibility mode database dump"
+msgstr "Tvinga kompatibilitetsläge dumpa databas"
+
+#: controllers/pages/settings.php:523
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - WARNING: This forces the potentially slower mode of database dumping. Under normal circumstances mysql dump compatibility mode is automatically entered as needed without user intervention."
+msgstr "[Standard: inaktiverad] - VARNING: Detta tvingar det potentiellt långsammare läget databas dumpning. Under normala omständigheter används kompatibilitetsläge mysql dump automatiskt vid behov utan att användaren tillfrågas."
+
+#: controllers/pages/settings.php:525
+#@ it-l10n-backupbuddy
+msgid "Check if database dumping fails. Pre-v3.x mode."
+msgstr "Kontrollera om databas dumpning misslyckas. Pre-v3.x läge."
+
+#: controllers/pages/settings.php:532
+#@ it-l10n-backupbuddy
+msgid "Skip database dump on backup"
+msgstr "Hoppa över dumpa databas vid säkerhetskopiering"
+
+#: controllers/pages/settings.php:533
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled] - (WARNING: This prevents BackupBuddy from backing up the database during any kind of backup. This is for troubleshooting / advanced usage only to work around being unable to backup the database."
+msgstr "[Standard: inaktiverad]-(VARNING: Detta hindrar BackupBuddy från att säkerhetskopiera databasen under någon som helst typ av säkerhetskopiering. Detta är för felsökning / avancerad användning endast för att komma runt att det inte går att säkerhetskopiera databasen."
+
+#: controllers/pages/settings.php:535
+#@ it-l10n-backupbuddy
+msgid "Check if unable to backup database for some reason."
+msgstr "Markera om det gick inte går att säkerhetskopiera databas av någon anledning."
+
+#: controllers/pages/settings.php:542
+#@ it-l10n-backupbuddy
+msgid "Alternative zip system (BETA)"
+msgstr "Alternativa zip system (BETA)"
+
+#: controllers/pages/settings.php:543
+#@ it-l10n-backupbuddy
+msgid "[Default: Disabled] Use if directed by support. Allows use of directory exclusion when in PCLZip Compatibility Mode."
+msgstr "[Standard: inaktiverad] Använd på uppmaning av support. Tillåter exkludering av kataloger när i PCLZip kompatibilitetsläge."
+
+#: controllers/pages/settings.php:552
+#@ it-l10n-backupbuddy
+msgid "Disable zip method caching"
+msgstr "Inaktivera zip metod cachelagring"
+
+#: controllers/pages/settings.php:553
+#@ it-l10n-backupbuddy
+msgid "[Default: Disabled] Use if directed by support. Bypasses caching available zip methods so they are always displayed in logs. When unchecked BackupBuddy will cache command line zip testing for a few minutes so it does not run too often. This means that your backup status log may not always show the test results unless you disable caching."
+msgstr "[Standard: inaktiverad] Använd om rekommenderat av support. Inaktiverar cachelagring av tillgängliga zip metoder så att de alltid visas i loggar. Inaktiverad kommer BackupBuddy cachelagra kommandorad zip test i några minuter så det inte körs för ofta. Detta innebär att status säkerhetskopieringslog inte alltid visar testresultaten såvida inte du inaktivera cachelagring."
+
+#: controllers/pages/settings.php:572
+#@ it-l10n-backupbuddy
+msgid "Allow viewing zip contents (BETA)"
+msgstr "Tillåt visa zip innehållet (BETA)"
+
+#: controllers/pages/settings.php:573
+#@ it-l10n-backupbuddy
+msgid "[Default: Disabled] This feature is currently in beta. If your server supports ZipArchive, when enabled you may select to `View zip contents` from the backup listing on the Backups page. This allows you to view a listing of files within a ZIP archive."
+msgstr "[Standard: inaktiverad] Denna funktion är för närvarande i beta. Om din server stöder ZipArchive, när aktiverad kan du kan välja att ``Visa zip innehåll` från listan över säkerhetskopior  på sidan säkerhetskopior. På så sätt kan du visa en lista med filer i ett ZIP-arkiv."
+
+#: controllers/pages/settings.php:575
+#@ it-l10n-backupbuddy
+msgid "Check for Beta feature for viewing a list of files in an archive."
+msgstr "Aktivera Beta-funktionen för att visa en lista över filer i ett arkiv."
+
+#: controllers/pages/settings.php:591
+#@ it-l10n-backupbuddy
+msgid "Manual backup mode"
+msgstr "Manuellt säkerhetskopieläge"
+
+#: controllers/pages/settings.php:593
+#@ it-l10n-backupbuddy
+msgid "Classic (v1.x)"
+msgstr "Klassiskt (v1.x)"
+
+#: controllers/pages/settings.php:594
+#@ it-l10n-backupbuddy
+msgid "Modern (v2.x)"
+msgstr "Modern (v2.x)"
+
+#: controllers/pages/settings.php:596
+#@ it-l10n-backupbuddy
+msgid "[Default: Modern] - If you are encountering difficulty backing up due to WordPress cron, HTTP Loopbacks, or other features specific to version 2.x you can try classic mode which runs like BackupBuddy v1.x did."
+msgstr "[Standard: Moderna] - Om du stöter på svårigheter att säkerhetskopiera pga. WordPress cron, HTTP Loopbacks, eller andra funktioner som är specifika för version 2.x, kan du prova klassiskt läge som körs som BackupBuddy v1.x gjorde."
+
+#: classes/core.php:1731
+#: classes/core.php:1732
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Unable to create backup storage directory (%s)"
+msgstr "Det gick inte att skapa katalog i säkerhetskopielagringen  (% s)"
+
+#: classes/core.php:1746
+#: classes/core.php:1747
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Unable to create temporary storage directory (%s)"
+msgstr "Det gick inte att skapa katalog för tillfällig lagring (% s)"
+
+#: init_admin.php:104
+#: init_admin.php:137
+#: views/_backup-home.php:399
+#: views/getting_started.php:25
+#@ it-l10n-backupbuddy
+msgid "Backup"
+msgstr "Säkerhetskopiering"
+
+#: init_admin.php:105
+#: init_admin.php:138
+#@ it-l10n-backupbuddy
+msgid "Migrate, Restore"
+msgstr "Migrera, Återställa"
+
+#: init_admin.php:111
+#: init_admin.php:143
+#: views/scheduling.php:46
+#@ it-l10n-backupbuddy
+msgid "Scheduling"
+msgstr "Schemaläggning"
+
+#: controllers/pages/server_info/database.php:29
+#: controllers/pages/server_info/database.php:42
+#: init_admin.php:112
+#: init_admin.php:144
+#@ it-l10n-backupbuddy
+msgid "Settings"
+msgstr "Inställningar"
+
+#: lib/mysqlbuddy/mysqlbuddy.php:390
+#: lib/wpdbutils/wpdbutils.php:113
+#@ it-l10n-backupbuddy
+msgid "Database Server reconnection failed."
+msgstr "Det gick inte att återansluta databasserver ."
+
+#: lib/mysqlbuddy/mysqlbuddy.php:392
+#: lib/wpdbutils/wpdbutils.php:121
+#@ it-l10n-backupbuddy
+msgid "Database Server reconnection successful."
+msgstr "Databasserver återansluten."
+
+#: lib/mysqlbuddy/mysqlbuddy.php:529
+#@ default
+msgid "ERROR #9026: The mySQL server went away unexpectedly during database dump. This is almost always caused by mySQL running out of memory. The backup integrity can no longer be guaranteed so the backup has been halted."
+msgstr "mySQL servern gick väntat inte att nå under dump av databs. Det veror nästan alltid på att mySQL har slut på minne. Integriteten hos säkerhetskopian kna inte garanteras så säkerhetskopieringen har avbrutits."
+
+#: lib/mysqlbuddy/mysqlbuddy.php:529
+#@ default
+msgid "Last table dumped before database server went away: "
+msgstr "Sista dumpad tabell innan kontakten med datasservern avbröts: "
+
+#: lib/mysqlbuddy/mysqlbuddy.php:545
+#@ it-l10n-backupbuddy
+msgid "Finished PHP based SQL dump method."
+msgstr "Slutförd PHP baserad SQL dump metod."
+
+#: lib/wpdbutils/wpdbutils.php:99
+#@ it-l10n-backupbuddy
+msgid "Database Server has gone away, attempting to reconnect."
+msgstr "Databasservern går inte att kontakta, försöker återansluta."
+
+#: lib/wpdbutils/wpdbutils.php:129
+#@ it-l10n-backupbuddy
+msgid "Database Server connection status verified."
+msgstr "Databasserverns anslutningsstatus kontrolleras."
+
+#: lib/zipbuddy/x-zipbuddy.php:318
+#: lib/zipbuddy/zipbuddy.php:100
+#@ it-l10n-backupbuddy
+msgid "File not found (ziparchive)"
+msgstr "Filen kunde inte hittas (ziparchive)"
+
+#: lib/zipbuddy/x-zipbuddy.php:322
+#: lib/zipbuddy/zipbuddy.php:103
+#@ it-l10n-backupbuddy
+msgid "File found (ziparchive)"
+msgstr "Filen funnen (ziparchive)"
+
+#: lib/zipbuddy/x-zipbuddy.php:330
+#: lib/zipbuddy/zipbuddy.php:108
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ZipArchive failed to open file to check if file exists (looking for %1$s in %2$s)."
+msgstr "ZipArchive kunde inte att öppna filen för att kontrollera om filen finns (letar efter %1$ s %2$ s)."
+
+#: lib/zipbuddy/x-zipbuddy.php:359
+#: lib/zipbuddy/zipbuddy.php:126
+#: lib/zipbuddy/zipbuddy.php:239
+#@ it-l10n-backupbuddy
+msgid "File not found (pclzip)"
+msgstr "Filen kunde inte hittas (pclzip)"
+
+#: lib/zipbuddy/x-zipbuddy.php:366
+#: lib/zipbuddy/zipbuddy.php:130
+#: lib/zipbuddy/zipbuddy.php:243
+#@ it-l10n-backupbuddy
+msgid "Unable to check if file exists: No compatible zip method found."
+msgstr "Det gick inte att kontrollera om filen finns: Ingen kompatibel zip-metod finns."
+
+#: lib/zipbuddy/x-zipbuddy.php:390
+#@ it-l10n-backupbuddy
+msgid "Running alternative ZIP system (BETA) based on settings."
+msgstr "Kör alternativt ZIP system (BETA) baserat på inställningar."
+
+#: lib/zipbuddy/x-zipbuddy.php:408
+#@ it-l10n-backupbuddy
+msgid "Forced Compatibility Mode based on settings."
+msgstr "Tvingat kompatibilitetsläge baserat på inställningar."
+
+#: lib/zipbuddy/x-zipbuddy.php:413
+#: lib/zipbuddy/x-zipbuddy.php:615
+#: lib/zipbuddy/zipbuddy.php:287
+#: lib/zipbuddy/zipbuddy.php:525
+#@ it-l10n-backupbuddy
+msgid "Using all available zip methods in preferred order."
+msgstr "Med hjälp av alla tillgängliga zip metoder i önskad ordning."
+
+#: lib/zipbuddy/x-zipbuddy.php:420
+#@ it-l10n-backupbuddy
+msgid "Failed to create a Zip Archive file - no available methods."
+msgstr "Det gick inte att skapa en Zip-Arkiv fil - inga tillgängliga metoder."
+
+#: lib/zipbuddy/x-zipbuddy.php:427
+#: lib/zipbuddy/zbzipexec.php:595
+#: lib/zipbuddy/zbzipexec.php:890
+#: lib/zipbuddy/zbzippclzip.php:395
+#: lib/zipbuddy/zbzipproc.php:474
+#: lib/zipbuddy/zbzipproc.php:599
+#@ it-l10n-backupbuddy
+msgid "Temporary directory could not be deleted: "
+msgstr "Temporär katalog kunde inte tas bort: "
+
+#: lib/zipbuddy/x-zipbuddy.php:437
+#: lib/zipbuddy/zipbuddy.php:306
+#@ it-l10n-backupbuddy
+msgid "Creating ZIP file"
+msgstr "Skapa ZIP-fil"
+
+#: lib/zipbuddy/x-zipbuddy.php:437
+#: lib/zipbuddy/zipbuddy.php:306
+#@ it-l10n-backupbuddy
+msgid "Adding directory"
+msgstr "Lägger till katalog"
+
+#: lib/zipbuddy/x-zipbuddy.php:437
+#: lib/zipbuddy/zipbuddy.php:306
+#@ it-l10n-backupbuddy
+msgid "Compression"
+msgstr "Komprimering"
+
+#: lib/zipbuddy/x-zipbuddy.php:437
+#: lib/zipbuddy/zipbuddy.php:306
+#@ it-l10n-backupbuddy
+msgid "Excludes"
+msgstr "Omfattar inte"
+
+#: lib/zipbuddy/x-zipbuddy.php:474
+#@ it-l10n-backupbuddy
+msgid "Trying "
+msgstr "Försöker "
+
+#: lib/zipbuddy/x-zipbuddy.php:474
+#@ it-l10n-backupbuddy
+msgid " method for ZIP."
+msgstr " metod för ZIP."
+
+#: lib/zipbuddy/x-zipbuddy.php:491
+#: lib/zipbuddy/x-zipbuddy.php:500
+#: lib/zipbuddy/zbzipziparchive.php:181
+#@ it-l10n-backupbuddy
+msgid "The "
+msgstr "Den "
+
+#: lib/zipbuddy/x-zipbuddy.php:491
+#@ it-l10n-backupbuddy
+msgid " method for ZIP was successful."
+msgstr " metod för ZIP var framgångsrik."
+
+#: lib/zipbuddy/x-zipbuddy.php:500
+#@ it-l10n-backupbuddy
+msgid " method for ZIP was unsuccessful."
+msgstr " metod för ZIP misslyckades."
+
+#: lib/zipbuddy/x-zipbuddy.php:509
+#@ it-l10n-backupbuddy
+msgid "Failed to create a Zip Archive file with any available method."
+msgstr "Det gick inte att skapa en Zip-Arkiv-fil med alla tillgängliga metoder."
+
+#: lib/zipbuddy/x-zipbuddy.php:609
+#: lib/zipbuddy/zipbuddy.php:519
+#@ it-l10n-backupbuddy
+msgid "Forced compatibility mode (ZipArchive; medium speed) based on settings. This is slower and less reliable."
+msgstr "Tvingat kompatibelt läge (ZipArchive, medelhastighet) baserat på inställningar. Detta är långsammare och mindre tillförlitligt."
+
+#: lib/zipbuddy/x-zipbuddy.php:612
+#: lib/zipbuddy/zipbuddy.php:522
+#@ it-l10n-backupbuddy
+msgid "Forced compatibility mode (PCLZip; slow speed) based on settings. This is slower and less reliable."
+msgstr "Tvingat kompatibelt läge (PCLZip; långsam hastighet) baserat på inställningar. Detta är långsammare och mindre tillförlitligt."
+
+#: lib/zipbuddy/x-zipbuddy.php:840
+#: lib/zipbuddy/zipbuddy.php:184
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ZipArchive failed to open file to retrieve comment in file %1$s"
+msgstr "ZipArchive kunde inte öppna filen för att hämta kommentar i filen %1$ s"
+
+#: lib/zipbuddy/x-zipbuddy.php:856
+#: lib/zipbuddy/zipbuddy.php:202
+#@ it-l10n-backupbuddy
+msgid "Unable to get comment: No compatible zip method found."
+msgstr "Det gick inte att hämta kommentar: ingen kompatibel zip-metoden finns."
+
+#: lib/zipbuddy/zbzipexec.php:149
+#@ it-l10n-backupbuddy
+msgid "Exec test FAILED: unzip.exe not found at: "
+msgstr "Exec testet misslyckades: unzip.exe hittades inte på: "
+
+#: lib/zipbuddy/zbzipexec.php:170
+#: lib/zipbuddy/zbzipexec.php:243
+#: lib/zipbuddy/zbzippclzip.php:137
+#: lib/zipbuddy/zipbuddy.php:755
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Error #564634. Unable to delete test file (%s)!"
+msgstr "Fel #564634. Det gick inte att ta bort testfil (% s)!"
+
+#: lib/zipbuddy/zbzipexec.php:174
+#: lib/zipbuddy/zbzipexec.php:247
+#@ it-l10n-backupbuddy
+msgid "Exec test PASSED."
+msgstr "Exec test OK."
+
+#: lib/zipbuddy/zbzipexec.php:182
+#: lib/zipbuddy/zbzipexec.php:258
+#@ it-l10n-backupbuddy
+msgid "Exec test FAILED: Test zip file not found."
+msgstr "Exec testet misslyckades: Test zip-filen hittades inte."
+
+#: lib/zipbuddy/zbzipexec.php:183
+#: lib/zipbuddy/zbzipexec.php:259
+#@ it-l10n-backupbuddy
+msgid "Exec Exit Code: "
+msgstr "Exec avbrottskod: "
+
+#: lib/zipbuddy/zbzipexec.php:190
+#@ it-l10n-backupbuddy
+msgid "Exec test FAILED: zip.exe not found at: "
+msgstr "Exec testet misslyckades: zip.exe hittades inte på: "
+
+#: lib/zipbuddy/zbzipexec.php:197
+#: lib/zipbuddy/zbzipexec.php:275
+#@ it-l10n-backupbuddy
+msgid "Exec test FAILED: One or more required function do not exist."
+msgstr "Exec testet misslyckades: En eller flera nödvändiga funktioner finns inte ."
+
+#: lib/zipbuddy/zbzipexec.php:231
+#: lib/zipbuddy/zbzipproc.php:132
+#@ it-l10n-backupbuddy
+msgid "Trying executable path for zip:"
+msgstr "Försöker exekverbar sökväg för zip:"
+
+#: lib/zipbuddy/zbzipexec.php:269
+#@ it-l10n-backupbuddy
+msgid "Exec test Failed: Unable to find zip executable on any specified path."
+msgstr "Exec testet misslyckades: Det gick inte att hitta körbar zip på någon angivnen sökväg."
+
+#: lib/zipbuddy/zbzipexec.php:348
+#: lib/zipbuddy/zbzipexec.php:636
+#: lib/zipbuddy/zbzippclzip.php:229
+#: lib/zipbuddy/zbzipproc.php:299
+#@ it-l10n-backupbuddy
+msgid "Temporary working directory must be available."
+msgstr "Temporär arbetskatalog måste vara tillgängliga."
+
+#: lib/zipbuddy/zbzipexec.php:357
+#: lib/zipbuddy/zbzipexec.php:645
+#: lib/zipbuddy/zbzipproc.php:308
+#@ it-l10n-backupbuddy
+msgid "Using custom zip path: "
+msgstr "Använd anpassad zip sökväg: "
+
+#: lib/zipbuddy/zbzipexec.php:372
+#: lib/zipbuddy/zbzipexec.php:660
+#: lib/zipbuddy/zbzippclzip.php:293
+#: lib/zipbuddy/zbzipproc.php:323
+#@ it-l10n-backupbuddy
+msgid "Compression disabled based on settings."
+msgstr "Komprimering inaktiverat baserat på inställningar."
+
+#: lib/zipbuddy/zbzipexec.php:378
+#: lib/zipbuddy/zbzipexec.php:666
+#: lib/zipbuddy/zbzippclzip.php:304
+#: lib/zipbuddy/zbzipproc.php:329
+#@ it-l10n-backupbuddy
+msgid "Existing ZIP Archive file will be replaced."
+msgstr "Befintlig ZIP-arkivfil kommer ersättas."
+
+#: lib/zipbuddy/zbzipexec.php:400
+#: lib/zipbuddy/zbzipexec.php:688
+#: lib/zipbuddy/zbzippclzip.php:243
+#: lib/zipbuddy/zbzipproc.php:351
+#@ it-l10n-backupbuddy
+msgid "Calculating directories to exclude from backup."
+msgstr "Beräknar kataloger att utesluta från säkerhetskopia."
+
+#: lib/zipbuddy/zbzipexec.php:412
+#: lib/zipbuddy/zbzipexec.php:700
+#: lib/zipbuddy/zbzippclzip.php:253
+#: lib/zipbuddy/zbzipproc.php:363
+#@ it-l10n-backupbuddy
+msgid "Excluding"
+msgstr "Exkluderar"
+
+#: lib/zipbuddy/zbzipexec.php:478
+#: lib/zipbuddy/zipbuddy.php:358
+#@ it-l10n-backupbuddy
+msgid "Attempting to use provided Windows zip.exe."
+msgstr "Försöker använda Windows zip.exe."
+
+#: lib/zipbuddy/zbzipexec.php:484
+#@ it-l10n-backupbuddy
+msgid " command (Windows)"
+msgstr " kommandot (Windows)"
+
+#: lib/zipbuddy/zbzipexec.php:499
+#: lib/zipbuddy/zbzipexec.php:794
+#: lib/zipbuddy/zbzippclzip.php:337
+#: lib/zipbuddy/zbzipproc.php:495
+#@ it-l10n-backupbuddy
+msgid "Zip process exit code: "
+msgstr "Zip processens avbrottskod: "
+
+#: lib/zipbuddy/zbzipexec.php:506
+#: lib/zipbuddy/zbzipexec.php:801
+#: lib/zipbuddy/zbzippclzip.php:344
+#: lib/zipbuddy/zbzipproc.php:502
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file not created - check process exit code."
+msgstr "Zip-arkivfil inte skapad - kontrollera processens avbritskod."
+
+#: lib/zipbuddy/zbzipexec.php:510
+#: lib/zipbuddy/zbzipexec.php:805
+#: lib/zipbuddy/zbzippclzip.php:348
+#: lib/zipbuddy/zbzipproc.php:506
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file created - check process exit code."
+msgstr "Zip-arkivfil skapad - kontrollera processens avbrottskod."
+
+#: lib/zipbuddy/zbzipexec.php:524
+#: lib/zipbuddy/zbzipexec.php:551
+#: lib/zipbuddy/zbzipexec.php:819
+#: lib/zipbuddy/zbzipexec.php:846
+#: lib/zipbuddy/zbzippclzip.php:361
+#: lib/zipbuddy/zbzipproc.php:523
+#: lib/zipbuddy/zbzipproc.php:542
+#@ it-l10n-backupbuddy
+msgid "Zip process reported: "
+msgstr "Zip processen rapporterade: "
+
+#: lib/zipbuddy/zbzipexec.php:541
+#: lib/zipbuddy/zbzipexec.php:836
+#: lib/zipbuddy/zbzipproc.php:532
+#@ it-l10n-backupbuddy
+msgid "Zip process reported "
+msgstr "Zip processen rapporterade "
+
+#: lib/zipbuddy/zbzipexec.php:541
+#: lib/zipbuddy/zbzipexec.php:836
+#: lib/zipbuddy/zbzipproc.php:532
+#@ it-l10n-backupbuddy
+msgid " more errors - please review in: "
+msgstr " fler fel - Läs igenom i: "
+
+#: lib/zipbuddy/zbzipexec.php:564
+#: lib/zipbuddy/zbzipexec.php:859
+#: lib/zipbuddy/zbzippclzip.php:372
+#: lib/zipbuddy/zbzipproc.php:560
+#@ it-l10n-backupbuddy
+msgid "Moving Zip Archive file to local archive directory."
+msgstr "Flyttar Zip arkivfilen till lokala dokumentarkiv."
+
+#: lib/zipbuddy/zbzipexec.php:569
+#: lib/zipbuddy/zbzipexec.php:864
+#: lib/zipbuddy/zbzippclzip.php:377
+#: lib/zipbuddy/zbzipproc.php:565
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file moved to local archive directory."
+msgstr "Zip-arkiv-filen flyttad till lokala dokumentarkiv."
+
+#: lib/zipbuddy/zbzipexec.php:570
+#: lib/zipbuddy/zbzipexec.php:865
+#: lib/zipbuddy/zbzippclzip.php:378
+#: lib/zipbuddy/zbzipproc.php:566
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file successfully created with no errors or warnings."
+msgstr "Zip-arkiv-fil skapades utan fel eller varningar."
+
+#: lib/zipbuddy/zbzipexec.php:575
+#: lib/zipbuddy/zbzipexec.php:870
+#: lib/zipbuddy/zbzippclzip.php:383
+#: lib/zipbuddy/zbzipproc.php:571
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file could not be moved to local archive directory."
+msgstr "Zip-arkiv-filen kunde inte flyttas till lokala dokumentarkiv."
+
+#: lib/zipbuddy/zbzipexec.php:591
+#: lib/zipbuddy/zbzipexec.php:886
+#: lib/zipbuddy/zbzippclzip.php:391
+#: lib/zipbuddy/zbzipproc.php:470
+#: lib/zipbuddy/zbzipproc.php:595
+#@ it-l10n-backupbuddy
+msgid "Removing temporary directory."
+msgstr "Ta bort temporär katalog."
+
+#: lib/zipbuddy/zbzipexec.php:779
+#: lib/zipbuddy/zbzipproc.php:431
+#@ it-l10n-backupbuddy
+msgid " command (Linux)"
+msgstr " kommandot (Linux)"
+
+#: lib/zipbuddy/zbzippclzip.php:141
+#@ it-l10n-backupbuddy
+msgid "PclZip test PASSED."
+msgstr "PclZip test godkännt."
+
+#: lib/zipbuddy/zbzippclzip.php:146
+#@ it-l10n-backupbuddy
+msgid "PclZip test FAILED: Zip file not found."
+msgstr "PclZip test misslyckades: Zip filen kunde inte hittas."
+
+#: lib/zipbuddy/zbzippclzip.php:153
+#@ it-l10n-backupbuddy
+msgid "PclZip test FAILED: Unable to create/open zip file."
+msgstr "PclZip testet misslyckades: Det gick inte att skapa/öppna zip-filen."
+
+#: lib/zipbuddy/zbzippclzip.php:154
+#@ it-l10n-backupbuddy
+msgid "PclZip Error: "
+msgstr "PclZip fel: "
+
+#: lib/zipbuddy/zbzippclzip.php:161
+#@ it-l10n-backupbuddy
+msgid "PclZip test FAILED: PclZip class does not exist."
+msgstr "PclZip testet misslyckades: PclZip klass existerar inte."
+
+#: lib/zipbuddy/zbzippclzip.php:204
+#@ it-l10n-backupbuddy
+msgid "Using Compatibility Mode."
+msgstr "Kompatibilitetsläget."
+
+#: lib/zipbuddy/zbzippclzip.php:205
+#@ it-l10n-backupbuddy
+msgid "If your backup times out in Compatibility Mode try disabling zip compression in Settings."
+msgstr "Om din säkerhetskopiering gånger i kompatibilitetsläge försök att inaktivera zip-komprimering i inställningar."
+
+#: lib/zipbuddy/zbzippclzip.php:220
+#@ it-l10n-backupbuddy
+msgid "PclZip class must be available but is not."
+msgstr "PCLZip klass måste finnas men är inte."
+
+#: lib/zipbuddy/zbzippclzip.php:264
+#@ it-l10n-backupbuddy
+msgid "Excluding archives directory and additional directories defined in settings."
+msgstr "Undantar arkivkatalog och ytterligare kataloger som definieras i inställningar."
+
+#: lib/zipbuddy/zbzippclzip.php:264
+#: lib/zipbuddy/zbzippclzip.php:268
+#@ it-l10n-backupbuddy
+msgid "total"
+msgstr "totalt"
+
+#: lib/zipbuddy/zbzippclzip.php:268
+#@ it-l10n-backupbuddy
+msgid "Only excluding archives directory based on settings."
+msgstr "Exkluderar endast arkiv katalogen baserat på inställningar."
+
+#: lib/zipbuddy/zbzippclzip.php:281
+#: lib/zipbuddy/zipbuddy.php:411
+#@ it-l10n-backupbuddy
+msgid "WARNING: Directory/file exclusion unavailable in Compatibility Mode. Even existing old backups will be backed up."
+msgstr "Varning: Directory/fil exkludering inte tillgängligt i kompatibilitetsläge. Även befintliga gamla säkerhetskopior kommer att säkerhetskopieras."
+
+#: lib/zipbuddy/zbzippclzip.php:311
+#@ it-l10n-backupbuddy
+msgid " commmand arguments"
+msgstr " kommandoargument"
+
+#: lib/zipbuddy/zbzipproc.php:118
+#@ it-l10n-backupbuddy
+msgid "proc_open test FAILED: Method not supported on Windows."
+msgstr "proc_open testet misslyckades: metoden stöds inte i Windows."
+
+#: lib/zipbuddy/zbzipproc.php:182
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Error #564638. Unable to delete test file (%s)!"
+msgstr "Fel #564638. Det gick inte att ta bort testfil (% s)!"
+
+#: lib/zipbuddy/zbzipproc.php:186
+#@ it-l10n-backupbuddy
+msgid "Proc test PASSED."
+msgstr "Proc test GODKÄNT."
+
+#: lib/zipbuddy/zbzipproc.php:197
+#@ it-l10n-backupbuddy
+msgid "Proc test FAILED: Test zip file not found."
+msgstr "Proc testet misslyckades: Test zip-filen hittades inte."
+
+#: lib/zipbuddy/zbzipproc.php:198
+#@ it-l10n-backupbuddy
+msgid "Proc Exit Code: "
+msgstr "Proc avbrottskod: "
+
+#: lib/zipbuddy/zbzipproc.php:205
+#@ it-l10n-backupbuddy
+msgid "Proc test FAILED: Unable to create test zip file process."
+msgstr "Proc testet misslyckades: Det gick inte att skapa test zip fil process."
+
+#: lib/zipbuddy/zbzipproc.php:215
+#@ it-l10n-backupbuddy
+msgid "Proc test Failed: Unable to find zip executable on any specified path."
+msgstr "Proc testet misslyckades: Det gick inte att hitta körbar zip på angivna sökvägar."
+
+#: lib/zipbuddy/zbzipproc.php:221
+#@ it-l10n-backupbuddy
+msgid "Proc test FAILED: One or more required function do not exist."
+msgstr "Proc testet misslyckades: en eller flera nödvändiga funktion finns inte."
+
+#: lib/zipbuddy/zbzipproc.php:254
+#@ it-l10n-backupbuddy
+msgid " method not supported on Windows."
+msgstr " metoden stöds inte i Windows."
+
+#: lib/zipbuddy/zbzipproc.php:452
+#@ it-l10n-backupbuddy
+msgid "Zip Archive file creation in progress."
+msgstr "ZIP-arkivet filskapande pågår."
+
+#: lib/zipbuddy/zbzipproc.php:469
+#@ it-l10n-backupbuddy
+msgid "Failed to create Zip process: "
+msgstr "Det gick inte att skapa Zip process: "
+
+#: lib/zipbuddy/zbzipziparchive.php:131
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test PASSED."
+msgstr "ZipArchive test GODKÄNT."
+
+#: lib/zipbuddy/zbzipziparchive.php:136
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test FAILED: Zip file not found."
+msgstr "ZipArchive testet misslyckades: Zip filen kunde inte hittas."
+
+#: lib/zipbuddy/zbzipziparchive.php:143
+#: lib/zipbuddy/zipbuddy.php:640
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test FAILED: Unable to create/open zip file."
+msgstr "ZipArchive testet misslyckades: Det gick inte att skapa/öppna zip-filen."
+
+#: lib/zipbuddy/zbzipziparchive.php:144
+#@ it-l10n-backupbuddy
+msgid "ZipArchive Error: "
+msgstr "ZipArchive Fel: "
+
+#: lib/zipbuddy/zbzipziparchive.php:151
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test FAILED: ZipArchive class does not exist."
+msgstr "ZipArchive testet MISSLYCKADES: ZipArchive klass existerar inte."
+
+#: lib/zipbuddy/zbzipziparchive.php:181
+#@ it-l10n-backupbuddy
+msgid " method is not currently supported for backup."
+msgstr " metoden stöds inte för närvarande för säkerhetskopiering."
+
+#: lib/zipbuddy/zipbuddy.php:215
+#@ it-l10n-backupbuddy
+msgid "File not found (ziparchive) for stats"
+msgstr "Filen kunde inte hittas (ziparchive) för statistik"
+
+#: lib/zipbuddy/zipbuddy.php:221
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ZipArchive failed to open file to check stats (looking in %1$s)."
+msgstr "ZipArchive kunde inte öppna fil för att kontrollera statistik (titta i %1$ s)."
+
+#: lib/zipbuddy/zipbuddy.php:284
+#@ it-l10n-backupbuddy
+msgid "Forced compatibility mode (PCLZip) based on settings. This is slower and less reliable."
+msgstr "Tvingat kompatibelt läge (PCLZip) baserat på inställningar. Detta är långsammare och mindre tillförlitliga."
+
+#: lib/zipbuddy/zipbuddy.php:310
+#@ it-l10n-backupbuddy
+msgid "Using exec() method for ZIP."
+msgstr "Metoden exec() för ZIP."
+
+#: lib/zipbuddy/zipbuddy.php:316
+#@ it-l10n-backupbuddy
+msgid "Exec compression disabled based on settings."
+msgstr "Exec komprimering inaktiverat baserat på inställningar."
+
+#: lib/zipbuddy/zipbuddy.php:320
+#: lib/zipbuddy/zipbuddy.php:442
+#@ it-l10n-backupbuddy
+msgid "ZIP file exists. Appending based on options."
+msgstr "ZIP-filen existerar. Lägger till baserat på alternativ."
+
+#: lib/zipbuddy/zipbuddy.php:323
+#@ it-l10n-backupbuddy
+msgid "ZIP file exists. Deleting & writing based on options."
+msgstr "ZIP-filen existerar. Raderara & skapar baserat på alternativ."
+
+#: lib/zipbuddy/zipbuddy.php:352
+#: lib/zipbuddy/zipbuddy.php:546
+#@ it-l10n-backupbuddy
+msgid "Using custom exec() path: "
+msgstr "Använder anpassad exec() sökväg: "
+
+#: lib/zipbuddy/zipbuddy.php:363
+#@ it-l10n-backupbuddy
+msgid "Exec command (Windows)"
+msgstr "Exec-kommandot (Windows)"
+
+#: lib/zipbuddy/zipbuddy.php:366
+#@ it-l10n-backupbuddy
+msgid "Exec command (Linux)"
+msgstr "Exec-kommandot (Linux)"
+
+#: lib/zipbuddy/zipbuddy.php:381
+#: lib/zipbuddy/zipbuddy.php:745
+#@ it-l10n-backupbuddy
+msgid "Exec command ran but ZIP file did not exist."
+msgstr "Exec-kommandot kördes men ZIP-filen finns inte."
+
+#: lib/zipbuddy/zipbuddy.php:383
+#@ it-l10n-backupbuddy
+msgid "Full speed mode did not complete. Trying compatibility mode next."
+msgstr "Full hastighet -läge kunde inte slutföras. Försöker med kompatibilitetsläge."
+
+#: lib/zipbuddy/zipbuddy.php:385
+#: lib/zipbuddy/zipbuddy.php:748
+#@ it-l10n-backupbuddy
+msgid "Cleaning up damaged ZIP file. Issue #3489328998."
+msgstr "Rensar skadad ZIP-fil. Fråga #3489328998."
+
+#: lib/zipbuddy/zipbuddy.php:391
+#@ it-l10n-backupbuddy
+msgid "Cleaning up incomplete temporary ZIP file. Issue #343894."
+msgstr "Rensar upp ofullständig temporär ZIP-fil. Fråga #343894."
+
+#: lib/zipbuddy/zipbuddy.php:395
+#@ it-l10n-backupbuddy
+msgid "Full speed mode completed & generated ZIP file."
+msgstr "Full hastighet -läge slutförd & genererade ZIP-fil."
+
+#: lib/zipbuddy/zipbuddy.php:405
+#@ it-l10n-backupbuddy
+msgid "Exec command did not succeed. Falling back."
+msgstr "Exec-kommandot lyckades inte. Faller tillbaka."
+
+#: lib/zipbuddy/zipbuddy.php:409
+#@ it-l10n-backupbuddy
+msgid "Using Compatibility Mode for ZIP. This is slower and less reliable."
+msgstr "I kompatibilitetsläget för ZIP. Detta är långsammare och mindre tillförlitligt."
+
+#: lib/zipbuddy/zipbuddy.php:410
+#@ it-l10n-backupbuddy
+msgid "If your backup times out in compatibility mode try disabled zip compression."
+msgstr "Om säkerhetskopian får timeout i kompatibilitetsläge, försök med inaktiverad zip-komprimering."
+
+#: lib/zipbuddy/zipbuddy.php:433
+#@ it-l10n-backupbuddy
+msgid "PCLZip compression disabled based on settings."
+msgstr "PCLZip komprimering inaktiverat baserat på inställningar."
+
+#: lib/zipbuddy/zipbuddy.php:436
+#@ it-l10n-backupbuddy
+msgid "PCLZip compression enabled based on settings."
+msgstr "PCLZip komprimering aktiverad baserat på inställningar."
+
+#: lib/zipbuddy/zipbuddy.php:447
+#@ it-l10n-backupbuddy
+msgid "Appending to ZIP file via PCLZip."
+msgstr "Lägger till till ZIP fil via PCLZip."
+
+#: lib/zipbuddy/zipbuddy.php:450
+#@ it-l10n-backupbuddy
+msgid "Creating ZIP file via PCLZip"
+msgstr "Skapar ZIP fil via PCLZip"
+
+#: lib/zipbuddy/zipbuddy.php:457
+#@ it-l10n-backupbuddy
+msgid "Renaming PCLZip File..."
+msgstr "Byter namn på PCLZip fil..."
+
+#: lib/zipbuddy/zipbuddy.php:460
+#@ it-l10n-backupbuddy
+msgid "Renaming PCLZip success."
+msgstr "Framgångsrikt byte av namn på PCLZip."
+
+#: lib/zipbuddy/zipbuddy.php:462
+#@ it-l10n-backupbuddy
+msgid "Renaming PCLZip failure."
+msgstr "Misslyckades byta namn på PCLZip."
+
+#: lib/zipbuddy/zipbuddy.php:465
+#@ it-l10n-backupbuddy
+msgid "Temporary PCLZip archive file expected but not found. Please verify permissions on the ZIP archive directory."
+msgstr "Tillfällig PCLZip arkivfil förväntades men kunde inte hittas. Kontrollera behörigheterna för katalogen ZIP-arkiv."
+
+#: lib/zipbuddy/zipbuddy.php:469
+#@ default
+msgid "PCLZip error message (if any):"
+msgstr "PCLZip felmeddelande (om något)"
+
+#: lib/zipbuddy/zipbuddy.php:477
+#@ it-l10n-backupbuddy
+msgid "Backup file created in compatibility mode (PCLZip)."
+msgstr "Säkerhetskopia skapad i kompatibilitetsläge (PCLZip)."
+
+#: lib/zipbuddy/zipbuddy.php:481
+#@ it-l10n-backupbuddy
+msgid "PCLZip returned status 0."
+msgstr "PCLZip returnerade status 0."
+
+#: lib/zipbuddy/zipbuddy.php:484
+#@ it-l10n-backupbuddy
+msgid "PCLZip archive ZIP file was not found."
+msgstr "PCLZip arkiv ZIP-fil kunde inte hittas."
+
+#: lib/zipbuddy/zipbuddy.php:633
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test passed."
+msgstr "ZipArchive test godkänt."
+
+#: lib/zipbuddy/zipbuddy.php:636
+#@ it-l10n-backupbuddy
+msgid "ZipArchive test failed: Zip file not found."
+msgstr "ZipArchive testet misslyckades: Zip filen kunde inte hittas."
+
+#: lib/zipbuddy/zipbuddy.php:728
+#@ it-l10n-backupbuddy
+msgid "Exhausted all known exec() path possibilities with no success."
+msgstr "Uttömt alla kända exec() sökvägar utan framgång."
+
+#: lib/zipbuddy/zipbuddy.php:732
+#@ it-l10n-backupbuddy
+msgid "Trying exec() ZIP path:"
+msgstr "Försöker exec() ZIP sökvägen:"
+
+#: lib/zipbuddy/zipbuddy.php:742
+#@ it-l10n-backupbuddy
+msgid "Exec command returned -1."
+msgstr "Exec-kommandot returnerade -1."
+
+#: pluginbuddy/_pluginbuddy.php:825
+#@ it-l10n-backupbuddy
+msgid "Set memory limit to 256M. Previous value < 256M."
+msgstr "Anger minnesgräns till 256 M. Föregående värde < 256 M."
+
+#: pluginbuddy/_pluginbuddy.php:833
+#@ it-l10n-backupbuddy
+msgid "Set memory limit to 256M. Previous value unknown."
+msgstr "Anger minnesgräns till 256 M. Föregående värde okänd."
+
+#: pluginbuddy/classes/format.php:125
+#@ it-l10n-backupbuddy
+msgid "second"
+msgstr "andra"
+
+#: pluginbuddy/classes/format.php:126
+#@ it-l10n-backupbuddy
+msgid "minute"
+msgstr "minut"
+
+#: pluginbuddy/classes/format.php:127
+#@ it-l10n-backupbuddy
+msgid "hour"
+msgstr "timme"
+
+#: pluginbuddy/classes/format.php:128
+#@ it-l10n-backupbuddy
+msgid "day"
+msgstr "dag"
+
+#: pluginbuddy/classes/format.php:129
+#@ it-l10n-backupbuddy
+msgid "week"
+msgstr "vecka"
+
+#: pluginbuddy/classes/format.php:130
+#@ it-l10n-backupbuddy
+msgid "month"
+msgstr "månad"
+
+#: pluginbuddy/classes/format.php:131
+#@ it-l10n-backupbuddy
+msgid "year"
+msgstr "år"
+
+#: pluginbuddy/classes/format.php:132
+#@ default
+msgid "decadeLION"
+msgstr ""
+
+#: pluginbuddy/classes/settings.php:263
+#@ it-l10n-backupbuddy
+msgid "Settings saved."
+msgstr "Inställningar sparade ."
+
+#: pluginbuddy/lib/updater/get.php:18
+#@ it-l10n-backupbuddy
+msgid "ACCESS DENIED! You need higher access to do this. Error #534344 PluginBuddy.com."
+msgstr "ÅTKOMST NEKAD! Du behöver mer rättigheter för detta. Fel #534344 PluginBuddy.com."
+
+#: pluginbuddy/lib/updater/get.php:56
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "ERROR #5455. Unable to access PluginBuddy / iThemes updater & licensing system. Details: %s"
+msgstr "FEL #5455. Det går inte att komma åt PluginBuddy / iThemes updater & licensing system. Detaljer: %s"
+
+#: pluginbuddy/lib/updater/get.php:73
+#@ it-l10n-backupbuddy
+msgid "ERROR: UNKNOWN CALLBACK COMMAND! ERROR #85433256."
+msgstr "FEL: OKÄNT  CALLBACK KOMMANDO! FEL #85433256."
+
+#: pluginbuddy/lib/updater/licenses.php:103
+#@ it-l10n-carousel
+msgid "PluginBuddy Licenses"
+msgstr "PluginBuddy License"
+
+#: pluginbuddy/standalone_preloader.php:170
+#, php-format
+#@ default
+msgid "The <code>%1$s</code> plugin header is deprecated. Use <code>%2$s</code> instead."
+msgstr "<code>%1$s</code> plugin header is föråldrad. Använd <code>%2$s</code> istället."
+
+#: views/_backup-home.php:3
+#@ it-l10n-backupbuddy
+msgid "Backups page tutorial"
+msgstr "Introduktion Säkerhetskopiesidan"
+
+#: views/_backup-home.php:38
+#: views/migrate-home.php:61
+#: views/multisite_export.php:36
+#@ it-l10n-backupbuddy
+msgid "Enter a short descriptive note to apply to this archive for your reference. (175 characters max)"
+msgstr "Skriv en kort beskrivande notering till detta arkiv för din referens. (använd maximalt 175 tecken)"
+
+#: views/_backup-home.php:48
+#: views/migrate-home.php:71
+#: views/multisite_export.php:46
+#@ it-l10n-backupbuddy
+msgid "Error"
+msgstr "Fel"
+
+#: controllers/pages/_backup-perform.php:40
+#: controllers/pages/destinations.php:8
+#: views/_backup-home.php:67
+#: views/multisite_export.php:65
+#@ it-l10n-backupbuddy
+msgid "Error starting remote send"
+msgstr "Fel vid start fjärrskicka"
+
+#: controllers/pages/_backup-perform.php:42
+#: controllers/pages/destinations.php:10
+#: views/_backup-home.php:69
+#: views/multisite_export.php:67
+#@ it-l10n-backupbuddy
+msgid "Your file has been scheduled to be sent now. It should arrive shortly."
+msgstr "Din fil har schemalagts att sändas nu. Den bör anlända inom kort."
+
+#: views/_backup-home.php:260
+#@ it-l10n-backupbuddy
+msgid "Just your database. I like your minimalist style."
+msgstr "Bara din databas. Jag gillar din minimalistiska stil."
+
+#: views/_backup-home.php:260
+#@ it-l10n-backupbuddy
+msgid "Database Only"
+msgstr "Databasen endast"
+
+#: views/_backup-home.php:261
+#@ it-l10n-backupbuddy
+msgid "A complete backup. I'll spare no expense. The database, media library, photos, non-WP files, themes, plugins, the kitchen sink, all the marbles, and that sock you lost in 1996."
+msgstr "En fullständig säkerhetskopia. Ingen kostnad är för stor. Databasen, mediebiblioteket, foton, icke-WP filer, teman, plugins, handfatet, alla kulor och strunpan du tappade bort 1996."
+
+#: views/_backup-home.php:261
+#@ it-l10n-backupbuddy
+msgid "Complete Backup"
+msgstr "Fullständig säkerhetskopiering"
+
+#: views/_backup_listing.php:41
+#@ it-l10n-backupbuddy
+msgid "No backups have been created yet."
+msgstr "Inga säkerhetskopior har skapats ännu."
+
+#: views/_backup_listing.php:46
+#@ it-l10n-backupbuddy
+msgid "Files include random characters in their name for increased security. Verify that write permissions are available for this directory. Backup files are stored in "
+msgstr "Filer har slumpmässiga tecken i namnet för ökad säkerhet. Kontrollera att skrivbehörighet finns för den här katalogen. Säkerhetskopior sparas i "
+
+#: views/_backup_listing.php:49
+#@ it-l10n-backupbuddy
+msgid "Created"
+msgstr "Skapade"
+
+#: views/_backup_listing.php:51
+#@ it-l10n-backupbuddy
+msgid "Backups are checked to verify that they are valid BackupBuddy backups and contain all of the key backup components needed to restore. Backups may display as invalid until they are completed. Click the refresh icon to re-verify the archive."
+msgstr "Säkerhetskopior kontrolleras för att verifiera att de är giltiga BackupBuddy säkerhetskopior och innehåller alla viktiga komponenter som behövs för att återställa. Säkerhetskopior kan visas som ogiltiga innan de är slutförda. Klicka på uppdateringsikonen om du vill verifiera arkivet igen."
+
+#: views/_backup_listing.php:47
+#: views/scheduling.php:64
+#@ it-l10n-backupbuddy
+msgid "Type"
+msgstr "Typ"
+
+#: views/_backup_listing.php:50
+#@ it-l10n-backupbuddy
+msgid "Statistics"
+msgstr "Statistik"
+
+#: views/_backup_listing.php:50
+#@ it-l10n-backupbuddy
+msgid "Various statistics collected during backup such as time taken. Hover over the question mark in the status column for additional detailed information about the backup."
+msgstr "Diverse statistik insamlad under säkerhetskopieringen, tex tid. Hovra över frågetecknet i statuskolumnen för mer detaljerad information om säkerhetskopian."
+
+#: views/_server_tools-database_replace.php:21
+#: views/_server_tools-database_replace.php:82
+#@ it-l10n-backupbuddy
+msgid "back"
+msgstr "tillbaka"
+
+#: views/getting_started.php:10
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "Throughout the plugin you may hover your mouse over question marks %1$s for tips or click play icons %2$s for video tutorials."
+msgstr "I pluginet kan du hålla muspekaren över frågetecken %1$ s för tips eller klicka på spela upp ikoner %2$ s för videoexempel."
+
+#: views/getting_started.php:11
+#@ it-l10n-backupbuddy
+msgid "This tip provides additional help."
+msgstr "Det här tipset tillhandahåller mer hjälp."
+
+#: views/getting_started.php:12
+#@ it-l10n-backupbuddy
+msgid "Introduction to BackupBuddy"
+msgstr "Introduktion till BackupBuddy"
+
+#: views/getting_started.php:218
+#@ it-l10n-backupbuddy
+msgid "Local backup storage directory"
+msgstr "Lokal lagringskatalog för säkerhetskopior"
+
+#: views/getting_started.php:218
+#@ it-l10n-backupbuddy
+msgid "This is the local directory that backups are stored in. Backup files include random characters in their name for increased security. BackupBuddy must be able to create this directory & write to it."
+msgstr "Detta är den lokala katalogen som säkerhetskopior lagras i. Säkerhetskopior har slumpmässiga tecken i namnet för ökad säkerhet. BackupBuddy måste kunna skapa katalogen och skriva till den."
+
+#: views/getting_started.php:97
+#@ it-l10n-backupbuddy
+msgid "Windows Server Performance Boost"
+msgstr "Windows Server prestandaökning"
+
+#: views/getting_started.php:137
+#@ it-l10n-backupbuddy
+msgid "Nothing has been logged."
+msgstr "Ingenting har loggats."
+
+#: views/migrate-home.php:91
+#@ it-l10n-backupbuddy
+msgid "Error starting remote send of file to migrate"
+msgstr "Fel vid start av fjärrskickning för fil att migrera"
+
+#: views/migrate-home.php:200
+#@ it-l10n-backupbuddy
+msgid "Manual migration"
+msgstr "Manuell migrering"
+
+#: views/migrate-home.php:206
+#: views/migrate-home.php:217
+#: views/migrate-home.php:228
+#@ it-l10n-backupbuddy
+msgid "Download the restore & migration utility, importbuddy.php"
+msgstr "Hämta återställ & migrerings -verktyget, importbuddy.php"
+
+#: views/migrate-home.php:221
+#@ it-l10n-backupbuddy
+msgid "ImportBuddy"
+msgstr "ImportBuddy"
+
+#: views/migrate-home.php:222
+#@ it-l10n-backupbuddy
+msgid "restoring & migration script"
+msgstr "återställ & migrerings -skript"
+
+#: views/migrate-home.php:238
+#@ it-l10n-backupbuddy
+msgid "Please set a RepairBuddy password on the BackupBuddy Settings page to download this script. This is required to prevent unauthorized access to the script when in use."
+msgstr "Ange ett RepairBuddy lösenord på sidan Inställningar för BackupBuddy för att hämta skriptet. Detta är nödvändigt för att hindra obehörig åtkomst till skript vid användning."
+
+#: views/migrate-home.php:238
+#: views/migrate-home.php:240
+#@ it-l10n-backupbuddy
+msgid "Download the troubleshooting & repair script, repairbuddy.php"
+msgstr "Hämta felsöknings & reparera -skriptet, repairbuddy.php"
+
+#: views/migrate-home.php:246
+#@ it-l10n-backupbuddy
+msgid "RepairBuddy"
+msgstr "RepairBuddy"
+
+#: views/migrate-home.php:247
+#@ it-l10n-backupbuddy
+msgid "troubleshooting & repair script"
+msgstr "felsökning och reparationa -skript"
+
+#: views/migrate-home.php:280
+#@ it-l10n-backupbuddy
+msgid "Automated migration"
+msgstr "Automatiserade migration"
+
+#: views/migrate-home.php:297
+#@ it-l10n-backupbuddy
+msgid "Hover over the backup below you would like to migrate and select \"Migrate this backup\" to begin the automated migration process."
+msgstr "Hovra över säkerhetskopian nedan du vill migrera och välj \"Migrera säkerhetskopian\" för att påbörja den automatiserade migreringsprocessen."
+
+#: views/migrate-home.php:303
+#@ it-l10n-backupbuddy
+msgid "You must create a backup prior to migrating this site."
+msgstr "Du måste skapa en säkerhetskopia innan migrering av webbplatsen."
+
+#: views/multisite_export.php:6
+#@ it-l10n-backupbuddy
+msgid "Export Unavailable for Main Site"
+msgstr "Export inte tillgängligt för Huvud webbplats"
+
+#: views/multisite_export.php:114
+#: views/multisite_export.php:122
+#@ it-l10n-backupbuddy
+msgid "Plugin"
+msgstr "Plugin"
+
+#: views/multisite_export.php:115
+#: views/multisite_export.php:123
+#@ it-l10n-backupbuddy
+msgid "Description"
+msgstr "Beskrivning"
+
+#: views/multisite_export.php:116
+#: views/multisite_export.php:124
+#@ it-l10n-backupbuddy
+msgid "Plugin Type"
+msgstr "Plugin typ"
+
+#: views/multisite_export.php:138
+#@ it-l10n-backupbuddy
+msgid "Must Use"
+msgstr "Måste använda"
+
+#: views/multisite_export.php:152
+#@ it-l10n-backupbuddy
+msgid "Drop In"
+msgstr "Dra in"
+
+#: views/multisite_export.php:167
+#@ it-l10n-backupbuddy
+msgid "Network Activated"
+msgstr "Nätversaktiverad"
+
+#: views/multisite_export.php:177
+#@ it-l10n-backupbuddy
+msgid "Begin Export"
+msgstr "Börja exportera"
+
+#: views/multisite_export.php:188
+#@ it-l10n-backupbuddy
+msgid "Previously Created Site Exports"
+msgstr "Tidigare skapade webbplatsexporter"
+
+#: views/scheduling.php:36
+#@ it-l10n-backupbuddy
+msgid "Scheduled Backups"
+msgstr "Schemalagda säkerhetskopieringar"
+
+#: views/scheduling.php:63
+#@ it-l10n-backupbuddy
+msgid "Title"
+msgstr "Titel"
+
+#: views/scheduling.php:66
+#@ it-l10n-backupbuddy
+msgid "Destinations"
+msgstr "Destinationer"
+
+#: _importbuddy/importbuddy/views/html_1.php:216
+#: destinations/stash/_configure.php:22
+#@ it-l10n-backupbuddy
+msgid "iThemes username"
+msgstr "iThemes användarnamn"
+
+#: _importbuddy/importbuddy/views/html_1.php:217
+#: destinations/stash/_configure.php:23
+#@ it-l10n-backupbuddy
+msgid "[Example: kerfuffle] - Your iThemes.com / PluginBuddy membership username."
+msgstr "[Exempel: kertii] - Ditt iThemes.com / PluginBuddy medlemskap användarnamn."
+
+#: _importbuddy/importbuddy/views/html_1.php:223
+#: destinations/stash/_configure.php:29
+#@ it-l10n-backupbuddy
+msgid "iThemes password"
+msgstr "iThemes lösenord"
+
+#: _importbuddy/importbuddy/views/html_1.php:224
+#: destinations/stash/_configure.php:30
+#, php-format
+#@ it-l10n-backupbuddy
+msgid "[Example: 48dsds!s08K%x2s] - Your iThemes.com / PluginBuddy membership password."
+msgstr "[Exempel: 48dsds!s08K%x2s] - Ditt iThemes.com / PluginBuddy medlemskap lösenord."
+
+#: _importbuddy/importbuddy/views/html_1.php:229
+#: destinations/stash/_configure.php:36
+#@ it-l10n-backupbuddy
+msgid "Log in with your iThemes.com member account to begin."
+msgstr "Logga in med ditt iThemes.com kontot till att börja med."
+
+#: _importbuddy/importbuddy/views/html_1.php:347
+#@ it-l10n-backupbuddy
+msgid "You have not sent any backups to Stash yet (or files are still transferring)."
+msgstr "Du har inte skickat några säkerhetskopior för lagring ännu (eller filer är fortfarande under överföring)."
+
+#: classes/backup.php:632
+#@ it-l10n-backupbuddy
+msgid "No more backup steps remain. Finishing..."
+msgstr "Inga fler säkerhetskopieringssteg kvar. Slutför..."
+
+#: classes/backup.php:912
+#@ it-l10n-backupbuddy
+msgid "Error #3382: Backup FAILED. Unable to successfully generate ZIP archive."
+msgstr "Fel #3382: Säkerhetskopiering misslyckades. Det gick inte att skapa ett ZIP-arkiv."
+
+#: classes/backup.php:978
+#@ it-l10n-backupbuddy
+msgid "No old archive trimming needed."
+msgstr "Ingen rensning av gamla arkiv behövs."
+
+#: classes/core.php:163
+#@ it-l10n-backupbuddy
+msgid "Error #7843564: Missing DAT file."
+msgstr "Fel #7843564: DAT fil saknas."
+
+#: classes/core.php:167
+#@ it-l10n-backupbuddy
+msgid "Error #4664236: Missing database SQL file."
+msgstr "Fel #4664236: Databas SQL fil saknas."
+
+#: classes/core.php:171
+#@ it-l10n-backupbuddy
+msgid "Error #47834674: Missing wp-config.php file."
+msgstr "Fel #47834674: wp-config.php saknas."
+
+#: classes/core.php:755
+#@ it-l10n-backupbuddy
+msgid "Integrity Check Details"
+msgstr "Detaljer Integritetskontroll"
+
+#: classes/core.php:755
+#@ it-l10n-backupbuddy
+msgid "View Details"
+msgstr "Visa detaljer"
+
+#: classes/core.php:1062
+#@ it-l10n-backupbuddy
+msgid "HTTP Loopback Connections are not enabled on this server. You may encounter stalled, significantly delayed backups, or other difficulties."
+msgstr "Http-loopback-anslutningar är inte aktiverat på den här servern. Du kan få avstannade, betydligt fördröjda säkerhetskopior eller andra svårigheter."
+
+#: classes/core.php:1130
+#@ it-l10n-backupbuddy
+msgid "Your server does not support command line ZIP which is a BackupBuddy server requirement. Backups will be performed in compatibility mode."
+msgstr "Servern stöder inte kommandorad ZIP som är ett BackupBuddy server krav. Säkerhetskopieringar kommer att utföras i kompatibilitetsläge."
+
+#: classes/core.php:1163
+#@ it-l10n-backupbuddy
+msgid "A backup was recently started and reports unfinished steps. You should wait unless you are sure the previous backup has completed or failed to avoid placing a heavy load on your server."
+msgstr "En säkerhetskopiering startade nyligen och rapporterar oavslutade åtgärder. Du bör vänta såvida du inte är säker på att tidigare säkerhetskopiering har slutförts eller fallerat för att undvika tung belastning på din server."
+
+#: controllers/ajax/_destination_picker.php:348
+#@ it-l10n-backupbuddy
+msgid "Tip"
+msgstr "Tips"
+
+#: controllers/ajax/_destination_picker.php:349
+#@ it-l10n-backupbuddy
+msgid "Verify the destination URL by entering the \"Migration URL\", and clicking \"Test Settings\" before proceeding."
+msgstr "Kontrollera mål URL genom att ange \"Migrerings URL\" och klicka på \"Kontrolera Inställningar\" innan du fortsätter."
+
+#: controllers/ajax/_destination_picker.php:350
+#@ it-l10n-backupbuddy
+msgid "Only Local & FTP destinations may be used for automated migrations."
+msgstr "Endast lokala & FTP destinationer kan användas för automatiska migreringar."
+
+#: controllers/ajax.php:102
+#@ it-l10n-backupbuddy
+msgid "Completed backup final ZIP file size"
+msgstr "Slutlig ZIP-filstorlek slutförd säkerhetskopiering "
+
+#: controllers/ajax.php:107
+#@ it-l10n-backupbuddy
+msgid "Backup reports success but unable to access final ZIP file. Verify permissions and ownership. If the error persists insure that server is properly configured with suphp and proper ownership & permissions."
+msgstr "Säkerhetskopieringen slutförd men kan inte komma åt sista ZIP filen. Kontrollera behörigheter och ägande. Om felet kvarstår kontrollera att servern är rätt konfigurerad med suphp och korrekt ägarstruktur & behörigheter."
+
+#: controllers/ajax.php:109
+#@ it-l10n-backupbuddy
+msgid "Backup successfully completed in "
+msgstr "Säkerhetskopieringen slutfördes på "
+
+#: controllers/ajax.php:113
+#@ it-l10n-backupbuddy
+msgid "Ping. Waiting for server . . ."
+msgstr "Ping. Väntar på servern..."
+
+#: controllers/ajax.php:867
+#@ it-l10n-backupbuddy
+msgid "Integrity Test"
+msgstr "Integritetstest"
+
+#: controllers/ajax.php:921
+#@ it-l10n-backupbuddy
+msgid "Backup Step"
+msgstr "Backup steg"
+
+#: controllers/ajax.php:922
+#@ it-l10n-backupbuddy
+msgid "Time Taken"
+msgstr "Åtgången Tid"
+
+#: controllers/ajax.php:923
+#@ it-l10n-backupbuddy
+msgid "Attempts"
+msgstr "Försök"
+
+#: controllers/ajax.php:927
+#@ it-l10n-backupbuddy
+msgid "No step step statistics were found for this backup."
+msgstr "Inga steg steg statistik hittades för säkerhetskopian."
+
+#: controllers/pages/_backup-perform.php:42
+#: controllers/pages/destinations.php:10
+#: views/_backup-home.php:69
+#: views/multisite_export.php:67
+#@ it-l10n-backupbuddy
+msgid "You will be notified by email if any problems are encountered."
+msgstr "Du kommer meddelas via e-post om eventuella problem."
+
+#: controllers/pages/_backup-perform.php:539
+#@ it-l10n-backupbuddy
+msgid "Download backup"
+msgstr "Hämta backup"
+
+#: controllers/pages/_backup-perform.php:541
+#@ it-l10n-backupbuddy
+msgid "Send backup to destination"
+msgstr "Skicka säkerhetskopia till destination"
+
+#: controllers/pages/_backup-perform.php:568
+#@ it-l10n-backupbuddy
+msgid "You may leave this page and the backup will continue, though possibly with delays between steps."
+msgstr "Du kan lämna den här sidan och säkerhetskopieringen kommer att fortsätta, men eventuellt med förseningar mellan stegen."
+
+#: controllers/pages/_backup-perform.php:587
+#@ it-l10n-backupbuddy
+msgid "Fatal Error #4344443: Backup failure"
+msgstr "Oåterkalleligt fel #4344443: Säkerhetskopieringen fallerade"
+
+#: controllers/pages/_migrate.php:241
+#@ it-l10n-backupbuddy
+msgid "Status: Your destination URL has been entered above. Click Begin Migration when ready."
+msgstr "Status: Din mål-URL har angetts ovan. Klicka på Börja Migrering när du är klar."
+
+#: controllers/pages/_remote_client.php:14
+#@ it-l10n-backupbuddy
+msgid "A remote destination client is not available for this destination. Its files cannot be viewed & managed from within BackupBuddy."
+msgstr "En fjärr-destination klient är inte tillgänglig för denna destination. Dess filer kan inte visas & hanteras från BackupBuddy."
+
+#: controllers/pages/destinations.php:36
+#: init_admin.php:106
+#: init_admin.php:139
+#@ it-l10n-backupbuddy
+msgid "Remote Destinations"
+msgstr "Fjärr-destinationer"
+
+#: controllers/pages/destinations.php:38
+#@ it-l10n-backupbuddy
+msgid "BackupBuddy supports many remote destinations which you may transfer backups to.  You may manually send backups to these locations or automatically have them sent for scheduled backups. You may view the files in a remote destination by selecting a destinatino below once created. In addition to viewing files, you may copy remote backups to your server, and delete files.  All subscribed BackupBuddy customers are provided <b>free</b> storage to our own BackupBuddy Stash cloud destination."
+msgstr "BackupBuddy stöder många fjärr-destinationer som du kan överföra säkerhetskopior till.  Du kan manuellt skicka säkerhetskopior till dessa platser eller automatiskt få dem skickade för schemalagda säkerhetskopieringar. Du kan visa filerna i en fjärr-destination genom att välja en destination nedan när den är skapad. Förutom visning av filer, kan du kopiera fjärr-säkerhetskopior till din servern och radera filer.  Alla prenumererande BackupBuddy kunder har tillgång till <b>gratis</b> lagring i vårt eget BackupBuddy lagringsmoln."
+
+#: controllers/pages/destinations.php:72
+#@ it-l10n-backupbuddy
+msgid "Most recent file transfers to remote destinations"
+msgstr "Senaste filöverföringarna till fjärr-destinationer"
+
+#: controllers/pages/scheduling.php:132
+#@ it-l10n-backupbuddy
+msgid "Delete local backup file after remote send success"
+msgstr "Ta bort lokal säkerhetskopia efter genomförd fjärr-skickning"
+
+#: controllers/pages/scheduling.php:142
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] When disabled this schedule will be effectively turned off. This scheduled backup will not occur when disabled / off. You can re-enable schedules by editing them."
+msgstr "[Standard: aktiverad] När inaktiverat kommer detta schema stängas av. Dennna schemalagda säkerhetskopieringen kommer inte köras när inaktiverad / stänger. Du kan återaktivera scheman genom att redigera dem."
+
+#: controllers/pages/scheduling.php:143
+#@ it-l10n-backupbuddy
+msgid "Enable schedule to run"
+msgstr "Aktivera schema att köras"
+
+#: controllers/pages/server_info/database.php:30
+#: controllers/pages/server_info/database.php:43
+#@ it-l10n-backupbuddy
+msgid "Updated / Checked"
+msgstr "Uppdaterad / kontrollerad"
+
+#: controllers/pages/server_info/database.php:33
+#: controllers/pages/server_info/database.php:46
+#@ it-l10n-backupbuddy
+msgid "Excluded Size"
+msgstr "Exkluderad storlek"
+
+#: controllers/pages/server_info/database.php:121
+#: controllers/pages/server_info/database.php:127
+#@ it-l10n-backupbuddy
+msgid "Unavailable"
+msgstr "Ej tillgänglig"
+
+#: controllers/pages/server_info/remote_sends.php:70
+#@ it-l10n-backupbuddy
+msgid "There have been no recent file transfers."
+msgstr "Inga filöverföringar har förekommit nyligen."
+
+#: controllers/pages/server_info/server.php:177
+#@ it-l10n-backupbuddy
+msgid "This is the TESTED amount of time that PHP allows scripts to run. The test was performed by outputting / logging the script time elapsed once per second until PHP timed out and thus the time reported stopped. This gives a fairly accurate number compared to the reported number which is most often overriden at the server with a limit. If the page stays blank for a while then eventually loads then your server does not support live flushing of the updated time to your browser so you will not see updates until the test completes. "
+msgstr "Detta är den kontrollerade tid som PHP tillåter att skript körs. Testet utfördes genom utmatning / loggning av skript-tid en gång per sekund tills PHP får timeout och därigenom stoppar tiden. Detta ger en ganska korrekt siffra jämfört med den rapporterade siffran som oftast överskrids på en servern med gräns. Om sidan förblir tom för ett tag för att sedan laddas stödjer inte din server realtidsrapportering av uppdaterad tid till din webbläsare, så du kommer inte se uppdateringar tills testet är klart. "
+
+#: controllers/pages/server_info/server.php:386
+#@ it-l10n-backupbuddy
+msgid "Some servers do are not configured properly to allow WordPress to connect back to itself via the site URL (ie: http://your.com connects back to itself on the same server at http://your.com/ to trigger a simulated cron step). If this is the case you must either ask your hosting provider to fix this or enable WordPres Alternate Cron mode in your wp-config.php file."
+msgstr "Vissa servrar är inte korrekt konfigurerad för att tillåta WordPress att ansluta till sig via webbplats-URL (dvs: http://your.com ansluter tillbaka till sig själv på samma server på http://your.com/ för att utlösa ett simuleradt cron steg). Om så är fallet måste du antingen be din hostleverantör åtgärda detta eller aktivera WordPres alternativa Cron läge i din wp-config.php fil."
+
+#: controllers/pages/server_info/server.php:403
+#@ it-l10n-backupbuddy
+msgid "Some servers do not allow sites to connect back to themselves at their own URL.  WordPress and BackupBuddy make use of these \"Http Loopbacks\" for several things.  Without them you may encounter issues. If your server needs it or you are directed by support you may enable Alternate Cron in your wp-config.php file.  When enabled this setting will display \"Enabled\" to remind you."
+msgstr "Vissa servrar tillåter inte siter att ansluta till sig själva på sin egen URL.  WordPress och BackupBuddy utnyttjar dessa \\\"Http Loopbacks\\\" för flera saker.  Utan dem kan du stöta på problem. Om din server behöver det eller det efterfrågas av supporten kan du aktivera alternativ Cron i din wp-config.php fil.  När aktiverad kommer denna inställning visas \"Aktiverad\" som påminnelse."
+
+#: controllers/pages/settings.php:35
+#@ it-l10n-backupbuddy
+msgid "You cannot exclude wp-config.php."
+msgstr "Du kan inte utelämna wp-config.php."
+
+#: controllers/pages/settings.php:242
+#@ it-l10n-backupbuddy
+msgid "Add time in backup file name"
+msgstr "Lägg till tid i säkerhetskopians filnamn"
+
+#: controllers/pages/settings.php:243
+#@ it-l10n-backupbuddy
+msgid "[Default: disabled (date only)] - When enabled your backup filename will display the time the backup was created in addition to the default date. This is useful when making multiple backups in a one day period."
+msgstr "[Standard: inaktiverad (endast datum)] - När aktiverad kommer säkerhetskopians filnamn visa när säkerhetskopian skapades utöver datum som är standard. Detta är användbart när du gör flera säkerhetskopior under en dag."
+
+#: controllers/pages/settings.php:273
+#: controllers/pages/settings.php:304
+#: controllers/pages/settings.php:338
+#@ it-l10n-backupbuddy
+msgid "Subject"
+msgstr "Ämne"
+
+#: controllers/pages/settings.php:282
+#: controllers/pages/settings.php:314
+#: controllers/pages/settings.php:348
+#@ it-l10n-backupbuddy
+msgid "Body"
+msgstr "Text"
+
+#: controllers/pages/settings.php:443
+#@ it-l10n-backupbuddy
+msgid "File & Directory Exclusions"
+msgstr "Fil & katalog -exkluderingar"
+
+#: controllers/pages/settings.php:453
+#@ it-l10n-backupbuddy
+msgid "If you receive notifications that your server is entering compatibility mode or that native command line zip functionality is unavailable then this feature will not be available unless you enable `Alternative zip system` in the troubleshooting options below. This is due to technical limitations of the compatibility mode.  Ask your host to correct the problems causing compatibility mode, move to another server, or enable this option."
+msgstr "Om du får meddelanden om att servern går in kompatibilitetsläge eller att kommandorad zip funktionalitet inte är tillgängligt, kommer denna funktionen inte vara tillgängligt om du inte aktiverar 'alternativa zip system' i felsökningsalternativen nedan. Detta är på grund av tekniska begränsningar i kompatibilitetsläget.  Be din värd att korrigera problem som orsakar kompatibilitetsläget, flytta till en annan server eller aktivera det här alternativet."
+
+#: controllers/pages/settings.php:457
+#@ it-l10n-backupbuddy
+msgid "Excluded files & directories (relative to WordPress installation directory)"
+msgstr "Exkluderade filer och kataloger (i förhållande till WordPress installationskatalog)"
+
+#: controllers/pages/settings.php:458
+#@ it-l10n-backupbuddy
+msgid "One file or directory exclusion per line. This may be manually edited."
+msgstr "En fil eller katalog -exkludering per rad. Detta kan redigeras manuellt."
+
+#: controllers/pages/settings.php:562
+#@ it-l10n-backupbuddy
+msgid "Ignore zip archive warnings"
+msgstr "Ignorera zip-arkiv varningar"
+
+#: controllers/pages/settings.php:563
+#@ it-l10n-backupbuddy
+msgid "[Default: Disabled] When enabled BackupBuddy will ignore non-fatal warnings encountered during the backup process such as inability to read or access a file, symlink problems, etc. These non-fatal warnings will still be logged."
+msgstr "[Standard: inaktiverad] När aktiverad kommer BackupBuddy ignorera mindre allvarliga varningar som uppstår under säkerhetskopieringen, som oförmåga att läsa eller få tillgång till en fil, symlink problem osv. Dessa mindre allvarliga varningar loggas fortfarande."
+
+#: controllers/pages/settings.php:582
+#@ it-l10n-backupbuddy
+msgid "Break out big table dumps into steps (beta)"
+msgstr "Dela upp stora tabell-dumpar till steg (beta)"
+
+#: controllers/pages/settings.php:583
+#@ it-l10n-backupbuddy
+msgid "[Default: Disabled] Currently in beta. Breaks up some commonly known database tables to be backed up separately rather than all at once. Helps with larger databases."
+msgstr "[Standard: inaktiverad] För närvarande i beta. Delar upp vissa allmänt kända databastabeller för säkerhetskopiering separat istället för alla på en gång. Bra vid stora databaser."
+
+#: destinations/dropbox/_configure.php:170
+#: destinations/email/_configure.php:14
+#: destinations/ftp/_configure.php:6
+#: destinations/local/_configure.php:6
+#: destinations/rackspace/_configure.php:6
+#: destinations/s3/_configure.php:14
+#: destinations/stash/_configure.php:183
+#@ it-l10n-backupbuddy
+msgid "Destination name"
+msgstr "Målets namn"
+
+#: destinations/dropbox/_configure.php:186
+#: destinations/ftp/_configure.php:69
+#: destinations/local/_configure.php:48
+#: destinations/rackspace/_configure.php:43
+#: destinations/s3/_configure.php:79
+#@ it-l10n-backupbuddy
+msgid "Archive limit"
+msgstr "Arkivgräns"
+
+#: destinations/email/_configure.php:22
+#@ it-l10n-backupbuddy
+msgid "Email address"
+msgstr "E-postadress"
+
+#: destinations/ftp/_configure.php:14
+#@ it-l10n-backupbuddy
+msgid "Server address"
+msgstr "Serveradress"
+
+#: destinations/ftp/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Remote path (optional)"
+msgstr "Fjärr-sökvägen (tillval)"
+
+#: destinations/ftp/_configure.php:55
+#: destinations/local/_configure.php:37
+#@ it-l10n-backupbuddy
+msgid "Migration URL"
+msgstr "Migration URL"
+
+#: destinations/ftp/_configure.php:56
+#@ it-l10n-backupbuddy
+msgid "Enter the URL corresponding to the FTP destination path. This URL must lead to the location where files uploaded to this remote destination would end up. If the destination is in a subdirectory make sure to match it in the corresponding URL."
+msgstr "Ange URL-adressen som motsvarar FTP sökvägen. Denna URL måste leda till den plats där filer uppladdade till detta fjärr-mål skulle hamna. Om destinationen är i en underkatalog, se till att matcha den i den motsvarande URL-adressen."
+
+#: destinations/ftp/_configure.php:79
+#@ it-l10n-backupbuddy
+msgid "Transfer mode"
+msgstr "Överföringsläge"
+
+#: destinations/ftp/_configure.php:81
+#@ it-l10n-backupbuddy
+msgid "Active (default)"
+msgstr "Aktiv (standard)"
+
+#: destinations/ftp/_configure.php:82
+#@ it-l10n-backupbuddy
+msgid "Passive"
+msgstr "Passiv"
+
+#: destinations/ftp/_configure.php:95
+#@ it-l10n-backupbuddy
+msgid "Enable high security mode (not supported by most servers)"
+msgstr "Aktivera högt säkerhetsläge (stöds inte av de flesta servrar)"
+
+#: destinations/ftp/init.php:232
+#@ it-l10n-backupbuddy
+msgid "Verify the server address and port (default 21). Verify your host allows outgoing FTP connections."
+msgstr "Kontrollera adress och port (standard 21). Kontrollera att din värd tillåter utgående FTP-anslutningar."
+
+#: destinations/ftp/init.php:304
+#@ it-l10n-backupbuddy
+msgid "Failure. Unable to connect to the provided optional URL."
+msgstr "Fel. Det gick inte att ansluta till den angivna valfria URL."
+
+#: destinations/ftp/init.php:308
+#: destinations/local/init.php:163
+#@ it-l10n-backupbuddy
+msgid "Failure. The path appears valid but the URL does not correspond to it. Leave the URL blank if not using this destination for migrations."
+msgstr "Fel. Sökvägen verkar giltig men URL-adressen motsvarar den inte. Lämna URL'en blank om inte använder denna destination för migreringar."
+
+#: destinations/local/_configure.php:22
+#@ it-l10n-backupbuddy
+msgid "Provide the full path to the location's directory. This must map to the web location for the destination URL."
+msgstr "Tillhandahåller den fullständiga sökvägen till platsens katalog. Detta måste mappa till webbplatsen för mål-URL'en,."
+
+#: destinations/local/_configure.php:38
+#@ it-l10n-backupbuddy
+msgid "Enter the URL corresponding to the local destination path. This URL must lead to the location where files uploaded to this remote destination would end up. If the destination is in a subdirectory make sure to match it in the corresponding URL."
+msgstr "Ange den URL som motsvarar den lokala målsökvägen. Denna URL måste leda till den plats där filer uppladdade till denna avlägsna mål skulle hamna. Om målfilen finns i en underkatalog se till att matcha det motsvarande URL-adressen."
+
+#: destinations/rackspace/_configure.php:22
+#@ it-l10n-backupbuddy
+msgid "API key"
+msgstr "API-nyckel"
+
+#: destinations/rackspace/_configure.php:53
+#@ it-l10n-backupbuddy
+msgid "Cloud network"
+msgstr "Molnnätverk"
+
+#: destinations/s3/_configure.php:22
+#@ it-l10n-backupbuddy
+msgid "AWS access key"
+msgstr "AWS nyckel"
+
+#: destinations/s3/_configure.php:36
+#@ it-l10n-backupbuddy
+msgid "AWS secret key"
+msgstr "AWS hemlig nyckel"
+
+#: destinations/s3/_configure.php:47
+#@ it-l10n-backupbuddy
+msgid "Bucket name"
+msgstr "Hinknamn"
+
+#: destinations/s3/_configure.php:105
+#: destinations/stash/_configure.php:228
+#@ it-l10n-backupbuddy
+msgid "Encrypt connection"
+msgstr "Kryptera anslutningen"
+
+#: destinations/s3/_configure.php:108
+#: destinations/stash/_configure.php:231
+#@ it-l10n-backupbuddy
+msgid "Enable connecting over SSL"
+msgstr "Aktivera anslutning över SSL"
+
+#: destinations/s3/_manage.php:52
+#@ it-l10n-backupbuddy
+msgid "Amazon S3 Destination"
+msgstr "Amazon S3 destination"
+
+#: destinations/stash/_configure.php:123
+#@ it-l10n-backupbuddy
+msgid "To jump right in using the defaults just hit \"Add Destination\" below."
+msgstr "Omdu vill sätta igång direkt med förvalda alternativ tryck \"Lägg till Destination\" nedan."
+
+#: destinations/stash/_configure.php:200
+#@ it-l10n-backupbuddy
+msgid "Database backup limit"
+msgstr "Databas backupgräns"
+
+#: destinations/stash/_configure.php:201
+#@ it-l10n-backupbuddy
+msgid "[Example: 5] - Enter 0 for no limit. This is the maximum number of database backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted."
+msgstr "[Exempel: 5] - Ange 0 för ingen gräns. Detta är max antal säkerhetskopior för databas som lagras på denna plats. Om denna gräns nås raderas den äldsta säkerhetskopian av den här typen."
+
+#: destinations/stash/_configure.php:209
+#@ it-l10n-backupbuddy
+msgid "Full backup limit"
+msgstr "Gräns fullständig säkerhetskopiering"
+
+#: destinations/stash/_configure.php:210
+#@ it-l10n-backupbuddy
+msgid "[Example: 5] - Enter 0 for no limit. This is the maximum number of full backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted."
+msgstr "[Exempel: 5] - Ange 0 för ingen gräns. Detta är max antal kompletta säkerhetskopior som lagras på denna plats. Om denna gräns nås raderas den äldsta säkerhetskopian av den här typen."
+
+
+#: destinations/stash/_configure.php:218
+#@ it-l10n-backupbuddy
+msgid "Max chunk size"
+msgstr "Max segmentetstorlek"
+
+#: destinations/stash/_configure.php:219
+#@ it-l10n-backupbuddy
+msgid "[Example: 5] - Enter 0 for no chunking; minimum of 5 if enabling. This is the maximum file size to send in one whole piece. Files larger than this will be transferred in pieces up to this file size one part at a time. This allows to transfer of larger files than you server may allow by breaking up the send process. Chunked files may be delayed if there is little site traffic to trigger them."
+msgstr "[Exempel: 5] - Anger 0 ingen segmentering; minst 5 om aktiverad. Detta är den maximala filstorleken att skicka. Filer större än detta kommer överföras i delar. Detta möjliggör överföring av större filer än servern tillåter genom att dela upp dem. Segmenterade filer kan fördröjas om det finns liten webbtrafik att utlösa dem."
+
+#: destinations/stash/_configure.php:229
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Disabling this may aid in connection troubles but results in lessened security. Note: Once your files arrive on our server they are encrypted using AES256 encryption. They are automatically decrypted upon download as needed."
+msgstr "[Standard: aktiverad]- När aktiverat kommer alla överföringar krypteras med SSL-kryptering. Inaktiving kan avhjälpa anslutningsproblem men ger lägre säkerhet. Notera: När dina filer anländer till vår server krypteras de med AES256 kryptering. De dekrypteras automatiskt vid nedladdning."
+
+#: destinations/stash/_configure.php:239
+#@ it-l10n-backupbuddy
+msgid "Manage all files"
+msgstr "Hantera alla filer"
+
+#: destinations/stash/_configure.php:240
+#@ it-l10n-backupbuddy
+msgid "[Default: enabled] - When enabled, you have access to manage and view all files stored in your Stash account. You will be prompted for your password to access backups for sites other than this one.  If disabled the option is entirely removed for added security. For example, you may wish to disable this feature if a client has access and you want to keep them away from your files. This option can NOT be changed without deleting and re-creating the Stash destination for added security."
+msgstr "[Standard: aktiverad]- När aktiverad kan du hantera och visa alla filer lagrade i ditt Stash-konto. Du kommer behöva ditt lösenord för säkerhetskopior för platser andra än denna.  Om inaktiverd tas alternativet bort helt för ökad säkerhet. Till exempel, kanske vill du inaktivera den här funktionen om en klient har tillgång och du vill hålla dem borta från dina filer. Det här alternativet kan INTE ändras utan att ta bort och återskapa Stash-målet för ökad säkerhet."
+
+#: destinations/stash/_configure.php:242
+#@ it-l10n-backupbuddy
+msgid "Enabling allows access to manage all Stash files (not just this site's)."
+msgstr "Aktivering tillåter åtkomst för hantering av alla Stash-filer (inte bara denna webbplats's."
+
+#: destinations/stash/_manage.php:73
+#@ it-l10n-backupbuddy
+msgid "Stash Destination"
+msgstr "Stash-mål"
+
+#: destinations/stash/_manage.php:269
+#@ it-l10n-backupbuddy
+msgid "You have not sent any backups to Stash for this site yet (or it is still transferring)."
+msgstr "Du har inte skickat några säkerhetskopior till Stash för den här webbplatsen ännu (eller är fortfarande under överföring)."
+
+#: init_admin.php:107
+#@ it-l10n-backupbuddy
+msgid "MS Import (beta)"
+msgstr "MS Import (beta)"
+
+#: init_admin.php:125
+#@ it-l10n-backupbuddy
+msgid "MS Export (beta)"
+msgstr "MS Export (beta)"
+
+#: init_admin.php:128
+#@ it-l10n-backupbuddy
+msgid "MS Export SA (beta)"
+msgstr "MS Export SA (beta)"
+
+#: pluginbuddy/classes/ui.php:459
+#@ it-l10n-backupbuddy
+msgid "Dismiss this alert. Unhide dismissed alerts on the Getting Started page."
+msgstr "Avvisa denna varning. Ta fram avvisade aviseringar på kom igång -sidan ."
+
+#: pluginbuddy/classes/ui.php:459
+#@ it-l10n-backupbuddy
+msgid "Dismiss"
+msgstr "Avvisa"
+
+#: views/_backup-home.php:259
+#@ it-l10n-backupbuddy
+msgid "Choose a backup type to create"
+msgstr "Välj en typ av säkerhetskopiering att skapa"
+
+#: views/_backup-home.php:346
+#@ it-l10n-backupbuddy
+msgid "No backups have been created recently."
+msgstr "Inga säkerhetskopior har skapats nyligen."
+
+#: views/_backup-home.php:377
+#@ it-l10n-backupbuddy
+msgid "Backup Process Technical Details"
+msgstr "Tekniska Detaljer Säkerhetskopieprocess"
+
+#: views/_backup-home.php:400
+#@ it-l10n-backupbuddy
+msgid "Started"
+msgstr "Startade"
+
+#: views/_backup-home.php:401
+#@ it-l10n-backupbuddy
+msgid "Finished"
+msgstr "Avslutades"
+
+#: views/getting_started.php:21
+#@ it-l10n-backupbuddy
+msgid "Overview"
+msgstr "Översikt"
+
+#: views/getting_started.php:29
+#@ it-l10n-backupbuddy
+msgid "Migrate / Restore"
+msgstr "Migrera / Återställ"
+
+#: views/getting_started.php:99
+#@ it-l10n-backupbuddy
+msgid "Windows servers may be able to significantly boost performance, if the server allows executing .exe files, by adding native Zip compatibility executable files <a href=\"http://ithemes.com/wp-content/uploads/2010/05/backupbuddy_windows_unzip.zip\">available for download here</a>. Instructions are provided within the readme.txt in the package.  This package prevents Windows from falling back to Zip compatiblity mode and works for both BackupBuddy and importbuddy.php. This is particularly useful for <a href=\"http://ithemes.com/codex/page/BackupBuddy:_Local_Development\">local development on a Windows machine using a system like XAMPP</a>."
+msgstr "Windows-servrar kan eventuellt avsevärt öka prestanda om servern tillåter körning av .exe-filer genom att lägga till Zip-kompatibla körbara filer <a href=\"http://ithemes.com/wp-content/uploads/2010/05/backupbuddy_windows_unzip.zip\">tillgängliga för nedladdning här</a>. Anvisningar finns i readme.txt i paketet.  Detta paket hindrar Windows från att falla tillbaka i Zip-kompatibel läge och fungerar för både BackupBuddy och importbuddy.php. Detta är särskilt användbart för <a href=\"http://ithemes.com/codex/page/BackupBuddy:_Local_Development\">lokal utvecklingen på en Windows-dator med hjälp av ett system som XAMPP</a>."
+
+#: views/getting_started.php:104
+#@ it-l10n-backupbuddy
+msgid "Logging & Debugging"
+msgstr "Loggning & Felsökning"
+
+#: views/getting_started.php:140
+#@ it-l10n-backupbuddy
+msgid "Clear Log"
+msgstr "Rensa Loggen"
+
+#: views/getting_started.php:151
+#@ it-l10n-backupbuddy
+msgid "Cleanup Temporary Files"
+msgstr "Rensa Temporära Filer"
+
+#: views/getting_started.php:160
+#@ it-l10n-backupbuddy
+msgid "Raw Settings (debugging)"
+msgstr "Raw Inställningar (felsökning)"
+
+#: views/getting_started.php:161
+#@ it-l10n-backupbuddy
+msgid "Raw Settings for Debugging"
+msgstr "RAW-inställningar för felsökning"
+
+#: views/migrate-home.php:29
+#@ it-l10n-backupbuddy
+msgid "To download, enter a password to lock the ImportBuddy script from unauthorized access. You will be prompted for this password when you go to importbuddy.php in your browser. Since you have not defined a default password yet this will be used as your default and can be changed later from the Settings page."
+msgstr "För att ladda hem, ange ett lösenord för att låsa ImportBuddy-skriptet från obehörig åtkomst. Du kommer uppmanas ange lösenordet när du går till importbuddy.php i din webbläsare. Eftersom du inte har angett en standardlösenord ännu kommer detta användas som standard och kan ändras senare på sidan Inställningar."
+
+#: views/migrate-home.php:41
+#@ it-l10n-backupbuddy
+msgid "To download, either enter a new password for just this download OR LEAVE BLANK to use your default ImportBuddy password (set on the Settings page) to lock the ImportBuddy script from unauthorized access."
+msgstr "För att hämta, ange antingen ett nytt lösenord för bara denna hämtning, ELLER LÄMNA BLANKT om du vill använda ditt standard ImportBuddy-lösenord (angivet på sidan Inställningar) för att låsa ImportBuddy-skriptet från obehörig åtkomst."
+
+#: views/migrate-home.php:299
+#@ it-l10n-backupbuddy
+msgid "Only full backups are listed below."
+msgstr "Endast fullständiga säkerhetskopior listas nedan."
+
+#: views/scheduling.php:43
+#@ it-l10n-backupbuddy
+msgid "Keep old backups from piling up by configuring \"Local Archive Storage Limits\" on the Settings page."
+msgstr "Undvik gamla säkerhetskopior på hög genom att konfigurera \" Lagringsgränser Lokala Arkiv\" på sidan Inställningar."
+
+#: views/scheduling.php:67
+#@ it-l10n-backupbuddy
+msgid "First run indicates the first time thie schedule ran or will run.  Last run time is the last time that this scheduled backup started. This does not imply that the backup completed, only that it began at this time. The last run time is reset if the schedule is edited. Next run indicates when it is next scheduled to run. If there is no server activity during this time the schedule will be delayed."
+msgstr "Första körning anger första gången detta schema kördes eller kommer att köras.  Sensat körd är senaste gången denna schemalagda säkerhetskopiering startade. Detta innebär inte att säkerhetskopieringen slutförts bara att den startade vid denna tid. Senast körd nollställs om schemat ändras. Nästa körning talar om när den kommer köras nästa gång. Om ingen serveraktivite förekommer under denna tid kommer schemat att fördröjas."
+

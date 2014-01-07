@@ -1,0 +1,1 @@
+<div class="sd2-content-wrapper"><?php echo do_shortcode( $content ); ?></div>

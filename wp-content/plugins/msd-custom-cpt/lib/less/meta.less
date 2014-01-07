@@ -1,0 +1,37 @@
+@import 'elements';
+@import 'mixins';
+
+.location_meta_control {
+	.description{ display:none; }
+
+li:after {
+	content: ".";
+	display: block;
+	clear: both;
+	visibility: hidden;
+	line-height: 0;
+	height: 0;
+
+}
+ 
+label
+{ display:block; font-weight:bold; margin-right: 1%;float: left; width: 14%; text-align: right;}
+ 
+label span
+{ display:inline; font-weight:normal; }
+ 
+span
+{ color:#999; display:block; }
+ 
+.ginput_container {
+	width: 85%;
+	float: left;
+}
+textarea, input[type='text'], select
+{ display:inline;margin-bottom:3px; width:90%; }
+
+.mceIframeContainer {background:@white;}
+
+h4
+{ color:#999; font-size:1em; margin:15px 6px; text-transform:uppercase; }
+}

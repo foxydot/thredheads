@@ -1,0 +1,29 @@
+$excerpt_padding = '10'; // Integer padding amount.
+
+$css .= '.featuredposts .next,.featuredposts .previous {';
+$css .= '	top: ' . ( round( $options['image_height'] / 2 ) - 20 ) . 'px;';
+$css .= '}';
+
+$css .= '.featuredposts-excerpt {';
+$css .= '	height: ' . ( $options['height'] - 20 ) . 'px;';
+$css .= '	padding: ' . $excerpt_padding . 'px;';
+$css .= '	width: ' . ( ( $options['width'] - $options['image_width'] ) - 20 ) . 'px !important;';
+$css .= '}';
+
+$css .= '.featuredposts-container {';
+$css .= '	width: ' . ( $options['width'] ) . 'px !important;';
+$css .= '	height: ' . ( $options['height'] ) . 'px !important;';
+$css .= '}';
+
+$css .= '.featureposts-image {';
+$css .= '	width: ' . $options['image_width'] . 'px !important;';
+$css .= '	height: ' . $options['image_height'] . 'px !important;';
+$css .= '}';
+
+$css .= 'ul.featuredposts-pagination {';
+$css .= '	width: ' . ( $this->_options['posts_count'] * 22 ) . 'px;';
+$css .= '}';
+
+$css .= '.featuredposts-pagination {';
+$css .= '	right: -' . ( ( $options['width'] / 2 ) - ( ( $options['width'] - $options['image_width'] ) / 2 ) ) . 'px;';
+$css .= '}';

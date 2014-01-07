@@ -1,0 +1,51 @@
+# Translation of   by .
+# Copyright (C) 2011 
+# This file is distributed under the same license as the  package.
+# Chris Jean <support@ithemes.com>, 2011.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version:  \n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/tipsy\n"
+"POT-Creation-Date: 2011-10-11 20:39-0500\n"
+"PO-Revision-Date: 2011-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Chris Jean <support@ithemes.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: classes/admin.php:53
+msgid "Choose the tip group below that you wish to use."
+msgstr ""
+
+#: classes/view_settings-edit.php:13
+msgid "Layout saved."
+msgstr ""
+
+#: classes/view_settings-edit.php:16
+msgid ""
+"Note: For the header to appear in this layout you must use an \"h3\" tag in "
+"the post editor for what you want in the header of the tip."
+msgstr ""
+
+#: lib/updater/get.php:18
+msgid ""
+"ACCESS DENIED! You need higher access to do this. Error #534344 PluginBuddy."
+"com."
+msgstr ""
+
+#: lib/updater/get.php:56
+#, php-format
+msgid ""
+"ERROR #5455. Unable to access PluginBuddy / iThemes updater & licensing "
+"system. Details: %s"
+msgstr ""
+
+#: lib/updater/get.php:73
+msgid "ERROR: UNKNOWN CALLBACK COMMAND! ERROR #85433256."
+msgstr ""
+
+#: lib/updater/licenses.php:103
+msgid "PluginBuddy Licenses"
+msgstr ""

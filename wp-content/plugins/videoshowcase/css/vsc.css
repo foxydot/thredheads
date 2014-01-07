@@ -1,0 +1,494 @@
+/* ------------------------------------------------------------------------
+	This you can edit.
+------------------------------------------------------------------------- */
+
+	div.light_rounded .pbv_top .pbv_left { background: url(../images/prettyPhoto/light_rounded/sprite.png) -88px -53px no-repeat; } /* Top left corner */
+	div.light_rounded .pbv_top .pbv_middle { background: #fff; } /* Top pattern/color */
+	div.light_rounded .pbv_top .pbv_right { background: url(../images/prettyPhoto/light_rounded/sprite.png) -110px -53px no-repeat; } /* Top right corner */
+	
+	div.light_rounded .pbv_content .pbvt { color: #000; }
+	div.light_rounded .pbv_content_container .pbv_left,
+	div.light_rounded .pbv_content_container .pbv_right { background: #fff; }
+	div.light_rounded .pbv_content { background-color: #fff; } /* Content background */
+	div.light_rounded .pbv_next:hover { background: url(../images/prettyPhoto/light_rounded/btnNext.png) center right  no-repeat; cursor: pointer; } /* Next button */
+	div.light_rounded .pbv_previous:hover { background: url(../images/prettyPhoto/light_rounded/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+	div.light_rounded .pbv_expand { background: url(../images/prettyPhoto/light_rounded/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.light_rounded .pbv_expand:hover { background: url(../images/prettyPhoto/light_rounded/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.light_rounded .pbv_contract { background: url(../images/prettyPhoto/light_rounded/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.light_rounded .pbv_contract:hover { background: url(../images/prettyPhoto/light_rounded/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.light_rounded .pbv_close { width: 75px; height: 22px; background: url(../images/prettyPhoto/light_rounded/sprite.png) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.light_rounded #pbv_full_res .pbv_inline { color: #000; } 
+	div.light_rounded .pbv_gallery a.pbv_arrow_previous,
+	div.light_rounded .pbv_gallery a.pbv_arrow_next { margin-top: 12px !important; }
+	div.light_rounded .pbv_nav .pbv_play { background: url(../images/prettyPhoto/light_rounded/sprite.png) -1px -100px no-repeat; height: 15px; width: 14px; }
+	div.light_rounded .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/light_rounded/sprite.png) -24px -100px no-repeat; height: 15px; width: 14px; }
+
+	div.light_rounded .pbv_arrow_previous { background: url(../images/prettyPhoto/light_rounded/sprite.png) 0 -71px no-repeat; } /* The previous arrow in the bottom nav */
+		div.light_rounded .pbv_arrow_previous.disabled { background-position: 0 -87px; cursor: default; }
+	div.light_rounded .pbv_arrow_next { background: url(../images/prettyPhoto/light_rounded/sprite.png) -22px -71px no-repeat; } /* The next arrow in the bottom nav */
+		div.light_rounded .pbv_arrow_next.disabled { background-position: -22px -87px; cursor: default; }
+
+	div.light_rounded .pbv_bottom .pbv_left { background: url(../images/prettyPhoto/light_rounded/sprite.png) -88px -80px no-repeat; } /* Bottom left corner */
+	div.light_rounded .pbv_bottom .pbv_middle { background: #fff; } /* Bottom pattern/color */
+	div.light_rounded .pbv_bottom .pbv_right { background: url(../images/prettyPhoto/light_rounded/sprite.png) -110px -80px no-repeat; } /* Bottom right corner */
+
+	div.light_rounded .pbv_loaderIcon { background: url(../images/prettyPhoto/light_rounded/loader.gif) center center no-repeat; } /* Loader icon */
+	
+	/* ----------------------------------
+		Dark Rounded Theme
+	----------------------------------- */
+	
+	div.dark_rounded .pbv_top .pbv_left { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -88px -53px no-repeat; } /* Top left corner */
+	div.dark_rounded .pbv_top .pbv_middle { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top left repeat; } /* Top pattern/color */
+	div.dark_rounded .pbv_top .pbv_right { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -110px -53px no-repeat; } /* Top right corner */
+	
+	div.dark_rounded .pbv_content_container .pbv_left { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top left repeat-y; } /* Left Content background */
+	div.dark_rounded .pbv_content_container .pbv_right { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top right repeat-y; } /* Right Content background */
+	div.dark_rounded .pbv_content { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top left repeat; } /* Content background */
+	div.dark_rounded .pbv_next:hover { background: url(../images/prettyPhoto/dark_rounded/btnNext.png) center right  no-repeat; cursor: pointer; } /* Next button */
+	div.dark_rounded .pbv_previous:hover { background: url(../images/prettyPhoto/dark_rounded/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+	div.dark_rounded .pbv_expand { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.dark_rounded .pbv_expand:hover { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.dark_rounded .pbv_contract { background: url(../images/prettyPhoto/dark_rounded/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.dark_rounded .pbv_contract:hover { background: url(../images/prettyPhoto/dark_rounded/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.dark_rounded .pbv_close { width: 75px; height: 22px; background: url(../images/prettyPhoto/dark_rounded/sprite.png) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.dark_rounded .currentTextHolder { color: #c4c4c4; }
+	div.dark_rounded .pbv_description { color: #fff; }
+	div.dark_rounded #pbv_full_res .pbv_inline { color: #fff; }
+	div.dark_rounded .pbv_gallery a.pbv_arrow_previous,
+	div.dark_rounded .pbv_gallery a.pbv_arrow_next { margin-top: 12px !important; }
+	div.dark_rounded .pbv_nav .pbv_play { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -1px -100px no-repeat; height: 15px; width: 14px; }
+	div.dark_rounded .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -24px -100px no-repeat; height: 15px; width: 14px; }
+
+	div.dark_rounded .pbv_arrow_previous { background: url(../images/prettyPhoto/dark_rounded/sprite.png) 0 -71px no-repeat; } /* The previous arrow in the bottom nav */
+		div.dark_rounded .pbv_arrow_previous.disabled { background-position: 0 -87px; cursor: default; }
+	div.dark_rounded .pbv_arrow_next { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -22px -71px no-repeat; } /* The next arrow in the bottom nav */
+		div.dark_rounded .pbv_arrow_next.disabled { background-position: -22px -87px; cursor: default; }
+
+	div.dark_rounded .pbv_bottom .pbv_left { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -88px -80px no-repeat; } /* Bottom left corner */
+	div.dark_rounded .pbv_bottom .pbv_middle { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top left repeat; } /* Bottom pattern/color */
+	div.dark_rounded .pbv_bottom .pbv_right { background: url(../images/prettyPhoto/dark_rounded/sprite.png) -110px -80px no-repeat; } /* Bottom right corner */
+
+	div.dark_rounded .pbv_loaderIcon { background: url(../images/prettyPhoto/dark_rounded/loader.gif) center center no-repeat; } /* Loader icon */
+	
+	
+	/* ----------------------------------
+		Dark Square Theme
+	----------------------------------- */
+	
+	div.dark_square .pbv_left ,
+	div.dark_square .pbv_middle,
+	div.dark_square .pbv_right,
+	div.dark_square .pbv_content { background: url(../images/prettyPhoto/dark_square/contentPattern.png) top left repeat; }
+	div.dark_square .currentTextHolder { color: #c4c4c4; }
+	div.dark_square .pbv_description { color: #fff; }
+	div.dark_square .pbv_loaderIcon { background: url(../images/prettyPhoto/dark_rounded/loader.gif) center center no-repeat; } /* Loader icon */
+	
+	div.dark_square .pbv_content_container .pbv_left { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top left repeat-y; } /* Left Content background */
+	div.dark_square .pbv_content_container .pbv_right { background: url(../images/prettyPhoto/dark_rounded/contentPattern.png) top right repeat-y; } /* Right Content background */
+	div.dark_square .pbv_expand { background: url(../images/prettyPhoto/dark_square/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.dark_square .pbv_expand:hover { background: url(../images/prettyPhoto/dark_square/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.dark_square .pbv_contract { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.dark_square .pbv_contract:hover { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.dark_square .pbv_close { width: 75px; height: 22px; background: url(../images/prettyPhoto/dark_square/sprite.png) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.dark_square #pbv_full_res .pbv_inline { color: #fff; }
+	div.dark_square .pbv_gallery a.pbv_arrow_previous,
+	div.dark_square .pbv_gallery a.pbv_arrow_next { margin-top: 12px !important; }
+	div.dark_square .pbv_nav .pbv_play { background: url(../images/prettyPhoto/dark_square/sprite.png) -1px -100px no-repeat; height: 15px; width: 14px; }
+	div.dark_square .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/dark_square/sprite.png) -24px -100px no-repeat; height: 15px; width: 14px; }
+	
+	div.dark_square .pbv_arrow_previous { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -71px no-repeat; } /* The previous arrow in the bottom nav */
+		div.dark_square .pbv_arrow_previous.disabled { background-position: 0 -87px; cursor: default; }
+	div.dark_square .pbv_arrow_next { background: url(../images/prettyPhoto/dark_square/sprite.png) -22px -71px no-repeat; } /* The next arrow in the bottom nav */
+		div.dark_square .pbv_arrow_next.disabled { background-position: -22px -87px; cursor: default; }
+	
+	div.dark_square .pbv_next:hover { background: url(../images/prettyPhoto/dark_square/btnNext.png) center right  no-repeat; cursor: pointer; } /* Next button */
+	div.dark_square .pbv_previous:hover { background: url(../images/prettyPhoto/dark_square/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+
+
+	/* ----------------------------------
+		Light Square Theme
+	----------------------------------- */
+	
+	div.light_square .pbv_left ,
+	div.light_square .pbv_middle,
+	div.light_square .pbv_right,
+	div.light_square .pbv_content { background: #fff; }
+	
+	div.light_square .pbv_content .pbvt { color: #000; }
+	div.light_square .pbv_expand { background: url(../images/prettyPhoto/light_square/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.light_square .pbv_expand:hover { background: url(../images/prettyPhoto/light_square/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.light_square .pbv_contract { background: url(../images/prettyPhoto/light_square/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.light_square .pbv_contract:hover { background: url(../images/prettyPhoto/light_square/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.light_square .pbv_close { width: 75px; height: 22px; background: url(../images/prettyPhoto/light_square/sprite.png) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.light_square #pbv_full_res .pbv_inline { color: #000; }
+	div.light_square .pbv_gallery a.pbv_arrow_previous,
+	div.light_square .pbv_gallery a.pbv_arrow_next { margin-top: 12px !important; }
+	div.light_square .pbv_nav .pbv_play { background: url(../images/prettyPhoto/light_square/sprite.png) -1px -100px no-repeat; height: 15px; width: 14px; }
+	div.light_square .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/light_square/sprite.png) -24px -100px no-repeat; height: 15px; width: 14px; }
+	
+	div.light_square .pbv_arrow_previous { background: url(../images/prettyPhoto/light_square/sprite.png) 0 -71px no-repeat; } /* The previous arrow in the bottom nav */
+		div.light_square .pbv_arrow_previous.disabled { background-position: 0 -87px; cursor: default; }
+	div.light_square .pbv_arrow_next { background: url(../images/prettyPhoto/light_square/sprite.png) -22px -71px no-repeat; } /* The next arrow in the bottom nav */
+		div.light_square .pbv_arrow_next.disabled { background-position: -22px -87px; cursor: default; }
+	
+	div.light_square .pbv_next:hover { background: url(../images/prettyPhoto/light_square/btnNext.png) center right  no-repeat; cursor: pointer; } /* Next button */
+	div.light_square .pbv_previous:hover { background: url(../images/prettyPhoto/light_square/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+
+
+	/* ----------------------------------
+		Default style Theme
+	----------------------------------- */
+	
+	div.default .pbv_top .pbv_left { background: url(../images/prettyPhoto/default/sprite.png) -88px -53px no-repeat; } /* Top left corner */
+	div.default .pbv_top .pbv_middle { background: url(../images/prettyPhoto/default/contentPatternTop.png) top left repeat-x; } /* Top pattern/color */
+	div.default .pbv_top .pbv_right { background: url(../images/prettyPhoto/default/sprite.png) -110px -53px no-repeat; } /* Top right corner */
+	
+	div.default .pbv_content .pbvt { color: #000; }
+	div.default .pbv_content_container .pbv_left { background: url(../images/prettyPhoto/default/contentPatternLeft.png) top left repeat-y; } /* Content background */
+	div.default .pbv_content_container .pbv_right { background: url(../images/prettyPhoto/default/contentPatternRight.png) top right repeat-y; } /* Content background */
+	div.default .pbv_content { background: #fff; } /* Content background */
+	div.default .pbv_expand { background: url(../images/prettyPhoto/default/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.default .pbv_expand:hover { background: url(../images/prettyPhoto/default/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.default .pbv_contract { background: url(../images/prettyPhoto/default/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.default .pbv_contract:hover { background: url(../images/prettyPhoto/default/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.default .pbv_close { width: 22px; height: 22px; background: url(../images/prettyPhoto/default/sprite.png) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.default #pbv_full_res .pbv_inline { color: #000; } 
+	div.default .pbv_loaderIcon { background: url(../images/prettyPhoto/default/loader.gif) center center no-repeat; } /* Loader icon */
+	
+	div.default .pbv_arrow_previous { background: url(../images/prettyPhoto/default/sprite.png) 0 -71px no-repeat; height: 22px; margin-top: 0; width: 22px; } /* The previous arrow in the bottom nav */
+		div.default .pbv_arrow_previous.disabled { background-position: 0 -96px; cursor: default; }
+	div.default .pbv_arrow_next { background: url(../images/prettyPhoto/default/sprite.png) -32px -71px no-repeat; height: 22px; margin-top: 0; width: 22px; } /* The next arrow in the bottom nav */
+		div.default .pbv_arrow_next.disabled { background-position: -32px -96px; cursor: default; }
+	div.default .pbv_nav { margin-top: 0; }
+	div.default .pbv_nav p { font-size: 15px; padding: 0 3px 0 4px; }
+	div.default .pbv_nav .pbv_play { background: url(../images/prettyPhoto/default/sprite.png) -1px -123px no-repeat; height: 22px; width: 22px; }
+	div.default .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/default/sprite.png) -32px -123px no-repeat; height: 22px; width: 22px; }
+	
+	div.default .pbv_next:hover { background: url(../images/prettyPhoto/default/btnNext.png) center right no-repeat; cursor: pointer; } /* Next button */
+	div.default .pbv_previous:hover { background: url(../images/prettyPhoto/default/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+	
+	div.default .pbv_bottom .pbv_left { background: url(../images/prettyPhoto/default/sprite.png) -88px -80px no-repeat; } /* Bottom left corner */
+	div.default .pbv_bottom .pbv_middle { background: url(../images/prettyPhoto/default/contentPatternBottom.png) top left repeat-x; } /* Bottom pattern/color */
+	div.default .pbv_bottom .pbv_right { background: url(../images/prettyPhoto/default/sprite.png) -110px -80px no-repeat; } /* Bottom right corner */
+
+	/* ----------------------------------
+		darker Square Theme
+	----------------------------------- */
+	
+	div.darker_square .pbv_left ,
+	div.darker_square .pbv_middle,
+	div.darker_square .pbv_right,
+	div.darker_square .pbv_content { background: #111111; }
+	div.darker_square .pbv_description { color: #fff; }
+	
+	div.darker_square .pbv_content .pbvt { color: #000; }
+	div.darker_square .pbv_expand { background: url(../images/prettyPhoto/dark_square/sprite.png) -31px -26px no-repeat; cursor: pointer; } /* Expand button */
+	div.darker_square .pbv_expand:hover { background: url(../images/prettyPhoto/dark_square/sprite.png) -31px -47px no-repeat; cursor: pointer; } /* Expand button hover */
+	div.darker_square .pbv_contract { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -26px no-repeat; cursor: pointer; } /* Contract button */
+	div.darker_square .pbv_contract:hover { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -47px no-repeat; cursor: pointer; } /* Contract button hover */
+	div.darker_square .pbv_close { width: 75px; height: 22px; background: url(../images/prettyPhoto/dark_square/darkercl.gif) -1px -1px no-repeat; cursor: pointer; } /* Close button */
+	div.darker_square #pbv_full_res .pbv_inline { color: #000; }
+	div.darker_square .pbv_gallery a.pbv_arrow_previous,
+	div.darker_square .pbv_gallery a.pbv_arrow_next { margin-top: 12px !important; }
+	div.darker_square .pbv_nav .pbv_play { background: url(../images/prettyPhoto/dark_square/sprite.png) -1px -100px no-repeat; height: 15px; width: 14px; }
+	div.darker_square .pbv_nav .pbv_pause { background: url(../images/prettyPhoto/dark_square/sprite.png) -24px -100px no-repeat; height: 15px; width: 14px; }
+	
+	div.darker_square .pbv_arrow_previous { background: url(../images/prettyPhoto/dark_square/sprite.png) 0 -71px no-repeat; } /* The previous arrow in the bottom nav */
+		div.darker_square .pbv_arrow_previous.disabled { background-position: 0 -87px; cursor: default; }
+	div.darker_square .pbv_arrow_next { background: url(../images/prettyPhoto/dark_square/sprite.png) -22px -71px no-repeat; } /* The next arrow in the bottom nav */
+		div.darker_square .pbv_arrow_next.disabled { background-position: -22px -87px; cursor: default; }
+	
+	div.darker_square .pbv_next:hover { background: url(../images/prettyPhoto/dark_square/btnNext.png) center right  no-repeat; cursor: pointer; } /* Next button */
+	div.darker_square .pbv_previous:hover { background: url(../images/prettyPhoto/dark_square/btnPrevious.png) center left no-repeat; cursor: pointer; } /* Previous button */
+
+
+/* ------------------------------------------------------------------------
+	DO NOT CHANGE
+------------------------------------------------------------------------- */
+
+	div.pbv_pic_holder a:focus { outline:none; }
+
+	div.pbv_overlay {
+		background: #000;
+		display: none;
+		left: 0;
+		position: absolute;
+		top: 0;
+		width: 100%;
+		z-index: 9500;
+	}
+	
+	div.pbv_pic_holder {
+		display: none;
+		position: absolute;
+		width: 100px;
+		z-index: 10000;
+	}
+		
+		.pbv_top {
+			height: 20px;
+			position: relative;
+		}
+			* html .pbv_top { padding: 0 20px; }
+		
+			.pbv_top .pbv_left {
+				height: 20px;
+				left: 0;
+				position: absolute;
+				width: 20px;
+			}
+			.pbv_top .pbv_middle {
+				height: 20px;
+				left: 20px;
+				position: absolute;
+				right: 20px;
+			}
+				* html .pbv_top .pbv_middle {
+					left: 0;
+					position: static;
+				}
+			
+			.pbv_top .pbv_right {
+				height: 20px;
+				left: auto;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 20px;
+			}
+		
+		.pbv_content { height: 40px; }
+		
+		.pbv_fade { display: none; }
+		
+		.pbv_content_container {
+			position: relative;
+			text-align: left;
+			width: 100%;
+		}
+		
+			.pbv_content_container .pbv_left { padding-left: 20px; }
+			.pbv_content_container .pbv_right { padding-right: 20px; }
+		
+			.pbv_content_container .pbv_details {
+				float: left;
+				margin: 10px 0 2px 0;
+			}
+				.pbv_description {
+					display: none;
+					margin: 0 0 5px 0;
+				}
+				
+				.pbv_nav {
+					clear: left;
+					float: left;
+					margin: 3px 0 0 0;
+				}
+				
+					.pbv_nav p {
+						float: left;
+						margin: 2px 4px;
+					}
+					
+					.pbv_nav .pbv_play,
+					.pbv_nav .pbv_pause {
+						float: left;
+						margin-right: 4px;
+						text-indent: -10000px;
+					}
+				
+					a.pbv_arrow_previous,
+					a.pbv_arrow_next {
+						display: block;
+						float: left;
+						height: 15px;
+						margin-top: 3px;
+						overflow: hidden;
+						text-indent: -10000px;
+						width: 14px;
+					}
+		
+		.pbv_hoverContainer {
+			position: absolute;
+			top: 0;
+			width: 100%;
+			z-index: 2000;
+		}
+		
+		.pbv_gallery {
+			left: 50%;
+			margin-top: -50px;
+			position: absolute;
+			z-index: 10000;
+		}
+			
+			.pbv_gallery ul {
+				float: left;
+				height: 35px;
+				margin: 0 0 0 5px;
+				overflow: hidden;
+				position: relative;
+			}
+			
+			.pbv_gallery ul a {
+				border: 1px #000 solid;
+				border: 1px rgba(0,0,0,0.5) solid;
+				display: block;
+				float: left;
+				height: 33px;
+				overflow: hidden;
+			}
+			
+			.pbv_gallery ul a:hover,
+			.pbv_gallery li.selected a { border-color: #fff; }
+			
+			.pbv_gallery ul a img { border: 0; }
+			
+			.pbv_gallery li {
+				display: block;
+				float: left;
+				margin: 0 5px 0 0;
+			}
+			
+			.pbv_gallery li.default a {
+				background: url(../images/prettyPhoto/default/default_thumbnail.gif) 0 0 no-repeat;
+				display: block;
+				height: 33px;
+				width: 50px;
+			}
+			
+			.pbv_gallery li.default a img { display: none; }
+			
+			.pbv_gallery .pbv_arrow_previous,
+			.pbv_gallery .pbv_arrow_next {
+				margin-top: 7px !important;
+			}
+		
+		a.pbv_next {
+			background: url(../images/prettyPhoto/light_rounded/btnNext.png) 10000px 10000px no-repeat;
+			display: block;
+			float: right;
+			height: 100%;
+			text-indent: -10000px;
+			width: 49%;
+		}
+			
+		a.pbv_previous {
+			background: url(../images/prettyPhoto/light_rounded/btnNext.png) 10000px 10000px no-repeat;
+			display: block;
+			float: left;
+			height: 100%;
+			text-indent: -10000px;
+			width: 49%;
+		}
+		
+		a.pbv_expand,
+		a.pbv_contract {
+			cursor: pointer;
+			display: none;
+			height: 20px;	
+			position: absolute;
+			right: 30px;
+			text-indent: -10000px;
+			top: 10px;
+			width: 20px;
+			z-index: 20000;
+		}
+			
+		a.pbv_close {
+			display: block;
+			float: right;
+			line-height:22px;
+			text-indent: -10000px;
+		}
+		
+		.pbv_bottom {
+			height: 20px;
+			position: relative;
+		}
+			* html .pbv_bottom { padding: 0 20px; }
+			
+			.pbv_bottom .pbv_left {
+				height: 20px;
+				left: 0;
+				position: absolute;
+				width: 20px;
+			}
+			.pbv_bottom .pbv_middle {
+				height: 20px;
+				left: 20px;
+				position: absolute;
+				right: 20px;
+			}
+				* html .pbv_bottom .pbv_middle {
+					left: 0;
+					position: static;
+				}
+				
+			.pbv_bottom .pbv_right {
+				height: 20px;
+				left: auto;
+				position: absolute;
+				right: 0;
+				top: 0;
+				width: 20px;
+			}
+		
+		.pbv_loaderIcon {
+			display: block;
+			height: 24px;
+			left: 50%;
+			margin: -12px 0 0 -12px;
+			position: absolute;
+			top: 50%;
+			width: 24px;
+		}
+		
+		#pbv_full_res {
+			line-height: 1 !important;
+		}
+		
+			#pbv_full_res .pbv_inline {
+				text-align: left;
+			}
+			
+				#pbv_full_res .pbv_inline p { margin: 0 0 15px 0; }
+	
+		div.pbvt {
+			color: #fff;
+			display: none;
+			font-size: 17px;
+			margin: 0 0 5px 15px;
+			z-index: 9999;
+		}
+
+/* ------------------------------------------------------------------------
+	Miscellaneous
+------------------------------------------------------------------------- */
+
+	.clearfix:after {
+	    content: "."; 
+	    display: block; 
+	    height: 0; 
+	    clear: both; 
+	    visibility: hidden;
+	}
+
+	.clearfix {display: inline-block;}
+
+	/* Hides from IE-mac \*/
+	* html .clearfix {height: 1%;}
+	.clearfix {display: block;}
+	/* End hide from IE-mac */
+
+.videoshowcase .vsc-video-container {
+	margin: 2px;
+	display: inline-block;
+	zoom: 1;
+	*display: inline;
+}
+.videoshowcase img {
+	border: none;
+	padding: 0;
+}

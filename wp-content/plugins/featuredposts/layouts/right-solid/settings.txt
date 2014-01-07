@@ -1,0 +1,4 @@
+width,int,Entity Width,[Default: 700] - Width in pixels of the featured posts entity
+height,int,Entity Height,[Default: 350] - Height in pixels of the featured posts entity
+image_width,int,Image Width,[Default: 465] - Width in pixels of the featured posts image
+image_height,int,Image Height,[Default: 350] - Height in pixels of the featured posts image

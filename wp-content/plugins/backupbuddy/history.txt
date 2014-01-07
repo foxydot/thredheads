@@ -1,0 +1,138 @@
+4.0.0 - 2013-06-10 - Dustin Bolton
+	ENHANCEMENT:
+		Various user interface and layout improvements for usability and simplification.
+	ENHANCEMENT:
+		Re-organized Settings page.
+	FEATURE:
+		Backup profiles.
+	ENHANCEMENT:
+		Streamlined & simplified Restore / Migrate page.
+	FEATURE:
+		View text-based files within backup archives. Hover over backups on the Backups or Restore / Migrate page for additional options.
+	FEATURE:
+		Restore files from backup archives. Easily "roll back" files.
+	FEATURE:
+		ImportBuddy: Backup meta information now viewable from Step 1 by clicking the 'View Meta' button next to each backup listed.
+	FEATURE:
+		New setting to be notified if no new backups have occured in X number of days.
+	FEATURE:
+		Error Notification email "Test" link added for verifying email-sending functionality properly works on your server.
+	FEATURE:
+		Ability to delete local backup after manually sending to a remote destination.
+	FEATURE:
+		Ability to customize the "from" email address for any email notifications sent by BackupBuddy.
+	ENHANCEMENT:
+		ImportBuddy: Improved readability & look of database test results. Improved testing to help catch database permissions problems.
+	ENHANCEMENT:
+		View database exclusions based on profile on Server Information page.
+	ENHANCEMENT:
+		View file exclusions based on profile on Server Information page.
+	FEATURE:
+		Built-in tutorial/tour added to many pages for additional help in BOTH BackupBuddy AND ImportBuddy.
+	Integrity check details now lists tables broken out in step details.
+	Cleaned up integrity check data structure to be more extendable in future.
+	Fixed framework not handling custom savepoint in item-specific names.
+	Now tracking last backup finish time in data structure in addition to existing start time.
+	Fixed housekeeping cron job not being runnable.
+	ABSPATH now listed on Server Information page URLs and Paths section.
+	Fixed Windows paths causing "Download" link not to show on backups page.
+	Replacing colons in remote path when storing to Stash. (users with custom ports in URLs encountered error)
+	Re-organized Settings page.
+	Backup Statistics moved from backup listing to the Details section available by hovering a backup and selecting "View Details" under the "Status" column.
+	Recent backups Status Details now shows common window shared with backups list.
+	fileoptions no longer deleted due to merely old age. Only removed when corresponding backup is removed.
+	Fixed database mass replace changing tabs whenever beginning.
+	ImportBuddy: Added additional checking on Step 3 controller to verify DAT contents still exist in data structure. This detects an interupted restore process (ie restarting importbuddy in a new tab wiping out DAT array).
+	ImportBuddy: Database test now verifies table creation ability to insure permissions are valid. Also deletes temporarily created table.
+	ImportBuddy: Database test now verified prefix is in proper format. Format: XXXXX_ where X's are alphanumeric and prefix ends in an underscore.
+	ImportBuddy: Database test interface results improved & UI cleaned up.
+	Replaced jQuery live() calls with on() due to deprecation.
+	Fixed scheduled send notification email erroring if fileoptions locked. Now ignores lock and uses read-only mode.
+	New data structure version: 6.
+	Fixed zip system hanging on symbolic links in some cases / configurations.
+	Settings page prompts to save if user navigates away from page or tab after making an unsaved change.
+	Additional information now stored in backup meta data such as profile details.
+	Backup buttons on "Backups" page now list all profiles available for starting a manual backup.
+	Cleaned up & made permissions errors consistent when unable to create any directories.
+	Activation error messages no longer display unexpected error output.
+	Fatal directory error messages no longer show on non-BackupBuddy pages.
+	Fatal directory errors now block the ability for a backup to begin.
+	Anti directory browsing verification now only runs on BackupBuddy pages on frontend and only on scheduled cron runs on backend for better performance.
+	ENHANCEMENT:
+		Loopback connection error now provides server response in textarea within error box to indicate server response and details.
+	ENHANCEMENT:
+		BackupBuddy temp / storage directories now added to Paths & Permissions section of Server Information page for troubleshooting permissions issues.
+	ENHANCEMENT:
+		Added user and group IDs to Permissions section of Server Information page.
+	ENHANCEMENT:
+		Added PHP process username, UID, and GUID to Server Information page.
+	Server Information page file count updating fixed.
+	Removed all embedded videos from Remote Destination pages to avoid JS conflicts / issues.
+	Misc bug fixes.
+	Misc UI cleanup.
+	Misc wording updates.
+4.0.0.1 - 2013-06-10 - Dustin Bolton
+	Fixed error downloading backup ZIP file on Windows servers.
+	Fixed javascript error on File Restore page on Windows servers.
+4.0.0.2 - 2013-06-11 - Dustin Bolton
+	Fixed directory exclusions not being migrated to v4.0.
+4.0.0.3 - 2013-06-12 - Dustin Bolton
+	verify_directories() error in some cases during backup.
+	PHP SSH2, SFTP Support indicatation added to Server Info page for informational purposes on its availability across hosts.
+4.0.1 - 2013-06-14 - Dustin Bolton
+	Updated German translations.
+	Fixed a PHP 5.4 strict warning in _pluginbuddy.php
+	Full release of 4.0.0.1-4.0.0.3.
+	Recommended update if running 4.0.0 through 4.0.0.3.
+4.0.1.1 - 2013-06-17 - Dustin Bolton
+	Fixed undefined index on profiles editing page under some circumstances.
+4.0.1.2 - 2013-06-18 - Dustin Bolton
+	Fixed error when attempting to display/log Stash response error to user.
+4.0.1.3 - 2013-06-19 - Dustin Bolton
+	Added warning if user attempts to exclude a WordPress core table on Settings page or in a profile.
+	ImportBuddy: Database test no longer blocks proceeding if database values are invalid when both skipping import AND skipping migration are enabled (Warning only).
+	ImportBuddy: Database test no longer blocks proceeding if WordPress already exists AND set to skip import (Warning only).
+4.0.1.4 - 2013-06-21 - Dustin Bolton
+	Active WordPress plugins now logged in status log by pre_backup function for better troubleshooting conflicts.
+	Settings page no longer displays database table size next to tables on table exclusion to improve Settings page performance.
+4.0.1.5 - 2013-06-25 - Dustin Bolton
+	Fixed zbzipcore typo to delete_directory__recursive() to delete_directory_recursive().
+	Fixed two undefined index notices when entering a license key while not logged in.
+	Fixed possible display of buffer-related notice when upgrading WordPress due to reminder problem.
+	Added new warning if BackupBuddy received a negative number response to the max command line length check for database dump. This can be caused if get_conf ARG_MAX failed. Automatically falls back to compatibility database dump mode.
+	Added new advanced settings option to allow bypassing the command line length check to prevent it from falling into compatibility mode.
+	Unsetting reference &$file to prevent PHP oddity from causing issue extracting a list of files when restoring manually within BackupBuddy.
+	Added new error on Scheduling page when calculating the "Next run" time if the scheduled cron event was not found registered with WordPress.
+		Error #874784. WordPress scheduled cron event not found. See "Next Run" time in the schedules list below for problem schedule. This may be caused by a conflicting plugin deleting the schedule or manual deletion. Try editing or deleting and re-creating the schedule.
+4.0.1.6 - 2013-06-26 - Dustin Bolton
+	Fixed Error #874784 always displaying.
+4.0.1.7 - 2013-06-26 - Dustin Bolton
+	Now outputting DAT file contents prior to writing for troubleshooting. (Sans database user/pass for security).
+	Fixed Windows UNC paths dropping leading backslash when attempting to load activation PHP file.  Used copious quantities of escaping via regex.
+	Editing a Dropbox destination could result in credentials being lost and having to delete & recreate destination to fix.
+4.0.1.8 - 2013-07-01 - Dustin Bolton
+	Added Server Load Average to Server Information page.
+	Added Http Server Software to Server Information page.
+	Slightly increased maximum amount of retries and time between retries for cron steps pre-maturely running / running out of order.
+	Added Dropbox transfer limitation hypothesis to status log just prior to file transfer.
+	Added size of file to be transferred to status log just prior to Dropbox transfer.
+	ImportBuddy now only strongly warns if prefix includes an embedded underscore rather than completely blocking.
+	Skipped database dump no longer results in backup errors or backups marked as bad. Database skipping is noted as warnings only now.
+	Fixed missing download link on Downloads page when hovering individual backups.s
+	Dropbox issue fixed where editing a Dropbox destination would result in loss of authentication to Dropbox.
+	Fixed activation error on Windows servers when on a network drive.
+	Performance improvements on backup file listing.
+	ImportBuddy now sets timezone earlier to avoid timezone warnings on scarcely configurd servers.
+	dir_size_map() warnings suppressed and checked to be array to insure symlinks breaking it will not be fatal.
+	Automatic updates to the latest minor version are now available by clicking "Update" on the Server Information page BackupBuddy version section next to the latest minor version (if available). You must already have licensing set up properly to use this. Once it is clicked you may update normally to the latest minor version.
+4.0.1.11 - 2013-07-02 - Dustin Bolton
+	Fixed Quick Start form directing to wrong URL after completion in Multisite.
+	Fixed javascript error that could cause backup status to stop updating despite backup potentially continuing behind the scenes.
+	*
+4.0.2 - 2013-07-02 - Dustin Bolton
+	Automatic updates release.
+4.0.2.1 - 2013-07-02 - Dustin Bolton
+	* off
+	Small changes.
+	
+	

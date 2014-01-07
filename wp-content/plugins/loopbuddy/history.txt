@@ -1,0 +1,73 @@
+1.2.3 - 2011-09-22 - Ronald Huereca
+	Fixing updater issue
+1.2.2 - 2011-09-22 - Ronald Huereca
+	Fixing updater issue
+1.2.1 - 2011-09-15 - Ronald Huereca
+	Fixing an issue with automatic upgrades
+1.2.0 - 2011-09-09 - Ronald Huereca
+	Added advanced WordPress 3.1+ taxonomy queries.  Users now have the power to query posts from multiple taxonomies.
+	Added advanced WordPress 3.1+ meta queries.  Users now have the power to query posts based on multiple custom field values.
+	Fixed a bug where LoopBuddy was not being recognized on a post tag archive
+	Fixed a bug where LoopBuddy was not working on dynamically created Custom Post Type archives
+	Fixed a bug in the LoopBuddy Query/Layout import process
+	Fixed a bug in Query Editor where Post Type and Post Status weren't being set properly via Assist.
+1.1.1 - 2011-08-12 - Ronald Huereca
+	Fixed a bug where multiple post types of the same type were being displayed in the LoopBuddy Settings
+	Added Sticky Posts to the Query Editor
+	Added Post Permalinks as an option for the Post Thumbnail
+	Fixed a bug where Post Status wasn't being displayed properly in the Assist area for posts
+1.1.0 - 2011-08-05 - Ronald Huereca
+	Added WP PageNavi support for pagination
+	Added default layouts/queries upon activation and stripped the existing default layout to just three elements (title, content, edit link)
+	You can now query more than one post type and post status 
+	Post thumbnails can now have a custom link
+	Offsets can now be set (please note that paging does not work properly with offsets)
+	Loop layouts can now have a custom wrapper class name
+	Fixed before/after text on various elements
+	Resolved hidden custom field items from showing and change the output format for serialized data
+	Added taxonomy template field when displaying all taxonomies
+	Resolved a post date issue where the date was showing the last modified instead
+	Added a custom search box option in the layout editor
+	Fixed a time zone issue with the current date tag
+	Added German language file
+	Added Respond layout tag for comments
+1.0.4 - 2011-07-29 - Ronald Huereca
+	Updated the videos to include audio
+1.0.3 - 2011-07-29 - Ronald Huereca
+	Added contextual help videos for LoopBuddy
+1.0.2 - 2011-07-28 - Ronald Huereca
+	Fixing a critical bug when viewing/saving LoopBuddy settings
+1.0.1 - 2011-07-28 - Ronald Huereca
+	Fixed query when someone select "No Paging" and the loop still tries to page
+	Fixed category bug when selecting a category in the query editor
+	Fixed a missing image on the settings page
+	Fixed a wrong link in the settings page to the layout editor
+	Fixed a bug where LoopBuddy's meta box for custom post types wasn't showing
+	Updated the updater system
+1.0.0 - 2011-07-19 - Ronald Huereca
+	Releasing first stable version
+0.9.0 - 2011-07-15 - Ronald Huereca
+	Modified the Loop Layout to render title items correctly
+0.8.0 - 2011-07-14 - Ronald Huereca
+	Layouts and Queries can now be loaded independently
+0.7.0 - 2011-07-08 - Ronald Huereca
+	Added hooks for adding custom Layout Tags
+	Various bug fixes regarding paging and queries
+	Fixed an author bug in the Query editor
+0.5.2 - 2011-06-30 - Ronald Huereca
+	Adding Builder 3.0 Loop Standard Support
+	Added content filter for Loop Above/Loop Below support
+	Added theme support for the loop standard with a warning if the theme doesn't support it
+0.5.0 - 2011-06-10 - Ronald Huereca
+	Numerous bug fixes
+	Added support for attachment pages
+	Revised the post/page query editor
+	Added tooltips to query editor
+0.4.2 - 2011-05-31 - Ronald Huereca
+	Added search form to Layout Editor
+0.4.1 - 2011-05-23 - Ronald Huereca
+	Fixing post meta issues and random bugs
+0.4.0 - 2011-05-19 - Ronald Huereca
+	Initial beta release
+0.0.2 - 2011-01-18 - Dustin Bolton
+	Getting close.
