@@ -1,0 +1,23 @@
+/*
+    Theme Name: Something Blue
+	Theme URI: http://msdlab.com/
+	Description: Custom theme for the Genesis Framework.
+    Author: Mad Science Dept.
+    Author URI: http://msdlab.com/
+ 
+    Version: 2.0
+  
+    Template: genesis
+    Template Version: 2.0
+ 
+	License: GNU General Public License v2.0 (or later)
+	License URI: http://www.opensource.org/licenses/gpl-license.php
+*/
+
+
+/* 
+*
+* This theme uses LESS. The actual files are found in ./lib/less and are output to ./lib/css. 
+* The files are enqueued via functions.php
+*
+*/

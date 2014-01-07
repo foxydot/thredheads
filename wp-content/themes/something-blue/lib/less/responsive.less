@@ -1,0 +1,497 @@
+@import 'mixins';
+
+.nav-responsive ul, 
+.nav-responsive li,
+.nav-responsive li a {  
+    box-sizing:border-box;  
+    -moz-box-sizing:border-box;  
+    -webkit-box-sizing:border-box;  
+}  
+  
+
+.nav-responsive a#pull, .subnav-responsive a#subpull {  
+    display: none;  
+}
+
+/* Responsive Design
+------------------------------------------------------------ */
+
+/* ==================================================================================================================== */
+/* ! The 1140px Grid V2 by Andy Taylor \ http://cssgrid.net \ http://www.twitter.com/andytlr \ http://www.andytlr.com   */
+/* ==================================================================================================================== */
+
+
+
+.onecol, .twocol, .threecol, .fourcol, .fivecol, .sixcol, .sevencol, .eightcol, .ninecol, .tencol, .elevencol {
+margin-right: 3.8%;
+float: left;
+min-height: 1px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+.onecol {
+width: 4.85%;
+}
+
+.twocol {
+width: 13.5%;
+}
+
+.threecol {
+width: 22.05%;
+}
+
+.fourcol{
+width: 30.75%;
+}
+
+.fivecol {
+width: 39.45%;
+}
+
+.sixcol {
+width: 48%;
+}
+
+.sevencol {
+width: 56.75%;
+}
+
+.eightcol {
+width: 65.4%;
+}
+
+.ninecol {
+width: 69.85%;
+}
+
+.tencol {
+width: 82.7%;
+}
+
+.elevencol {
+width: 91.35%;
+}
+.twelvecol {
+width: 100%;
+}
+
+.last  {
+margin-right: 0px;
+}
+
+img, object, embed {
+max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+.content-sidebar{
+  #content{
+    .ninecol;
+  }
+  #sidebar{
+    .threecol;
+    float: right;
+  }
+}
+.sidebar-content{
+  #content{
+    .ninecol;
+    float: right;
+  }
+  #sidebar{
+    .threecol;
+  }
+}
+.sidebar-content-sidebar{
+  #content-sidebar-wrap{
+    .ninecol;
+    float:right;
+    margin-right: 0px;
+    width: 73.65%;
+    #content{
+      .sixcol;
+      width: 51.8%;
+      margin-right: 0px;
+      padding-right: 3.8%;
+      min-height: 570px;
+    }
+    #sidebar-alt{
+      .sixcol;
+      margin-right: 0px;
+      padding: 0 3.8%;
+      min-height: 570px;
+      }
+  }
+  #sidebar{
+    .threecol;
+  }
+}
+.content-sidebar.section-auth{
+  #content{
+    .sevencol;
+    margin-left: 3.8%;
+    margin-right: 0;
+  }
+  #sidebar{
+    .fivecol;
+    margin-right: 0;
+    float: right;
+  }
+}
+/* Smaller screens */
+
+@media only screen and (max-width: 1023px) {
+
+  
+    body {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+  
+    #wrap {
+      -moz-box-shadow: none;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      margin: 0;
+    }
+    
+    #description,
+    #footer .creds,
+    #footer .gototop,
+    #title,
+    #title-area {
+      float: none;
+      text-align: center;
+    }
+  
+    #title-area {
+      padding: 10px 0;
+    }
+  
+    #description,
+    #title a,
+    #title a:hover {
+      padding: 0;
+    }
+  
+    #header .widget-area {
+      padding: 0 0 10px;
+    }
+  
+    #header .searchform {
+      float: none;
+      padding: 0;
+      text-align: center;
+    }
+  
+    #header .s {
+      margin: 0 -7px 0 0;
+    }
+  
+    #inner {
+      padding: 20px 0 0;
+    }
+  
+    .breadcrumb,
+    .navigation,
+    .sidebar .widget,
+    .taxonomy-description {
+      margin: 0 20px 20px;
+    }
+    
+    #content {
+      padding: 0;
+    }
+  
+    .page .page,
+    .post,
+    #comments,
+    #respond {
+      padding: 0;
+    }
+  
+    .author-box {
+      margin: 0 20px 40px;
+    }
+    
+    #footer-widgets .widget {
+      padding: 20px 20px 0;
+    }
+  
+    #footer-widgets .wrap {
+      padding: 0;
+    }
+  
+    .footer-widgets-1,
+    .footer-widgets-2,
+    .footer-widgets-3 {
+      margin: 0;
+    }
+  
+  }
+
+
+/* Mobile */
+
+@media only screen and (max-width: 800px) {
+      #footer .gototop,
+    #footer .creds {
+      float: none;
+      width: 100%;
+      text-align: center; 
+    }
+}
+@media only screen and (max-width: 767px) {
+
+  body {
+  font-size: 14px;
+  -webkit-text-size-adjust: none;
+  }
+  
+  .wrap, body, #wrap {
+  width: 100%;
+  min-width: 0;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
+  }
+ 
+  
+      
+
+    
+    .sidebar-content-sidebar{
+      #content-sidebar-wrap{
+        #content{
+          width: 100%;
+        }
+        #sidebar-alt{
+          display:none;
+        }
+      }
+    }
+}
+
+
+@media only screen and (max-width : 500px) {  
+    .archive-page,
+    .content-sidebar #content,
+    .sidebar-content #content,
+    .sidebar-content-sidebar #content,
+    .sidebar-sidebar-content #content,
+    .content-sidebar-sidebar #content,
+    .sidebar-content-sidebar #content-sidebar-wrap,
+    .sidebar-sidebar-content #content-sidebar-wrap,
+    .content-sidebar-sidebar #content-sidebar-wrap,   
+    .footer-widgets-1,
+    .footer-widgets-2,
+    .footer-widgets-3,
+    .full-width-content #content,
+    #footer .creds,
+    #footer .gototop,
+    #footer-widgets .wrap,
+    #header .widget-area,
+    #title-area,
+    #wrap {
+      width: 100% !important;
+      float: none;
+    }
+  .wrap .onecol,
+  .wrap .twocol, 
+  .wrap .threecol, 
+  .wrap .fourcol, 
+  .wrap .fivecol, 
+  .wrap .sixcol, 
+  .wrap .sevencol, 
+  .wrap .eightcol, 
+  .wrap .ninecol, 
+  .wrap .tencol, 
+  .wrap .elevencol, 
+  .wrap .twelvecol {
+  width: auto;
+  float: none;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  }
+  .nav-primary  {
+    float: none;
+    display: block;
+  }
+  .nav-responsive {
+    border-bottom: 0;
+    ul {
+      display: none;
+      height: auto;
+    }
+    a#pull {
+      display: inline-block;
+      width: 100%;
+      position: relative;
+      text-indent: 20px;
+      .quickgradient(lighten(@medgrey,10%));
+      min-height: 33px;
+      padding-top: 14px;
+      position: relative;
+      > strong {
+        color: #fff;
+        text-decoration: none;
+        text-shadow:1px 1px 1px rgba(0, 0, 0, 0.78);
+        font-size: 14px;
+      }
+      ul#mobile_menu {
+        margin-top: 14px;
+        li{
+          display: block;
+          list-style: none;
+          padding: 0;
+          a{
+            .quickgradient(lighten(@medgrey,10%));
+            color: @white;
+            display: block;
+            width: 100%;
+            padding: 0.5em;
+          }
+          a:hover{
+            .quickgradient(lighten(@dkgrey,10%));
+          }
+          ul.sub-menu {
+            margin-top: 0;
+            display: block;
+            position: relative;
+            top: 0;
+            left: 0;
+            background: none;
+            .drop-shadow(0, 0, 0, 0);
+            li {
+              display: block;
+              list-style: none;
+              a{
+                text-indent: 40px;
+              }
+              ul li{
+                a{
+                  text-indent: 60px;
+                }
+                ul li{
+                  a{
+                    text-indent: 80px;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    a#pull:hover {
+      text-decoration: none;
+    }
+  }
+  
+  .nav-responsive a#pull:after {
+    content:"\f03A";
+    font-family: 'FontAwesome';
+    font-size: 2rem;
+    text-indent: 0;
+    color: @white;
+    text-align: center;
+    width: 30px;
+    height: 30px;
+    .border-radius(4px);
+    background: @blue;
+    display: inline-block;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+  }  
+     
+    #sidebar,#sidebar-alt{display:none;}
+    
+} 
+
+@media only screen and (max-width : 320px) {  
+    
+    h1 {
+      font-size: 24px;
+    }
+    
+    .taxonomy-description h1 {
+      margin: 0;
+    }
+    
+    h2,
+    h2 a,
+    h2 a:visited {
+      font-size: 18px;
+    }
+    
+    .widget-area h2,
+    .widget-area h2 a {
+      font-size: 14px;
+      margin: 0 0 5px;
+    }
+    
+    h3 {
+      font-size: 16px;
+    }
+    
+    h4 {
+      font-size: 14px;
+    }
+    
+    .taxonomy-description h1,
+    .widget-area h4 {
+      font-size: 14px;
+      padding: 9px 10px 8px;
+    }
+    
+        
+    h5 {
+      font-size: 12px;
+    }
+    
+    p {
+      font-size: 14px;
+    }
+}
+
+
+/* Responsive Design Custom Styles
+------------------------------------------------------------ */
+
+/* Smaller screens */
+
+@media only screen and (max-width: 1024px) {
+  /* Enter Your Custom Styles Here */ 
+}
+
+/* Mobile */
+
+@media only screen and (max-width: 768px) {
+  /* Enter Your Custom Styles Here */ 
+  .attachment-post-image{
+    width: 100%;
+  }
+}
+
+
+@media only screen and (max-width : 480px) {  
+  /* Enter Your Custom Styles Here */ 
+ 
+} 
+
+@media only screen and (max-width : 320px) {  
+  /* Enter Your Custom Styles Here */ 
+
+}

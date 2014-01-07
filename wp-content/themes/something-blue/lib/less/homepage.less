@@ -1,0 +1,180 @@
+@import 'lesshat';
+@import 'mixins';
+
+#hp-top{
+  display: block;
+  min-height: 300px;
+  border-top: 4px solid @ltgrey;
+  border-bottom: 4px solid @blue;
+  margin-bottom: 2rem;
+  .carousel{
+    margin-bottom: 0;
+    .item {
+      height: 300px;
+      .sd2-node-caption {
+        display: none;
+      }
+      .full-slide-link-hit-area{
+        display: block;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .carousel-control{
+      font-size: 12.0rem;
+      width: 100px;
+      padding-top: 40px;      
+    }
+    .carousel-control:focus{
+      outline: none;
+    }
+    .carousel-control.right{
+      left: auto;
+      right: 0px;
+    }
+  }
+}
+.site-inner{
+  display: none;
+}
+#hp-callout{
+  .textwidget{
+    .customsanserif;
+    font-size: 1.4rem;
+    margin: 2.8rem auto 1.4rem;
+    text-align: center;
+  }
+}
+.slidedeck-iframe-embed{
+  margin: 0 auto;
+  border:1px solid @ltgrey;
+}
+#homepage-widgets{
+  .wrap{
+    .left{
+      padding: 0 10rem;
+      section.widget{
+        h4.widget-title{
+          margin: 0;
+          padding: 0;
+          color: @blue;
+          text-transform: uppercase;
+          font-weight: 400;
+          font-size: 36px;
+          font-size: 3.6rem;
+          span{
+            font-size: 24px;
+            font-size: 2.4rem;
+            color: @orange;
+            margin-bottom: 1rem;
+          }
+        }
+        ul{
+          border-top: 1px dotted @medgrey;
+          li{
+            border-bottom: 1px dotted @medgrey;
+          }
+          li:before{
+            font-family: "FontAwesome";
+            content: "\f041";
+            color: @blue;
+            margin-right: 0.5rem;
+          }
+        }
+        .readmore{
+          .button(@blue);
+          float: right;
+        }
+        .readmore:hover{
+          text-decoration: none;
+        }
+        a.msd-widget-text{
+          display: none;
+        }
+      }
+    }
+    .right{
+      padding: 0;
+      section.widget{
+        margin-bottom: 10px;
+        margin-bottom: 1rem;
+        .widget-icon{
+          border-right: 1px solid @white;
+          color: @orange;
+          padding: 2rem 1rem;
+          text-align: center;
+        }
+        .widget-wrap{
+          padding: 1rem;
+          font-size: 1.3rem;
+          h4.widget-title{
+            margin: 0;
+            padding: 0;
+            color: @blue;
+            text-transform: uppercase;
+            font-weight: 400;
+            font-size: 24px;
+            font-size: 2.4rem;
+          }
+          .readmore span{
+            display: none;
+          }
+          .readmore:hover{
+            text-decoration: none;
+          }
+          i.fa-chevron-circle-right{
+            text-align: right;
+            display: block;
+            color: @blue;
+            font-size: 1.6rem;
+          }
+        }
+      }
+    }
+  }
+}
+/* Responsive Design Custom Styles
+------------------------------------------------------------ */
+
+/* Smaller screens */
+
+@media only screen and (max-width: 1023px) {
+  /* Enter Your Custom Styles Here */ 
+  #hp-top{
+    min-height: 200px;
+   .carousel .item {
+    height: 200px;
+  }
+  .carousel-control{
+    display: none;
+  }
+  }
+}
+
+/* Mobile */
+
+@media only screen and (max-width: 767px) {
+  /* Enter Your Custom Styles Here */ 
+  #hp-top{
+    min-height: 150px;
+  .carousel .item {
+    height: 150px;
+  }  
+  }
+}
+
+
+@media only screen and (max-width : 479px) {  
+  /* Enter Your Custom Styles Here */ 
+  #hp-top{
+    min-height: 100px;
+  .carousel .item {
+    height: 100px;
+  }
+  }
+} 
+
+@media only screen and (max-width : 319px) {  
+  /* Enter Your Custom Styles Here */ 
+}
