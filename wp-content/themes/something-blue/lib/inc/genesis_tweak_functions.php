@@ -7,6 +7,7 @@ function msdlab_pre_header(){
     print '<div class="pre-header">
         <div class="wrap">';
            do_action('msdlab_pre_header');
+           do_shortcode('[msd-digits]');
            do_shortcode('[msd-social]');
            get_search_form();
     print '
@@ -221,6 +222,9 @@ register_nav_menus( array(
     'footer_menu' => 'Footer Menu'
 ) );
 
+function add_drop_shadow_to_footer(){
+    print '<div class="footer-shadow"></div>';
+}
 
 /*** Blog Header ***/
 function msd_add_blog_header(){

@@ -24,6 +24,9 @@ add_action( 'genesis_header', 'genesis_do_nav' );
 remove_action( 'genesis_after_header', 'genesis_do_subnav' );
 add_action( 'msdlab_pre_header', 'genesis_do_subnav' );
 
+add_action('genesis_after_header',array('MSDSocial','msdlab_bang_bar'));
+
+
 //*** SIDEBARS ***/
 //add_action('genesis_before', 'msdlab_ro_layout_logic'); //This ensures that the primary sidebar is always to the left.
 add_filter('widget_text', 'do_shortcode');//shortcodes in widgets
@@ -32,9 +35,10 @@ add_filter('widget_text', 'do_shortcode');//shortcodes in widgets
 add_filter('genesis_breadcrumb_args', 'msdlab_breadcrumb_args'); //customize the breadcrumb output
 remove_action('genesis_before_loop', 'genesis_do_breadcrumbs'); //move the breadcrumbs 
 add_filter( 'genesis_post_info', 'sp_post_info_filter' );
-remove_action('genesis_entry_header','genesis_do_post_title'); //move the title out of the content area
-add_action('msdlab_title_area','genesis_do_post_title');
-add_action('genesis_after_header','msdlab_do_title_area');
+//remove_action('genesis_entry_header','genesis_do_post_title'); //move the title out of the content area
+//add_action('msdlab_title_area','genesis_do_post_title');
+//add_action('genesis_after_header','msdlab_do_title_area');
+add_action('genesis_entry_header','msdlab_do_post_subtitle'); 
 add_action('genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs'); //to outside of the loop area
 add_action('genesis_before_entry','msd_post_image');//add the image above the entry
 
@@ -54,7 +58,7 @@ remove_action('genesis_before_footer','genesis_footer_widget_areas',10);
 add_action('genesis_after_footer','genesis_footer_widget_areas');
 remove_action('genesis_footer','genesis_do_footer'); //replace the footer
 add_action('genesis_footer','msdlab_do_social_footer');//with a msdsocial support one
-
+add_action('genesis_before_footer','add_drop_shadow_to_footer',50);
 /*** HOMEPAGE (BACKEND SUPPORT) ***/
 add_action('after_setup_theme','msdlab_add_homepage_hero_flex_sidebars'); //creates widget areas for a hero and flexible widget area
 add_action('after_setup_theme','msdlab_add_homepage_callout_sidebars'); //creates a widget area for a callout bar, usually between the hero and the widget area

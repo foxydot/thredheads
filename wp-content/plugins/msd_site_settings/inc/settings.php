@@ -9,6 +9,7 @@ function msdsocial_theme_page ()
 	if ( count($_POST) > 0 && isset($_POST['msdsocial_settings']) )
 	{
 		$options = array (
+		'bang_bar',
 		'biz_name',
 		'street',
 		'street2',
@@ -30,7 +31,8 @@ function msdsocial_theme_page ()
 		'flickr_link',
 		'youtube_link',
 		'landing_link',
-		'sharethis_link',
+        'pinterest_link',
+        'sharethis_link',
 		'contact_link',
 		'show_feed');
 		
@@ -108,6 +110,21 @@ $states = array('ALABAMA'=>"AL",
 	<h2>Site Settings</h2>
 	
 <form method="post" action="">
+    
+    <fieldset style="border:1px solid #ddd; padding-bottom:20px; margin-top:20px;">
+    <legend style="margin-left:5px; padding:0 5px; color:#2481C6;text-transform:uppercase;"><strong>Custom Status Message (Bang Bar)</strong></legend>
+        <table class="form-table">
+        <tr valign="top">
+            <th scope="row"><label for="bang_bar">Status Message:</label></th>
+            <td>
+                <input name="bang_bar" type="text" id="bang_bar" value="<?php echo get_option('msdsocial_bang_bar'); ?>" class="regular-text" />
+            </td>
+        </tr>
+        </table>
+    </fieldset>
+    
+    
+    
 	<fieldset style="border:1px solid #ddd; padding-bottom:20px; margin-top:20px;">
 	<legend style="margin-left:5px; padding:0 5px; color:#2481C6;text-transform:uppercase;"><strong>Location Information</strong></legend>
 		<table class="form-table">
@@ -243,11 +260,17 @@ $states = array('ALABAMA'=>"AL",
 			</td>
 		</tr>
         <tr valign="top">
-			<th scope="row"><label for="sharethis_link">ShareThis link</label></th>
-			<td>
-				<input name="sharethis_link" type="text" id="sharethis_link" value="<?php echo get_option('msdsocial_sharethis_link'); ?>" class="regular-text" />
-			</td>
-		</tr>
+            <th scope="row"><label for="pinterest_link">Pinterest link</label></th>
+            <td>
+                <input name="pinterest_link" type="text" id="pinterest_link" value="<?php echo get_option('msdsocial_pinterest_link'); ?>" class="regular-text" />
+            </td>
+        </tr>
+        <tr valign="top">
+            <th scope="row"><label for="sharethis_link">ShareThis link</label></th>
+            <td>
+                <input name="sharethis_link" type="text" id="sharethis_link" value="<?php echo get_option('msdsocial_sharethis_link'); ?>" class="regular-text" />
+            </td>
+        </tr>
         <tr valign="top">
 			<th scope="row"><label for="contact_link">Contact link</label></th>
 			<td>

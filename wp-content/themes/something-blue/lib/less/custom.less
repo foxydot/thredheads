@@ -1,16 +1,20 @@
-.page-title-area{
-  background: @ltgrey;
-  border-top: 2px solid darken(@ltgrey,10%);
-  border-bottom: 2px solid darken(@ltgrey,10%);
-  padding: 1em 0;
-  padding: 1rem 0;
-  text-transform: uppercase;
+.bang-bar{
+  background: @red;
+  color: @white;
+  text-align: center;
+  padding: 1.4rem;
+  font-size: 1.6rem;
+  .customsanserif;
+  z-index: 1;
+  position: relative;
+  border-bottom: 2px solid @medgrey;
 }
 .entry-subtitle{
   font-size: 22px;
   font-size: 2.2rem;
-  color: @blue;
+  color: @medgrey;
   margin-bottom: 0;
+  font-weight: 200;
  }
  
 .one-half{
@@ -77,6 +81,21 @@
         font-weight: normal;
         line-height: 1.625;
         color: @dkgrey;
+      }
+    }
+  }
+}
+
+.widget{
+  form{
+    margin: 1.6rem;
+    .gform_wrapper{
+      .top_label{
+      input.medium{
+        width: 100%;
+        .customsanserif;
+        padding: 1rem;
+      }
       }
     }
   }

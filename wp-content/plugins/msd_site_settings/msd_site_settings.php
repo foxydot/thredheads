@@ -52,7 +52,7 @@ function get_address(){
 }
 function get_digits(){
 		if((get_option('msdsocial_phone')!='') || (get_option('msdsocial_fax')!='')) {
-		$ret .= '<address>';
+		$ret .= '<address class="phone">';
 			$ret .= (get_option('msdsocial_phone')!='')?'Phone: '.get_option('msdsocial_phone').' ':'';
 			$ret .= (get_option('msdsocial_phone')!='') && (get_option('msdsocial_fax')!='')?' | ':'';
 			$ret .= (get_option('msdsocial_fax')!='')?'Fax: '.get_option('msdsocial_fax').' ':'';
@@ -106,6 +106,12 @@ function social_media($attr){
 			<?php }?>
 		</div>
 		<?php 
+}
+
+function msdlab_bang_bar(){
+    if(get_option('msdsocial_bang_bar')!=""){
+       print '<div class="bang-bar">'.get_option('msdsocial_bang_bar').'</div>';
+    }
 }
 
 function requireDir($dir){

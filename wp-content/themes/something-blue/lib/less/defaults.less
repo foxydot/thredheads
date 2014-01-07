@@ -35,17 +35,17 @@ textarea:focus,
 }
 
 ::-moz-selection {
-  background-color: @orange;
+  background-color: @medgrey;
   color: @white;
 }
 
 ::selection {
-  background-color: @orange;
+  background-color: @medgrey;
   color: @white;
 }
 
 a {
-  color: @blue;
+  color: @dkgrey;
   text-decoration: none;
 }
 
@@ -55,7 +55,7 @@ a img {
 }
 
 a:hover {
-  color: @dkgrey;
+  color: @red;
 }
 
 p {
@@ -179,9 +179,8 @@ input,
 select,
 textarea {
   background-color: @white;
-  border: 1px solid @medgrey;
-  border-radius: 3px;
-  box-shadow: 1px 1px 3px @medgrey inset;
+  border: 2px solid @ltgrey;
+  border-radius: 6px;
   color: @dkgrey;
   font-size: 14px;
   font-size: 1.4rem;
@@ -197,12 +196,12 @@ textarea:focus {
 }
 
 ::-moz-placeholder {
-  color: @ltgrey;
+  color: @medgrey;
   opacity: 1;
 }
 
 ::-webkit-input-placeholder {
-  color: @ltgrey;
+  color: @medgrey;
 }
 
 button,
@@ -228,7 +227,7 @@ input:hover[type="reset"],
 input:hover[type="submit"],
 .button:hover,
 .entry-content .button:hover {
-  background-color: #f15123;
+  background-color: @red;
 }
 
 .entry-content .button:hover {
