@@ -9,21 +9,15 @@ function msdlab_add_homepage_hero_flex_sidebars(){
     'description' => 'Homepage hero space',
     'id' => 'homepage-top'
             ));
+     genesis_register_sidebar(array(
+    'name' => 'Homepage Widgets Center',
+    'description' => 'Central Homepage Widgets',
+    'id' => 'homepage-center'
+            ));
     genesis_register_sidebar(array(
-    'name' => 'Homepage Widgets Right',
-    'description' => 'Homepage central widget areas',
-    'id' => 'homepage-widgets',
-    'before_widget' => genesis_markup( array(
-        'html5' => '<section id="%1$s" class="widget %2$s"><div class="widget-icon"><i class="fa fa-4x"></i></div><div class="widget-wrap">',
-        'xhtml' => '<div id="%1$s" class="widget %2$s"><div class="widget-icon"><i class="fa fa-4x"></i></div><div class="widget-wrap">',
-        'echo'  => false,
-    ) ),
-    
-    'after_widget'  => genesis_markup( array(
-        'html5' => '</div><div class="clear"></div></section>' . "\n",
-        'xhtml' => '</div><div class="clear"></div></div>' . "\n",
-        'echo'  => false
-    ) ),
+    'name' => 'Homepage Widgets Footer',
+    'description' => 'Homepage footer widget areas',
+    'id' => 'homepage-widgets'
             )); 
 }
 
@@ -31,52 +25,36 @@ function msdlab_add_homepage_hero_flex_sidebars(){
  * Callout Bar widget area
  */
 function msdlab_add_homepage_callout_sidebars(){
-    genesis_register_sidebar(array(
-    'name' => 'Homepage Widgets Left',
-    'description' => 'Homepage call to action',
-    'id' => 'homepage-callout'
-            ));
+    
 }
 /**
  * Add a hero space with the site description
  */
 function msdlab_hero(){
-	if(is_active_sidebar('homepage-top')){
 		print '<div id="hp-top">';
 		dynamic_sidebar('homepage-top');
+        msdlab_homepage_widgets();
 		print '</div>';
-	}
-}
-
-/**
- * Add a hero space with the site description
- */
-function msdlab_callout(){
-	print '<div id="hp-callout">';
-	print '<div class="wrap">';
-    if(is_active_sidebar('homepage-callout')){
-    	dynamic_sidebar('homepage-callout');
-	} else {
-        do_action( 'genesis_site_description' );
-    }
-	print '</div>';
-	print '</div>';
 }
 
 /**
  * Add flaxible widget area
  */
 function msdlab_homepage_widgets(){
-	print '<div id="homepage-widgets" class="widget-area">';
-	print '<div class="wrap">';
-        print '<div class="left">';
-        dynamic_sidebar('homepage-callout');
+    print '<div id="homepage-widgets" class="widget-area">';
+    print '<div class="wrap">';
+        print '<div class="center">';
+        dynamic_sidebar('homepage-center');
         print '</div>';
-        print '<div class="right">';
+    print '</div>';
+    print '</div>';
+    print '<div id="homepage-widgets-footer" class="widget-area">';
+    print '<div class="wrap">';
+        print '<div class="bottom">';
         dynamic_sidebar('homepage-widgets');
         print '</div>';
-  	print '</div>';
-	print '</div>';
+    print '</div>';
+    print '</div>';
 }
 
 /**

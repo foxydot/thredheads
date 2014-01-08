@@ -1,18 +1,38 @@
 @import 'lesshat';
 @import 'mixins';
-
+.widget{
+  border: none;
+}
 #hp-top{
   display: block;
-  min-height: 300px;
-  border-top: 4px solid @ltgrey;
-  border-bottom: 4px solid @blue;
-  margin-bottom: 2rem;
+  min-height: 800px;
+  position: relative;
   .carousel{
     margin-bottom: 0;
     .item {
-      height: 300px;
+      height: 800px;
       .sd2-node-caption {
-        display: none;
+        display: block;
+        background: @white;
+        opacity: 0.7;
+        text-align: center;
+        .customsanserif;
+        .sd2-vertical-center-inner{
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 1.6rem;
+          .sd2-slide-title{
+            font-size: 36px;
+            font-size: 3.6rem;
+            text-transform: uppercase;
+            color: @red;
+            font-weight: 200;
+          }
+          .sd2-slide-text{
+            font-size: 18px;
+            font-size: 1.8rem;
+          }
+        }
       }
       .full-slide-link-hit-area{
         display: block;
@@ -24,7 +44,8 @@
     .carousel-control{
       font-size: 12.0rem;
       width: 100px;
-      padding-top: 40px;      
+      padding-top: 40px;   
+      display: none;   
     }
     .carousel-control:focus{
       outline: none;
@@ -38,59 +59,37 @@
 .site-inner{
   display: none;
 }
-#hp-callout{
-  .textwidget{
-    .customsanserif;
-    font-size: 1.4rem;
-    margin: 2.8rem auto 1.4rem;
-    text-align: center;
-  }
-}
+
 .slidedeck-iframe-embed{
   margin: 0 auto;
   border:1px solid @ltgrey;
 }
 #homepage-widgets{
+  position: absolute;
+  top: 0;
+  width: 100%;
   .wrap{
-    .left{
-      padding: 0 10rem;
+    width: 400px;
+    margin: 25rem auto;
+    .center{
       section.widget{
-        h4.widget-title{
-          margin: 0;
-          padding: 0;
-          color: @blue;
-          text-transform: uppercase;
-          font-weight: 400;
-          font-size: 36px;
-          font-size: 3.6rem;
-          span{
-            font-size: 24px;
-            font-size: 2.4rem;
-            color: @orange;
-            margin-bottom: 1rem;
-          }
-        }
+        border: 2px solid @vltgrey;
+        background: @white;
+        .box-shadow(0 0 10px rgba(50,50,50,0.5));
         ul{
-          border-top: 1px dotted @medgrey;
           li{
-            border-bottom: 1px dotted @medgrey;
-          }
-          li:before{
-            font-family: "FontAwesome";
-            content: "\f041";
-            color: @blue;
-            margin-right: 0.5rem;
+            list-style: none inside none;
           }
         }
-        .readmore{
-          .button(@blue);
-          float: right;
-        }
-        .readmore:hover{
-          text-decoration: none;
-        }
-        a.msd-widget-text{
-          display: none;
+        .widget-title{
+          background: @vltgrey;
+          padding: 2rem;
+          font-size: 1.6rem;
+          font-weight: 400;
+          text-align: center;
+          text-transform: uppercase;
+          color: @red;
+          margin-bottom: 1rem;
         }
       }
     }
