@@ -3,7 +3,7 @@
  * Add new image sizes
  */
 add_image_size('post-thumb', 225, 160, TRUE);
-add_image_size( 'post-image', 760, 158, TRUE ); //image to float at the top of the post. Reversed Out does these a lot.
+add_image_size( 'post-image', 2000, 250, TRUE ); //image to float at the top of the post. Reversed Out does these a lot.
 
 add_image_size('tiny_thumb', 45, 45, TRUE);
 add_image_size('child_full', 730, 380, TRUE);
@@ -30,7 +30,9 @@ function msd_post_image() {
 
     // This is the most important part!  Checks to see if the post has a Post Thumbnail assigned to it. You can delete the if conditional if you want and assume that there will always be a thumbnail
     if ( has_post_thumbnail() && is_page() ) {
-        printf( '<a title="%s" href="%s">%s</a>', get_permalink(), the_title_attribute( 'echo=0' ), genesis_get_image( array( 'size' => $size, 'attr' => $default_attr ) ) );
+        $thumbnail = wp_get_attachment_image_src( get_post_thumbnail_id($post->ID), $size );
+        $background = ' style="background-image:url('.$thumbnail[0].');"';
+        printf( '<div class="header-image" %s></div>', $background );
     }
 
 }

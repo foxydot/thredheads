@@ -26,6 +26,7 @@ add_action( 'msdlab_pre_header', 'genesis_do_subnav' );
 
 add_action('genesis_after_header',array('MSDSocial','msdlab_bang_bar'));
 
+add_action('genesis_after_header','msd_post_image');//add the image above the entry
 
 //*** SIDEBARS ***/
 //add_action('genesis_before', 'msdlab_ro_layout_logic'); //This ensures that the primary sidebar is always to the left.
@@ -40,7 +41,6 @@ add_filter( 'genesis_post_info', 'sp_post_info_filter' );
 //add_action('genesis_after_header','msdlab_do_title_area');
 add_action('genesis_entry_header','msdlab_do_post_subtitle'); 
 add_action('genesis_before_content_sidebar_wrap', 'genesis_do_breadcrumbs'); //to outside of the loop area
-add_action('genesis_before_entry','msd_post_image');//add the image above the entry
 
 remove_action( 'genesis_before_post_content', 'genesis_post_info' ); //remove the info (date, posted by,etc.)
 remove_action( 'genesis_after_post_content', 'genesis_post_meta' ); //remove the meta (filed under, tags, etc.)
