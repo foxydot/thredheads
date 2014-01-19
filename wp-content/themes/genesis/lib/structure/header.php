@@ -631,14 +631,9 @@ add_action( 'wp_head', 'genesis_rel_author' );
  */
 function genesis_rel_author() {
 
-	if ( is_front_page() && $gplus_url = get_user_option( 'googleplus', genesis_get_seo_option( 'home_author' ) ) ) {
-		printf( '<link rel="author" href="%s" />' . "\n", esc_url( $gplus_url ) );
-		return;
-	}
-
 	global $post;
 
-	if ( is_singular() && isset( $post->post_author ) && $gplus_url = get_user_option( 'googleplus', $post->post_author ) ) {
+	if ( is_singular() && post_type_supports( $post->post_type, 'genesis-rel-author' ) && isset( $post->post_author ) && $gplus_url = get_user_option( 'googleplus', $post->post_author ) ) {
 		printf( '<link rel="author" href="%s" />' . "\n", esc_url( $gplus_url ) );
 		return;
 	}
@@ -647,6 +642,23 @@ function genesis_rel_author() {
 		printf( '<link rel="author" href="%s" />' . "\n", esc_url( $gplus_url ) );
 		return;
 	}
+
+}
+
+add_action( 'wp_head', 'genesis_rel_publisher' );
+/**
+ * Echo custom rel="publisher" link tag.
+ *
+ * If the appropriate information has been entered and we are viewing the front page, echo a custom rel="publisher" link.
+ *
+ * @since 2.0.2
+ *
+ * @uses genesis_get_seo_option() Get SEO setting value.
+ */
+function genesis_rel_publisher() {
+
+	if ( is_front_page() && $publisher_url = genesis_get_seo_option( 'publisher_uri' ) )
+		printf( '<link rel="publisher" href="%s" />', esc_url( $publisher_url ) );
 
 }
 

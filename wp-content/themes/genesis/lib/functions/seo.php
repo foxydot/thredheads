@@ -38,6 +38,7 @@ function genesis_disable_seo() {
 	remove_action( 'genesis_meta','genesis_robots_meta' );
 	remove_action( 'wp_head','genesis_canonical', 5 );
 	remove_action( 'wp_head', 'genesis_rel_author' );
+	remove_action( 'wp_head', 'genesis_rel_publisher' );
 
 	remove_action( 'admin_menu', 'genesis_add_inpost_seo_box' );
 	remove_action( 'save_post', 'genesis_inpost_seo_save', 1, 2 );

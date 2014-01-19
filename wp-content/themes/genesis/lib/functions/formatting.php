@@ -299,7 +299,7 @@ function genesis_human_time_diff( $older_date, $newer_date = false ) {
 		$seconds = $units[$i][0];
 
 		//* Finding the biggest chunk (if the chunk fits, break)
-		if ( ( $count = floor( $since / $seconds ) ) !== 0 )
+		if ( ( $count = floor( $since / $seconds ) ) != 0 )
 			break;
 	}
 

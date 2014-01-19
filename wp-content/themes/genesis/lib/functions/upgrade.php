@@ -85,19 +85,19 @@ function genesis_update_check() {
 }
 
 /**
- * Upgrade the database to version 2007.
+ * Upgrade the database to version 2008.
  *
- * @since 2.0.1
+ * @since 2.0.2
  *
  * @uses _genesis_update_settings() Merges new settings with old settings and pushes them into the database.
  * @uses genesis_get_option()       Get theme setting value.
  */
-function genesis_upgrade_2007() {
+function genesis_upgrade_2008() {
 
 	//* Update Settings
 	_genesis_update_settings( array(
-		'theme_version' => '2.0.1',
-		'db_version'    => '2007',
+		'theme_version' => '2.0.2',
+		'db_version'    => '2008',
 	) );
 
 }
@@ -418,11 +418,11 @@ function genesis_upgrade() {
 		genesis_upgrade_2003();
 
 	###########################
-	# UPDATE DB TO VERSION 2007
+	# UPDATE DB TO VERSION 2008
 	###########################
 
-	if ( genesis_get_option( 'db_version', null, false ) < '2007' )
-		genesis_upgrade_2007();
+	if ( genesis_get_option( 'db_version', null, false ) < '2008' )
+		genesis_upgrade_2008();
 
 	do_action( 'genesis_upgrade' );
 
@@ -482,8 +482,8 @@ function genesis_upgrade_redirect() {
 	if ( ! is_admin() || ! current_user_can( 'edit_theme_options' ) )
 		return;
 
-	#genesis_admin_redirect( 'genesis', array( 'upgraded' => 'true' ) );
-	genesis_admin_redirect( 'genesis-upgraded' );
+	genesis_admin_redirect( 'genesis', array( 'upgraded' => 'true' ) );
+	#genesis_admin_redirect( 'genesis-upgraded' );
 	exit;
 
 }
@@ -613,6 +613,38 @@ function genesis_update_email() {
 
 }
 
+add_filter( 'pre_set_site_transient_update_themes', 'genesis_disable_wporg_updates' );
+add_filter( 'pre_set_transient_update_themes', 'genesis_disable_wporg_updates' );
+/**
+ * Disable WordPress from giving update notifications on Genesis or Genesis child themes.
+ *
+ * This function filters the value that is saved after WordPress tries to pull theme update transient data from WordPress.org
+ *
+ * Its purpose is to disable update notifications for Genesis and Genesis child themes.
+ * This prevents WordPress.org repo themes from being installed over one of our themes.
+ *
+ * @since 2.0.2
+ *
+ * @param object $value
+ *
+ * @return object
+ */
+function genesis_disable_wporg_updates( $value ) {
+
+	foreach ( wp_get_themes() as $theme ) {
+
+		if ( 'genesis' == $theme->get( 'Template' ) ) {
+
+			unset( $value->response[ $theme->get_stylesheet() ] );
+
+		}
+
+	}
+
+	return $value;
+
+}
+
 add_filter( 'site_transient_update_themes', 'genesis_update_push' );
 add_filter( 'transient_update_themes', 'genesis_update_push' );
 /**
@@ -632,6 +664,10 @@ add_filter( 'transient_update_themes', 'genesis_update_push' );
  * @return object
  */
 function genesis_update_push( $value ) {
+
+	if ( isset ( $value->response['genesis'] ) ) {
+		unset( $value->response['genesis'] );
+	}
 
 	$genesis_update = genesis_update_check();
 

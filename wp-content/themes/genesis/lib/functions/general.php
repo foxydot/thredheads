@@ -395,6 +395,11 @@ function genesis_contributors() {
 			'gravatar' => '//0.gravatar.com/avatar/fa4976cfd706b9be00f6494df9aa99d9?s=120',
 		),
 		array(
+			'name'     => 'Lauren Mancke',
+			'url'      => 'http://twitter.com/laurenmancke',
+			'gravatar' => '//0.gravatar.com/avatar/f7478b09179c624a91ba6c45422fbf4e?s=120',
+		),
+		array(
 			'name'     => 'Andrew Norcross',
 			'url'      => 'http://twitter.com/norcross',
 			'gravatar' => '//0.gravatar.com/avatar/26ab8f9b2c86b10e7968b882403b3bf8?s=120',
@@ -410,14 +415,14 @@ function genesis_contributors() {
 			'gravatar' => '//0.gravatar.com/avatar/28af3e39c0a1fe4c31367c7e9a8bcac3?s=120',
 		),
 		array(
-			'name'     => 'Rafal Tomal',
-			'url'      => 'http://twitter.com/rafaltomal',
-			'gravatar' => '//0.gravatar.com/avatar/c9f7b936cd19bd5aba8831ddea21f05d?s=120',
-		),
-		array(
 			'name'     => 'Travis Smith',
 			'url'      => 'http://twitter.com/wp_smith',
 			'gravatar' => '//0.gravatar.com/avatar/7e673cdf99e6d7448f3cbaf1424c999c?s=120',
+		),
+		array(
+			'name'     => 'Rafal Tomal',
+			'url'      => 'http://twitter.com/rafaltomal',
+			'gravatar' => '//0.gravatar.com/avatar/c9f7b936cd19bd5aba8831ddea21f05d?s=120',
 		),
 	);
 

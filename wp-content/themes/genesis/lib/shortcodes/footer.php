@@ -80,7 +80,7 @@ function genesis_footer_copyright_shortcode( $atts ) {
 	);
 	$atts = shortcode_atts( $defaults, $atts, 'footer_copyright' );
 
-	$output = $atts['before'] . $atts['copyright'] . ' ';
+	$output = $atts['before'] . $atts['copyright'] . '&nbsp;';
 
 	if ( '' != $atts['first'] && date( 'Y' ) != $atts['first'] )
 		$output .= $atts['first'] . '&#x02013;';

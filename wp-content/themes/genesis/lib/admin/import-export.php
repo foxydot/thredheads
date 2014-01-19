@@ -136,7 +136,7 @@ class Genesis_Admin_Import_Export extends Genesis_Admin_Basic {
 									<label for="genesis-import-upload"><?php sprintf( __( 'Upload File: (Maximum Size: %s)', 'genesis' ), ini_get( 'post_max_size' ) ); ?></label>
 									<input type="file" id="genesis-import-upload" name="genesis-import-upload" size="25" />
 									<?php
-									submit_button( __( 'Upload File and Import', 'genesis' ), 'primary', 'upload', false );
+									submit_button( __( 'Upload File and Import', 'genesis' ), 'primary', 'upload' );
 									?>
 								</form>
 							</p>

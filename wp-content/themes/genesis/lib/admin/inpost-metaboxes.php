@@ -47,7 +47,7 @@ function genesis_inpost_seo_box() {
 	<p><input class="large-text" type="text" name="genesis_seo[_genesis_title]" id="genesis_title" value="<?php echo esc_attr( genesis_get_custom_field( '_genesis_title' ) ); ?>" /></p>
 
 	<p><label for="genesis_description"><b><?php _e( 'Custom Post/Page Meta Description', 'genesis' ); ?></b> <abbr title="&lt;meta name=&quot;description&quot; /&gt;">[?]</abbr> <span class="hide-if-no-js"><?php printf( __( 'Characters Used: %s', 'genesis' ), '<span id="genesis_description_chars">'. mb_strlen( genesis_get_custom_field( '_genesis_description' ) ) .'</span>' ); ?></span></label></p>
-	<p><textarea class="large-text" name="genesis_seo[_genesis_description]" id="genesis_description" rows="4" cols="4"><?php echo esc_textarea( genesis_get_custom_field( '_genesis_description' ) ); ?></textarea></p>
+	<p><textarea class="widefat" name="genesis_seo[_genesis_description]" id="genesis_description" rows="4" cols="4"><?php echo esc_textarea( genesis_get_custom_field( '_genesis_description' ) ); ?></textarea></p>
 
 	<p><label for="genesis_keywords"><b><?php _e( 'Custom Post/Page Meta Keywords, comma separated', 'genesis' ); ?></b> <abbr title="&lt;meta name=&quot;keywords&quot; /&gt;">[?]</abbr></label></p>
 	<p><input class="large-text" type="text" name="genesis_seo[_genesis_keywords]" id="genesis_keywords" value="<?php echo esc_attr( genesis_get_custom_field( '_genesis_keywords' ) ); ?>" /></p>
@@ -156,7 +156,7 @@ function genesis_inpost_scripts_box() {
 	?>
 
 	<p><label for="genesis_scripts" class="screen-reader-text"><b><?php _e( 'Page-specific Scripts', 'genesis' ); ?></b></label></p>
-	<p><textarea class="large-text" rows="4" cols="4" name="genesis_seo[_genesis_scripts]" id="genesis_scripts"><?php echo esc_textarea( genesis_get_custom_field( '_genesis_scripts' ) ); ?></textarea></p>
+	<p><textarea class="widefat" rows="4" cols="4" name="genesis_seo[_genesis_scripts]" id="genesis_scripts"><?php echo esc_textarea( genesis_get_custom_field( '_genesis_scripts' ) ); ?></textarea></p>
 	<p><?php printf( __( 'Suitable for custom tracking, conversion or other page-specific script. Must include %s tags.', 'genesis' ), genesis_code( 'script' ) ); ?></p>
 	<?php
 

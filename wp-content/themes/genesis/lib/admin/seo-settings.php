@@ -57,12 +57,14 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 		$default_settings = apply_filters(
 			'genesis_seo_settings_defaults',
 			array(
-				'append_description_home'      => 1,
+				'semantic_headings'            => 1,
+				'publisher_uri'                => '',
+
 				'append_site_title'            => 0,
 				'doctitle_sep'                 => '–',
 				'doctitle_seplocation'         => 'right',
 
-				'semantic_headings'            => 1,
+				'append_description_home'      => 1,
 				'home_h1_on'                   => 'title',
 				'home_doctitle'                => '',
 				'home_description'             => '',
@@ -70,7 +72,6 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 				'home_noindex'                 => 0,
 				'home_nofollow'                => 0,
 				'home_noarchive'               => 0,
-				'home_author'                  => 0,
 
 				'canonical_archives'           => 1,
 
@@ -260,7 +261,7 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
  	 *
  	 * @since 1.0.0
  	 *
- 	 * @see \Genesis_Admin_SEO_Settings::doctitle_box()      Callback for document title box.
+ 	 * @see \Genesis_Admin_SEO_Settings::sitewide_box()      Callback for sitewide box.
  	 * @see \Genesis_Admin_SEO_Settings::homepage_box()      Callback for home page box.
  	 * @see \Genesis_Admin_SEO_Settings::document_head_box() Callback for document head box.
  	 * @see \Genesis_Admin_SEO_Settings::robots_meta_box()   Callback for robots meta box.
@@ -268,7 +269,7 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
  	 */
 	function metaboxes() {
 
-		add_meta_box( 'genesis-seo-settings-doctitle', __( 'Document Title Settings', 'genesis' ), array( $this, 'doctitle_box' ), $this->pagehook, 'main' );
+		add_meta_box( 'genesis-seo-settings-sitewide', __( 'Sitewide Settings', 'genesis' ), array( $this, 'sitewide_box' ), $this->pagehook, 'main' );
 		add_meta_box( 'genesis-seo-settings-homepage', __( 'Homepage Settings', 'genesis' ), array( $this, 'homepage_box' ), $this->pagehook, 'main' );
 		add_meta_box( 'genesis-seo-settings-dochead', __( 'Document Head Settings', 'genesis' ), array( $this, 'document_head_box' ), $this->pagehook, 'main' );
 		add_meta_box( 'genesis-seo-settings-robots', __( 'Robots Meta Settings', 'genesis' ), array( $this, 'robots_meta_box' ), $this->pagehook, 'main' );
@@ -277,7 +278,7 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 	}
 
 	/**
-	 * Callback for SEO Settings Document Title meta box.
+	 * Callback for SEO Settings Sitewide meta box.
 	 *
 	 * @since 1.0.0
 	 *
@@ -287,17 +288,31 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 	 *
 	 * @see \Genesis_Admin_SEO_Settings::metaboxes() Register meta boxes on the SEO Settings page.
 	 */
-	function doctitle_box() {
+	function sitewide_box() {
 
 		?>
-		<p><span class="description"><?php printf( __( 'The document title (%s) is the single most important element in your document source for <abbr title="Search engine optimization">SEO</abbr>. It succinctly informs search engines of what information is contained in the document. The title can, and should, be different on each page, but these options will help you control what it will look like by default.', 'genesis' ), genesis_code( '<title>' ) ); ?></span></p>
 
-		<p><span class="description"><?php _e( '<strong>By default</strong>, the home page document title will contain the site title, the single post and page document titles will contain the post or page title, the archive pages will contain the archive type, etc.', 'genesis' ); ?></span></p>
+		<h4><?php _e( 'Google+', 'genesis' ); ?></h4>
 
 		<p>
-			<label for="<?php echo $this->get_field_id( 'append_description_home' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'append_description_home' ); ?>" id="<?php echo $this->get_field_id( 'append_description_home' ); ?>" value="1" <?php checked( $this->get_field_value( 'append_description_home' ) ); ?> />
-			<?php printf( __( 'Add site description (tagline) to %s on home page?', 'genesis' ), genesis_code( '<title>' ) ); ?></label>
+			<label for="<?php echo $this->get_field_id( 'publisher_uri' ); ?>"><?php _e( 'Publisher URL:', 'genesis' ); ?></label><br />
+			<input type="text" name="<?php echo $this->get_field_name( 'publisher_uri' ); ?>" id="<?php echo $this->get_field_id( 'publisher_uri' ); ?>" value="<?php echo esc_attr( $this->get_field_value( 'publisher_uri' ) ); ?>" size="80" /><br />
+			<span class="description"><?php _e( 'Your company\'s Google+ Profile URL. Must be a business, not a personal account.', 'genesis' ); ?></span>
 		</p>
+
+		<?php if ( genesis_html5() ) : ?>
+
+		<h4><?php _e( 'Section Headings', 'genesis' ); ?></h4>
+
+		<p>
+			<label for="<?php echo $this->get_field_id( 'semantic_headings' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'semantic_headings' ); ?>" id="<?php echo $this->get_field_id( 'semantic_headings' ); ?>" value="1" <?php checked( $this->get_field_value( 'semantic_headings' ) ); ?> />
+			<?php _e( 'Use semantic HTML5 page and section headings throughout site?', 'genesis' ); ?></label>
+		</p>
+		<?php endif; ?>
+
+		<h4><?php _e( 'Document Title', 'genesis' ); ?></h4>
+
+		<p><span class="description"><?php printf( __( 'The document title (%s) is the single most important element in your document source for <abbr title="Search engine optimization">SEO</abbr>. It succinctly informs search engines of what information is contained in the document. The title can, and should, be different on each page, but these options will help you control what it will look like by default.', 'genesis' ), genesis_code( '<title>' ) ); ?></span></p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'append_site_title' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'append_site_title' ); ?>" id="<?php echo $this->get_field_id( 'append_site_title' ); ?>" value="1" <?php checked( $this->get_field_value( 'append_site_title' ) ); ?> />
@@ -342,10 +357,6 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 	function homepage_box() {
 
 		if ( genesis_html5() ) : ?>
-		<p>
-			<label for="<?php echo $this->get_field_id( 'semantic_headings' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'semantic_headings' ); ?>" id="<?php echo $this->get_field_id( 'semantic_headings' ); ?>" value="1" <?php checked( $this->get_field_value( 'semantic_headings' ) ); ?> />
-			<?php _e( 'Use semantic HTML5 page and section headings throughout site?', 'genesis' ); ?></label>
-		</p>
 
 		<p><span class="description"><?php printf( __( 'HTML5 allows for multiple %s tags throughout the document source, provided they are the primary title for the section in which they appear. However, following this standard may have a marginal negative impact on SEO.', 'genesis' ), genesis_code( 'h1' ) ); ?></span></p>
 
@@ -371,10 +382,15 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 			<input type="text" name="<?php echo $this->get_field_name( 'home_doctitle' ); ?>" id="<?php echo $this->get_field_id( 'home_doctitle' ); ?>" value="<?php echo esc_attr( $this->get_field_value( 'home_doctitle' ) ); ?>" size="80" /><br />
 			<span class="description"><?php _e( 'If you leave the document title field blank, your site&#8217;s title will be used instead.', 'genesis' ); ?></span>
 		</p>
+		
+		<p>
+			<label for="<?php echo $this->get_field_id( 'append_description_home' ); ?>"><input type="checkbox" name="<?php echo $this->get_field_name( 'append_description_home' ); ?>" id="<?php echo $this->get_field_id( 'append_description_home' ); ?>" value="1" <?php checked( $this->get_field_value( 'append_description_home' ) ); ?> />
+			<?php printf( __( 'Add site description (tagline) to %s on home page?', 'genesis' ), genesis_code( '<title>' ) ); ?></label>
+		</p>
 
 		<p>
 			<label for="<?php echo $this->get_field_id( 'home_description' ); ?>"><?php _e( 'Home Meta Description:', 'genesis' ); ?></label><br />
-			<textarea name="<?php echo $this->get_field_name( 'home_description' ); ?>" id="<?php echo $this->get_field_id( 'home_description' ); ?>" rows="3" cols="70"><?php echo esc_textarea( $this->get_field_value( 'home_description' ) ); ?></textarea><br />
+			<textarea name="<?php echo $this->get_field_name( 'home_description' ); ?>" class="widefat" id="<?php echo $this->get_field_id( 'home_description' ); ?>" rows="3" cols="70"><?php echo esc_textarea( $this->get_field_value( 'home_description' ) ); ?></textarea><br />
 			<span class="description"><?php _e( 'The meta description can be used to determine the text used under the title on search engine results pages.', 'genesis' ); ?></span>
 		</p>
 
@@ -397,20 +413,6 @@ class Genesis_Admin_SEO_Settings extends Genesis_Admin_Boxes {
 			<?php printf( __( 'Apply %s to the homepage?', 'genesis' ), genesis_code( 'noarchive' ) ); ?></label>
 		</p>
 
-		<h4><?php _e( 'Homepage Author', 'genesis' ); ?></h4>
-
-		<p>
-			<span class="description"><?php printf( __( 'Select the user that you would like to be used as the %s for the homepage. Be sure the user you select has entered their Google+ profile address on the profile edit screen.', 'genesis' ), genesis_code( 'rel="author"' ) ); ?></span>
-		</p>
-		<p>
-			<?php
-			wp_dropdown_users( array(
-				'show_option_none' => __( 'Select User', 'genesis' ),
-				'selected' => $this->get_field_value( 'home_author' ),
-				'name' => $this->get_field_name( 'home_author' ),
-			) );
-			?>
-		</p>
 		<?php
 
 	}

@@ -253,7 +253,7 @@ function genesis_user_layout_fields( $user ) {
 				<td>
 					<div class="genesis-layout-selector">
 						<p>
-							<input type="radio" name="meta[layout]" id="default-layout" value="" <?php checked( $layout, '' ); ?> />
+							<input type="radio" name="meta[layout]" class="default-layout" id="default-layout" value="" <?php checked( $layout, '' ); ?> />
 							<label class="default" for="default-layout"><?php printf( __( 'Default Layout set in <a href="%s">Theme Settings</a>', 'genesis' ), menu_page_url( 'genesis', 0 ) ); ?></label>
 						</p>
 

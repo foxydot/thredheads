@@ -80,7 +80,7 @@ add_action( 'genesis_init', 'genesis_post_type_support' );
  */
 function genesis_post_type_support() {
 
-	add_post_type_support( 'post', array( 'genesis-seo', 'genesis-scripts', 'genesis-layouts' ) );
+	add_post_type_support( 'post', array( 'genesis-seo', 'genesis-scripts', 'genesis-layouts', 'genesis-rel-author' ) );
 	add_post_type_support( 'page', array( 'genesis-seo', 'genesis-scripts', 'genesis-layouts' ) );
 
 }
@@ -95,10 +95,10 @@ function genesis_constants() {
 
 	//* Define Theme Info Constants
 	define( 'PARENT_THEME_NAME', 'Genesis' );
-	define( 'PARENT_THEME_VERSION', '2.0.1' );
+	define( 'PARENT_THEME_VERSION', '2.0.2' );
 	define( 'PARENT_THEME_BRANCH', '2.0' );
-	define( 'PARENT_DB_VERSION', '2007' );
-	define( 'PARENT_THEME_RELEASE_DATE', date_i18n( 'F j, Y', '1377061200' ) );
+	define( 'PARENT_DB_VERSION', '2008' );
+	define( 'PARENT_THEME_RELEASE_DATE', date_i18n( 'F j, Y', '1389225600' ) );
 #	define( 'PARENT_THEME_RELEASE_DATE', 'TBD' );
 
 	//* Define Directory Location Constants

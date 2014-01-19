@@ -107,7 +107,7 @@ class Genesis_Admin_Settings extends Genesis_Admin_Boxes {
 				'content_archive'           => 'full',
 				'content_archive_thumbnail' => 0,
 				'image_size'                => '',
-				'posts_nav'                 => 'prev-next',
+				'posts_nav'                 => 'numeric',
 				'blog_cat'                  => '',
 				'blog_cat_exclude'          => '',
 				'blog_cat_num'              => 10,
@@ -922,7 +922,7 @@ class Genesis_Admin_Settings extends Genesis_Admin_Boxes {
 			<label for="<?php echo $this->get_field_id( 'header_scripts' ); ?>"><?php printf( __( 'Enter scripts or code you would like output to %s:', 'genesis' ), genesis_code( 'wp_head()' ) ); ?></label>
 		</p>
 
-		<textarea name="<?php echo $this->get_field_name( 'header_scripts' ); ?>" id="<?php echo $this->get_field_id( 'header_scripts' ); ?>" cols="78" rows="8"><?php echo esc_textarea( $this->get_field_value( 'header_scripts' ) ); ?></textarea>
+		<textarea name="<?php echo $this->get_field_name( 'header_scripts' ); ?>" class="widefat" id="<?php echo $this->get_field_id( 'header_scripts' ); ?>" cols="78" rows="8"><?php echo esc_textarea( $this->get_field_value( 'header_scripts' ) ); ?></textarea>
 
 		<p><span class="description"><?php printf( __( 'The %1$s hook executes immediately before the closing %2$s tag in the document source.', 'genesis' ), genesis_code( 'wp_head()' ), genesis_code( '</head>' ) ); ?></span></p>
 
@@ -932,7 +932,7 @@ class Genesis_Admin_Settings extends Genesis_Admin_Boxes {
 			<label for="<?php echo $this->get_field_id( 'footer_scripts' ); ?>"><?php printf( __( 'Enter scripts or code you would like output to %s:', 'genesis' ), genesis_code( 'wp_footer()' ) ); ?></label>
 		</p>
 
-		<textarea name="<?php echo $this->get_field_name( 'footer_scripts' ); ?>" id="<?php echo $this->get_field_id( 'footer_scripts' ); ?>" cols="78" rows="8"><?php echo esc_textarea( $this->get_field_value( 'footer_scripts' ) ); ?></textarea>
+		<textarea name="<?php echo $this->get_field_name( 'footer_scripts' ); ?>" class="widefat" id="<?php echo $this->get_field_id( 'footer_scripts' ); ?>" cols="78" rows="8"><?php echo esc_textarea( $this->get_field_value( 'footer_scripts' ) ); ?></textarea>
 
 		<p><span class="description"><?php printf( __( 'The %1$s hook executes immediately before the closing %2$s tag in the document source.', 'genesis' ), genesis_code( 'wp_footer()' ), genesis_code( '</body>' ) ); ?></span></p>
 		<?php
