@@ -7,9 +7,8 @@ function msdlab_pre_header(){
     print '<div class="pre-header">
         <div class="wrap">';
            do_action('msdlab_pre_header');
-           do_shortcode('[msd-digits]');
+           print '<div class="phone" itemprop="telephone"><i class="fa fa-phone"></i> '.get_option('msdsocial_phone').'</div>';
            do_shortcode('[msd-social]');
-           get_search_form();
     print '
         </div>
     </div>';
