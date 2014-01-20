@@ -43,16 +43,12 @@ function msdlab_hero(){
 function msdlab_homepage_widgets(){
     print '<div id="homepage-widgets" class="widget-area">';
     print '<div class="wrap">';
-        print '<div class="center">';
         dynamic_sidebar('homepage-center');
-        print '</div>';
     print '</div>';
     print '</div>';
     print '<div id="homepage-widgets-footer" class="widget-area">';
     print '<div class="wrap">';
-        print '<div class="bottom">';
         dynamic_sidebar('homepage-widgets');
-        print '</div>';
     print '</div>';
     print '</div>';
 }

@@ -5,12 +5,12 @@
 }
 #hp-top{
   display: block;
-  min-height: 800px;
+  min-height: 900px;
   position: relative;
   .carousel{
     margin-bottom: 0;
     .item {
-      height: 800px;
+      height: 900px;
       .sd2-node-caption {
         display: block;
         background: @white;
@@ -70,8 +70,10 @@
   width: 100%;
   .wrap{
     width: 400px;
-    margin: 25rem auto;
-    .center{
+    height: 650px;
+    margin: 25rem auto 0;
+    text-align: center;
+    position: relative;
       section.widget{
         border: 2px solid @vltgrey;
         background: @white;
@@ -92,46 +94,55 @@
           margin-bottom: 1rem;
         }
       }
-    }
-    .right{
-      padding: 0;
-      section.widget{
-        margin-bottom: 10px;
-        margin-bottom: 1rem;
-        .widget-icon{
-          border-right: 1px solid @white;
-          color: @orange;
-          padding: 2rem 1rem;
-          text-align: center;
-        }
+      section.pull-bottom{
+        background: none;
+        border: 0;
+        .box-shadow(0 0 0 rgba(0,0,0,0));
+        position: absolute;
+        top: 47rem;
+        margin: 0 auto;
+        width: 100%;
+        height: auto;
         .widget-wrap{
-          padding: 1rem;
-          font-size: 1.3rem;
-          h4.widget-title{
-            margin: 0;
-            padding: 0;
-            color: @blue;
-            text-transform: uppercase;
-            font-weight: 400;
-            font-size: 24px;
-            font-size: 2.4rem;
+          position: absolute;
+          width: 100%;
+        }
+        a{
+          position: relative;
+          bottom: 0;
+          width: 100%;
+          img{
+            position: relative;
+            margin: 0 auto;
           }
-          .readmore span{
-            display: none;
-          }
-          .readmore:hover{
+        }
+        h4.widget-title{
+          position:relative;
+          margin: 0 auto;
+          bottom: 8rem;
+          .border-radius(12px);
+          color: @white;
+          background: @red;
+          a, a:hover{
+            color: @white;
             text-decoration: none;
           }
-          i.fa-chevron-circle-right{
-            text-align: right;
-            display: block;
-            color: @blue;
-            font-size: 1.6rem;
-          }
         }
+        .link {display: none;}
       }
-    }
   }
+}
+#homepage-widgets-footer{
+  position: absolute;
+  height: 120px;
+  width: 120px;
+  margin: 0;
+  right: 4rem;
+  bottom: 2rem;
+  .wrap{
+    position: absolute;
+      section.widget{}
+   }
 }
 /* Responsive Design Custom Styles
 ------------------------------------------------------------ */
