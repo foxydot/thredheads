@@ -5,5 +5,5 @@ jQuery(document).ready(function($) {
     $('.featured-article .widget-icon i.fa').addClass('fa-bookmark-o');
     $('.right .readmore').append('<i class="fa fa-chevron-circle-right"></i>');
     $('.carousel').carousel();
+    $('#homepage-widgets .gform_widget .gform_footer').after('<div class="gform_post_footer"><a href="/about" class="button">Learn More</a></div>');
 });
-
