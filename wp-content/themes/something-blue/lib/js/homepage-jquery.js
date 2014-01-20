@@ -9,5 +9,5 @@ jQuery(document).ready(function($) {
     $('.modal').wrapInner('<div class="modal-dialog"><div class="modal-content"></div></div>');
     setTimeout(function(){ 
         $('.modal').modal('show');
-    }, 8000);
+    }, 5000);
 });
