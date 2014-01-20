@@ -1,0 +1,100 @@
+#settings {
+	padding: 10px 20px;
+	
+	border-top: 1px solid #FFFFFF;
+	border-left: 1px solid #DFDFDF;
+	border-right: 1px solid #DFDFDF;
+	border-bottom: 1px solid #DFDFDF;
+	
+	-webkit-border-radius:0px 0px 5px 5px; 
+	-moz-border-radius:0px 0px 5px 5px; 
+	-o-border-radius:0px 0px 5px 5px; 
+	-ms-border-radius:0px 0px 5px 5px; 
+	border-radius:0px 0px 5px 5px; 
+	
+	background-image: linear-gradient(bottom, #F5F5F5 23%, #F9F9F9 43%);
+	background-image: -o-linear-gradient(bottom, #F5F5F5 23%, #F9F9F9 43%);
+	background-image: -moz-linear-gradient(bottom, #F5F5F5 23%, #F9F9F9 43%);
+	background-image: -webkit-linear-gradient(bottom, #F5F5F5 23%, #F9F9F9 43%);
+	background-image: -ms-linear-gradient(bottom, #F5F5F5 23%, #F9F9F9 43%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left bottom,
+		left top,
+		color-stop(0.23, #F5F5F5),
+		color-stop(0.43, #F9F9F9)
+	);
+}
+
+#tabs ul {
+	 margin: 20px 0px 0px 0px;
+	 padding: 8px 0px 6px 0px;
+	 
+	 border: 1px solid #DFDFDF;
+	 
+	-webkit-border-radius:5.0px 5.0px 0px 0px; 
+	-moz-border-radius:5.0px 5.0px 0px 0px; 
+	-o-border-radius:5.0px 5.0px 0px 0px; 
+	-ms-border-radius:5.0px 5.0px 0px 0px; 
+	border-radius:5.0px 5.0px 0px 0px;
+	
+	background-image: linear-gradient(top, #F9F9F9 20%, #EDEDED 55%);
+	background-image: -o-linear-gradient(top, #F9F9F9 20%, #EDEDED 55%);
+	background-image: -moz-linear-gradient(top, #F9F9F9 20%, #EDEDED 55%);
+	background-image: -webkit-linear-gradient(top, #F9F9F9 20%, #EDEDED 55%);
+	background-image: -ms-linear-gradient(top, #F9F9F9 20%, #EDEDED 55%);
+	
+	background-image: -webkit-gradient(
+		linear,
+		left top,
+		left bottom,
+		color-stop(0.2, #F9F9F9),
+		color-stop(0.55, #EDEDED)
+	);
+}
+
+#tabs ul li {
+	font-size: 14px;
+	font-weight: normal;
+	margin: 0px;
+	display: inline; 
+	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+	font-family: Georgia,"Times New Roman","Bitstream Charter",Times,serif;
+}
+
+#tabs ul li a {
+	text-decoration: none;
+	color: #333;	
+	padding: 8px 20px 6px 20px;
+	border-right: 1px solid #DFDFDF;
+}
+
+#tabs .boxed {
+	border: 1px solid #eee; 
+	padding: 10px 20px; 
+	margin: 20px 0px;	
+	background: #FFFFFF;
+	-webkit-border-radius:5px; 
+	-moz-border-radius:5px; 
+	-o-border-radius:5px; 
+	-ms-border-radius:5px; 
+	border-radius:5px;
+}
+
+#settings .boxed,
+#settings p {
+	font-size: 14px;
+}
+
+
+
+
+
+
+
+
+
+
+
+

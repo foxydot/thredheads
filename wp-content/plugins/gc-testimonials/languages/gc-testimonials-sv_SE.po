@@ -1,0 +1,301 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: testimonials\n"
+"POT-Creation-Date: 2013-08-08 14:25+0100\n"
+"PO-Revision-Date: 2013-09-02 12:39+1200\n"
+"Last-Translator: Tom Stone <dev@tomstone.se>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: _x;gettext;gettext_noop;__;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-"
+"content/plugins/gc-testimonials\n"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:102
+msgid "Testimonials"
+msgstr "Omdömen"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:103
+msgid "Testimonial Item"
+msgstr "Omdömesinstans"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:104
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:134
+msgid "Add New"
+msgstr "Skapa ny"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:105
+msgid "Add New Testimonial"
+msgstr "Fäll nytt omdöme"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:106
+msgid "Edit Testimonial"
+msgstr "Redigera omdöme"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:107
+msgid "New Testimonial"
+msgstr "Nytt omdöme"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:108
+msgid "View Testimonial"
+msgstr "Granska omdöme"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:109
+msgid "Search Testimonials"
+msgstr "Sök omdömen"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:110
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:140
+msgid "Nothing Found"
+msgstr "Inget hittades"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:111
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:141
+msgid "Nothing found in Trash"
+msgstr "Inget fanns i papperskorgen"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:117
+msgid "testimonial"
+msgstr "omdöme"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:132
+msgid "Testimonial Categories"
+msgstr "Omdömeskategorier"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:133
+msgid "Testimonial Category"
+msgstr "Omdömeskategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:135
+msgid "Add New Category"
+msgstr "Lägg till ny kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:136
+msgid "Edit Category"
+msgstr "Redigera kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:137
+msgid "New Category"
+msgstr "Ny kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:138
+msgid "View Category"
+msgstr "Granska kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:139
+msgid "Search Category"
+msgstr "Sök kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:181
+msgid "Title"
+msgstr "Titel"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:182
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:252
+msgid "Client"
+msgstr "Kund"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:183
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:197
+msgid "Thumbnail"
+msgstr "Tumnagel"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:184
+msgid "Category"
+msgstr "Kategori"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:185
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:296
+msgid "Shortcode"
+msgstr "Shortcode"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:186
+msgid "Date"
+msgstr "Datum"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:220
+msgid "None"
+msgstr "Inget"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:254
+msgid "The Clients Name"
+msgstr "Kundens namn"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:257
+msgid "Email"
+msgstr "Email"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:259
+msgid "The Clients Email"
+msgstr "Kundens email"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:262
+msgid "Website"
+msgstr "Webbsajt"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:264
+msgid "The Company Website"
+msgstr "Företagets webbsajt"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:267
+msgid "Company Name"
+msgstr "Företagsnamn"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:269
+msgid "The Company Name"
+msgstr "Företagets namn"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:294
+msgid "Name"
+msgstr "Namn"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:295
+msgid "Slug"
+msgstr "Slug"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:297
+msgid "Posts"
+msgstr "Posts"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:574
+msgid "Thank You! Your Testimonial is awaiting moderation."
+msgstr "Tack! Ditt omdöme väntar på att bli infört."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:579
+msgid "Please check that you have filled out the required fields."
+msgstr "Kolla så alla obligatoriska fält är ifyllda."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:580
+msgid "Please agree to your testimonial being published."
+msgstr "Du behöver godkänna publiceringen av ditt omdöme."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:581
+msgid "Please enter your name."
+msgstr "Fyll i ditt namn."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:582
+msgid "Please enter your email address."
+msgstr "Fyll i din emailadress."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:583
+msgid "Please enter your testimonial."
+msgstr "Fyll i ditt omdöme."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:598
+msgid "Required Field"
+msgstr "Obligatoriskt fält"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:604
+msgid "Full Name:"
+msgstr "Ditt namn:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:606
+msgid "What is your fullname?"
+msgstr "Vad heter du (förnamn och efternamn)?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:610
+msgid "Email:"
+msgstr "Email:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:612
+msgid "Fill in your email address"
+msgstr "Skriv din emailadress"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:616
+msgid "Company Name:"
+msgstr "Företagsnamn:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:618
+msgid "What is your company name?"
+msgstr "Vad är namnet på ditt företag?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:622
+msgid "Company Website:"
+msgstr "Företagets webbsajt:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:624
+msgid "Does your company have a website?"
+msgstr "Har ditt företag en webbsajt?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:628
+msgid "Heading:"
+msgstr "Rubrik:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:630
+msgid "Describe our company in a few short words"
+msgstr "Beskriv våra tjänster i ett par korta ord"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:634
+msgid "Testimonial:"
+msgstr "Omdöme:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:636
+msgid "What do you think about our company?"
+msgstr "Vad anser du om våra tjänster?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:642
+msgid "Photo:"
+msgstr "Foto:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:644
+msgid "Do you have a photo we can use?"
+msgstr "Har du ett profilfoto vi kan använda?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:649
+msgid "I agree that this testimonial can be published."
+msgstr "Jag tillåter publiceringen av detta vitsord."
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:655
+msgid "Add Testimonial"
+msgstr "Sänd vitsordet"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:791
+msgid "Read More Testimonials"
+msgstr "Läs fler vitsord"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:829
+msgid "Title:"
+msgstr "Titel:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:834
+msgid "Category:"
+msgstr "Kategori:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:836
+msgid "Show All"
+msgstr "Visa allt"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:849
+msgid "Type"
+msgstr "Typ"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:851
+msgid "Static"
+msgstr "Statisk"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:852
+msgid "Cycle"
+msgstr "Cyklisk"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:857
+msgid "Number of testimonials to show:"
+msgstr "Antal vitsord att visa:"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:863
+msgid "Show Images?"
+msgstr "Visa bilder?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:868
+msgid "Show Read More Link?"
+msgstr "Visa Läs mer-länk?"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:872
+msgid "Full Testimonials Page:"
+msgstr "Fullständiga vitsord"
+
+#: /Users/TStone/Documents/Websites/www.hakanberg.com/wp-content/plugins/gc-testimonials/testimonials.php:874
+msgid "Please Select"
+msgstr "Välj"
