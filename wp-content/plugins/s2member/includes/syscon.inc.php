@@ -129,7 +129,7 @@ if(!function_exists("ws_plugin__s2member_configure_options_and_their_defaults"))
 				$default_options["gateway_debug_logs"] = "0";
 				$default_options["gateway_debug_logs_extensive"] = "0";
 
-				$default_options["lazy_load_css_js"] = "1";
+				$default_options["lazy_load_css_js"] = "0";
 
 				$default_options["sec_encryption_key"] = "";
 				$default_options["sec_encryption_key_history"] = array();
@@ -212,6 +212,7 @@ if(!function_exists("ws_plugin__s2member_configure_options_and_their_defaults"))
 
 				$default_options["paypal_sandbox"] = "0";
 				$default_options["paypal_business"] = "";
+				$default_options["paypal_merchant_id"] = "";
 				$default_options["paypal_api_username"] = "";
 				$default_options["paypal_api_password"] = "";
 				$default_options["paypal_api_signature"] = "";
@@ -467,7 +468,7 @@ if(!function_exists("ws_plugin__s2member_configure_options_and_their_defaults"))
 								else if($key === "paypal_sandbox" && (!is_string($value) || !is_numeric($value)))
 									$value = $default_options[$key];
 
-								else if(preg_match("/^paypal_(?:business|api_username|api_password|api_signature|identity_token)$/", $key) && (!is_string($value) || !strlen($value)))
+								else if(preg_match("/^paypal_(?:business|merchant_id|api_username|api_password|api_signature|identity_token)$/", $key) && (!is_string($value) || !strlen($value)))
 									$value = $default_options[$key];
 
 								else if(preg_match("/^paypal_payflow(?:api_username|api_partner|api_vendor|api_password)$/", $key) && (!is_string($value) || !strlen($value)))

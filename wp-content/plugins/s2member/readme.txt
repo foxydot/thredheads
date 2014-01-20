@@ -1,7 +1,7 @@
 === s2Member Framework (Member Roles, Capabilities, Membership, PayPal Members) ===
 
-Version: 131126
-Stable tag: 131126
+Version: 140105
+Stable tag: 140105
 
 SSL Compatible: yes
 bbPress® Compatible: yes
@@ -16,12 +16,12 @@ Authorize.Net® Compatible: yes w/s2Member® Pro
 Google® Checkout Compatible: yes w/s2Member® Pro
 ClickBank® Compatible: yes w/s2Member® Pro
 
-Tested up to: 3.7.1
+Tested up to: 3.8
 Requires at least: 3.3
 
 Copyright: © 2009 WebSharks, Inc.
 License: GNU General Public License v2 or later.
-Contributors: WebSharks
+Contributors: WebSharks, anguz
 
 Author: s2Member® / WebSharks, Inc.
 Author URI: http://www.s2member.com/
@@ -142,11 +142,29 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 
 == Upgrade Notice ==
 
-= v131126 =
+= v140105 =
 
 (Maintenance Release) Upgrade immediately.
 
 == Changelog ==
+
+= v140105 =
+
+* (s2Member/s2Member Pro) **Compatibility**. Updated to support WordPress v3.8. Nothing significant, just minor UI tweaks in the Login/Registration Design for WordPress v3.8; e.g. `wp-login.php` got some minor improvements in this release of s2Member and s2Member Pro.
+* (s2Member) **Compatibility**. PayPal's API for Subscription Cancellation Buttons was changed recently. PayPal now requires a Merchant ID instead of the site owner's email address. This issue has been causing an error when a user attempts to cancel a PayPal Subscription through an s2Member-generated PayPal Subscription Cancellation "Button" (i.e. this affects Buttons only, not Pro Forms). Fixed in this release. Site owners using PayPal Buttons should update their PayPal Merchant ID for s2Member. Please see: `Dashboard ⥱ s2Member ⥱ PayPal Options ⥱ Account Details`.
+* (s2Member/s2Member Pro) **Compatibility**. Default s2Member option value for CSS/JS Lazy Loading is now off instead of on; e.g. s2Member's CSS/JS JavaScript libraries are now loaded on every page by default. Lazy loading must now be enabled by a site owner as a performance enhancement (optional). For further details, please see: `Dashboard ⥱ s2Member ⥱ General Options ⥱ CSS/JS Lazy Loading`.
+* (s2Member Pro) **Remote Operations API**. This release introduces two new API methods; `auth_check_user` and `get_user`. These methods (combined with those which already exist in s2Member Pro) now make s2Member Pro's Remote Operations API a pleasure to work with. For further details, please see: `Dashboard ⥱ s2Member Pro ⥱ API Scripting ⥱ Pro Remote Operations API`. Here you will find the API Key for your installation, along with several code samples.
+* (s2Member/s2Member Pro) **Logging**. s2Member's core payment gateway processors now log to files `gateway-core-ipn.log` and `gateway-core-rtn.log`. These log file names were changed in this release. In previous versions of s2Member these log entries were kept inside `paypal-ipn.log` and `paypal-rtn.log`.
+* (s2Member/s2Member Pro) **Updates**. The XML/RSS feed box for the most recent s2Member Updates (for site owners only; in the Dashboard); has been updated to our newest feed location at: `http://feeds.feedburner.com/s2member`.
+* (s2Member/s2Member Pro) **Bug Fix**. s2Member should follow redirects in API calls to Amazon.com. See: <https://github.com/WebSharks/s2Member/issues/35> for further details.
+* (s2Member/s2Member Pro) **Bug Fix**. By default, do not count login IP Restrictions against users who can `edit_posts`. See: <https://github.com/WebSharks/s2Member/issues/32> for further details.
+* (s2Member/s2Member Pro) **Bug Fix**. Sleep offset to `10` seconds for `subscr_eot`. See <https://github.com/WebSharks/s2Member/issues/34> for further details.
+* (s2Member/s2Member Pro) **Enhancement**. Updating the "s2" icon in the Dashboard to our most recent version.
+* (s2Member Pro) **Bug Fix**. s2Member Pro now accepts `TOO MANY FAILURES` as an EOT response type status under PayPal Pro (Payflow Edition) accounts. This was previously causing a problem against newer PayPal Pro accounts (w/ the Payflow Edition); whereby some customers who were reaching Max Failed Payments were not being demoted properly in all cases. Fixed in this release.
+* (s2Member/s2Member Pro) **Compatibility**. Adding support for `$_SERVER['HTTP_AUTHORIZATION']` when s2Member is used for Remote Auth file hosting. Some servers do not support `$_SERVER['PHP_AUTH_USER']`. Instead, s2Member can get the username/password by parsing them out of `$_SERVER['HTTP_AUTHORIZATION']` when/if necessary. Fixed in this release.
+* (s2Member/s2Member Pro) **PHP Debug Notices.** Updating s2Member's source code to further prevent PHP debug notices when running in `WP_DEBUG` mode. This is part of an ongoing effort keep s2Member running smoothly in PHP strict mode; and to maintain conformity with WordPress standards.
+* (s2Member Pro) **Bug Fix**. Define `abbr_bytes()` method as static to prevent issues during automatic upgrades of s2Member Pro. Please see <https://github.com/WebSharks/s2Member/issues/37> for further details.
+* (s2Member/s2Member Pro) **Backward Compatibility.** Updating calls to `get_post()`. We're adding a `NULL` argument via `$null` to prevent warnings in older releases of WordPress where an argument was required; e.g. `$null = NULL; get_post($null)`.
 
 = v131126 =
 
@@ -165,6 +183,7 @@ Released under the terms of the [GNU General Public License](http://www.gnu.org/
 * (s2Member/s2Member Pro) **PHP Debug Notices.** Updating s2Member's source code to further prevent PHP debug notices when running in `WP_DEBUG` mode. This is part of an ongoing effort keep s2Member running smoothly in PHP strict mode; and to maintain conformity with WordPress standards.
 * (s2Member Pro) **Unlimited Membership Levels.** Updating the built-in software documentation for s2Member Pro to cover an edge case where a site owner many choose to exceed the recommended maximum for Membership Levels when running s2Member Pro. If you intend to use more than `100` Membership Levels (this is not recommended); but if you do, please see: `Dashboard -› s2Member Pro -› General Options -› Membership Levels/Labels` for the latest details on this.
 * (s2Member/s2Member Pro) **Dropping IE8 Support.** s2Member and s2Member Pro will no longer support IE8 in any official capacity. s2Member's HTML output and CSS files have been cleaned up; and all hacks related to IE8 have been removed. Out with the old, in with the new! We need to keep s2Member up-to-date with the latest improvements offered by IE9 and other modern browsers. While s2Member may continue to function relatively well in IE8, hacks used in the past to accomodate edge cases in this buggy browser have been removed in favor of standards compliance.
+* (s2Member/s2Member Pro) **Lazy Loading CSS/JS.** s2Member now offers site owners the option to enable/disable lazy loading of CSS/JS libraries provided by the s2Member software. For further details, please see: `Dashboard -› s2Member -› General Options -› CSS/JS Lazy Loading`.
 * (s2Member/s2Member Pro) **Bug Fix.** s2Member and s2Member Pro have both been updated to prevent spaces in a comma-delimited list of Custom Capabilities; e.g. `ccaps="music, videos"` should be `ccaps="music,videos"` please. Spaces in this list have never been allowed, but now there is better server-side validation to prevent this from happening; reducing the chance of error when a site owner configures a Button or Pro Form shortcode with s2Member.
 * (s2Member/s2Member Pro) **Other Minor Bug Fixes.** Please see: <https://github.com/WebSharks/s2Member/commits/000000-dev>
 
