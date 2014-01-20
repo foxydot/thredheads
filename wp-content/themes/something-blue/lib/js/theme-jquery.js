@@ -40,8 +40,8 @@ jQuery(document).ready(function($) {
     $('.site-inner').addClass('container');
     //$('.wrap').addClass('row');
     $('.content-sidebar .content-sidebar-wrap').addClass('row');
-    $('.content-sidebar .content').addClass('col-md-8 col-sm-12');
-    $('.content-sidebar .sidebar').addClass('col-md-4');
+    $('.content-sidebar main.content').addClass('col-md-8 col-sm-12');
+    $('.content-sidebar div.sidebar').addClass('col-md-4');
     
     //icons
     $('.menu li[class*="icon-"]>a').prepend('<i></i>');
