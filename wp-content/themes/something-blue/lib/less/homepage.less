@@ -5,12 +5,12 @@
 }
 #hp-top{
   display: block;
-  min-height: 900px;
+  min-height: 700px;
   position: relative;
   .carousel{
     margin-bottom: 0;
     .item {
-      height: 900px;
+      height: 700px;
       .sd2-node-caption {
         display: block;
         background: @white;
@@ -64,49 +64,48 @@
   margin: 0 auto;
   border:1px solid @ltgrey;
 }
+
+section.widget.modal{
+  ul{
+    li{
+      list-style: none inside none;
+    }
+  }
+  .widget-title{
+    background: @vltgrey;
+    padding: 2rem;
+    font-size: 1.6rem;
+    font-weight: 400;
+    text-align: center;
+    text-transform: uppercase;
+    color: @red;
+    margin-bottom: 1rem;
+  }
+  .gform_post_footer{
+    .button{
+      display: block;
+      margin: 1rem 0;
+      font-size: 1.4rem;
+      width: 100%
+    }
+  }
+}
 #homepage-widgets{
   position: absolute;
   top: 0;
   width: 100%;
   .wrap{
     width: 400px;
-    height: 650px;
+    height: 450px;
     margin: 25rem auto 0;
     text-align: center;
     position: relative;
-      section.widget{
-        border: 2px solid @vltgrey;
-        background: @white;
-        .box-shadow(0 0 10px rgba(50,50,50,0.5));
-        ul{
-          li{
-            list-style: none inside none;
-          }
-        }
-        .widget-title{
-          background: @vltgrey;
-          padding: 2rem;
-          font-size: 1.6rem;
-          font-weight: 400;
-          text-align: center;
-          text-transform: uppercase;
-          color: @red;
-          margin-bottom: 1rem;
-        }
-        .gform_post_footer{
-          .button{
-            display: block;
-            margin: 1rem 0;
-            font-size: 1.4rem;
-          }
-        }
-      }
       section.pull-bottom{
         background: none;
         border: 0;
         .box-shadow(0 0 0 rgba(0,0,0,0));
         position: absolute;
-        top: 47rem;
+        top: 27rem;
         margin: 0 auto;
         width: 100%;
         height: auto;
