@@ -78,16 +78,16 @@ function social_media($attr){
 	?>
 	<div id="social-media" class="social-media">
 			<?php if(get_option('msdsocial_linkedin_link')!=""){ ?>
-			<a href="<?php echo get_option('msdsocial_linkedin_link'); ?>" class="li" title="LinkedIn" target="_blank">LinkedIn</a>
+			<a href="<?php echo get_option('msdsocial_linkedin_link'); ?>" class="li fa fa-linkedin" title="LinkedIn" target="_blank"></a>
 			<?php }?>
 			<?php if(get_option('msdsocial_twitter_user')!=""){ ?>
-			<a href="http://www.twitter.com/<?php echo get_option('msdsocial_twitter_user'); ?>" class="tw" title="Follow Us on Twitter!" target="_blank">Twitter</a>
+			<a href="http://www.twitter.com/<?php echo get_option('msdsocial_twitter_user'); ?>" class="tw fa fa-twitter" title="Follow Us on Twitter!" target="_blank"></a>
 			<?php }?>
 			<?php if(get_option('msdsocial_google_link')!=""){ ?>
 			<a href="<?php echo get_option('msdsocial_google_link'); ?>" class="gl" title="Google+" target="_blank">Google+</a>
 			<?php }?>
 			<?php if(get_option('msdsocial_facebook_link')!=""){ ?>
-			<a href="<?php echo get_option('msdsocial_facebook_link'); ?>" class="fb" title="Join Us on Facebook!" target="_blank">Facebook</a>
+			<a href="<?php echo get_option('msdsocial_facebook_link'); ?>" class="fb fa fa-facebook" title="Join Us on Facebook!" target="_blank"></a>
 			<?php }?>
 			<?php if(get_option('msdsocial_flickr_link')!=""){ ?>
 			<a href="<?php echo get_option('msdsocial_flickr_link'); ?>" class="fl" title="Flickr" target="_blank">Flickr</a>
@@ -99,7 +99,7 @@ function social_media($attr){
 			<a href="<?php echo get_option('msdsocial_sharethis_link'); ?>" class="st" title="ShareThis" target="_blank">ShareThis</a>
 			<?php }?>
 			<?php if(get_option('msdsocial_pinterest_link')!=""){ ?>
-			<a href="<?php echo get_option('msdsocial_pinterest_link'); ?>" class="pin" title="Pinterest" target="_blank">Pinterest</a>
+			<a href="<?php echo get_option('msdsocial_pinterest_link'); ?>" class="pin fa fa-pinterest" title="Pinterest" target="_blank"></a>
 			<?php }?>
 			<?php if(get_option('msdsocial_show_feed')!=""){ ?>
 			<a href="<?php bloginfo('rss2_url'); ?>" class="rss" title="RSS Feed" target="_blank">RSS Feed</a>
