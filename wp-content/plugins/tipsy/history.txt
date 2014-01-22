@@ -1,6 +1,0 @@
-1.0.0 - 2011-10-11 - Josh Benham
-	Initial creation of the Tipsy plugin.
-1.0.1 - 2011-10-11 - Josh Benham
-	Fixed oembed issue and added it as shortcode param
-1.0.2 - 2011-10-11 - Josh Benham
-	Fixed oembed shortcode logic.

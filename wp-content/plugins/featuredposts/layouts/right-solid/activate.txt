@@ -1,6 +1,0 @@
-$defaults = array(
-	'width'								=>	'700',
-	'height'							=>	'350',
-	'image_width'						=>	'465',
-	'image_height'						=>	'350',
-);

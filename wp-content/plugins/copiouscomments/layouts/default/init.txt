@@ -1,3 +1,0 @@
-$css .= '.pb-copious {';
-$css .= '	width: 100%;';
-$css .= '}';
