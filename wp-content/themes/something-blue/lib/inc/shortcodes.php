@@ -1,9 +1,14 @@
 <?php
-add_shortcode('product-sidebar','product_sidebar_function');
-function product_sidebar_function(){
-    $ret = '<div class="product-sidebar pull-right col-md-4">';
-    $ret .= wp_nav_menu(array('menu'=>'Shirt Tools'));
+add_shortcode('product-info','product_info_function');
+function product_info_function($atts,$content){
+    $ret = '<div class="product-info-box container"><div class="row">';
+    $ret .= '<div class="col-md-8">';
+    $ret .= apply_filters('product_images_box_filters',$content);
     $ret .= '</div>';
+    $ret .= '<div class="product-sidebar pull-right col-md-4">';
+    $ret .= wp_nav_menu(array('menu'=>'Shirt Tools','echo'=>0));
+    $ret .= '</div>';
+    $ret .= '</div></div>';
     return $ret;
 }
 add_filter('product_images_box_filters','do_shortcode');
