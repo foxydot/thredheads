@@ -8,6 +8,8 @@ add_image_size( 'post-image', 2000, 250, TRUE ); //image to float at the top of 
 add_image_size('tiny_thumb', 45, 45, TRUE);
 add_image_size('child_full', 730, 380, TRUE);
 add_image_size('child_thumbnail', 350, 170, TRUE);
+add_image_size('product_main', 400, 740, TRUE);
+add_image_size('product_feature', 200, 270, TRUE);
 
 //* Display a custom favicon
 add_filter( 'genesis_pre_load_favicon', 'sp_favicon_filter' );
