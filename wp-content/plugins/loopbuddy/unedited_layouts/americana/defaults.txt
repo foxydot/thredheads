@@ -1,3 +1,0 @@
-title=the_title
-byline="by",the_author,"with tags",the_tags
-content=the_content
