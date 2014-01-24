@@ -43,7 +43,7 @@ function msdsocial_theme_page ()
 		}			
 		 
 	}
-	add_submenu_page('options-general.php',__('Settings'), __('MSD Site Settings'), 'author', 'msdsocial-options', 'msdsocial_settings');
+	add_submenu_page('options-general.php',__('Settings'), __('MSD Site Settings'), 'administrator', 'msdsocial-options', 'msdsocial_settings');
 }
 function msdsocial_settings()
 {
