@@ -31,7 +31,6 @@ if ( !is_admin() ) { die( 'Access Denied.' ); }
 			return false;
 		});
 		
-		
 	});
 	
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
@@ -39,10 +38,9 @@ if ( !is_admin() ) { die( 'Access Denied.' ); }
 	}
 </script>
 <?php
-echo '<br>';
 /* BEGIN CONFIGURING PLUGIN SETTINGS FORM */
 
-$settings_form = new pb_backupbuddy_settings( 'settings', '', 'tab=0', 320 );
+$settings_form = new pb_backupbuddy_settings( 'settings', '', 'tab=0', 350 );
 
 
 $settings_form->add_setting( array(
@@ -53,23 +51,22 @@ $settings_form->add_setting( array(
 $settings_form->add_setting( array(
 	'type'		=>		'password',
 	'name'		=>		'importbuddy_pass_hash',
-	'title'		=>		__('ImportBuddy & RepairBuddy password', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('ImportBuddy password', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: myp@ssw0rD] - Required password for running the ImportBuddy import/migration script. This prevents unauthorized access when using this tool. You should not use your WordPress password here.', 'it-l10n-backupbuddy' ),
 	'value'		=>		$importbuddy_pass_dummy_text,
-	'after'		=>		'&nbsp;&nbsp; Confirm: <input type="password" name="pb_backupbuddy_importbuddy_pass_hash_confirm" value="' . $importbuddy_pass_dummy_text . '">',
-	//'classes'	=>		'regular-text code',
+	'css'		=>		'width: 120px;',
+	'after'		=>		'&nbsp;&nbsp; <span style="white-space: nowrap;">Confirm: <input style="width: 120px;" type="password" name="pb_backupbuddy_importbuddy_pass_hash_confirm" value="' . $importbuddy_pass_dummy_text . '"></span>',
 ) );
-
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'backup_directory',
-	'title'		=>		__('Local storage directory for backups', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__('Local directory where all backup ZIP files will be saved to. This directory must have proper write and read permissions. Upon changing, any backups in the existing directory will be moved to the new directory. Note: This is only where local backups will be, not remotely stored backups. Remote storage is configured on the Remote Destinations page.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required',
-	'css'		=>		'width: 325px;',
-	'after'		=>		' <a style="cursor: pointer;" onClick="jQuery(\'#pb_backupbuddy_backup_directory\').val(\'' . str_replace( '\\', '/', ABSPATH ) . 'wp-content/uploads/backupbuddy_backups/\');">Reset Default</a>',
+	'title'		=>		__('Custom local storage directory', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__('Leave blank for default. To customize, enter a full local path where all backup ZIP files will be saved to. This directory must have proper write and read permissions. Upon changing, any backups in the existing directory will be moved to the new directory. Note: This is only where local backups will be, not remotely stored backups. Remote storage is configured on the Remote Destinations page.', 'it-l10n-backupbuddy' ),
+	'rules'		=>		'',
+	'css'		=>		'width: 250px;',
+	'before'	=>		'<span style="white-space: nowrap;">',
+	'after'		=>		' <span class="description">' . __( 'Blank for default', 'it-l10n-backupbuddy' ) . ':</span>&nbsp; <span class="code" style="background: #EAEAEA; white-space: normal;">' . backupbuddy_core::_getBackupDirectoryDefault() . '</span>',
 ) );
-
 $settings_form->add_setting( array(
 	'type'		=>		'select',
 	'name'		=>		'role_access',
@@ -85,26 +82,6 @@ $settings_form->add_setting( array(
 	'rules'		=>		'required',
 ) );
 
-$settings_form->add_setting( array(
-	'type'		=>		'checkbox',
-	'name'		=>		'archive_name_format',
-	'options'	=>		array( 'unchecked' => 'date', 'checked' => 'datetime' ),
-	'title'		=>		__( 'Add time in backup file name', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: disabled (date only)] - When enabled your backup filename will display the time the backup was created in addition to the default date. This is useful when making multiple backups in a one day period.', 'it-l10n-backupbuddy' ),
-	'css'		=>		'',
-	'rules'		=>		'required',
-) );
-
-$settings_form->add_setting( array(
-	'type'		=>		'checkbox',
-	'name'		=>		'backup_reminders',
-	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
-	'title'		=>		__( 'Enable backup reminders for edits', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: enabled] - When enabled links will be displayed upon post or page edits and during WordPress upgrades to remind and allow rapid backing up after modifications or before upgrading.', 'it-l10n-backupbuddy' ),
-	'css'		=>		'',
-	'after'		=>		'',
-	'rules'		=>		'required',
-) );
 
 
 require_once( '_email.php' );
@@ -119,29 +96,29 @@ $settings_form->add_setting( array(
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'archive_limit',
-	'title'		=>		__('Maximum number of local backups to keep', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('Limit number of local backups to keep', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 10] - Maximum number of local archived backups to store (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|string[0-500]',
 	'css'		=>		'width: 50px;',
-	'after'		=>		' backups',
+	'after'		=>		' backups. <span class="description">0 for no limit.</span>',
 ) );
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'archive_limit_size',
-	'title'		=>		__('Maximum size of all local backups combined', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('Size limit of all local backups combined', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 350] - Maximum size (in MB) to allow your total local archives to reach (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|string[0-500]',
 	'css'		=>		'width: 50px;',
-	'after'		=>		' MB',
+	'after'		=>		' MB. <span class="description">0 for no limit.</span>',
 ) );
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'archive_limit_age',
-	'title'		=>		__('Maximum age of local backups', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('Age limit of local backups', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 90] - Maximum age (in days) to allow your local archives to reach (remote archive limits are configured per destination on their respective settings pages). Any backups exceeding this age will be deleted as new backups are created. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|string[0-99999]',
 	'css'		=>		'width: 50px;',
-	'after'		=>		' days',
+	'after'		=>		' days. <span class="description">0 for no limit.</span>',
 ) );
 
 
@@ -165,8 +142,6 @@ if ( is_multisite() ) {
 
 
 
-
-
 $profile = 0; // Defaults index.
 $settings_form->add_setting( array(
 		'type'		=>		'title',
@@ -183,27 +158,31 @@ require_once( pb_backupbuddy::plugin_path() . '/views/settings/_files.php' );
 
 
 
-
 $process_result = $settings_form->process();// Handles processing the submitted form (if applicable).
 if ( count( (array)$process_result['errors'] ) == 0 ) {
 	
-	$excludes = pb_backupbuddy::_POST( 'pb_backupbuddy_profiles#0#mysqldump_additional_excludes' );
-	pb_backupbuddy::$classes['core']->alert_core_file_excludes( $excludes );
+	$table_excludes = pb_backupbuddy::_POST( 'pb_backupbuddy_profiles#0#mysqldump_additional_excludes' );
+	$tableExcludes = backupbuddy_core::alert_core_table_excludes( explode( "\n", trim( $table_excludes ) ) );
+	foreach( $tableExcludes as $tableExcludeId => $tableExclude ) {
+		pb_backupbuddy::disalert( $tableExcludeId, '<span class="pb_label pb_label-important">Warning</span> ' . $tableExclude );
+	}
 	
+	$excludes = pb_backupbuddy::_POST( 'pb_backupbuddy_profiles#0#excludes' );
+	$fileExcludes = backupbuddy_core::alert_core_file_excludes( explode( "\n", trim( $excludes ) ) );
+	foreach( $fileExcludes as $fileExcludeId => $fileExclude ) {
+		pb_backupbuddy::disalert( $fileExcludeId, '<span class="pb_label pb_label-important">Warning</span> ' . $fileExclude );
+	}
 }
 $settings_form->set_value( 'importbuddy_pass_hash', $importbuddy_pass_dummy_text );
-//$data['settings_form'] = &$settings_form; // For use in view.
 
 /* END CONFIGURING PLUGIN SETTINGS FORM */
 
 
-
 $settings_form->display_settings( 'Save General Settings' );
-
-
 ?>
-<br><br><br>
-<div style="float: right; margin-top: -20px;">
+
+
+<div style="float: right; margin-top: -28px;">
 	<div style="float: right;">
 		<form method="post" action="<?php echo pb_backupbuddy::page_url(); ?>">
 			<input type="hidden" name="reset_defaults" value="<?php echo pb_backupbuddy::settings( 'slug' ); ?>" />
@@ -214,7 +193,5 @@ $settings_form->display_settings( 'Save General Settings' );
 		<a href="<?php echo pb_backupbuddy::ajax_url( 'importexport_settings' ); ?>&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button">Import/Export Plugin Settings</a>
 	</div>
 </div>
-<br style="clear: both;"><br>
-
 
 

@@ -47,7 +47,7 @@ echo '<h3>Viewing `' . $destination['title'] . '` (' . $destination['type'] . ')
 	if ( !empty( $_GET['copy_file'] ) ) {
 		pb_backupbuddy::alert( sprintf( _x('The remote file is now being copied to your %1$slocal backups%2$s', '%1$s and %2$s are open and close <a> tags', 'it-l10n-backupbuddy' ), '<a href="' . pb_backupbuddy::page_url() . '">', '</a>.' ) );
 		pb_backupbuddy::status( 'details',  'Scheduling Cron for creating Rackspace copy.' );
-		pb_backupbuddy::$classes['core']->schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_rackspace_copy' ), array( $_GET['copy_file'], $rs_username, $rs_api_key, $rs_container, $rs_server ) );
+		backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'process_rackspace_copy' ), array( $_GET['copy_file'], $rs_username, $rs_api_key, $rs_container, $rs_server ) );
 		spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 		update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 	}

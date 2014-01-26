@@ -25,7 +25,7 @@ class pb_backupbuddy_live {
 	public function generate_queue( $root = '', $generate_sha1 = true ) {
 		
 		if ( $root == '' ) {
-			$root = WP_CONTENT_DIR . '/uploads/'; 
+			$root = backupbuddy_core::getLogDirectory();
 		}
 		
 		echo 'mem:' . memory_get_usage(true) . '<br>';
@@ -78,7 +78,7 @@ class pb_backupbuddy_live {
 		
 		// fileoptions file live_signatures.txt
 		
-		//pb_backupbuddy::$classes['core']->st_stable_options( 'xxx', 'test', 5 );
+		//backupbuddy_core::st_stable_options( 'xxx', 'test', 5 );
 		
 			// get file listing of site: glob and store in an array
 			// open previously generated master list (master file listing since last queue generation).

@@ -207,24 +207,24 @@ if ( !class_exists( "pluginbuddy_zipbuddy" ) ) {
 			// If we loaded that ok then try the method specific classes
 			// Could make this more generic based on config or somesuch
 			if ( class_exists( 'pluginbuddy_zbzipcore' ) ) {
-			
-				// Only provide proc mode when experimental zip enabled
-				if ( true === $this->_is_experimental ) {
-				
-					include_once( pb_backupbuddy::plugin_path() . '/lib/' . $this->_whereami . '/zbzipproc.php' );
-					
-					if ( class_exists( 'pluginbuddy_zbzipproc' ) ) {
-					
-						if ( $this->check_method_dependencies( 'pluginbuddy_zbzipproc' ) ) {
-						
-							$this->set_supported_zip_methods( pluginbuddy_zbzipproc::get_method_tag_static() );
-							
-						}
-						
-					}
-				
-				}
-				
+// 			
+// 				// Only provide proc mode when experimental zip enabled
+// 				if ( true === $this->_is_experimental ) {
+// 				
+// 					include_once( pb_backupbuddy::plugin_path() . '/lib/' . $this->_whereami . '/zbzipproc.php' );
+// 					
+// 					if ( class_exists( 'pluginbuddy_zbzipproc' ) ) {
+// 					
+// 						if ( $this->check_method_dependencies( 'pluginbuddy_zbzipproc' ) ) {
+// 						
+// 							$this->set_supported_zip_methods( pluginbuddy_zbzipproc::get_method_tag_static() );
+// 							
+// 						}
+// 						
+// 					}
+// 				
+// 				}
+// 				
 				include_once( pb_backupbuddy::plugin_path() . '/lib/' . $this->_whereami . '/zbzipexec.php' );
 				if ( class_exists( 'pluginbuddy_zbzipexec' ) ) {
 				

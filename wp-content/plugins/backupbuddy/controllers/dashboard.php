@@ -22,11 +22,10 @@ class pb_backupbuddy_dashboard extends pb_backupbuddy_dashboardcore {
 		
 		$backup_url = 'admin.php?page=pb_backupbuddy_backup';
 		
-		$files = glob( pb_backupbuddy::$options['backup_directory'] . 'backup*.zip' );
+		$files = glob( backupbuddy_core::getBackupDirectory() . 'backup*.zip' );
 		if ( !is_array( $files ) || empty( $files ) ) {
 			$files = array();
 		}
-		array_multisort( array_map( 'filemtime', $files ), SORT_NUMERIC, SORT_DESC, $files );
 		
 		echo sprintf( __('You currently have %s stored backups.', 'it-l10n-backupbuddy' ), '<span class="pb_fancy"><a href="' . $backup_url . '">' . count( $files ) . '</a></span>');
 		if ( pb_backupbuddy::$options['last_backup_finish'] == 0 ) {

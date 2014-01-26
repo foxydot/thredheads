@@ -1,6 +1,8 @@
 <?php
 if ( !is_admin() ) { die( 'Access Denied.' ); }
 
+global $wpdb;
+
 echo '<a name="database_replace"></a>';
 
 echo '<p><b>Warning: This is an advanced feature. Use with caution; improper use may result in data loss.</b></p>';
@@ -34,7 +36,7 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 	$needle = mysql_real_escape_string( pb_backupbuddy::_POST( 'needle' ) );
 	if ( $needle == '' ) {
 		echo '<b>Error #4456582. Missing needle. You must enter text to search for.';
-		echo '<br><a href="' . pb_backupbuddy::page_url() . '&tab=3#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
+		echo '<br><a href="' . pb_backupbuddy::page_url() . '&tab=1#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
 		return;
 	}
 	$replacement = mysql_real_escape_string( pb_backupbuddy::_POST( 'replacement' ) );
@@ -49,16 +51,17 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 	}
 	*/
 	
+	
 	// Replace based on the type of table replacement selected.
 	if ( pb_backupbuddy::_POST( 'table_selection' ) == 'all' ) { // All tables.
 		pb_backupbuddy::status( 'message', 'Replacing in all tables based on settings.' );
 		
 		$tables = array();
-		$result = mysql_query( 'SHOW TABLES' );
-		while( $rs = mysql_fetch_row( $result ) ) {
-			$tables[] = $rs[0];
+		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()", ARRAY_A );
+		foreach( $rows as $row ) {
+			$tables[] = $row['table_name'];
 		}
-		mysql_free_result( $result ); // Free memory.
+		unset( $rows );
 		$rows_changed = 0;
 		foreach( $tables as $table ) {
 			pb_backupbuddy::status( 'message', 'Replacing in table `' . $table . '`.' );
@@ -78,11 +81,11 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 		
 		$tables = array();
 		$escaped_prefix = str_replace( '_', '\_', $prefix );
-		$result = mysql_query( "SHOW TABLES LIKE '{$escaped_prefix}%'" );
-		while( $rs = mysql_fetch_row( $result ) ) {
-			$tables[] = $rs[0];
+		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '{$escaped_prefix}%' AND table_schema = DATABASE()", ARRAY_A );
+		foreach( $rows as $row ) {
+			$tables[] = $row['table_name'];
 		}
-		mysql_free_result( $result ); // Free memory.
+		unset( $rows );
 		$rows_changed = 0;
 		foreach( $tables as $table ) {
 			pb_backupbuddy::status( 'message', 'Replacing in table `' . $table . '`.' );
@@ -95,7 +98,7 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 		die( 'Error #4456893489349834. Unknown method.' );
 	}
 	
-	echo '<br><a href="' . pb_backupbuddy::page_url() . '&tab=3#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
+	echo '<br><a href="' . pb_backupbuddy::page_url() . '&tab=1#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
 	
 	$pb_backupbuddy_js_status = false;
 	return;
@@ -121,21 +124,21 @@ global $table_prefix;
 $prefixes[] = $table_prefix;
 
 // Calculate prefixes foudn in this database. Does not handle multiple-underscore
-$result = mysql_query( 'SHOW TABLES' );
-while( $rs = mysql_fetch_row( $result ) ) {
-	$tables[] = $rs[0];
+$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()", ARRAY_A );
+foreach( $rows as $row ) {
+	$tables[] = $row['table_name'];
 	
-	if ( preg_match( '/[a-zA-Z0-9]*_([0-9]+_)*/i', $rs[0], $matches ) ) {
+	if ( preg_match( '/[a-zA-Z0-9]*_([0-9]+_)*/i', $row['table_name'], $matches ) ) {
 		$prefixes[] = $matches[0];
 	}
 }
-mysql_free_result( $result ); // Free memory.
+unset( $rows );
 
 $prefixes = array_unique( $prefixes );
 natsort( $prefixes );
 ?>
 <div>
-	<form action="<?php echo pb_backupbuddy::page_url();?>&database_replace=1&tab=3#database_replace" method="post">
+	<form action="<?php echo pb_backupbuddy::page_url();?>&database_replace=1&tab=1#database_replace" method="post">
 		<input type="hidden" name="action" value="replace">
 		
 		<h4>Replace <?php pb_backupbuddy::tip( 'Text you want to be searched for and replaced. Everything in the box is considered one match and may span multiple lines.' ); ?></h4>

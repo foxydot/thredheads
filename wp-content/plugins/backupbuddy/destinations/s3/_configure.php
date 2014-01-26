@@ -1,21 +1,44 @@
 <?php // Settings to display in a form for a user to configure.
-
 /*
-Available incoming variables:
-$mode
-(there's another)
+	Pre-populated variables coming into this script:
+		$destination_settings
+		$mode
 */
-//echo 'mode: ' . $mode;
+
+global $pb_hide_test, $pb_hide_save;
+$pb_hide_test = false;
 
 
+
+
+$default_name = NULL;
+
+if ( $mode != 'save' ) {
+	
+	if ( $mode == 'add' ) {
+		$default_name = 'My S3';
+		
+		//echo '<br>';
+		echo ' ' . __( 'To jump right in using the defaults just hit "Add Destination" below.', 'it-l10n-backupbuddy' );
+	}
+	
+} else { // save mode
+	if ( isset( $_POST['pb_backupbuddy_directory'] ) ) {
+		$_POST['pb_backupbuddy_bucket'] = strtolower( $_POST['pb_backupbuddy_bucket'] ); // bucket must be lower-case.
+	}
+}
+
+
+// Form settings.
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'title',
 	'title'		=>		__( 'Destination name', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( 'Name of the new destination to create. This is for your convenience only.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|string[1-45]',
-	'destination' =>	'My S3',
+	'default'	=>		$default_name,
 ) );
+
 
 $settings_form->add_setting( array(
 	'type'		=>		'text',
@@ -41,7 +64,6 @@ $settings_form->add_setting( array(
 	'rules'		=>		'required|string[1-45]',
 ) );
 
-
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'bucket',
@@ -52,6 +74,37 @@ $settings_form->add_setting( array(
 	'rules'		=>		'required|string[1-45]',
 ) );
 
+
+$settings_form->add_setting( array(
+	'type'		=>		'select',
+	'name'		=>		'region',
+	'title'		=>		__( 'New bucket region', 'it-l10n-backupbuddy' ),
+	'options'	=>		array(
+								's3.amazonaws.com'					=>		'US Standard [default]',
+								's3-us-west-2.amazonaws.com'		=>		'US West (Oregon)',
+								's3-us-west-1.amazonaws.com'		=>		'US West (Northern California)',
+								's3-eu-west-1.amazonaws.com'		=>		'EU (Ireland)',
+								's3-ap-southeast-1.amazonaws.com'	=>		'Asia Pacific (Singapore)',
+								's3-ap-southeast-2.amazonaws.com'	=>		'Asia Pacific (Sydney)',
+								's3-ap-northeast-1.amazonaws.com'	=>		'Asia Pacific (Tokyo)',
+								's3-sa-east-1.amazonaws.com'		=>		'South America (Sao Paulo)',
+							),
+	'tip'		=>		__('[Default: US Standard] - Determines the region where NEW buckets will be created (if any). If your bucket already exists then it will NOT be modified.', 'it-l10n-backupbuddy' ),
+	'rules'		=>		'required',
+	'after'		=>		' <span class="description">Applies to <b>new</b> buckets only.</span>',
+) );
+$settings_form->add_setting( array(
+	'type'		=>		'select',
+	'name'		=>		'storage',
+	'title'		=>		__( 'Storage Class', 'it-l10n-backupbuddy' ),
+	'options'	=>		array(
+								'standard'					=>		'Standard Storage [default]',
+								'reduced'					=>		'Reduced Redundancy',
+							),
+	'tip'		=>		__('[Default: Standard Storage] - Determines the type of storage to use when placing this file on Amazon S3. Reduced redundancy offers less protection against loss but costs less. See Amazon for for details.', 'it-l10n-backupbuddy' ),
+	'rules'		=>		'required',
+) );
+
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'directory',
@@ -60,52 +113,32 @@ $settings_form->add_setting( array(
 	'rules'		=>		'string[0-45]',
 ) );
 
-/*
-$settings_form->add_setting( array(
-	'type'		=>		'select',
-	'name'		=>		'storage_class',
-	'title'		=>		__('Storage class', 'it-l10n-backupbuddy' ),
-	'options'	=>		array(
-								'STANDARD'				=>		__( 'Standard (default)', 'it-l10n-backupbuddy' ),
-								'REDUCED_REDUNDANCY'	=>		__( 'Reduced Redundancy', 'it-l10n-backupbuddy' ),
-							),
-	'tip'		=>		__('[Default: Standard] - Amazon S3 currently offers two storage classes: standard (the default), and reduced redundancy.  Reduced redundancy storage typically costs less at the expense of less redundancy (the files ar replicated less in the cloud so are less protected from loss to some degree). See Amazon documentation for details.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required',
-) );
-*/
 
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'archive_limit',
-	'title'		=>		__( 'Archive limit', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of archives to be stored in this specific destination. If this limit is met the oldest backups will be deleted.', 'it-l10n-backupbuddy' ),
+	'title'		=>		__( 'Remote archive limit', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of backup archives to be stored in this specific destination. If this limit is met the oldest backup will be deleted.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|int[0-9999999]',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' backups',
 ) );
-
-/*
-TODO: disabled due to signature errors.
-
 $settings_form->add_setting( array(
-	'type'		=>		'checkbox',
-	'name'		=>		'server_encryption',
-	'options'	=>		array( 'unchecked' => '', 'checked' => 'AES256' ),
-	'title'		=>		__( 'S3-side encryption', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: disabled] - When enabled, Amazon S3 will encrypt your files with AES256 once they are tranferred & reach the servers. They are automatically decrypted upon retrieval.', 'it-l10n-backupbuddy' ),
-	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Enable server-side AES256 encryption', 'it-l10n-backupbuddy' ) . '</span>',
-	'rules'		=>		'',
+	'type'		=>		'text',
+	'name'		=>		'max_chunk_size',
+	'title'		=>		__( 'Max chunk size', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Example: 5] - Enter 0 for no chunking; minimum of 5 if enabling. This is the maximum file size to send in one whole piece. Files larger than this will be transferred in pieces up to this file size one part at a time. This allows to transfer of larger files than you server may allow by breaking up the send process. Chunked files may be delayed if there is little site traffic to trigger them. Amazon recommends 100mb chunk sizes or less.', 'it-l10n-backupbuddy' ),
+	'rules'		=>		'required|int[0-9999999]',
+	'css'		=>		'width: 50px;',
+	'after'		=>		' MB. <span class="description">' . __( 'Default', 'it-l10n-backupbuddy' ) . ': 100 MB</span>',
 ) );
-*/
-
 $settings_form->add_setting( array(
 	'type'		=>		'checkbox',
 	'name'		=>		'ssl',
 	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
-	'title'		=>		__( 'Encrypt connection', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Please note that encryption introduces overhead and may slow down the transfer. If Amazon S3 sends are failing try disabling this feature to speed up the process.  Note that 32-bit servers cannot encrypt transfers of 2GB or larger with SSL, causing large file transfers to fail.', 'it-l10n-backupbuddy' ),
+	'title'		=>		__( 'Encrypt connection', 'it-l10n-backupbuddy' ) . '*',
+	'tip'		=>		__( '[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Disabling this may aid in connection troubles but results in lessened security. Note: Once your files arrive on our server they are encrypted using AES256 encryption. They are automatically decrypted upon download as needed.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Enable connecting over SSL', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __('Enable connecting over SSL.', 'it-l10n-backupbuddy' ) . '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Files are always encrypted with AES256 upon arrival at S3.</span>',
 	'rules'		=>		'',
 ) );

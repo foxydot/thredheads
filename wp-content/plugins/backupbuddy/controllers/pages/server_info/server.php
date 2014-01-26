@@ -1,4 +1,3 @@
-<br>
 <style type="text/css">
 	.pb_backupbuddy_refresh_stats {
 		cursor: pointer;
@@ -149,8 +148,10 @@ function pb_backupbuddy_get_loadavg() {
 		$latest_backupbuddy_nonminor_version = pb_backupbuddy_split2( $latest_backupbuddy_version, '.', 3 );
 		$latest_backupbuddy_nonminor_version = $latest_backupbuddy_nonminor_version[0];
 		$suggestion_text = $latest_backupbuddy_nonminor_version;
-		if ( $latest_backupbuddy_nonminor_version != $latest_backupbuddy_version ) { // Minor version available that is newer than latest major.
-			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (minor version; <a href="plugins.php?pluginbuddy_refresh=true&backupbuddy_force_update_minor=' . $latest_backupbuddy_version . '" title="Once you have licensed BackupBuddy you may select this to go to the Plugins page to upgrade to the latest minor version. Typically only majoy versions are available for automatic updates but this option allows you to force updating to the latest minor version.">update</a>)';
+		if ( $latest_backupbuddy_version == pb_backupbuddy::settings( 'version' ) ) { // At absolute latest including minor.
+			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>)';
+		} elseif ( $latest_backupbuddy_nonminor_version != $latest_backupbuddy_version ) { // Minor version available that is newer than latest major.
+			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>; <a href="plugins.php?ithemes-updater-force-minor-update=1" title="Once you have licensed BackupBuddy you may select this to go to the Plugins page to upgrade to the latest quick release version. Typically only the main major versions are available for automatic updates but this option instructs the updater to display minor version updates for approximately one hour. If it does not immediately become available on the Plugins page, try refreshing a couple of times.">enable quick release update</a>)';
 		} else {
 			$suggestion_text .= ' (latest)';
 		}
@@ -240,7 +241,7 @@ function pb_backupbuddy_get_loadavg() {
 		
 		// Set up ZipBuddy when within BackupBuddy
 		require_once( pb_backupbuddy::plugin_path() . '/lib/zipbuddy/zipbuddy.php' );
-		pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( pb_backupbuddy::$options['backup_directory'] );
+		pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( backupbuddy_core::getBackupDirectory() );
 		
 		require_once( pb_backupbuddy::plugin_path() . '/lib/mysqlbuddy/mysqlbuddy.php' );
 		global $wpdb;
@@ -469,16 +470,16 @@ function pb_backupbuddy_get_loadavg() {
 		
 		$write_speed_samples = 0;
 		$write_speed_sum = 0;
-		$backups = glob( pb_backupbuddy::$options['backup_directory'] . '*.zip' );
+		$backups = glob( backupbuddy_core::getBackupDirectory() . '*.zip' );
 		if ( ! is_array( $backups ) ) {
 			$backups = array();
 		}
 		foreach( $backups as $backup ) {
 			
-			$serial = pb_backupbuddy::$classes['core']->get_serial_from_file( $backup );
-			$backup_options = new pb_backupbuddy_fileoptions( pb_backupbuddy::$options['log_directory'] . 'fileoptions/' . $serial . '.txt', $read_only = true );
+			$serial = backupbuddy_core::get_serial_from_file( $backup );
+			$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = true );
 			if ( true !== ( $result = $backup_options->is_ok() ) ) {
-				pb_backupbuddy::status( 'warning', 'Unable to open fileoptions file `' . pb_backupbuddy::$options['log_directory'] . 'fileoptions/' . $serial . '.txt' . '`. Details: `' . $result . '`.' );
+				pb_backupbuddy::status( 'warning', 'Unable to open fileoptions file `' . backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt' . '`. Details: `' . $result . '`.' );
 			} 
 				
 				
@@ -538,7 +539,7 @@ function pb_backupbuddy_get_loadavg() {
 		
 		
 		// Http loopbacks.
-		if ( ( $loopback_response = pb_backupbuddy::$classes['core']->loopback_test() ) === true ) {
+		if ( ( $loopback_response = backupbuddy_core::loopback_test() ) === true ) {
 			$loopback_status = 'enabled';
 			$status = 'OK';
 		} else {
@@ -550,6 +551,25 @@ function pb_backupbuddy_get_loadavg() {
 						'suggestion'	=>		'enabled',
 						'value'			=>		$loopback_status,
 						'tip'			=>		__('Some servers do are not configured properly to allow WordPress to connect back to itself via the site URL (ie: http://your.com connects back to itself on the same server at http://your.com/ to trigger a simulated cron step). If this is the case you must either ask your hosting provider to fix this or enable WordPres Alternate Cron mode in your wp-config.php file.', 'it-l10n-backupbuddy' ),
+					);
+		$parent_class_test['status'] = __( $status, 'it-l10n-backupbuddy' );
+		array_push( $tests, $parent_class_test );
+		
+		
+		
+		// CRON disabled?
+		if ( defined('DISABLE_WP_CRON') && DISABLE_WP_CRON ) {
+			$cron_status = 'disabled';
+			$status = 'FAIL';
+		} else {
+			$cron_status = 'enabled';
+			$status = 'OK';
+		}
+		$parent_class_test = array(
+						'title'			=>		'WordPress Cron',
+						'suggestion'	=>		'enabled',
+						'value'			=>		$cron_status,
+						'tip'			=>		__( 'This check verifies that the cron system has not been disabled by the DISABLE_WP_CRON constant. This may be defined by a plugin or other method to disable the cron system which may result in automated functionality not being available.', 'it-l10n-backupbuddy' ),
 					);
 		$parent_class_test['status'] = __( $status, 'it-l10n-backupbuddy' );
 		array_push( $tests, $parent_class_test );
@@ -736,18 +756,20 @@ function pb_backupbuddy_get_loadavg() {
 	
 	
 	// Load Average
-	$load_average = pb_backupbuddy_get_loadavg();
-	foreach( $load_average as &$this_load ) {
-		$this_load = round( $this_load, 2 );
+	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
+		$load_average = pb_backupbuddy_get_loadavg();
+		foreach( $load_average as &$this_load ) {
+			$this_load = round( $this_load, 2 );
+		}
+		$parent_class_test = array(
+						'title'			=>		'Server Load Average',
+						'suggestion'	=>		'n/a',
+						'value'			=>		implode( ', ', $load_average ),
+						'tip'			=>		__('Server CPU use in intervals: 1 minute, 5 minutes, 15 minutes. E.g. .45 basically equates to 45% CPU usage.', 'it-l10n-backupbuddy' ),
+					);
+		$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
+		array_push( $tests, $parent_class_test );
 	}
-	$parent_class_test = array(
-					'title'			=>		'Server Load Average',
-					'suggestion'	=>		'n/a',
-					'value'			=>		implode( ', ', $load_average ),
-					'tip'			=>		__('Server CPU use in intervals: 1 minute, 5 minutes, 15 minutes. E.g. .45 basically equates to 45% CPU usage.', 'it-l10n-backupbuddy' ),
-				);
-	$parent_class_test['status'] = __('OK', 'it-l10n-backupbuddy' );
-	array_push( $tests, $parent_class_test );
 	
 	
 	
@@ -815,7 +837,7 @@ function pb_backupbuddy_get_loadavg() {
 		$success = true;
 		$active_plugins = serialize( get_option( 'active_plugins' ) );
 		$found_plugins = array();
-		foreach( pb_backupbuddy::$classes['core']->warn_plugins as $warn_plugin => $warn_plugin_title ) {
+		foreach( backupbuddy_core::$warn_plugins as $warn_plugin => $warn_plugin_title ) {
 			if ( FALSE !== strpos( $active_plugins, $warn_plugin ) ) { // Plugin active.
 				$found_plugins[] = $warn_plugin_title;
 				$success = false;
@@ -950,10 +972,10 @@ if ( isset( $_GET['phpinfo'] ) && $_GET['phpinfo'] == 'true' ) {
 	echo '<center>';
 	
 	if ( !defined( 'PB_IMPORTBUDDY' ) ) {
-		echo '<a href="#TB_inline?width=640&#038;height=600&#038;inlineId=pb_serverinfotext_modal" class="button button-secondary button-tertiary thickbox" title="Server Information Results">Display Results in Text Format</a> &nbsp;&nbsp;&nbsp; ';
+		echo '<a href="#TB_inline?width=640&#038;height=600&#038;inlineId=pb_serverinfotext_modal" class="button button-secondary button-tertiary thickbox" title="Server Information Results">Display Server Configuration in Text Format</a> &nbsp;&nbsp;&nbsp; ';
 		echo '<a href="' . pb_backupbuddy::ajax_url( 'phpinfo' ) . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" title="' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '">' . __('Display Extended PHP Settings via phpinfo()', 'it-l10n-backupbuddy' ) . '</a>';
 	} else {
-		echo '<a id="serverinfotext" class="button button-secondary button-tertiary thickbox toggle" title="Server Information Results">Display Results in Text Format</a> &nbsp;&nbsp;&nbsp; ';
+		echo '<a id="serverinfotext" class="button button-secondary button-tertiary button-primary thickbox toggle" title="Server Information Results">Display Results in Text Format</a> &nbsp;&nbsp;&nbsp; ';
 	}
 	echo '</center>';
 	

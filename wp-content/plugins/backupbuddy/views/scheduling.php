@@ -1,3 +1,14 @@
+<?php
+/*
+echo '<pre>';
+print_r( backupbuddy_api0::getSchedules() );
+echo '</pre>';
+*/
+
+wp_enqueue_script( 'thickbox' );
+wp_print_scripts( 'thickbox' );
+wp_print_styles( 'thickbox' );
+?>
 <script type="text/javascript">
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data ) {
 		jQuery( '#pb_backupbuddy_remotedestinations_list' ).append( '<li id="pb_remotedestination_' + destination_id + '">' + destination_title + ' <img class="pb_remotedestionation_delete" src="<?php echo pb_backupbuddy::plugin_url(); ?>/images/redminus.png" style="vertical-align: -3px; cursor: pointer;" title="<?php _e( 'Remove remote destination from this schedule.', 'it-l10n-backupbuddy' ); ?>" /></li>' + "\n" );
@@ -33,28 +44,12 @@
 
 
 <?php
-pb_backupbuddy::$ui->title( __('Scheduled Backups', 'it-l10n-backupbuddy' ) );
-
-/*
-if ( count( pb_backupbuddy::$options['schedules'] ) == 0 ) {
-	pb_backupbuddy::disalert( 'no_schedules_reminder', '<span class="pb_label">Tip</span> Create your first schedule below to keep your site backed up automatically.', 'it-l10n-backupbuddy' );
-}
-*/
+pb_backupbuddy::$ui->title( __( 'BackupBuddy Schedules', 'it-l10n-backupbuddy' ) );
 pb_backupbuddy::disalert( 'schedule_limit_reminder', '<span class="pb_label">Tip</span> ' . __( 'Keep old backups from piling up by configuring "Local Archive Storage Limits" on the Settings page.', 'it-l10n-backupbuddy' ) );
 
 
-pb_backupbuddy::$ui->start_metabox( $mode_title . ' ' . pb_backupbuddy::video( 'MGiUdYb68ps', __('Scheduling', 'it-l10n-backupbuddy' ), false ), true, 'width: 100%;' );
-$schedule_form->display_settings( '+ ' . $mode_title );
-echo '<br><br>';
-pb_backupbuddy::$ui->end_metabox();
 
-
-
-
-
-if ( count( $schedules ) == 0 ) {
-	//echo '<h4>' . __( 'No schedules have been created yet.', 'it-l10n-backupbuddy' ) . '</h4>';
-} else {
+if ( ( count( $schedules ) > 0 ) && ( pb_backupbuddy::_GET( 'edit' ) == '' ) ) {
 	pb_backupbuddy::$ui->list_table(
 		$schedules,
 		array(
@@ -72,19 +67,28 @@ if ( count( $schedules ) == 0 ) {
 			'css'			=>		'width: 100%;',
 		)
 	);
+	echo '<br>';
 }
-echo '<br>';
 
 
+if ( pb_backupbuddy::_GET( 'edit' ) == '' ) {
+	echo '<h3>' . __( 'Add New Schedule', 'it-l10n-backupbuddy' ) . '</h3>';
+} else {
+	echo '<h3>' . __( 'Edit Schedule', 'it-l10n-backupbuddy' ) . '</h3>';
+}
+$schedule_form->display_settings( '+ ' . $mode_title );
+if ( pb_backupbuddy::_GET( 'edit' ) != '' ) {
+	echo '<br><br><a href="' . pb_backupbuddy::page_url() . '&tab=1#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
+}
+echo '<br><br>';
 ?>
-
 
 
 
 <br /><br />
 <div class="description">
 	<b>Note</b>: Due to the way schedules are triggered in WordPress your site must be accessed (frontend or admin area) for scheduled backups to occur.
-	WordPress scheduled events ("crons") may be viewed or run manually for testing from the <a href="?page=pb_backupbuddy_server_info">Server Information page</a>.
+	WordPress scheduled events ("crons") may be viewed or run manually for testing from the <a href="?page=pb_backupbuddy_server_info">Server Tools page</a>.
 	A <a href="https://www.google.com/search?q=free+website+uptime&oq=free+website+uptime" target="_new">free website uptime</a> service can be used to automatically access your site regularly to help trigger scheduled actions ("crons") in cases of low site activity, with the added perk of keeping track of your site uptime.
 </div>
 <br /><br />

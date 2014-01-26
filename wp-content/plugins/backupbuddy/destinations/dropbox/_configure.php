@@ -171,14 +171,17 @@ if ( $hide_add !== true ) {
 	}
 	
 	
-	
+	$default_name = NULL;
+	if ( 'add' == $mode ) {
+		$default_name = 'My Dropbox';
+	}
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
 		'name'		=>		'title',
 		'title'		=>		__( 'Destination name', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( 'Name of the new destination to create. This is for your convenience only.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|string[1-45]',
-		'default'	=>		'My Dropbox',
+		'default'	=>		$default_name,
 	) );
 	
 	$settings_form->add_setting( array(

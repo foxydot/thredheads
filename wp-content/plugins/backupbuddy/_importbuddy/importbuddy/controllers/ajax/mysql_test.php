@@ -189,13 +189,19 @@ $fatal_error = false;
 		if ( false === $tests['wordpress_exists'] ) { // No existing WordPress in database with this prefix.
 			test_pass();
 		} else { // WordPress exists in database with same prefix.
-			if ( ( $_POST['wipe_database'] == '1' ) || ( $_POST['wipe_database_all'] == '1' ) || ( pb_backupbuddy::_POST( 'skip_database_import' ) == '1' ) ) { // Wiping enabled OR skipping import step so only warn, not error.
+			if ( $_POST['wipe_database'] == '1' ) {
+				test_warn();
+			} elseif ( $_POST['wipe_database_all'] == '1' ) {
+				test_warn();
+			} elseif ( pb_backupbuddy::_POST( 'skip_database_import' ) == '1' ) {
+				test_warn();
+			} elseif ( pb_backupbuddy::_POST( 'ignore_sql_errors' ) == '1' ) {
 				test_warn();
 			} else { // No wiping and NOT skipping import so this fails due to collision..
 				test_fail();
 				$fatal_error = true;
 			}
-			$warn_message .= 'A WordPress installation appears to already exist with the same prefix. ';
+			$warn_message .= 'A WordPress installation appears to already exist with the same prefix.<br>Select the <b>Advanced Options</b> button below to delete existing database content.';
 		}
 		// Notify about any wiping going on.
 		if ( $_POST['wipe_database'] == '1' ) { // Option to wipe JUST MATCHING THIS PREFIX enabled.
@@ -271,10 +277,3 @@ if ( ( pb_backupbuddy::_POST( 'skip_database_import' ) == '1' ) && ( pb_backupbu
 		echo '<div class="test_title"><b>Overall result success. Proceed to next step.</b></div>';
 	} ?>
 </div>
-
-
-<?php
-// Ouput message for AJAX to detect and allow passage to next step.
-if ( false === $fatal_error ) {
-	echo '<!-- Success. -->';
-}

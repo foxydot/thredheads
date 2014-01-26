@@ -1,15 +1,16 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_stash { // Change class name end to match destination name.
 	
 	const ITXAPI_KEY = 'ixho7dk0p244n0ob';
 	const ITXAPI_URL = 'http://api.ithemes.com';
+	const MINIMUM_CHUNK_SIZE = 5; // Minimum size, in MB to allow chunks to be. Anything less will not be chunked even if requested.
 	
 	public static $destination_info = array(
 		'name'			=>		'BackupBuddy Stash',
-		'description'	=>		'<b>The easiest of all destinations</b>; just enter your iThemes login and Stash away! Store your backups in the BackupBuddy cloud safely with high redundancy and encrypted storage.  BackupBuddy Stash even supports multipart uploads so large files can be transferred in smaller pieces if needed rather than all at once. All BackupBuddy customers with an active BackupBuddy subscription enjoy a base level of <b>free</b> storage included at no additional charge! Additional storage upgrades optionally available. <a href="http://ithemes.com/backupbuddy-stash/" target="_new">Learn more here.</a>',
+		'description'	=>		'<b>The easiest of all destinations</b>; just enter your iThemes login and Stash away! Store your backups in the BackupBuddy cloud safely with high redundancy and encrypted storage.  Supports multipart uploads for larger file support. Active BackupBuddy customers receive <b>free</b> storage! Additional storage upgrades optionally available. <a href="http://ithemes.com/backupbuddy-stash/" target="_new">Learn more here.</a>',
 		//'details'		=>		'', // Instance var. Set on init with quota info, etc.
 	);
 	
@@ -24,9 +25,10 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 		'directory'					=>		'',			// Subdirectory to put into in addition to the site url directory.
 		'ssl'						=>		'1',		// Whether or not to use SSL encryption for connecting.
 		'server_encryption'			=>		'AES256',	// Encryption (if any) to have the destination enact. Empty string for none.
-		'max_chunk_size'			=>		'0',		// Maximum chunk size in MB. Anything larger will be chunked up into pieces this size (or less for last piece). This allows larger files to be sent than would otherwise be possible. Minimum of 5mb allowed by S3.
+		'max_chunk_size'			=>		'100',		// Maximum chunk size in MB. Anything larger will be chunked up into pieces this size (or less for last piece). This allows larger files to be sent than would otherwise be possible. Minimum of 5mb allowed by S3.
 		'db_archive_limit'			=>		'10',		// Maximum number of db backups for this site in this directory for this account. No limit if zero 0.
 		'full_archive_limit' 		=>		'4',		// Maximum number of full backups for this site in this directory for this account. No limit if zero 0.
+		'files_archive_limit' 		=>		'4',		// Maximum number of files only backups for this site in this directory for this account. No limit if zero 0.
 		'manage_all_files'			=>		'1',		// Allow user to manage all files in Stash? If enabled then user can view all files after entering their password. If disabled the link to view all is hidden.
 		
 		// Do not store these for destination settings. Only used to pass to functions in this file.
@@ -49,24 +51,22 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 	 *	@param		array			$files			Array of one or more files to send.
 	 *	@return		boolean|array					True on success, false on failure, array if a multipart chunked send so there is no status yet.
 	 */
-	public static function send( $settings = array(), $files = array(), $clear_uploads = false ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '', $clear_uploads = false ) {
 		
 		global $pb_backupbuddy_destination_errors;
 		
 		if ( !is_array( $files ) ) {
 			$files = array( $files );
 		}
-		
-		
 		if ( $clear_uploads === false ) { // Uncomment the following line to override and always clear.
 			//$clear_uploads = true;
 		}
-		
 		
 		$itxapi_username = $settings['itxapi_username'];
 		$itxapi_password = $settings['itxapi_password'];
 		$db_archive_limit = $settings['db_archive_limit'];
 		$full_archive_limit = $settings['full_archive_limit'];
+		$files_archive_limit = $settings['files_archive_limit'];
 		$max_chunk_size = $settings['max_chunk_size'];
 		$remote_path = self::get_remote_path( $settings['directory'] ); // Has leading and trailng slashes.
 		if ( $settings['ssl'] == '0' ) {
@@ -85,17 +85,17 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 		
 		// Stash API talk.
 		$stash = new ITXAPI_Helper( pb_backupbuddy_destination_stash::ITXAPI_KEY, pb_backupbuddy_destination_stash::ITXAPI_URL, $itxapi_username, $itxapi_password );
-		
 		$manage_data = pb_backupbuddy_destination_stash::get_manage_data( $settings );
-		//print_r( $manage_data );
-		//die();
+		if ( ! is_array( $manage_data['credentials'] ) ) {
+			pb_backupbuddy::status( 'error', 'Error #8484383b: Your authentication credentials for Stash failed. Verify your login and password to Stash. You may need to update the Stash destination settings. Perhaps you recently changed your password?' );
+			return false;
+		}
 		
 		// Wipe all current uploads.
 		if ( $clear_uploads === true ) {
 			pb_backupbuddy::status( 'details', 'Clearing any current uploads via Stash call to `abort-all`.' );
 			$abort_url = $stash->get_upload_url(null, 'abort-all');
 			$request = new RequestCore($abort_url);
-			//pb_backupbuddy::status('details', print_r( $request , true ) );
 			$response = $request->send_request( true );
 		}
 		
@@ -109,6 +109,8 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 				@$s3->disable_ssl(true);
 			}
 			pb_backupbuddy::status( 'details', 'Stash S3 instance created.' );
+			
+			$backup_type = str_replace( '/', '', $settings['_multipart_backup_type_dir'] ); // For use later by file limiting.
 			
 			$this_part_number = $settings['_multipart_partnumber'] + 1;
 			pb_backupbuddy::status( 'details', 'Stash beginning upload of part `' . $this_part_number . '` of `' . count( $settings['_multipart_counts'] ) . '` parts of file `' . $settings['_multipart_file'] . '` with multipart ID `' . $settings['_multipart_id'] . '`.' );
@@ -125,20 +127,29 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 				$pb_backupbuddy_destination_errors[] = $this_error;
 				pb_backupbuddy::status( 'error', $this_error );
 				return false;
+			} else {
+				
+				$uploaded_size = $response->header['_info']['size_upload'];
+				$uploaded_speed = $response->header['_info']['speed_upload'];
+				pb_backupbuddy::status( 'details', 'Uploaded size: ' .  pb_backupbuddy::$format->file_size( $uploaded_size ) . ', Speed: ' . pb_backupbuddy::$format->file_size( $uploaded_speed ) . '/sec.' );
+				
 			}
 			
-			// Update stats.
-			foreach( pb_backupbuddy::$options['remote_sends'] as $identifier => $remote_send ) {
-				if ( isset( $remote_send['_multipart_id'] ) && ( $remote_send['_multipart_id'] == $multipart_id ) ) { // this item.
-					pb_backupbuddy::$options['remote_sends'][$identifier]['_multipart_status'] = 'Sent part ' . $this_part_number . ' of ' . count( $settings['_multipart_counts'] ) . '.';
-					if ( $this_part_number == count( $settings['_multipart_counts'] ) ) {
-						pb_backupbuddy::$options['remote_sends'][$identifier]['_multipart_status'] .= '<br>Success.';
-						pb_backupbuddy::$options['remote_sends'][$identifier]['finish_time'] = time();
-					}
-					pb_backupbuddy::save();
-					break;
-				}
+			
+			// Load fileoptions to the send.
+			pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+			require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+			$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+			if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+				pb_backupbuddy::status( 'error', __('Fatal Error #9034.2344848. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+				return false;
 			}
+			pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+			$fileoptions = &$fileoptions_obj->options;
+			
+			
+			$update_status = 'Sent part ' . $this_part_number . ' of ' . count( $settings['_multipart_counts'] ) . '.';
+			
 			
 			// Made it here so success sending part. Increment for next part to send.
 			$settings['_multipart_partnumber']++;
@@ -157,8 +168,10 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 					pb_backupbuddy::status( 'details', 'Stash notified S3 of multipart completion.' );
 				}
 				
+				$backup_type_dir = $settings['_multipart_backup_type_dir'];
+				
 				// Notify Stash API that things were succesful.
-				$done_url = $stash->get_upload_url( $settings['_multipart_file'], 'done', $remote_path . $settings['_multipart_backup_type_dir'] . basename( $settings['_multipart_file'] ) );
+				$done_url = $stash->get_upload_url( $settings['_multipart_file'], 'done', $remote_path . $backup_type_dir . basename( $settings['_multipart_file'] ) );
 				pb_backupbuddy::status( 'details', 'Notifying Stash of completed multipart upload with done url `' . $done_url . '`.' );
 				$request = new RequestCore( $done_url );
 				$response = $request->send_request(true);
@@ -184,23 +197,48 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 				$settings['_multipart_partnumber'] = 0;
 				$settings['_multipart_id'] = '';
 				$settings['_multipart_file'] = '';
-				$settings['_multipart_counts'] = array();
 				$settings['_multipart_upload_data'] = array();
+				$settings['_multipart_transferspeeds'][] = $uploaded_speed;
+				
+				// Overall upload speed average.
+				$uploaded_speed = array_sum( $settings['_multipart_transferspeeds'] ) / count( $settings['_multipart_counts'] );
+				pb_backupbuddy::status( 'details', 'Upload speed average of all chunks: `' . pb_backupbuddy::$format->file_size( $uploaded_speed ) . '`.' );
+				
+				$settings['_multipart_counts'] = array();
+				
+				// Update stats.
+				$fileoptions['_multipart_status'] = $update_status;
+				$fileoptions['finish_time'] = time();
+				$fileoptions['status'] = 'success';
+				if ( isset( $uploaded_speed ) ) {
+					$fileoptions['write_speed'] = $uploaded_speed;
+				}
+				$fileoptions_obj->save();
+				unset( $fileoptions );
 			}
+			
+			
+			
+			
 			
 			delete_transient( 'pb_backupbuddy_stashquota_' . $settings['itxapi_username'] ); // Delete quota transient since it probably has changed now.
 			
 			// Schedule to continue if anything is left to upload for this multipart of any individual files.
 			if ( ( $settings['_multipart_id'] != '' ) || ( count( $files ) > 0 ) ) {
 				pb_backupbuddy::status( 'details', 'Stash multipart upload has more parts left. Scheduling next part send.' );
-				pb_backupbuddy::$classes['core']->schedule_single_event( time(), pb_backupbuddy::cron_tag( 'destination_send' ), array( $settings, $files, 'multipart', false ) );
+				$schedule_result = backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'destination_send' ), array( $settings, $files, $send_id ) );
+				if ( true === $schedule_result ) {
+					pb_backupbuddy::status( 'details', 'Next Stash chunk step cron event scheduled.' );
+				} else {
+					pb_backupbuddy::status( 'error', 'Next Stash chunk step cron even FAILED to be scheduled.' );
+				}
 				spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 				update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
-				pb_backupbuddy::status( 'details', 'Stash scheduled send of next part(s). Done for this cycle.' );
 				
-				return array( $settings['_multipart_id'], 'Sent ' . $this_part_number . ' of ' . count( $multipart_destination_settings['_multipart_counts'] . ' parts.' ) );
+				return array( $settings['_multipart_id'], 'Sent part ' . $this_part_number . ' of ' . count( $settings['_multipart_counts'] ) . ' parts.' );
 			}
-		}
+		} // end if multipart continuation.
+		
 		
 		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
 		
@@ -212,12 +250,12 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 			$backup_type = '';
 			if ( stristr( $file, '.zip' ) !== false ) { // If a zip try to determine backup type.
 				pb_backupbuddy::status( 'details', 'Stash: Zip file. Detecting backup type if possible.' );
-				$serial = pb_backupbuddy::$classes['core']->get_serial_from_file( $file );
+				$serial = backupbuddy_core::get_serial_from_file( $file );
 				
 				// See if we can get backup type from fileoptions data.
-				$backup_options = new pb_backupbuddy_fileoptions( pb_backupbuddy::$options['log_directory'] . 'fileoptions/' . $serial . '.txt', $read_only = true, $ignore_lock = true );
+				$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = true, $ignore_lock = true );
 				if ( true !== ( $result = $backup_options->is_ok() ) ) {
-					pb_backupbuddy::status( 'error', 'Unable to open fileoptions file `' . pb_backupbuddy::$options['log_directory'] . 'fileoptions/' . $serial . '.txt' . '`.' );
+					pb_backupbuddy::status( 'error', 'Unable to open fileoptions file `' . backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt' . '`.' );
 				} else {
 					if ( isset( $backup_options->options['integrity']['detected_type'] ) ) {
 						pb_backupbuddy::status( 'details', 'Stash: Detected backup type as `' . $backup_options->options['integrity']['detected_type'] . '` via integrity check data.' );
@@ -236,6 +274,10 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 						pb_backupbuddy::status( 'details', 'Stash: Detected backup type as `full` via filename.' );
 						$backup_type_dir = 'full/';
 						$backup_type = 'full';
+					} elseif ( stristr( $file, '-files-' ) !== false ) {
+						pb_backupbuddy::status( 'details', 'Stash: Detected backup type as `files` via filename.' );
+						$backup_type_dir = 'files/';
+						$backup_type = 'files';
 					} else {
 						pb_backupbuddy::status( 'details', 'Stash: Could not detect backup type via integrity details nor filename.' );
 					}
@@ -282,9 +324,9 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 			
 			// Handle chunking of file into a multipart upload (if applicable).
 			$file_size = filesize( $file );
-			if ( ( $max_chunk_size >= 5 ) && ( ( $file_size / 1024 / 1024 ) > $max_chunk_size ) ) { // minimum chunk size is 5mb. Anything under 5mb we will not chunk.
+			if ( ( $max_chunk_size >= self::MINIMUM_CHUNK_SIZE ) && ( ( $file_size / 1024 / 1024 ) > $max_chunk_size ) ) { // minimum chunk size is 5mb. Anything under 5mb we will not chunk.
 				
-				pb_backupbuddy::status( 'details', 'Stash file size of ' . ( $file_size / 1024 / 1024 ) . 'MB exceeds max chunk size of ' . $max_chunk_size . 'MB set in settings for sending file as multipart upload.' );
+				pb_backupbuddy::status( 'details', 'Stash file size of ' . pb_backupbuddy::$format->file_size( $file_size ) . ' exceeds max chunk size of ' . $max_chunk_size . 'MB set in settings for sending file as multipart upload.' );
 				// Initiate multipart upload with S3.
 				pb_backupbuddy::status( 'details', 'Initiating Stash multipart upload.' );
 				$response = $s3->initiate_multipart_upload(
@@ -324,15 +366,19 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 				
 				// Schedule to process the parts.
 				pb_backupbuddy::status( 'details', 'Stash scheduling send of next part(s).' );
-				pb_backupbuddy::$classes['core']->schedule_single_event( time(), pb_backupbuddy::cron_tag( 'destination_send' ), array( $multipart_destination_settings, $files, 'multipart', false ) );
+				backupbuddy_core::schedule_single_event( time(), pb_backupbuddy::cron_tag( 'destination_send' ), array( $multipart_destination_settings, $files, $send_id ) );
 				spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
 				update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 				pb_backupbuddy::status( 'details', 'Stash scheduled send of next part(s). Done for this cycle.' );
 				
 				return array( $upload_id, 'Starting send of ' . count( $multipart_destination_settings['_multipart_counts'] ) . ' parts.' );
-			} else {
+			} else { // did not meet chunking criteria.
 				if ( $max_chunk_size != '0' ) {
-					pb_backupbuddy::status( 'details', 'File size of ' . ( $file_size / 1024 / 1024 ) . 'MB is less than the max chunk size of ' . $max_chunk_size . 'MB; not chunking into multipart upload.' );
+					if ( ( $file_size / 1024 / 1024 ) > self::MINIMUM_CHUNK_SIZE ) {
+						pb_backupbuddy::status( 'details', 'File size of ' . pb_backupbuddy::$format->file_size( $file_size ) . ' is less than the max chunk size of ' . $max_chunk_size . 'MB; not chunking into multipart upload.' );
+					} else {
+						pb_backupbuddy::status( 'details', 'File size of ' . pb_backupbuddy::$format->file_size( $file_size ) . ' is less than the minimum allowed chunk size of ' . self::MINIMUM_CHUNK_SIZE . 'MB; not chunking into multipart upload.' );
+					}
 				} else {
 					pb_backupbuddy::status( 'details', 'Max chunk size set to zero so not chunking into multipart upload.' );
 				}
@@ -350,25 +396,30 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 					//'meta'       => $meta_array,
 				)
 			);
-			//  we can also utilize the multi-part-upload to create an object
-			//  $response = $s3->create_mpu_object($upload_data['bucket'], $upload_data['object'], array('fileUpload'=>$upload_file)); 
 			
 			
 			// Validate response. On failure notify Stash API that things went wrong.
-			if(!$response->isOK()) {
+			if(!$response->isOK()) { // Send FAILED.
 				
-			    pb_backupbuddy::status( 'details', 'Sending upload abort.' );
-			    $request = new RequestCore($abort_url);
-			    $response = $request->send_request(true);
-			    
-			    $this_error = 'Could not upload to Stash, attempt aborted.';
+				pb_backupbuddy::status( 'details', 'Sending upload abort.' );
+				$request = new RequestCore($abort_url);
+				$response = $request->send_request(true);
+				
+				$this_error = 'Could not upload to Stash, attempt aborted.';
 				$pb_backupbuddy_destination_errors[] = $this_error;
 				pb_backupbuddy::status( 'error', $this_error );
-			    return false;
-			} else {
-			//	pb_backupbuddy::status( 'details', 'Stash file upload speed: ' . ( $response->header['_info']['speed_upload'] / 1024 / 1024 ) . 'MB/sec. This number may be invalid for small file transfers.' );
-				pb_backupbuddy::status( 'details', 'Stash put success. Need to nofity Stash of upload completion. Details: `' . print_r( $response, true ) . '`.' );
+				return false;
+				
+			} else { // Send SUCCESS.
+				
+				pb_backupbuddy::status( 'details', 'Success uploading file to Stash storage. Notifying Stash API next. Upload details: `' . print_r( $response, true ) . '`.' );
+				
+				$uploaded_size = $response->header['_info']['size_upload'];
+				$uploaded_speed = $response->header['_info']['speed_upload'];
+				pb_backupbuddy::status( 'details', 'Uploaded size: ' .  pb_backupbuddy::$format->file_size( $uploaded_size ) . ', Speed: ' . pb_backupbuddy::$format->file_size( $uploaded_speed ) . '/sec.' );
+				
 			}
+			
 			
 			delete_transient( 'pb_backupbuddy_stashquota_' . $settings['itxapi_username'] ); // Delete quota transient since it probably has changed now.
 			
@@ -396,81 +447,109 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 				unset( $files[$file_id] ); // Remove from list of files we have not sent yet.
 				
 				pb_backupbuddy::status( 'details', 'Stash success sending file `' . basename( $file ) . '`. File uploaded and reported to Stash as completed.' );
+				
+				// Load destination fileoptions.
+				pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+				require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+				$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+				if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+					pb_backupbuddy::status( 'error', __('Fatal Error #9034.84838. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+					return false;
+				}
+				pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+				$fileoptions = &$fileoptions_obj->options;
+				
+				// Save stats.
+				if ( isset( $uploaded_speed ) ) {
+					$fileoptions['write_speed'] = $uploaded_speed;
+					$fileoptions_obj->save();
+				}
+				//$fileoptions['finish_time'] = time();
+				//$fileoptions['status'] = 'success';
+				unset( $fileoptions_obj );
+				
 			}
-			
-			
-			// Enforce archive limits if applicable.
-			if ( $backup_type == 'full' ) {
-				$limit = $full_archive_limit;
-				pb_backupbuddy::status( 'details', 'Stash full backup archive limit of `' . $limit . '` based on destination settings.' );
-			} elseif ( $backup_type == 'db' ) {
-				$limit = $db_archive_limit;
-				pb_backupbuddy::status( 'details', 'Stash database backup archive limit of `' . $limit . '` based on destination settings.' );
-			} else {
-				$limit = 0;
-				pb_backupbuddy::status( 'error', 'Error #54854895. Stash was unable to determine backup type so archive limits NOT enforced for this backup.' );
-			}
-			if ( $limit > 0 ) {
-				
-				pb_backupbuddy::status( 'details', 'Stash archive limit enforcement beginning.' );
-				// S3 object for managing files.
-				$s3_manage = new AmazonS3( $manage_data['credentials'] );
-				if ( $disable_ssl === true ) {
-					@$s3_manage->disable_ssl(true);
-				}
-				
-				// Get file listing.
-				$response_manage = $s3_manage->list_objects($manage_data['bucket'], array('prefix'=> $manage_data['subkey'] . $remote_path . $backup_type_dir ));     // list all the files in the subscriber account
-				
-				// Create array of backups and organize by date
-				$prefix = pb_backupbuddy::$classes['core']->backup_prefix();
-				
-				// List backups associated with this site by date.
-				$backups = array();
-				foreach( $response_manage->body->Contents as $object ) {
-					
-					$file = str_replace( $manage_data['subkey'] . $remote_path . $backup_type_dir, '', $object->Key );
-					// Stash stores files in a directory per site so no need to check prefix here! if ( false !== strpos( $file, 'backup-' . $prefix . '-' ) ) { // if backup has this site prefix...
-						$backups[$file] = strtotime( $object->LastModified );
-					//}
-				
-				}
-				arsort( $backups );
-				
-				//error_log( 'backups: ' . print_r( $backups, true ) );
-				
-				pb_backupbuddy::status( 'details', 'Stash found `' . count( $backups ) . '` backups of this type when checking archive limits.' );
-				if ( ( count( $backups ) ) > $limit ) {
-					pb_backupbuddy::status( 'details', 'More archives (' . count( $backups ) . ') than limit (' . $limit . ') allows. Trimming...' );
-					$i = 0;
-					$delete_fail_count = 0;
-					foreach( $backups as $buname => $butime ) {
-						$i++;
-						if ( $i > $limit ) {
-							pb_backupbuddy::status ( 'details', 'Trimming excess file `' . $buname . '`...' );
-							$response = $s3_manage->delete_object( $manage_data['bucket'], $manage_data['subkey'] . $remote_path . $backup_type_dir . $buname );
-							if ( !$response->isOK() ) {
-								pb_backupbuddy::status( 'details',  'Unable to delete excess Stash file `' . $buname . '`. Details: `' . print_r( $response, true ) . '`.' );
-								$delete_fail_count++;
-							}
-						}
-					}
-					pb_backupbuddy::status( 'details', 'Finished trimming excess backups.' );
-					if ( $delete_fail_count !== 0 ) {
-						$error_message = 'Stash remote limit could not delete ' . $delete_fail_count . ' backups.';
-						pb_backupbuddy::status( 'error', $error_message );
-						pb_backupbuddy::$classes['core']->mail_error( $error_message );
-					}
-				}
-				
-				pb_backupbuddy::status( 'details', 'Stash completed archive limiting.' );
-				
-			} else {
-				pb_backupbuddy::status( 'details',  'No Stash archive file limit to enforce.' );
-			} // End remote backup limit
-			
 			
 		} // end foreach.
+		
+		
+		// BEGIN FILE LIMIT PROCESSING. Enforce archive limits if applicable.
+		if ( $backup_type == 'full' ) {
+			$limit = $full_archive_limit;
+			pb_backupbuddy::status( 'details', 'Stash full backup archive limit of `' . $limit . '` of type `full` based on destination settings.' );
+		} elseif ( $backup_type == 'db' ) {
+			$limit = $db_archive_limit;
+			pb_backupbuddy::status( 'details', 'Stash database backup archive limit of `' . $limit . '` of type `db` based on destination settings.' );
+		} elseif ( $backup_type == 'files' ) {
+			$limit = $db_archive_limit;
+			pb_backupbuddy::status( 'details', 'Stash database backup archive limit of `' . $limit . '` of type `files` based on destination settings.' );
+		} else {
+			$limit = 0;
+			pb_backupbuddy::status( 'warning', 'Warning #54854895. Stash was unable to determine backup type (reported: `' . $backup_type . '`) so archive limits NOT enforced for this backup.' );
+		}
+		if ( $limit > 0 ) {
+			
+			pb_backupbuddy::status( 'details', 'Stash archive limit enforcement beginning.' );
+			// S3 object for managing files.
+			$s3_manage = new AmazonS3( $manage_data['credentials'] );
+			if ( $disable_ssl === true ) {
+				@$s3_manage->disable_ssl(true);
+			}
+			
+			// Get file listing.
+			$response_manage = $s3_manage->list_objects($manage_data['bucket'], array('prefix'=> $manage_data['subkey'] . $remote_path . $backup_type_dir ));     // list all the files in the subscriber account
+			
+			// Create array of backups and organize by date
+			$prefix = backupbuddy_core::backup_prefix();
+			
+			// List backups associated with this site by date.
+			$backups = array();
+			foreach( $response_manage->body->Contents as $object ) {
+				
+				$file = str_replace( $manage_data['subkey'] . $remote_path . $backup_type_dir, '', $object->Key );
+				// Stash stores files in a directory per site so no need to check prefix here! if ( false !== strpos( $file, 'backup-' . $prefix . '-' ) ) { // if backup has this site prefix...
+				$backups[$file] = strtotime( $object->LastModified );
+			
+			}
+			arsort( $backups );
+			
+			
+			pb_backupbuddy::status( 'details', 'Stash found `' . count( $backups ) . '` backups of this type when checking archive limits.' );
+			if ( ( count( $backups ) ) > $limit ) {
+				pb_backupbuddy::status( 'details', 'More archives (' . count( $backups ) . ') than limit (' . $limit . ') allows. Trimming...' );
+				$i = 0;
+				$delete_fail_count = 0;
+				foreach( $backups as $buname => $butime ) {
+					$i++;
+					if ( $i > $limit ) {
+						pb_backupbuddy::status ( 'details', 'Trimming excess file `' . $buname . '`...' );
+						$response = $s3_manage->delete_object( $manage_data['bucket'], $manage_data['subkey'] . $remote_path . $backup_type_dir . $buname );
+						if ( !$response->isOK() ) {
+							pb_backupbuddy::status( 'details',  'Unable to delete excess Stash file `' . $buname . '`. Details: `' . print_r( $response, true ) . '`.' );
+							$delete_fail_count++;
+						}
+					}
+				}
+				pb_backupbuddy::status( 'details', 'Finished trimming excess backups.' );
+				if ( $delete_fail_count !== 0 ) {
+					$error_message = 'Stash remote limit could not delete ' . $delete_fail_count . ' backups.';
+					pb_backupbuddy::status( 'error', $error_message );
+					backupbuddy_core::mail_error( $error_message );
+				}
+			}
+			
+			pb_backupbuddy::status( 'details', 'Stash completed archive limiting.' );
+			
+		} else {
+			pb_backupbuddy::status( 'details',  'No Stash archive file limit to enforce.' );
+		} // End remote backup limit
+		
+		
+		if ( isset( $fileoptions_obj ) ) {
+			unset( $fileoptions_obj );
+		}
+		// END FILE LIMIT PROCESSING.
+		
 		
 		// Success if we made it this far.
 		return true;
@@ -479,37 +558,70 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 	
 	
 	
-	/*	test()
-	 *	
-	 *	Tests ability to write to this remote destination.
-	 *	
-	 *	@param		array			$settings	Destination settings.
-	 *	@return		bool|string					True on success, string error message on failure.
-	 */
 	public static function test( $settings ) {
 		
 		$remote_path = self::get_remote_path( $settings['directory'] ); // Has leading and trailng slashes.
 		
+		$manage_data = pb_backupbuddy_destination_stash::get_manage_data( $settings );
+		if ( ! is_array( $manage_data['credentials'] ) ) { // Credentials were somehow faulty. User changed password after prior page? Unlikely but you never know...
+			$error_msg = 'Error #8484383c: Your authentication credentials for Stash failed. Verify your login and password to Stash. You may need to update the Stash destination settings. Perhaps you recently changed your password?';
+			pb_backupbuddy::status( 'error', $error_msg );
+			return $error_msg;
+		}
+		
 		// Try sending a file.
-		$test_result = self::send( $settings, dirname( __FILE__ ) . '/icon.png', true ); // 3rd param true forces clearing of any current uploads.
+		$send_response = pb_backupbuddy_destinations::send( $settings, dirname( dirname( __FILE__ ) ) . '/remote-send-test.php', $send_id = 'TEST-' . pb_backupbuddy::random_string( 12 ) ); // 3rd param true forces clearing of any current uploads.
+		if ( false === $send_response ) {
+			$send_response = 'Error sending test file to Stash.';
+		} else {
+			$send_response = 'Success.';
+		}
 		
 		// S3 object for managing files.
-		$manage_data = pb_backupbuddy_destination_stash::get_manage_data( $settings );
+		$credentials = pb_backupbuddy_destination_stash::get_manage_data( $settings );
 		$s3_manage = new AmazonS3( $manage_data['credentials'] );
 		if ( $settings['ssl'] == 0 ) {
 			@$s3_manage->disable_ssl(true);
 		}
 		
 		// Delete sent file.
-		$response = $s3_manage->delete_object( $manage_data['bucket'], $manage_data['subkey'] . $remote_path . 'icon.png' );
-		if ( !$response->isOK() ) {
-			pb_backupbuddy::status( 'details',  'Unable to delete test Stash file `icon.png`. Details: `' . print_r( $response, true ) . '`.' );
+		$delete_response = 'Success.';
+		$delete_response = $s3_manage->delete_object( $manage_data['bucket'], $manage_data['subkey'] . $remote_path . 'remote-send-test.php' );
+		if ( !$delete_response->isOK() ) {
+			$delete_response = 'Unable to delete test Stash file `remote-send-test.php`. Details: `' . print_r( $response, true ) . '`.';
+			pb_backupbuddy::status( 'details', $delete_response );
+		} else {
+			$delete_response = 'Success.';
 		}
 		
-		delete_transient( 'pb_backupbuddy_stashquota_' . $settings['itxapi_username'] ); // Delete quota transient since it probably has changed now.
+		// Load destination fileoptions.
+		pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+		$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+		if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+			pb_backupbuddy::status( 'error', __('Fatal Error #9034.84838. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+			return false;
+		}
+		pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+		$fileoptions = &$fileoptions_obj->options;
 		
-		return $test_result;
-	
+		if ( ( 'Success.' != $send_response ) || ( 'Success.' != $delete_response ) ) {
+			$fileoptions['status'] = 'failure';
+			
+			$fileoptions_obj->save();
+			unset( $fileoptions_obj );
+			
+			return 'Send details: `' . $send_response . '`. Delete details: `' . $delete_response . '`.';
+		} else {
+			$fileoptions['status'] = 'success';
+			$fileoptions['finish_time'] = time();
+		}
+		
+		$fileoptions_obj->save();
+		unset( $fileoptions_obj );
+		
+		return true;
+		
 	} // End test().
 	
 	
@@ -553,7 +665,7 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 		// Finally see if the API returned an error.
 		if(isset($quota_data['error'])) {            
             if ( $quota_data['error']['code'] == '3002' ) {
-            	pb_backupbuddy::alert( 'Invalid iThemes.com Member account password. Please verify your password & try again. <a href="http://ithemes.com/member/member.php" target="_new">Forget your password?</a>' );
+            	pb_backupbuddy::alert( 'Invalid iThemes.com Member account password. Unable to authenticate to Stash. Please verify your password & try again. Changing your iThemes password will require updating your Stash destination to continue using it. <a href="http://ithemes.com/member/member.php" target="_new">Forget your password?</a>' );
             } else {
 				pb_backupbuddy::alert( implode( ' - ', $quota_data['error'] ) );
 			}
@@ -722,35 +834,30 @@ class pb_backupbuddy_destination_stash { // Change class name end to match desti
 		</div>
 		
 		<table align="center" class="progress_table">
-		    <tbody><tr align="center">
-		        <td style="width: 10%; font-weight: bold; text-align: center">Free Tier</td>
-		        <td style="width: 10%; font-weight: bold; text-align: center">Paid Tier</td>        
-		        <td style="width: 10%"></td>
-		        <td style="width: 10%; font-weight: bold; text-align: center">Total</td>
-		        <td style="width: 10%; font-weight: bold; text-align: center">Used</td>
-		        <td style="width: 10%; font-weight: bold; text-align: center">Available</td>        
-		    </tr>
-		    
-		    <tr align="center">
-		        <td style="text-align: center">' . $account_info['quota_free_nice'] . '</td>
-		        <td style="text-align: center">';
-		        if ( $account_info['quota_paid'] == '0' ) {
-		        	$return .= 'none';
-		        } else {
-		        	$return .= $account_info['quota_paid_nice'];
-		        }
-		        $return .= '</td>
-		        <td></td>
-		        <td style="text-align: center">' . $account_info['quota_total_nice'] . '</td>
-		        <td style="text-align: center">' . $account_info['quota_used_nice'] . '</td>
-		        <td style="text-align: center">' . $account_info['quota_available_nice'] . '</td>
-		    </tr>
-		    ';
-		    /*
-		    <tr>
-		        <td colspan="2" style="text-align: center"><a href="http://ithemes.com/member/stash.php" style="color: #C63D05; text-decoration: none;">Upgrade</a></td>
-		    </tr>
-		    */
+			<tbody><tr align="center">
+			    <td style="width: 10%; font-weight: bold; text-align: center">Free Tier</td>
+			    <td style="width: 10%; font-weight: bold; text-align: center">Paid Tier</td>        
+			    <td style="width: 10%"></td>
+			    <td style="width: 10%; font-weight: bold; text-align: center">Total</td>
+			    <td style="width: 10%; font-weight: bold; text-align: center">Used</td>
+			    <td style="width: 10%; font-weight: bold; text-align: center">Available</td>        
+			</tr>
+
+			<tr align="center">
+			    <td style="text-align: center">' . $account_info['quota_free_nice'] . '</td>
+			    <td style="text-align: center">';
+			    if ( $account_info['quota_paid'] == '0' ) {
+			    	$return .= 'none';
+			    } else {
+			    	$return .= $account_info['quota_paid_nice'];
+			    }
+			    $return .= '</td>
+			    <td></td>
+			    <td style="text-align: center">' . $account_info['quota_total_nice'] . '</td>
+			    <td style="text-align: center">' . $account_info['quota_used_nice'] . '</td>
+			    <td style="text-align: center">' . $account_info['quota_available_nice'] . '</td>
+			</tr>
+			';
 		$return .= '
 		</tbody></table>';
 		

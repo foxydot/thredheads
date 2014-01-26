@@ -1,10 +1,31 @@
+<style type="text/css">
+#backupbuddy-meta-link-wrap a.show-settings {
+	float: right;
+	margin: 0 0 0 6px;
+}
+#screen-meta-links #backupbuddy-meta-link-wrap a {
+	background: none;
+}
+#screen-meta-links #backupbuddy-meta-link-wrap a:after {
+	content: '';
+	margin-right: 5px;
+}
+</style>
+<script type="text/javascript">
+jQuery(document).ready( function() {
+	jQuery('#screen-meta-links').append(
+		'<div id="backupbuddy-meta-link-wrap" class="hide-if-no-js screen-meta-toggle">' +
+			'<a href="" class="show-settings pb_backupbuddy_begintour"><?php _e( "Tour Page", "it-l10n-backupbuddy" ); ?></a>' +
+		'</div>'
+	);
+});
+</script>
 <?php
 // Tutorial
 pb_backupbuddy::load_script( 'jquery.joyride-2.0.3.js' );
 pb_backupbuddy::load_script( 'modernizr.mq.js' );
 pb_backupbuddy::load_style( 'joyride.css' );
 ?>
-<a href="" class="pb_backupbuddy_begintour">Tour This Page</a>
 <ol id="pb_backupbuddy_tour" style="display: none;">
 	<li data-id="ui-id-1">These settings are your defaults for all backups. Profiles may be used to override many settings to customize various backups to your needs.</li>
 	<li data-id="ui-id-2">Use profiles to customize various settings on a case-by-case basis and override default backup settings.</li>
@@ -14,7 +35,7 @@ pb_backupbuddy::load_style( 'joyride.css' );
 </ol>
 <script>
 jQuery(window).load(function() {
-	jQuery( '.pb_backupbuddy_begintour' ).click( function() {
+	jQuery(document).on( 'click', '.pb_backupbuddy_begintour', function(e) {
 		jQuery("#pb_backupbuddy_tour").joyride({
 			tipLocation: 'top',
 		});
@@ -24,10 +45,10 @@ jQuery(window).load(function() {
 </script>
 
 <?php
-pb_backupbuddy::$ui->title( 'BackupBuddy Settings' );
-pb_backupbuddy::$classes['core']->versions_confirm();
+pb_backupbuddy::$ui->title( __( 'BackupBuddy Settings', 'it-l10n-backupbuddy' ) );
+backupbuddy_core::versions_confirm();
 
-
+pb_backupbuddy::disalert( 'profile_suggest', '<span class="pb_label" style="font-size: 12px; margin-left: 10px; position: relative;">Tip</span> &nbsp; You can create & customize multiple different backup types with profiles on the <a href="?page=pb_backupbuddy_backup">Backups</a> page by selecting the gear icon next to each profile.' );
 
 $data = array(); // To pass to view.
 
@@ -36,8 +57,8 @@ $data = array(); // To pass to view.
 // Reset settings to defaults.
 if ( pb_backupbuddy::_POST( 'reset_defaults' ) != '' ) {
 	if ( call_user_func(  'pb_backupbuddy::reset_options', true ) === true ) {
-		pb_backupbuddy::$classes['core']->verify_directories(); // Re-verify directories such as backup dir, temp, etc.
-		pb_backupbuddy::alert( 'Plugin settings have been reset to defaults.' );
+		backupbuddy_core::verify_directories(); // Re-verify directories such as backup dir, temp, etc.
+		//pb_backupbuddy::alert( 'Plugin settings have been reset to defaults.' );
 	} else {
 		pb_backupbuddy::alert( 'Unable to reset plugin settings. Verify you are running the latest version.' );
 	}
@@ -46,21 +67,25 @@ if ( pb_backupbuddy::_POST( 'reset_defaults' ) != '' ) {
 
 
 /* BEGIN VERIFYING BACKUP DIRECTORY */
-if ( pb_backupbuddy::_POST( 'pb_backupbuddy_backup_directory' ) != '' ) {
+if ( isset( $_POST['pb_backupbuddy_backup_directory'] ) ) {
 	$backup_directory = pb_backupbuddy::_POST( 'pb_backupbuddy_backup_directory' );
+	if ( '' == $backup_directory ) { // blank so set to default.
+		$backup_directory = backupbuddy_core::_getBackupDirectoryDefault();
+	}
 	$backup_directory = str_replace( '\\', '/', $backup_directory );
 	$backup_directory = rtrim( $backup_directory, '/\\' ) . '/'; // Enforce single trailing slash.
+	
 	if ( ! is_dir( $backup_directory ) ) {
 		if ( false === @mkdir( $backup_directory, 0755 ) ) {
 			pb_backupbuddy::alert( 'Error #4838594589: Selected backup directory does not exist and it could not be created. Verify the path is correct or manually create the directory and set proper permissions. Reset to default path.' );
-			$_POST['pb_backupbuddy_backup_directory'] = pb_backupbuddy::$options['backup_directory']; // Set back to previous value (aka unchanged).
+			$_POST['pb_backupbuddy_backup_directory'] = backupbuddy_core::getBackupDirectory(); // Set back to previous value (aka unchanged).
 		}
 	}
 	
-	if ( pb_backupbuddy::$options['backup_directory'] != $backup_directory ) { // Directory differs. Needs updated in post var. Give messages here as this value is going to end up being saved.
+	if ( backupbuddy_core::getBackupDirectory() != $backup_directory ) { // Directory differs. Needs updated in post var. Give messages here as this value is going to end up being saved.
 		pb_backupbuddy::anti_directory_browsing( $backup_directory );
 		
-		$old_backup_dir = pb_backupbuddy::$options['backup_directory'];
+		$old_backup_dir = backupbuddy_core::getBackupDirectory();
 		$new_backup_dir = $backup_directory;
 		
 		// Move all files from old backup to new.
@@ -74,10 +99,10 @@ if ( pb_backupbuddy::_POST( 'pb_backupbuddy_backup_directory' ) != '' ) {
 				pb_backupbuddy::alert( 'ERROR: Unable to move backup "' . basename( $old_backup ) . '" to new storage directory. Manually move it or delete it for security and to prevent it from being backed up within backups.' );
 			} else { // rename success.
 				$old_backups_moved++;
-				$serial = pb_backupbuddy::$classes['core']->get_serial_from_file( basename( $old_backup ) );
+				$serial = backupbuddy_core::get_serial_from_file( basename( $old_backup ) );
 				
 				require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
-				$fileoptions_files = glob( pb_backupbuddy::$options['log_directory'] . 'fileoptions/*.txt' );
+				$fileoptions_files = glob( backupbuddy_core::getLogDirectory() . 'fileoptions/*.txt' );
 				if ( ! is_array( $fileoptions_files ) ) {
 					$fileoptions_files = array();
 				}
@@ -100,7 +125,11 @@ if ( pb_backupbuddy::_POST( 'pb_backupbuddy_backup_directory' ) != '' ) {
 			}
 		}
 		
-		$_POST['pb_backupbuddy_backup_directory'] = $backup_directory;
+		if ( '' == pb_backupbuddy::_POST( 'pb_backupbuddy_backup_directory' ) ) { // Blank default.
+			$_POST['pb_backupbuddy_backup_directory'] = '';
+		} else {
+			$_POST['pb_backupbuddy_backup_directory'] = $backup_directory;
+		}
 		pb_backupbuddy::alert( 'Your backup storage directory has been updated from "' . $old_backup_dir . '" to "' . $new_backup_dir . '". ' . $old_backups_moved . ' backup(s) have been moved to the new location. You should perform a manual backup to verify that your backup storage directory changes perform as expected.' );
 	}
 }
@@ -129,13 +158,11 @@ if ( pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) != pb_backu
 
 
 
-
-
 /* BEGIN REPLACING IMPORTBUDDY/REPAIRBUDDY_PASS_HASH WITH VALUE OF ACTUAL HASH */
-// ImportBuddy hash replace.
+if ( isset( $_POST['pb_backupbuddy_importbuddy_pass_hash'] ) && ( '' == $_POST['pb_backupbuddy_importbuddy_pass_hash'] ) ) { // Clear out length if setting to blank.
+	pb_backupbuddy::$options['importbuddy_pass_length'] = 0;
+}
 if ( ( str_replace( ')', '', pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) ) != '' ) && ( md5( pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) ) != pb_backupbuddy::$options['importbuddy_pass_hash'] ) ) {
-	//echo 'posted value: ' . pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) . '<br>';	
-	//echo 'hash: ' . md5( pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) ) . '<br>';
 	pb_backupbuddy::$options['importbuddy_pass_length'] = strlen( pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) );
 	$_POST['pb_backupbuddy_importbuddy_pass_hash'] = md5( pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_pass_hash' ) );
 } else { // Keep the same.
@@ -145,10 +172,6 @@ if ( ( str_replace( ')', '', pb_backupbuddy::_POST( 'pb_backupbuddy_importbuddy_
 }
 // Set importbuddy dummy text to display in form box. Equal length to the provided password.
 $data['importbuddy_pass_dummy_text'] = str_pad( '', pb_backupbuddy::$options['importbuddy_pass_length'], ')' );
-
-
-
-
 
 
 
@@ -164,9 +187,12 @@ if ( is_multisite() ) {
 
 
 
-
 // Load settings view.
 pb_backupbuddy::load_view( 'settings', $data );
 
 
 
+?>
+<br style="clear: both;">
+<br><br>
+<br><br>

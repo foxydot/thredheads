@@ -1,8 +1,7 @@
 <?php
 if ( !is_admin() ) { die( 'Access Denied.' ); }
 
-echo '<br>';
-$settings_form = new pb_backupbuddy_settings( 'advanced_settings', '', 'tab=2', 320 );
+$settings_form = new pb_backupbuddy_settings( 'advanced_settings', '', 'tab=1', 320 );
 
 
 
@@ -16,7 +15,25 @@ $settings_form->add_setting( array(
 
 
 
-
+$settings_form->add_setting( array(
+	'type'		=>		'checkbox',
+	'name'		=>		'backup_reminders',
+	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
+	'title'		=>		__( 'Enable backup reminders for edits', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: enabled] - When enabled links will be displayed upon post or page edits and during WordPress upgrades to remind and allow rapid backing up after modifications or before upgrading.', 'it-l10n-backupbuddy' ),
+	'css'		=>		'',
+	'after'		=>		'',
+	'rules'		=>		'required',
+) );
+$settings_form->add_setting( array(
+	'type'		=>		'checkbox',
+	'name'		=>		'archive_name_format',
+	'options'	=>		array( 'unchecked' => 'date', 'checked' => 'datetime' ),
+	'title'		=>		__( 'Add time in backup file name', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: disabled (date only)] - When enabled your backup filename will display the time the backup was created in addition to the default date. This is useful when making multiple backups in a one day period.', 'it-l10n-backupbuddy' ),
+	'css'		=>		'',
+	'rules'		=>		'required',
+) );
 $settings_form->add_setting( array(
 	'type'		=>		'checkbox',
 	'name'		=>		'lock_archives_directory',
@@ -24,17 +41,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Lock archive directory (high security)', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: disabled] - When enabled all downloads of archives via the web will be prevented under all circumstances via .htaccess file. If your server permits it, they will only be unlocked temporarily on click to download. If your server does not support this unlocking then you will have to access the archives via the server (such as by FTP).', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Check for enhanced security to block backup downloading.', 'it-l10n-backupbuddy' ) . ' This may<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;result in an inability to download backups while enabled on some servers.</span>',
-	'rules'		=>		'required',
-) );
-$settings_form->add_setting( array(
-	'type'		=>		'checkbox',
-	'name'		=>		'delete_archives_pre_backup',
-	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
-	'title'		=>		__( 'Delete all backup archives prior to backups', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: disabled] - When enabled all local backup archives will be deleted prior to each backup. This is useful if in compatibilty mode to prevent backing up existing files.', 'it-l10n-backupbuddy' ),
-	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Check if using compatibilty mode & exclusions are unavailable.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __('May prevent downloading backups within WordPress on incompatible servers', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -42,9 +49,52 @@ $settings_form->add_setting( array(
 	'name'		=>		'include_importbuddy',
 	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
 	'title'		=>		__('Include ImportBuddy in full backup archive', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__('[Default: enabled] - When enabled, the importbuddy.php file will be included within the backup archive ZIP file.  This file can be used to restore your site.  Inclusion in the ZIP file itself insures you always have access to it. importbuddy.php is only included in full backups and only when this option is enabled.', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__('[Default: enabled] - When enabled, the importbuddy.php (restoration tool) file will be included within the backup archive ZIP file in the location `/' . str_replace( ABSPATH, '', backupbuddy_core::getTempDirectory() ) . ' xxxxxxxxxx/ importbuddy.php` where the x\'s match the unique random string in the backup ZIP filename.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Uncheck to skip adding ImportBuddy to backup archive.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		' <span style="white-space: nowrap;"><span class="description">' . __( 'Located in backup', 'it-l10n-backupbuddy' ) . ':</span>&nbsp; <span class="code" style="white-space: normal; background: #EAEAEA;"">/' . str_replace( ABSPATH, '', backupbuddy_core::getTempDirectory() ) . 'xxxxxxxxxx/importbuddy.php</span>',
+	'rules'		=>		'required',
+) );
+$log_file = backupbuddy_core::getLogDirectory() . 'log-' . pb_backupbuddy::$options['log_serial'] . '.txt';
+$settings_form->add_setting( array(
+	'type'		=>		'select',
+	'name'		=>		'log_level',
+	'title'		=>		__('Logging Level', 'it-l10n-backupbuddy' ),
+	'options'	=>		array(
+								'0'		=>		__( 'None', 'it-l10n-backupbuddy' ),
+								'1'		=>		__( 'Errors Only', 'it-l10n-backupbuddy' ),
+								'2'		=>		__( 'Errors & Warnings', 'it-l10n-backupbuddy' ),
+								'3'		=>		__( 'Everything (troubleshooting mode)', 'it-l10n-backupbuddy' ),
+							),
+	'tip'		=>		sprintf( __('[Default: Errors Only] - This option controls how much activity is logged for records or troubleshooting. Logs may be viewed from the Logs / Other tab on the Settings page. Additionally when in Everything / Troubleshooting mode error emails will contain encrypted troubleshooting data for support. Log file: %s', 'it-l10n-backupbuddy' ), $log_file ),
+	'rules'		=>		'required',
+) );
+$settings_form->add_setting( array(
+	'type'		=>		'text',
+	'name'		=>		'max_site_log_size',
+	'title'		=>		__('Maximum log file size', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__('[Default: 10 MB] - If the log file exceeds this size then it will be cleared to prevent it from using too much space.' ),
+	'rules'		=>		'required',
+	'css'		=>		'width: 50px;',
+	'after'		=>		' MB',
+) );
+
+
+$settings_form->add_setting( array(
+	'type'		=>		'title',
+	'name'		=>		'title_advanced',
+	'title'		=>		__( 'Technical & Server Compatibility', 'it-l10n-backupbuddy' ),
+) );
+
+
+
+$settings_form->add_setting( array(
+	'type'		=>		'checkbox',
+	'name'		=>		'delete_archives_pre_backup',
+	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
+	'title'		=>		__( 'Delete all backup archives prior to backups', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: disabled] - When enabled all local backup archives will be deleted prior to each backup. This is useful if in compatibilty mode to prevent backing up existing files.', 'it-l10n-backupbuddy' ),
+	'css'		=>		'',
+	'after'		=>		'<span class="description"> ' . __('Use is exclusions are malfunctioning or for special purposes.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -54,7 +104,17 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Disable local SSL certificate verification', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: Disabled] When checked, WordPress will skip local https SSL verification.', 'it-l10n-backupbuddy' ) . '</span>',
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> Check if local SSL verification fails (ie. for loopbacks).</span>',
+	'after'		=>		'<span class="description"> ' . __( 'Workaround if local SSL verification fails (ie. for loopback & local CA cert issues).', 'it-l10n-backupbuddy' ) . '</span>',
+	'rules'		=>		'required',
+) );
+$settings_form->add_setting( array(
+	'type'		=>		'checkbox',
+	'name'		=>		'prevent_flush',
+	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
+	'title'		=>		__( 'Prevent Flushing', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: not prevented (unchecked)] - Rarely some servers die unexpectedly when flush() or ob_flush() are called multiple times during the same PHP process. Checking this prevents these from ever being called during backups.', 'it-l10n-backupbuddy' ),
+	'css'		=>		'',
+	'after'		=>		'<span class="description"> ' . __('Check if directed by support.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -64,7 +124,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Save meta data in comment', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: Enabled] When enabled, BackupBuddy will store general backup information in the ZIP comment header such as Site URL, backup type & time, serial, etc. during backup creation.', 'it-l10n-backupbuddy' ) . '</span>',
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> Uncheck to skip storing meta data in zip comment.</span>',
+	'after'		=>		'<span class="description"> ' . __( 'If backups hang when saving meta data disabling skips this process.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -74,44 +134,19 @@ $settings_form->add_setting( array(
 	'title'		=>		__('Perform integrity check on backup files', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Default: enabled] - By default each backup file is checked for integrity and completion the first time it is viewed on the Backup page.  On some server configurations this may cause memory problems as the integrity checking process is intensive.  If you are experiencing out of memory errors on the Backup file listing, you can uncheck this to disable this feature.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __( 'Uncheck if having problems viewing your backup listing.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __( 'Disable if the backup page will not load or backups hang on integrity check.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
 	'type'		=>		'select',
 	'name'		=>		'backup_mode',
-	'title'		=>		__('Manual backup mode', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('Default global backup mode', 'it-l10n-backupbuddy' ),
 	'options'	=>		array(
-								'1'		=>		__( 'Classic (v1.x)', 'it-l10n-backupbuddy' ),
-								'2'		=>		__( 'Modern (v2.x)', 'it-l10n-backupbuddy' ),
+								'1'		=>		__( 'Classic (v1.x) - Entire backup in single PHP page load', 'it-l10n-backupbuddy' ),
+								'2'		=>		__( 'Modern (v2.x+) - Split across page loads via WP cron', 'it-l10n-backupbuddy' ),
 							),
 	'tip'		=>		__('[Default: Modern] - If you are encountering difficulty backing up due to WordPress cron, HTTP Loopbacks, or other features specific to version 2.x you can try classic mode which runs like BackupBuddy v1.x did.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required',
-) );
-
-$log_file = WP_CONTENT_DIR . '/uploads/pb_' . pb_backupbuddy::settings( 'slug' ) . '/log-' . pb_backupbuddy::$options['log_serial'] . '.txt';
-$settings_form->add_setting( array(
-	'type'		=>		'select',
-	'name'		=>		'log_level',
-	'title'		=>		__('Logging / Debug level', 'it-l10n-backupbuddy' ),
-	'options'	=>		array(
-								'0'		=>		__( 'None', 'it-l10n-backupbuddy' ),
-								'1'		=>		__( 'Errors Only', 'it-l10n-backupbuddy' ),
-								'2'		=>		__( 'Errors & Warnings', 'it-l10n-backupbuddy' ),
-								'3'		=>		__( 'Everything (debug mode)', 'it-l10n-backupbuddy' ),
-							),
-	'tip'		=>		sprintf( __('[Default: Errors Only] - This option controls how much activity is logged for records or debugging. When in debug mode error emails will contain encrypted debugging data for support. Log file: %s', 'it-l10n-backupbuddy' ), $log_file ),
-	'rules'		=>		'required',
-) );
-
-$settings_form->add_setting( array(
-	'type'		=>		'text',
-	'name'		=>		'max_site_log_size',
-	'title'		=>		__('Maximum log file size', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__('[Default: 10 MB] - If the log file exceeds this size then it will be cleared to prevent it from using too much space.' ),
-	'rules'		=>		'required',
-	'css'		=>		'width: 50px;',
-	'after'		=>		' MB',
 ) );
 
 
@@ -128,8 +163,9 @@ $settings_form->add_setting( array(
 	'title'		=>		__('Skip database dump on backup', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Default: disabled] - (WARNING: This prevents BackupBuddy from backing up the database during any kind of backup. This is for troubleshooting / advanced usage only to work around being unable to backup the database.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Check if to completely bypass backing up database. Use with caution.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __('Completely bypass backing up database for all database types. Use caution.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
+	'orientation' =>	'vertical',
 ) );
 $settings_form->add_setting( array(
 	'type'		=>		'checkbox',
@@ -138,7 +174,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Break out big table dumps into steps', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: Disabled] Currently in beta. Breaks up some commonly known database tables to be backed up separately rather than all at once. Helps with larger databases.', 'it-l10n-backupbuddy' ) . '</span>',
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> Check to backup large tables in separate steps to help handle large databases.</span>',
+	'after'		=>		'<span class="description"> ' . __( 'Backup large data tables in separate steps for handling large databases.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -148,7 +184,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__('Force compatibility mode database dump', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Default: disabled] - WARNING: This forces the potentially slower mode of database dumping. Under normal circumstances mysql dump compatibility mode is automatically entered as needed without user intervention.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __( 'Check to force PHP-based database dump instead of command line. Pre-v3.x mode.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __( 'Forces PHP-based database dump instead of command line. Pre-v3.x mode.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -176,7 +212,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Enable zip compression', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: enabled] - ZIP compression decreases file sizes of stored backups. If you are encountering timeouts due to the script running too long, disabling compression may allow the process to complete faster.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Uncheck for large sites causing backups to not complete.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __('Typically DOUBLES the amount of data which may be zipped up before timeouts.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
@@ -229,7 +265,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Ignore/do-not-follow symbolic links', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: Enabled] When enabled BackupBuddy will ignore/not-follow symbolic links encountered during the backup process', 'it-l10n-backupbuddy' ) . '</span>',
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> Check to ignore/not-follow symbolic links when zipping files.</span>',
+	'after'		=>		'<span class="description"> Symbolic links are followed by default. Unfollowable links may cause failures.</span>',
 	'rules'		=>		'required',
 ) );
 
@@ -242,10 +278,3 @@ $settings_form->add_setting( array(
 $settings_form->process(); // Handles processing the submitted form (if applicable).
 $settings_form->display_settings( 'Save Advanced Settings' );
 
-
-?>
-
-
-<br><br><br>
-<span class="pb_label" style="font-size: 12px; margin-left: 10px; position: relative; top: -3px;">Tip</span> Some advanced options can be set on a per-profile basis on the <a href="?page=pb_backupbuddy_settings&tab=1">Backup Profiles</a> tab.
-<br>

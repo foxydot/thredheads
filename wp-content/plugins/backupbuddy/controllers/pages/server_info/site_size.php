@@ -49,12 +49,42 @@ pb_backupbuddy::load_style( 'jit_icicle.css' );
 </style>
 
 
-<?php echo '<div class="pb_htitle">' . __( 'Directory Size Map', 'it-l10n-backupbuddy' ) . '</div><br>';?>
+
+<?php
+echo '<div class="pb_htitle">' . __('Directory Size Listing', 'it-l10n-backupbuddy' ) . '</div><br>';
+echo '<a name="pb_backupbuddy_dir_size_listing">&nbsp;</a>';
+
+echo '<div id="pb_backupbuddy_site_size_listing_intro">';
+echo __('This option displays a comprehensive listing of directories and the corresponding size of all contents within, including subdirectories.  This is useful for finding where space is being used. Note that this is a CPU intensive process and may take a while to load and even time out on some servers.', 'it-l10n-backupbuddy' );
+echo '<br /><br />';
+
+
+echo 'Backup profile for calculating exclusions: ';
+echo '<select id="pb_backupbuddy_filelistingprofile">';
+foreach( pb_backupbuddy::$options['profiles'] as $this_profile_id => $profile ) {
+	?>
+	<option value="<?php echo $this_profile_id; ?>" <?php if ( $profile_id == $this_profile_id ) { echo 'selected'; } ?>><?php echo htmlentities( $profile['title'] ); ?> (<?php echo $profile['type']; ?>)</a>
+	<?php
+}
+echo '</select>';
+
+
+echo '&nbsp;&nbsp;&nbsp;<a class="pb_backupbuddy_site_size_listing_button button button-primary" style="margin-top: 3px;">', __('Display Directory Size Listing', 'it-l10n-backupbuddy' ),'</a> ';
+echo '<span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span>';
+echo '</div><br>';
+echo '<div id="pb_backupbuddy_site_size_listing_content" style="display: none;"></div>';
+echo '<br><br>';
+?>
+
+
+
+<?php echo '<div class="pb_htitle">' . __( 'Interactive Graphical Directory Size Map', 'it-l10n-backupbuddy' ) . '</div><br>';?>
 <?php _e('This option displays an interactive graphical representation of directories and the corresponding size of all contents within, including subdirectories.
 This is useful for finding where space is being used. Directory boxes are scaled based on size. Click on a directory box to move around. Note that this
 is a CPU intensive process and may take a while to load and even time out on some servers. Slower computers may have trouble navigating the interactive map.', 'it-l10n-backupbuddy' );
 ?>
-<p><a id="pb_iciclelaunch" class="button secondary-button" style="margin-top: 3px;"><?php _e('Display Directory Size Map', 'it-l10n-backupbuddy' );?></a></p>
+<p><a id="pb_iciclelaunch" class="button button-primary" style="margin-top: 3px;"><?php _e('Display Interactive Graphical Directory Size Map', 'it-l10n-backupbuddy' );?></a></p>
+
 
 <link type="text/css" href="<?php echo pb_backupbuddy::plugin_url(); ?>/css/jit_base.css" rel="stylesheet" />
 <link type="text/css" href="<?php echo pb_backupbuddy::plugin_url(); ?>/css/jit_icicle.css" rel="stylesheet" />
@@ -88,7 +118,7 @@ is a CPU intensive process and may take a while to load and even time out on som
 
 	<a id="update" class="theme button white"><?php _e('Go Up', 'it-l10n-backupbuddy' );?></a>
 </div>
-
+<br><br>
 
 
 <?php
@@ -108,28 +138,5 @@ $time_start = microtime(true);
 
 
 
-echo '<br>';
-echo '<div class="pb_htitle">' . __('Directory Size Listing', 'it-l10n-backupbuddy' ) . '</div><br>';
-echo '<a name="pb_backupbuddy_dir_size_listing">&nbsp;</a>';
 
-echo '<div id="pb_backupbuddy_site_size_listing_intro">';
-echo __('This option displays a comprehensive listing of directories and the corresponding size of all contents within, including subdirectories.  This is useful for finding where space is being used. Note that this is a CPU intensive process and may take a while to load and even time out on some servers.', 'it-l10n-backupbuddy' );
-echo '<br /><br />';
-
-
-echo 'Backup profile for calculating exclusions: ';
-echo '<select id="pb_backupbuddy_filelistingprofile">';
-foreach( pb_backupbuddy::$options['profiles'] as $this_profile_id => $profile ) {
-	?>
-	<option value="<?php echo $this_profile_id; ?>" <?php if ( $profile_id == $this_profile_id ) { echo 'selected'; } ?>><?php echo htmlentities( $profile['title'] ); ?> (<?php echo $profile['type']; ?>)</a>
-	<?php
-}
-echo '</select>';
-
-
-echo '&nbsp;&nbsp;&nbsp;<a class="pb_backupbuddy_site_size_listing_button button secondary-button" style="margin-top: 3px;">', __('Display Directory Size Listing', 'it-l10n-backupbuddy' ),'</a> ';
-echo '<span class="pb_backupbuddy_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span>';
-echo '</div><br>';
-echo '<div id="pb_backupbuddy_site_size_listing_content" style="display: none;"></div>';
-echo '<br>';
 ?>

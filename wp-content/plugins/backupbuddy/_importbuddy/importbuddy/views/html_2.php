@@ -3,7 +3,7 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 	die( '<html></html>' );
 }
 
-$page_title = 'Unzipping Backup File';
+$page_title = 'Step <span class="step_number">' . $step . '</span> of 6: Unzipping Backup File';
 require_once( '_header.php' );
 echo '<div class="wrap">';
 
@@ -31,7 +31,6 @@ if ( true === $results ) { // Move on to next step.
 	echo '</form>';
 } else {
 	pb_backupbuddy::alert( 'File extraction process did not complete successfully. Unable to continue to next step. Manually extract the backup ZIP file and choose to "Skip File Extraction" from the advanced options on Step 1.', true, '9005' );
-	echo '<p style="text-align: center;"><a href="http://pluginbuddy.com/tutorials/unzip-backup-zip-file-in-cpanel/">Click here for instructions on manual ZIP extraction as a work-around.</a></p>';
 	echo '</div><!-- /wrap -->';
 }
 

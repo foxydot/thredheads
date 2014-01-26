@@ -22,12 +22,11 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	// Also pre_backup() of backup.php schedules this 6 hours in the future of the backup in case of failure.
 	public function final_cleanup( $serial ) {
 		
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
 			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core( $serial );
 		}
 		
-		pb_backupbuddy::$classes['core']->final_cleanup( $serial );
+		backupbuddy_core::final_cleanup( $serial );
 		
 	} // End final_cleanup().
 	
@@ -56,12 +55,10 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 		}
 		
 		
-		pb_backupbuddy::status( 'details', 'Launching remote send via cron.' );
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
 			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 		}
-		pb_backupbuddy::$classes['core']->send_remote_destination( $destination_id, $backup_file, $trigger, $send_importbuddy, $delete_after );
+		backupbuddy_core::send_remote_destination( $destination_id, $backup_file, $trigger, $send_importbuddy, $delete_after );
 	} // End remote_send().
 	
 	
@@ -73,16 +70,17 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	 *	
 	 *	@param		array		$destination_settings		All settings for this destination for this action.
 	 *	@param		array		$files						Array of files to send (full path).
+	 *	@param		string		$send_id					Index ID of remote_sends associated with this send (if any).
 	 *	@return		null
 	 */
-	public function destination_send( $destination_settings, $files ) {
+	public function destination_send( $destination_settings, $files, $send_id = '' ) {
 		
 		pb_backupbuddy::status( 'details', 'Launching destination send via cron.' );
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
 			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 		}
-		pb_backupbuddy::$classes['core']->destination_send( $destination_settings, $files );
+		backupbuddy_core::destination_send( $destination_settings, $files, $send_id );
+		//send_remote_destination( $destination_id, $file, $trigger = '', $send_importbuddy = false, $delete_after = false )
 		
 	} // End destination_send().
 	
@@ -95,10 +93,14 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 		pb_backupbuddy::status( 'details', 'Copying remote S3 file `' . $s3file . '` down to local.' );
 		pb_backupbuddy::set_greedy_script_limits();
 		
-		require_once( pb_backupbuddy::plugin_path() . '/destinations/s3/lib/s3.php');
-		$s3 = new pb_backupbuddy_S3( $accesskey, $secretkey, $ssl );
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
 		
-		$destination_file = pb_backupbuddy::$options['backup_directory'] . $s3file;
+		require_once( pb_backupbuddy::plugin_path() . '/destinations/s3/lib/s3.php');
+		$s3 = new pb_backupbuddy_S3( $accesskey, $secretkey, (bool) $ssl );
+		
+		$destination_file = backupbuddy_core::getBackupDirectory() . $s3file;
 		if ( file_exists( $destination_file ) ) {
 			$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
 		}
@@ -123,17 +125,30 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 		pb_backupbuddy::status( 'details', 'Copying remote `' . $destination_type . '` file `' . $file . '` down to local.' );
 		pb_backupbuddy::set_greedy_script_limits();
 		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
+		
+		// Determine destination filename.
+		$destination_file = backupbuddy_core::getBackupDirectory() . basename( $file );
+		if ( file_exists( $destination_file ) ) {
+			$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
+		}
+		pb_backupbuddy::status( 'details', 'Filename of resulting local copy: `' . $destination_file . '`.' );
+		
 		if ( $destination_type == 'stash' ) {
 			
 			$itxapi_username = $settings['itxapi_username'];
 			$itxapi_password = $settings['itxapi_password'];
 			
 			// Load required files.
+			pb_backupbuddy::status( 'details', 'Load Stash files.' );
 			require_once( pb_backupbuddy::plugin_path() . '/destinations/stash/init.php' );
+			require_once( dirname( dirname( __FILE__ ) ) . '/destinations/_s3lib/aws-sdk/sdk.class.php' );
 			require_once( pb_backupbuddy::plugin_path() . '/destinations/stash/lib/class.itx_helper.php' );
-			require_once( pb_backupbuddy::plugin_path() . '/destinations/stash/lib/aws-sdk/sdk.class.php' );
 			
 			// Talk with the Stash API to get access to do things.
+			pb_backupbuddy::status( 'details', 'Authenticating Stash for remote copy to local.' );
 			$stash = new ITXAPI_Helper( pb_backupbuddy_destination_stash::ITXAPI_KEY, pb_backupbuddy_destination_stash::ITXAPI_URL, $itxapi_username, $itxapi_password );
 			$manage_url = $stash->get_manage_url();
 			$request = new RequestCore($manage_url);
@@ -159,14 +174,8 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 				return false;
 			}
 			
-			// Determine destination filename.
-			$destination_file = pb_backupbuddy::$options['backup_directory'] . basename( $file );
-			if ( file_exists( $destination_file ) ) {
-				$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
-			}
-			pb_backupbuddy::status( 'details', 'Filename of resulting local copy: `' . $destination_file . '`.' );
 			
-			// Connect to Amazon S3.
+			// Connect to S3.
 			pb_backupbuddy::status( 'details', 'Instantiating S3 object.' );
 			$s3 = new AmazonS3( $manage_data['credentials'] );
 			pb_backupbuddy::status( 'details', 'About to get Stash object `' . $file . '`...' );
@@ -179,10 +188,20 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 				pb_backupbuddy::status( 'error', 'Error #894597845. Stash copy to local FAILURE. Details: `' . print_r( $response, true ) . '`.' );
 				return false;
 			}
-
+			
+		} elseif ( $destination_type == 's3' ) {
+			
+			require_once( pb_backupbuddy::plugin_path() . '/destinations/s3/init.php' );
+			if ( true === pb_backupbuddy_destination_s3::download_file( $settings, $file, $destination_file ) ) { // success
+				pb_backupbuddy::status( 'details', 'S3 copy to local success.' );
+				return true;
+			} else { // fail
+				pb_backupbuddy::status( 'details', 'Error #85448774. S3 copy to local FAILURE.' );
+				return false;
+			}
 			
 		} else {
-			pb_backupbuddy::status( 'error', 'Error #859485. Unknown destination type `' . $destination_type . '`.' );
+			pb_backupbuddy::status( 'error', 'Error #859485. Unknown destination type for remote copy `' . $destination_type . '`.' );
 			return false;
 		}
 		
@@ -196,18 +215,21 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	function process_dropbox_copy( $destination_id, $file ) {
 		pb_backupbuddy::set_greedy_script_limits();
 		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
+		
 		require_once( pb_backupbuddy::plugin_path() . '/destinations/dropbox/lib/dropbuddy/dropbuddy.php' );
 		$dropbuddy = new pb_backupbuddy_dropbuddy( pb_backupbuddy::$options['remote_destinations'][$destination_id]['token'] );
 		if ( $dropbuddy->authenticate() !== true ) {
-			if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+			if ( ! class_exists( 'backupbuddy_core' ) ) {
 				require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-				pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 			}
-			pb_backupbuddy::$classes['core']->mail_error( 'Dropbox authentication failed in cron_process_dropbox_copy.' );
+			backupbuddy_core::mail_error( 'Dropbox authentication failed in cron_process_dropbox_copy.' );
 			return false;
 		}
 		
-		$destination_file = pb_backupbuddy::$options['backup_directory'] . basename( $file );
+		$destination_file = backupbuddy_core::getBackupDirectory() . basename( $file );
 		if ( file_exists( $destination_file ) ) {
 			$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
 		}
@@ -219,10 +241,50 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	
 	
 	
+	/* process_destination_copy()
+	 *
+	 * Downloads a remote backup and copies it to local server.
+	 *
+	 * @param	$destination_settings		array 		Array of destination settings.
+	 * @param	$remote_file				string		Filename of file to get. Basename only.  Remote directory / paths / buckets / etc should be passed in $destination_settings info.
+	 * @return	bool									true success, else false.
+	 *
+	 */
+	function process_destination_copy( $destination_settings, $remote_file ) {
+		
+		pb_backupbuddy::set_greedy_script_limits();
+		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
+		
+		require_once( pb_backupbuddy::plugin_path() . '/destinations/bootstrap.php' );
+		
+		$local_file = backupbuddy_core::getBackupDirectory() . basename( $remote_file );
+		if ( file_exists( basename( $local_file ) ) ) {
+			$local_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $local_file );
+		}
+		
+		if ( true === pb_backupbuddy_destinations::getFile( $destination_settings, $remote_file, $local_file ) ) {
+			pb_backupbuddy::status( 'message', 'Success copying remote file to local.' );
+			return true;
+		} else {
+			pb_backupbuddy::status( 'error', 'Failure copying remote file to local.' );
+			return false;
+		}
+		
+	} // End process_destination_copy().
+	
+	
+	
 	// TODO: Merge into v3.1 destinations system in destinations directory.
 	// Copy Rackspace backup to local backup directory
 	function process_rackspace_copy( $rs_backup, $rs_username, $rs_api_key, $rs_container, $rs_server ) {
 		pb_backupbuddy::set_greedy_script_limits();
+		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
 		
 		require_once( pb_backupbuddy::plugin_path() . '/destinations/rackspace/lib/rackspace/cloudfiles.php' );
 		$auth = new CF_Authentication( $rs_username, $rs_api_key, NULL, $rs_server );
@@ -235,12 +297,12 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 		// Get file from Rackspace
 		$rsfile = $container->get_object( $rs_backup );
 		
-		$destination_file = pb_backupbuddy::$options['backup_directory'] . $rs_backup;
+		$destination_file = backupbuddy_core::getBackupDirectory() . $rs_backup;
 		if ( file_exists( $destination_file ) ) {
 			$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
 		}
 		
-		$fso = fopen( ABSPATH . 'wp-content/uploads/backupbuddy_backups/' . $rs_backup, 'w' );
+		$fso = fopen( backupbuddy_core::getBackupDirectory() . $rs_backup, 'w' );
 		$rsfile->stream($fso);
 		fclose($fso);
 	}
@@ -252,6 +314,9 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	function process_ftp_copy( $backup, $ftp_server, $ftp_username, $ftp_password, $ftp_directory, $port = '21', $ftps = '0' ) {
 		pb_backupbuddy::set_greedy_script_limits();
 		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
 		
 		// Connect to server.
 		if ( $ftps == '1' ) { // Connect with FTPs.
@@ -287,7 +352,7 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 		$login_result = ftp_login( $conn_id, $ftp_username, $ftp_password );
 	
 		// try to download $server_file and save to $local_file
-		$destination_file = pb_backupbuddy::$options['backup_directory'] . $backup;
+		$destination_file = backupbuddy_core::getBackupDirectory() . $backup;
 		if ( file_exists( $destination_file ) ) {
 			$destination_file = str_replace( 'backup-', 'backup_copy_' . pb_backupbuddy::random_string( 5 ) . '-', $destination_file );
 		}
@@ -305,12 +370,11 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 	
 	function housekeeping() {
 		
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
 			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 		}
 		
-		pb_backupbuddy::$classes['core']->periodic_cleanup();
+		backupbuddy_core::periodic_cleanup();
 		
 	} // End housekeeping().
 	

@@ -176,4 +176,5 @@ if ( count( $settings_result ) == 0 ) { // No form submitted.
 ?>
 
 <br><br>
-<i>You can manage your Stash backups at <a href="http://ithemes.com/member/stash.php">http://ithemes.com/member/stash.php</a></i>
+<i>You can manage your Stash backups at the <a href="http://ithemes.com/member/panel/stash.php">iThemes Stash Panel</a></i>
+

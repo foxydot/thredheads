@@ -61,7 +61,14 @@ function migrate_wp_config() {
 		pb_backupbuddy::status( 'details', 'Backup pre-v3.0 so wp-config.php must be in normal location.' );
 	}
 	
-	return pb_backupbuddy::$classes['import']->migrate_wp_config();
+	if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+		pb_backupbuddy::status( 'details', 'Skipping update of Database Settings and URLs in wp-config.php as this is a Files Only Backup.' );
+		$migrateResult = true;
+	} else {
+		pb_backupbuddy::status( 'details', 'Updating Database Settings and URLs in wp-config.php as this is not a Files Only Backup.' );
+		$migrateResult = pb_backupbuddy::$classes['import']->migrate_wp_config();
+	}
+	return $migrateResult;
 }
 
 
@@ -223,48 +230,62 @@ function rename_htaccess_temp_back() {
 function trouble_scan() {
 	$trouble = array();
 	
+	// .maintenance
 	if ( file_exists( ABSPATH . '.maintenance' ) ) {
 		$trouble[] = '.maintenance file found in WordPress root. The site may not be accessible unless this file is deleted.';
 	}
 	
+	// index.htm
 	if ( file_exists( ABSPATH . 'index.htm' ) ) {
 		$trouble[] = 'index.htm file found in WordPress root. This may prevent WordPress from loading on some servers & may need to be deleted.';
 	}
 	
+	// index.html
 	if ( file_exists( ABSPATH . 'index.html' ) ) {
 		$trouble[] = 'index.html file found in WordPress root. This may prevent WordPress from loading on some servers & may need to be deleted.';
 	}
 	
+	// wp-config.php
 	if ( ! file_exists( ABSPATH . 'wp-config.php' ) ) {
 		$trouble[] = 'Warning only: wp-config.php file not found WordPress root. <i>This is normal for a database-only restore.</i>';
 	} else { // wp-config.php exists so check for unchanged URLs not updated due to provenance unknown.
-		pb_backupbuddy::status( 'details', 'Checking wp-config.php file for unchanged URLs.' );
-		$config_contents = @file_get_contents( ABSPATH . 'wp-config.php' );
-		if ( false === $config_contents ) { // Unable to open.
-			pb_backupbuddy::status( 'error', 'Unable to open wp-config.php for checking though it exists. Verify permissions.' );
-		} else { // Able to open.
-			
-			preg_match_all( '#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $config_contents, $matches );
-			$matches = $matches[0];
-			foreach( $matches as $match ) {
-				if ( false !== stristr( $match, 'api.wordpress.org' ) ) {
-					continue;
+		
+		if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+			pb_backupbuddy::status( 'details', 'Skipping URL scan for wp-config.php as this is a Files Only restore.' );
+		} else {
+			pb_backupbuddy::status( 'details', 'Checking wp-config.php file for unchanged URLs.' );
+			$config_contents = @file_get_contents( ABSPATH . 'wp-config.php' );
+			if ( false === $config_contents ) { // Unable to open.
+				pb_backupbuddy::status( 'error', 'Unable to open wp-config.php for checking though it exists. Verify permissions.' );
+			} else { // Able to open.
+				
+				preg_match_all( '#\bhttps?://[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/))#', $config_contents, $matches );
+				$matches = $matches[0];
+				foreach( $matches as $match ) {
+					if ( false !== stristr( $match, 'api.wordpress.org' ) ) {
+						continue;
+					}
+					if ( false !== stristr( $match, 'codex.wordpress.org' ) ) {
+						continue;
+					}
+					$trouble[] = 'A URL found in one or more locations in wp-config.php was not migrated as it was either not recognized or in an unrecognized location in the file: "' . htmlentities( $match ) . '".';
 				}
-				if ( false !== stristr( $match, 'codex.wordpress.org' ) ) {
-					continue;
+				
+				if ( false !== stristr( $config_contents, 'COOKIE_DOMAIN' ) ) { // Found cookie domain.
+					$trouble[] = 'Cookie domain set in wp-config.php file and has not been updated. You may need to manualy update this.';
 				}
-				$trouble[] = 'A URL found in one or more locations in wp-config.php was not migrated as it was either not recognized or in an unrecognized location in the file: "' . htmlentities( $match ) . '".';
 			}
-			
-			if ( false !== stristr( $config_contents, 'COOKIE_DOMAIN' ) ) { // Found cookie domain.
-				$trouble[] = 'Cookie domain set in wp-config.php file and has not been updated. You may need to manualy update this.';
-			}
-			
 		}
 	}
 	
+	// .htaccess
 	if ( ! file_exists( ABSPATH . '.htaccess' ) ) {
 		$trouble[] = 'Warning only: .htaccess file not found in WordPress root. This is used for permalinks on servers which support it. If needed or URLs result in a 404 you may regenerate this file by logging into the wp-admin & navigating to Settings: Permalinks and clicking "Save".';
+	}
+	
+	// php.ini
+	if ( file_exists( ABSPATH . 'php.ini' ) ) {
+		$trouble[] = 'A php.ini file was restored in the import process in the site root. This may cause problems with site functionality if imported to a different server as configuration options often differ between servers, possibly resulting in degraded performance or unexpected behavior.';
 	}
 	
 	if ( count( $trouble ) > 0 ) {
@@ -285,7 +306,11 @@ if ( $mode == 'html' ) {
 	$result = migrate_database();
 	if ( $result === true ) {
 		migrate_wp_config();
-		verify_database();
+		if ( ( true === pb_backupbuddy::$options['skip_database_import'] ) && ( true === pb_backupbuddy::$options['skip_database_migration'] ) ) {
+			pb_backupbuddy::status( 'details', 'Skipping database verification as both Import and Migration steps were skipped so no modifications were made to it.' );
+		} else {
+			verify_database();
+		}
 	}
 }
 ?>

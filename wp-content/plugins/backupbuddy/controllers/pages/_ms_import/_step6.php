@@ -1,5 +1,5 @@
 <?php
-$blog_id = isset( $_POST[ 'blog_id' ] ) ? absint( $_POST[ 'blog_id' ] ) : die( 'Error #34775854: Missing blog ID. Did you reload the page? Go back and try again.' );
+$blog_id = isset( $_POST[ 'blog_id' ] ) ? absint( $_POST[ 'blog_id' ] ) : die( 'Error #34775854b: Missing blog ID. Did you reload the page? Go back and try again.' );
 global $wpdb;
 $new_db_prefix = $wpdb->get_blog_prefix( $blog_id );
 //switch_to_blog( $blog_id );

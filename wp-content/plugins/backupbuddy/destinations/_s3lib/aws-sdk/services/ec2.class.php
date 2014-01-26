@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2010-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2010-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@
  *  
  * Visit <a href="http://aws.amazon.com/ec2/">http://aws.amazon.com/ec2/</a> for more information.
  *
- * @version 2012.08.01
+ * @version 2013.03.14
  * @license See the included NOTICE.md file for complete information.
  * @copyright See the included NOTICE.md file for complete information.
  * @link http://aws.amazon.com/ec2/ Amazon EC2
@@ -91,6 +91,16 @@ class AmazonEC2 extends CFRuntime
 	const REGION_SINGAPORE = self::REGION_APAC_SE1;
 
 	/**
+	 * Specify the queue URL for the Asia Pacific Southeast (Singapore) Region.
+	 */
+	const REGION_APAC_SE2 = 'ec2.ap-southeast-2.amazonaws.com';
+
+	/**
+	 * Specify the queue URL for the Asia Pacific Southeast (Singapore) Region.
+	 */
+	const REGION_SYDNEY = self::REGION_APAC_SE2;
+
+	/**
 	 * Specify the queue URL for the Asia Pacific Northeast (Tokyo) Region.
 	 */
 	const REGION_APAC_NE1 = 'ec2.ap-northeast-1.amazonaws.com';
@@ -138,7 +148,7 @@ class AmazonEC2 extends CFRuntime
 	 */
 	public function __construct(array $options = array())
 	{
-		$this->api_version = '2012-07-20';
+		$this->api_version = '2013-02-01';
 		$this->hostname = self::DEFAULT_URL;
 		$this->auth_class = 'AuthV2Query';
 
@@ -171,6 +181,8 @@ class AmazonEC2 extends CFRuntime
 	const INSTANCE_HIGH_MEM_XLARGE = 'm2.xlarge';
 	const INSTANCE_HIGH_MEM_2XLARGE = 'm2.2xlarge';
 	const INSTANCE_HIGH_MEM_4XLARGE = 'm2.4xlarge';
+	const INSTANCE_M3_XLARGE = 'm3.xlarge';
+	const INSTANCE_M3_4XLARGE = 'm3.4xlarge';
 
 	// High CPU
 	const INSTANCE_HIGH_CPU_MEDIUM = 'c1.medium';
@@ -184,6 +196,9 @@ class AmazonEC2 extends CFRuntime
 	// High I/O
 	const INSTANCE_HIGH_IO_4XLARGE = 'hi1.4xlarge';
 
+	// High Storage
+	const INSTANCE_STORAGE_8XLARGE = 'hs1.8xlarge';
+
 
 	/*%******************************************************************************************%*/
 	// SETTERS
@@ -191,7 +206,7 @@ class AmazonEC2 extends CFRuntime
 	/**
 	 * This allows you to explicitly sets the region for the service to use.
 	 *
-	 * @param string $region (Required) The region to explicitly set. Available options are <REGION_US_E1>, <REGION_US_W1>, <REGION_US_W2>, <REGION_EU_W1>, <REGION_APAC_SE1>, <REGION_APAC_NE1>, <REGION_US_GOV1>, <REGION_SA_E1>.
+	 * @param string $region (Required) The region to explicitly set. Available options are <REGION_US_E1>, <REGION_US_W1>, <REGION_US_W2>, <REGION_EU_W1>, <REGION_APAC_SE1>, <REGION_APAC_SE2>, <REGION_APAC_NE1>, <REGION_US_GOV1>, <REGION_SA_E1>.
 	 * @return $this A reference to the current instance.
 	 */
 	public function set_region($region)
@@ -626,6 +641,23 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $reserved_instances_listing_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function cancel_reserved_instances_listing($reserved_instances_listing_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['ReservedInstancesListingId'] = $reserved_instances_listing_id;
+		
+		return $this->authenticate('CancelReservedInstancesListing', $opt);
+	}
+
+	/**
 	 * Cancels one or more Spot Instance requests.
 	 *  
 	 * Spot Instances are instances that Amazon EC2 starts on your behalf when the maximum price that
@@ -679,6 +711,49 @@ class AmazonEC2 extends CFRuntime
 		$opt['InstanceId'] = $instance_id;
 		
 		return $this->authenticate('ConfirmProductInstance', $opt);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param string $source_region (Required) 
+	 * @param string $source_image_id (Required) 
+	 * @param string $name (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>Description</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>ClientToken</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function copy_image($source_region, $source_image_id, $name, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['SourceRegion'] = $source_region;
+		$opt['SourceImageId'] = $source_image_id;
+		$opt['Name'] = $name;
+		
+		return $this->authenticate('CopyImage', $opt);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param string $source_region (Required) 
+	 * @param string $source_snapshot_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>Description</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function copy_snapshot($source_region, $source_snapshot_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['SourceRegion'] = $source_region;
+		$opt['SourceSnapshotId'] = $source_snapshot_id;
+		
+		return $this->authenticate('CopySnapshot', $opt);
 	}
 
 	/**
@@ -1021,6 +1096,39 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $reserved_instances_id (Required) 
+	 * @param integer $instance_count (Required) 
+	 * @param array $price_schedules (Required)  <ul>
+	 * 	<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
+	 * 		<li><code>Term</code> - <code>long</code> - Optional - </li>
+	 * 		<li><code>Price</code> - <code>double</code> - Optional - </li>
+	 * 		<li><code>CurrencyCode</code> - <code>string</code> - Optional - </li>
+	 * 	</ul></li>
+	 * </ul>
+	 * @param string $client_token (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function create_reserved_instances_listing($reserved_instances_id, $instance_count, $price_schedules, $client_token, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['ReservedInstancesId'] = $reserved_instances_id;
+		$opt['InstanceCount'] = $instance_count;
+		$opt['ClientToken'] = $client_token;
+		
+		// Required list + map
+		$opt = array_merge($opt, CFComplexType::map(array(
+			'PriceSchedules' => (is_array($price_schedules) ? $price_schedules : array($price_schedules))
+		)));
+
+		return $this->authenticate('CreateReservedInstancesListing', $opt);
+	}
+
+	/**
 	 * Creates a new route in a route table within a VPC. The route's target can be either a gateway
 	 * attached to the VPC or a NAT instance in the VPC.
 	 *  
@@ -1291,6 +1399,11 @@ class AmazonEC2 extends CFRuntime
 	 * @param string $customer_gateway_id (Required) The ID of the customer gateway.
 	 * @param string $vpn_gateway_id (Required) The ID of the VPN gateway.
 	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>Options</code> - <code>array</code> - Optional -  <ul>
+	 * 		<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
+	 * 			<li><code>StaticRoutesOnly</code> - <code>boolean</code> - Optional - </li>
+	 * 		</ul></li>
+	 * 	</ul></li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
 	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
 	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
@@ -1302,7 +1415,35 @@ class AmazonEC2 extends CFRuntime
 		$opt['CustomerGatewayId'] = $customer_gateway_id;
 		$opt['VpnGatewayId'] = $vpn_gateway_id;
 		
+		// Optional map (non-list)
+		if (isset($opt['Options']))
+		{
+			$opt = array_merge($opt, CFComplexType::map(array(
+				'Options' => $opt['Options']
+			)));
+			unset($opt['Options']);
+		}
+
 		return $this->authenticate('CreateVpnConnection', $opt);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param string $vpn_connection_id (Required) 
+	 * @param string $destination_cidr_block (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function create_vpn_connection_route($vpn_connection_id, $destination_cidr_block, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['VpnConnectionId'] = $vpn_connection_id;
+		$opt['DestinationCidrBlock'] = $destination_cidr_block;
+		
+		return $this->authenticate('CreateVpnConnectionRoute', $opt);
 	}
 
 	/**
@@ -1718,6 +1859,25 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $vpn_connection_id (Required) 
+	 * @param string $destination_cidr_block (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function delete_vpn_connection_route($vpn_connection_id, $destination_cidr_block, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['VpnConnectionId'] = $vpn_connection_id;
+		$opt['DestinationCidrBlock'] = $destination_cidr_block;
+		
+		return $this->authenticate('DeleteVpnConnectionRoute', $opt);
+	}
+
+	/**
 	 * Deletes a VPN gateway. Use this when you want to delete a VPC and all its associated components
 	 * because you no longer need them. We recommend that before you delete a VPN gateway, you detach
 	 * it from the VPC and delete the VPN connection. Note that you don't need to delete the VPN
@@ -1754,6 +1914,31 @@ class AmazonEC2 extends CFRuntime
 		$opt['ImageId'] = $image_id;
 		
 		return $this->authenticate('DeregisterImage', $opt);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>AttributeName</code> - <code>string|array</code> - Optional -  Pass a string for a single value, or an indexed array for multiple values.</li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function describe_account_attributes($opt = null)
+	{
+		if (!$opt) $opt = array();
+				
+		// Optional list (non-map)
+		if (isset($opt['AttributeName']))
+		{
+			$opt = array_merge($opt, CFComplexType::map(array(
+				'AttributeName' => (is_array($opt['AttributeName']) ? $opt['AttributeName'] : array($opt['AttributeName']))
+			)));
+			unset($opt['AttributeName']);
+		}
+
+		return $this->authenticate('DescribeAccountAttributes', $opt);
 	}
 
 	/**
@@ -2701,6 +2886,38 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>ReservedInstancesId</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>ReservedInstancesListingId</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>Filters</code> - <code>array</code> - Optional - A filter used to limit results when describing tags. Multiple values can be specified per filter. A tag must match at least one of the specified values for it to be returned from an operation. Wildcards can be included in filter values; <code>*</code> specifies that zero or more characters must match, and <code>?</code> specifies that exactly one character must match. Use a backslash to escape special characters. For example, a filter value of <code>\*amazon\?\\</code> specifies the literal string <code>*amazon?\</code>. <ul>
+	 * 		<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
+	 * 			<li><code>Name</code> - <code>string</code> - Optional - Specifies the name of the filter.</li>
+	 * 			<li><code>Value</code> - <code>string|array</code> - Optional - Contains one or more values for the filter. Pass a string for a single value, or an indexed array for multiple values.</li>
+	 * 		</ul></li>
+	 * 	</ul></li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function describe_reserved_instances_listings($opt = null)
+	{
+		if (!$opt) $opt = array();
+				
+		// Optional list + map
+		if (isset($opt['Filters']))
+		{
+			$opt = array_merge($opt, CFComplexType::map(array(
+				'Filters' => $opt['Filters']
+			)));
+			unset($opt['Filters']);
+		}
+
+		return $this->authenticate('DescribeReservedInstancesListings', $opt);
+	}
+
+	/**
 	 * The DescribeReservedInstancesOfferings operation describes Reserved Instance offerings that are
 	 * available for purchase. With Amazon EC2 Reserved Instances, you purchase the right to launch
 	 * Amazon EC2 instances for a period of time (without getting insufficient capacity errors) and
@@ -2708,7 +2925,7 @@ class AmazonEC2 extends CFRuntime
 	 *
 	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
 	 * 	<li><code>ReservedInstancesOfferingId</code> - <code>string|array</code> - Optional - An optional list of the unique IDs of the Reserved Instance offerings to describe. Pass a string for a single value, or an indexed array for multiple values.</li>
-	 * 	<li><code>InstanceType</code> - <code>string</code> - Optional - The instance type on which the Reserved Instance can be used. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
+	 * 	<li><code>InstanceType</code> - <code>string</code> - Optional - The instance type on which the Reserved Instance can be used. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>m3.xlarge</code>, <code>m3.2xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>hs1.8xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
 	 * 	<li><code>AvailabilityZone</code> - <code>string</code> - Optional - The Availability Zone in which the Reserved Instance can be used.</li>
 	 * 	<li><code>ProductDescription</code> - <code>string</code> - Optional - The Reserved Instance product description.</li>
 	 * 	<li><code>Filter</code> - <code>array</code> - Optional - A list of filters used to match properties for ReservedInstancesOfferings. For a complete reference to the available filter keys for this operation, see the <a href="http://docs.amazonwebservices.com/AWSEC2/latest/APIReference/">Amazon EC2 API reference</a>. <ul>
@@ -2719,6 +2936,8 @@ class AmazonEC2 extends CFRuntime
 	 * 	</ul></li>
 	 * 	<li><code>InstanceTenancy</code> - <code>string</code> - Optional - The tenancy of the Reserved Instance offering. A Reserved Instance with tenancy of dedicated will run on single-tenant hardware and can only be launched within a VPC.</li>
 	 * 	<li><code>OfferingType</code> - <code>string</code> - Optional - The Reserved Instance offering type.</li>
+	 * 	<li><code>NextToken</code> - <code>string</code> - Optional - </li>
+	 * 	<li><code>MaxResults</code> - <code>integer</code> - Optional - </li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
 	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
 	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
@@ -3282,6 +3501,24 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $vpc_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>Attribute</code> - <code>string</code> - Optional -  [Allowed values: <code>enableDnsSupport</code>, <code>enableDnsHostnames</code>]</li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function describe_vpc_attribute($vpc_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['VpcId'] = $vpc_id;
+		
+		return $this->authenticate('DescribeVpcAttribute', $opt);
+	}
+
+	/**
 	 * Gives you information about your VPCs. You can filter the results to return information only
 	 * about VPCs that match criteria you specify.
 	 *  
@@ -3518,22 +3755,40 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $route_table_id (Required) 
+	 * @param string $gateway_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function disable_vgw_route_propagation($route_table_id, $gateway_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['RouteTableId'] = $route_table_id;
+		$opt['GatewayId'] = $gateway_id;
+		
+		return $this->authenticate('DisableVgwRoutePropagation', $opt);
+	}
+
+	/**
 	 * The DisassociateAddress operation disassociates the specified elastic IP address from the
 	 * instance to which it is assigned. This is an idempotent operation. If you enter it more than
 	 * once, Amazon EC2 does not return an error.
 	 *
-	 * @param string $public_ip (Required) The elastic IP address that you are disassociating from the instance.
 	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>PublicIp</code> - <code>string</code> - Optional - The elastic IP address that you are disassociating from the instance.</li>
 	 * 	<li><code>AssociationId</code> - <code>string</code> - Optional - Association ID corresponding to the VPC elastic IP address you want to disassociate.</li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
 	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
 	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
 	 */
-	public function disassociate_address($public_ip, $opt = null)
+	public function disassociate_address($opt = null)
 	{
 		if (!$opt) $opt = array();
-		$opt['PublicIp'] = $public_ip;
-		
+				
 		return $this->authenticate('DisassociateAddress', $opt);
 	}
 
@@ -3558,6 +3813,25 @@ class AmazonEC2 extends CFRuntime
 		$opt['AssociationId'] = $association_id;
 		
 		return $this->authenticate('DisassociateRouteTable', $opt);
+	}
+
+	/**
+	 * 
+	 *
+	 * @param string $route_table_id (Required) 
+	 * @param string $gateway_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function enable_vgw_route_propagation($route_table_id, $gateway_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['RouteTableId'] = $route_table_id;
+		$opt['GatewayId'] = $gateway_id;
+		
+		return $this->authenticate('EnableVgwRoutePropagation', $opt);
 	}
 
 	/**
@@ -3669,7 +3943,7 @@ class AmazonEC2 extends CFRuntime
 	 * 			<li><code>SecurityGroup</code> - <code>string|array</code> - Optional -  Pass a string for a single value, or an indexed array for multiple values.</li>
 	 * 			<li><code>AdditionalInfo</code> - <code>string</code> - Optional - </li>
 	 * 			<li><code>UserData</code> - <code>string</code> - Optional - </li>
-	 * 			<li><code>InstanceType</code> - <code>string</code> - Optional -  [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
+	 * 			<li><code>InstanceType</code> - <code>string</code> - Optional -  [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>m3.xlarge</code>, <code>m3.2xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>hs1.8xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
 	 * 			<li><code>Placement</code> - <code>array</code> - Optional - Describes where an Amazon EC2 instance is running within an Amazon EC2 region. <ul>
 	 * 				<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
 	 * 					<li><code>AvailabilityZone</code> - <code>string</code> - Optional - The availability zone in which an Amazon EC2 instance runs.</li>
@@ -4088,6 +4362,25 @@ class AmazonEC2 extends CFRuntime
 	}
 
 	/**
+	 * 
+	 *
+	 * @param string $vpc_id (Required) 
+	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>EnableDnsSupport.Value</code> - <code>boolean</code> - Optional - Boolean value</li>
+	 * 	<li><code>EnableDnsHostnames.Value</code> - <code>boolean</code> - Optional - Boolean value</li>
+	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
+	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
+	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
+	 */
+	public function modify_vpc_attribute($vpc_id, $opt = null)
+	{
+		if (!$opt) $opt = array();
+		$opt['VpcId'] = $vpc_id;
+		
+		return $this->authenticate('ModifyVpcAttribute', $opt);
+	}
+
+	/**
 	 * Enables monitoring for a running instance.
 	 *
 	 * @param string|array $instance_id (Required) The list of Amazon EC2 instances on which to enable monitoring. Pass a string for a single value, or an indexed array for multiple values.
@@ -4117,6 +4410,12 @@ class AmazonEC2 extends CFRuntime
 	 * @param string $reserved_instances_offering_id (Required) The unique ID of the Reserved Instances offering being purchased.
 	 * @param integer $instance_count (Required) The number of Reserved Instances to purchase.
 	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
+	 * 	<li><code>LimitPrice</code> - <code>array</code> - Optional -  <ul>
+	 * 		<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
+	 * 			<li><code>Amount</code> - <code>double</code> - Optional - </li>
+	 * 			<li><code>CurrencyCode</code> - <code>string</code> - Optional - </li>
+	 * 		</ul></li>
+	 * 	</ul></li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
 	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
 	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.
@@ -4127,6 +4426,15 @@ class AmazonEC2 extends CFRuntime
 		$opt['ReservedInstancesOfferingId'] = $reserved_instances_offering_id;
 		$opt['InstanceCount'] = $instance_count;
 		
+		// Optional map (non-list)
+		if (isset($opt['LimitPrice']))
+		{
+			$opt = array_merge($opt, CFComplexType::map(array(
+				'LimitPrice' => $opt['LimitPrice']
+			)));
+			unset($opt['LimitPrice']);
+		}
+
 		return $this->authenticate('PurchaseReservedInstancesOffering', $opt);
 	}
 
@@ -4454,8 +4762,8 @@ class AmazonEC2 extends CFRuntime
 	 * 			</ul></li>
 	 * 			<li><code>SecurityGroup</code> - <code>string|array</code> - Optional -  Pass a string for a single value, or an indexed array for multiple values.</li>
 	 * 			<li><code>UserData</code> - <code>string</code> - Optional - Optional data, specific to a user's application, to provide in the launch request. All instances that collectively comprise the launch request have access to this data. User data is never returned through API responses.</li>
-	 * 			<li><code>AddressingType</code> - <code>string</code> - Optional - </li>
-	 * 			<li><code>InstanceType</code> - <code>string</code> - Optional - Specifies the instance type. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
+	 * 			<li><code>AddressingType</code> - <code>string</code> - Optional - Deprecated.</li>
+	 * 			<li><code>InstanceType</code> - <code>string</code> - Optional - Specifies the instance type. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>m3.xlarge</code>, <code>m3.2xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>hs1.8xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
 	 * 			<li><code>Placement</code> - <code>array</code> - Optional - Defines a placement item. <ul>
 	 * 				<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
 	 * 					<li><code>AvailabilityZone</code> - <code>string</code> - Optional - The availability zone in which an Amazon EC2 instance runs.</li>
@@ -4776,8 +5084,7 @@ class AmazonEC2 extends CFRuntime
 	 * 	<li><code>SecurityGroup</code> - <code>string|array</code> - Optional - The names of the security groups into which the instances will be launched. Pass a string for a single value, or an indexed array for multiple values.</li>
 	 * 	<li><code>SecurityGroupId</code> - <code>string|array</code> - Optional -  Pass a string for a single value, or an indexed array for multiple values.</li>
 	 * 	<li><code>UserData</code> - <code>string</code> - Optional - Specifies additional information to make available to the instance(s).</li>
-	 * 	<li><code>AddressingType</code> - <code>string</code> - Optional - </li>
-	 * 	<li><code>InstanceType</code> - <code>string</code> - Optional - Specifies the instance type for the launched instances. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
+	 * 	<li><code>InstanceType</code> - <code>string</code> - Optional - Specifies the instance type for the launched instances. [Allowed values: <code>t1.micro</code>, <code>m1.small</code>, <code>m1.medium</code>, <code>m1.large</code>, <code>m1.xlarge</code>, <code>m2.xlarge</code>, <code>m2.2xlarge</code>, <code>m2.4xlarge</code>, <code>m3.xlarge</code>, <code>m3.2xlarge</code>, <code>c1.medium</code>, <code>c1.xlarge</code>, <code>hi1.4xlarge</code>, <code>hs1.8xlarge</code>, <code>cc1.4xlarge</code>, <code>cc2.8xlarge</code>, <code>cg1.4xlarge</code>]</li>
 	 * 	<li><code>Placement</code> - <code>array</code> - Optional - Specifies the placement constraints (Availability Zones) for launching the instances. <ul>
 	 * 		<li><code>x</code> - <code>array</code> - Optional - This represents a simple array index. <ul>
 	 * 			<li><code>AvailabilityZone</code> - <code>string</code> - Optional - The availability zone in which an Amazon EC2 instance runs.</li>
@@ -4929,7 +5236,6 @@ class AmazonEC2 extends CFRuntime
 	 *
 	 * @param string|array $instance_id (Required) The list of Amazon EC2 instances to start. Pass a string for a single value, or an indexed array for multiple values.
 	 * @param array $opt (Optional) An associative array of parameters that can have the following keys: <ul>
-	 * 	<li><code>AdditionalInfo</code> - <code>string</code> - Optional - </li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>
 	 * 	<li><code>returnCurlHandle</code> - <code>boolean</code> - Optional - A private toggle specifying that the cURL handle be returned rather than actually completing the request. This toggle is useful for manually managed batch requests.</li></ul>
 	 * @return CFResponse A <CFResponse> object containing a parsed HTTP response.

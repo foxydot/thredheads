@@ -14,13 +14,7 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 	 */
 	function admin_notices() {
 		
-		// Load core if it has not been instantiated yet.
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
-		}
-		
-		pb_backupbuddy::$classes['core']->verify_directories();
+		backupbuddy_core::verify_directories();
 		
 	} // End admin_notices().
 	
@@ -28,38 +22,31 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 	
 	function process_scheduled_backup( $cron_id ) {
 		
+		if ( ! class_exists( 'backupbuddy_core' ) ) {
+			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
+		}
+		
 		if ( !isset( pb_backupbuddy::$options ) ) {
 			$this->load();
 		}
 		
 		
-		// Load core if it has not been instantiated yet.
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
-		}
-		
 		// Verify directories.
-		pb_backupbuddy::$classes['core']->verify_directories();
+		backupbuddy_core::verify_directories();
 		
 		
 		pb_backupbuddy::status( 'details', 'cron_process_scheduled_backup: ' . $cron_id );
 		
 		
-		if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-			pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
-		}
-		
 		$preflight_message = '';
-		$preflight_checks = pb_backupbuddy::$classes['core']->preflight_check();
+		$preflight_checks = backupbuddy_core::preflight_check();
 		foreach( $preflight_checks as $preflight_check ) {
 			if ( $preflight_check['success'] !== true ) {
 				pb_backupbuddy::status( 'warning', $preflight_check['message'] );
 			}
 		}
 		
-		if ( is_array( pb_backupbuddy::$options['schedules'][$cron_id] ) ) {
+		if ( isset( pb_backupbuddy::$options['schedules'][$cron_id] ) && ( is_array( pb_backupbuddy::$options['schedules'][$cron_id] ) ) ) {
 			
 			// If schedule is disabled then just return. Bail out!
 			if ( isset( pb_backupbuddy::$options['schedules'][$cron_id]['on_off'] ) && ( pb_backupbuddy::$options['schedules'][$cron_id]['on_off'] == '0' ) ) {
@@ -127,9 +114,7 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 			$profile_array = pb_backupbuddy::$options['profiles'][ pb_backupbuddy::$options['schedules'][$cron_id]['profile'] ];
 			
 			if ( pb_backupbuddy::$classes['backup']->start_backup_process( $profile_array, 'scheduled', array(), $post_backup_steps, pb_backupbuddy::$options['schedules'][$cron_id]['title'] ) !== true ) {
-				error_log( 'FAILURE #4455484589 IN BACKUPBUDDY.' );
-				echo __('Error #4564658344443: Backup failure', 'it-l10n-backupbuddy' );
-				echo pb_backupbuddy::$classes['backup']->get_errors();
+				pb_backupbuddy::status( 'error', 'Error #4564658344443: Backup failure. See earlier logging details for more information.' );
 			}
 		}
 		pb_backupbuddy::status( 'details', 'Finished cron_process_scheduled_backup.' );
@@ -192,15 +177,15 @@ class pb_backupbuddy_actions extends pb_backupbuddy_actionscore {
 		}
 		$fullbackup = esc_url( add_query_arg( array(
 				'page' => 'pb_backupbuddy_backup',
-				'run_backup' => 'full'
+				'backupbuddy_backup' => '2'
 			), $admin_url
 		) );
 		$dbbackup = esc_url( add_query_arg( array(
 				'page' => 'pb_backupbuddy_backup',
-				'run_backup' => 'db'
+				'backupbuddy_backup' => '1'
 			), $admin_url
 		) );
-		$backup_message = " | <a href='{$fullbackup}'>" . __('Full Backup', 'it-l10n-backupbuddy' ) . "</a> | <a href='{$dbbackup}'>" . __('Database Backup', 'it-l10n-backupbuddy' ) . "</a>";
+		$backup_message = " | <a href='{$dbbackup}'>" . __('Database Backup', 'it-l10n-backupbuddy' ) . "</a> | <a href='{$fullbackup}'>" . __('Full Backup', 'it-l10n-backupbuddy' ) . "</a>";
 		
 		
 		$reminder_posts = array(); // empty array to store customized post messages array

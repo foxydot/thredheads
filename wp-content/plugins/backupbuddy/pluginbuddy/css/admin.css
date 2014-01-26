@@ -1,6 +1,6 @@
 #tooltip {
 	position: absolute;
-	z-index: 3000;
+	z-index: 999999;
 	border: 2px solid #DFDFDF;
 	padding: 12px;
 	max-width: 300px;
@@ -28,6 +28,33 @@
 }
 .pluginbuddy_tip img {
 	vertical-align: -2px;
+}
+/* Scrollable text for displaying default dirs, etc. */
+.pb_scroll {
+	display: inline-block;
+	overflow-x: scroll;
+	white-space: nowrap;
+}
+.pb_scroll::-webkit-scrollbar {
+	-webkit-appearance: none;
+	width: 11px;
+	height: 11px;
+}
+.pb_scroll::-webkit-scrollbar-thumb {
+	border-radius: 8px;
+	border: 2px solid white; /* should match background, can't be transparent */
+	background-color: rgba(0, 0, 0, .1);
+}
+.pb_scroll::-webkit-scrollbar-corner{
+	background-color:rgba(0,0,0,0.0);
+}
+
+
+h3.title {
+	font-weight: 600;
+}
+.pb_form th, h3 {
+	font-weight: normal;
 }
 
 td.pb_draghandle {
@@ -72,7 +99,6 @@ tr.tDnD_whileDrag td,tr.tDnD_whileDrag th{
 .pb_htitle {
 	font-size: 18px;
 	border-bottom: 1px solid #DFDFDF;
-	margin-top: 20px;
 	padding-bottom: 4px;
 }
 
@@ -93,6 +119,19 @@ tr.tDnD_whileDrag td,tr.tDnD_whileDrag th{
 	width: 100%;
 	height: 200px;
 }
+
+
+.backupbuddy-tab-blocks .backupbuddy-tab {
+	display: none;
+	padding-top: 25px;
+}
+.backupbuddy-tab-blocks .backupbuddy-tab:first-child {
+	display: block;
+}
+
+
+
+
 
 /* Tabs ----------------------------------*/
 .ui-tabs {

@@ -1,3 +1,6 @@
+--ALL NEWER UPDATES IN history.txt--
+
+
 0.1.9 - 2010-02-11 - Dustin Bolton
 	Initial public beta release.
 0.1.10 - 2010-02-12 - Dustin Bolton
@@ -675,7 +678,7 @@ Pre-2.0 - Dustin Bolton
 	FTP client viewer now handles empty directories properly. Issue #161.
 	ImportBuddy checks and warns of odd media directory issues. Issue #170.
 	ImportBuddy now properly warns if a corrupt / incomplete importbuddy.php tries to run. Prompts to re-upload. Issue #171.
-	Fixed Sucuri logo on Malware scan page not displaying properly. Issue #173.
+	Fixed Malware scan logo on Malware scan page not displaying properly. Issue #173.
 	Added blog title to notifcation emails for easier filtering. Issue #174.
 	Multisite export was resulting in an extra trailing slash in image links. Issue #175.
 	Server Info page now offers more 'best' recommendations. Issue #180.
@@ -695,7 +698,7 @@ Pre-2.0 - Dustin Bolton
 	Remote destination sending stats now shown on Server Info page for debugging remote sending issues. Issue #216.
 	Added jQuery date/time picker back onto Scheduling page for easier modification of schedule dates/times. Issue #233.
 	Special thanks to Ronald Huereca for the initial code for BackupBuddy Multisite features and functionality.
-	Added '&clear=true' to end of Sucuri query. Internal transient caches for 1 hour; rescan now bypasses transient so this query should force a re-scan then. Confirmed to fix by Sucuri. Issue #223.
+	Added '&clear=true' to end of Malware scan query. Internal transient caches for 1 hour; rescan now bypasses transient so this query should force a re-scan then. Confirmed to fix by Malware scan provider. Issue #223.
 	Fixed off conflict with Simpler CSS plugin. Issue #226.
 	Fixed importbuddy Fails to Load pclzip on Windows Platform. Issue #232.
 	Added support for wp-config.php in parent directory. Copied to temp directory on backup and restored to root on import. Issue #84.
@@ -720,7 +723,7 @@ Pre-2.0 - Dustin Bolton
 
 3.0.0.2a - 2012-04-06 - Dustin Bolton
 	Missing write speed now shows unknown on backup listing.
-	Sucuri Malware Found wording updated.
+	Malware scan Malware Found wording updated.
 	Now stripping public_html from migration URL guess.
 	Fixed double URL replacement issue when migrating from / to same domain.
 	Added headings to all Multisite Import steps for clarity on what each step does.
@@ -839,7 +842,7 @@ Pre-2.0 - Dustin Bolton
 	Fixed section separator being missing ( &lsaquo; ) in title. - re: Cory
 	Fixed being able to toggle displaying / hiding graphical directory size map. - re: Cory
 	Misc. text modifications. - re: Cory
-	Added link to discounted Sucuri packages on Malware page. - re: Cory
+	Added link to discounted Malware scanner packages on Malware page. - re: Cory
 	Fixed upgrade reminder link. - re: Cory
 	Added additional instructions to various pages. - re: Cory
 	Added tip of using S3, Rackspace, or FTP as preferred destinations. - re: Cory
@@ -917,7 +920,7 @@ Pre-2.0 - Dustin Bolton
 	Added trigger details into DAT file.
 	Misc cleanup.
 3.0.0.15a - 2012-05-08 - Dustin Bolton
-	Added '&clear=true' to end of Sucuri query. Internal transient caches for 1 hour; rescan now bypasses transient so this query should force a re-scan then. Confirmed to fix by Sucuri. - re: Jeremy; Issue #223.
+	Added '&clear=true' to end of Malware scanner query. Internal transient caches for 1 hour; rescan now bypasses transient so this query should force a re-scan then. Confirmed to fix by Malware scanner. - re: Jeremy; Issue #223.
 	Cleaned up backup.php - re: Chris
 	Updated default widths of pages to fully extend instead of 80%. - re: Chris
 	Fixed div's inside anchor tags on backup page. - re: Chris

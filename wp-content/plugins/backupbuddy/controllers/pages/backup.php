@@ -1,7 +1,6 @@
 <?php
 
 
-
 // Multisite Export. This file loaded from multisite_export.php.
 if ( isset( $export_only ) && ( $export_only === true ) ) {
 	if ( pb_backupbuddy::_GET( 'backupbuddy_backup' ) == '' ) {

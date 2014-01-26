@@ -1,6 +1,6 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_local { // Change class name end to match destination name.
 	
@@ -29,7 +29,7 @@ class pb_backupbuddy_destination_local { // Change class name end to match desti
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array() ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
 		
 		$limit = $settings['archive_limit'];
 		$path = $settings['path'];
@@ -37,17 +37,24 @@ class pb_backupbuddy_destination_local { // Change class name end to match desti
 			pb_backupbuddy::$filesystem->mkdir( $settings['path'] );
 		}
 		
+		$total_transfer_time = 0;
+		$total_transfer_size = 0;
 		foreach( $files as $file ) {
 			pb_backupbuddy::status( 'details',  'Starting send to `' . $path . '`.' );
 			
+			$filesize = filesize( $file );
+			$total_transfer_size += $filesize;
+			
+			$send_time = -(microtime( true ));
 			if ( true !== @copy( $file, $path . '/' . basename( $file ) ) ) {
-				pb_backupbuddy::status( 'error', 'Unable to copy file `' . $file . '` to local path `' . $path . '`. Please verify the directory exists and permissions permit writing.' );
-				pb_backupbuddy::$classes['core']->mail_error( $error_message );
+				pb_backupbuddy::status( 'error', 'Unable to copy file `' . $file . '` of size `' . pb_backupbuddy::$format->file_size( $filesize ) . '` to local path `' . $path . '`. Please verify the directory exists and permissions permit writing.' );
+				backupbuddy_core::mail_error( $error_message );
 				return false;
 			} else {
 				pb_backupbuddy::status( 'details', 'Send success.' );
 			}
-			
+			$send_time += microtime( true );
+			$total_transfer_time += $send_time;
 			
 			// Start remote backup limit
 			if ( $limit > 0 ) {
@@ -59,10 +66,10 @@ class pb_backupbuddy_destination_local { // Change class name end to match desti
 					$remote_files = array();
 				}
 				usort( $remote_files, create_function('$a,$b', 'return filemtime($a) - filemtime($b);' ) );
-pb_backupbuddy::status( 'details', 'Found `' . count( $remote_files ) . '` backups.' );
+				pb_backupbuddy::status( 'details', 'Found `' . count( $remote_files ) . '` backups.' );
 				
 				// Create array of backups and organize by date
-				$bkupprefix = pb_backupbuddy::$classes['core']->backup_prefix();
+				$bkupprefix = backupbuddy_core::backup_prefix();
 				
 				foreach( $remote_files as $file_key => $remote_file ) {
 					if ( false === stripos( $remote_file, 'backup-' . $bkupprefix . '-' ) ) {
@@ -92,7 +99,7 @@ pb_backupbuddy::status( 'details', 'Found `' . count( $remote_files ) . '` backu
 					if ( $delete_fail_count !== 0 ) {
 						$error_message = 'Local remote limit could not delete ' . $delete_fail_count . ' backups.';
 						pb_backupbuddy::status( 'error', $error_message );
-						pb_backupbuddy::$classes['core']->mail_error( $error_message );
+						backupbuddy_core::mail_error( $error_message );
 					}
 				}
 			} else {
@@ -101,6 +108,19 @@ pb_backupbuddy::status( 'details', 'Found `' . count( $remote_files ) . '` backu
 			
 			
 		} // end foreach.
+		
+		// Load fileoptions to the send.
+		pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+		$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+		if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+			pb_backupbuddy::status( 'error', __('Fatal Error #9034.2344848. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+			return false;
+		}
+		pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+		$fileoptions = &$fileoptions_obj->options;
+		
+		$fileoptions['write_speed'] = ( $total_transfer_time / $total_transfer_size );
 		
 		return true;
 			

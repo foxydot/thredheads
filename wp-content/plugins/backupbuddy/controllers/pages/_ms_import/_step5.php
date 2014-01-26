@@ -1,6 +1,6 @@
 <?php
 global $wpdb, $current_site, $current_blog;
-$blog_id = isset( $_POST[ 'blog_id' ] ) ? absint( $_POST[ 'blog_id' ] ) : die( 'Error #34775854: Missing blog ID. Did you reload the page? Go back and try again.' );
+$blog_id = isset( $_POST[ 'blog_id' ] ) ? absint( $_POST[ 'blog_id' ] ) : die( 'Error #34775854a: Missing blog ID. Did you reload the page? Go back and try again.' );
 //switch_to_blog( intval( $blog_id ) );
 if ( $blog_id == '' ) {
 	die ('Bad blog id for table prefix. Error #4334343443434354548398439.' );

@@ -101,7 +101,7 @@ function get_archives_list() {
 	}
 	foreach( $backup_archives_glob as $backup_archive ) {
 		$comment = pb_backupbuddy::$classes['zipbuddy']->get_comment( $backup_archive );
-		$comment = pb_backupbuddy::$classes['core']->normalize_comment_data( $comment );
+		$comment = backupbuddy_core::normalize_comment_data( $comment );
 		
 		$this_archive = array(
 			'file'		=>		basename( $backup_archive ),

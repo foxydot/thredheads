@@ -128,7 +128,7 @@ class pb_backupbuddy_dashboardcore {
 		foreach ( pb_backupbuddy::$_dashboard_widgets as $widget ) {
 			
 			if ( $widget['capability'] == 'godmode' ) { // godmode capabiltiy.
-				if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() ) { // In a network installation.
+				if ( is_multisite() && backupbuddy_core::is_network_activated() ) { // In a network installation.
 					if ( !current_user_can( 'manage_network' ) ) {
 						continue; // Skip this widget. Access denied to it.
 					}

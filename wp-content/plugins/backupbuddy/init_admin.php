@@ -2,6 +2,18 @@
 
 /********** MISC **********/
 
+// Needed for retina icons in menu.
+add_action( 'admin_enqueue_scripts', create_function( '',
+	"wp_enqueue_style( 'pb_backupbuddy-wp-admin', '" . pb_backupbuddy::plugin_url() . "/css/wp-admin.css', array(), pb_backupbuddy::settings( 'version' ) );"
+	)
+);
+global $wp_version;
+if ( $wp_version >= 3.8 ) {
+	add_action( 'admin_enqueue_scripts', create_function( '',
+		"wp_enqueue_style( 'pb_backupbuddy-wp-admin-fonticon', '" . pb_backupbuddy::plugin_url() . "/css/wp-admin-fonticon.css', array(), pb_backupbuddy::settings( 'version' ) );"
+		)
+	);
+}
 
 
 pb_backupbuddy::load();
@@ -9,9 +21,8 @@ pb_backupbuddy::load();
 
 
 // Load backupbuddy class with helper functions.
-if ( !isset( pb_backupbuddy::$classes['core'] ) ) {
+if ( ! class_exists( 'backupbuddy_core' ) ) {
 	require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
-	pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 }
 
 
@@ -32,7 +43,7 @@ if ( is_multisite() ) { // Try to read site-specific settings in.
 
 if ( $options !== false ) { // If options is not false then we need to upgrade.
 	pb_backupbuddy::status( 'details', 'Migrating data structure. 2.x data discovered.' );
-	pb_backupbuddy::$classes['core']->verify_directories();
+	backupbuddy_core::verify_directories();
 	require_once( pb_backupbuddy::plugin_path() . '/controllers/activation.php' );
 }
 unset( $options );
@@ -40,7 +51,7 @@ unset( $options );
 // Check if data version is behind & run activation upgrades if needed.
 $default_options = pb_backupbuddy::settings( 'default_options' );
 if ( pb_backupbuddy::$options['data_version'] < $default_options['data_version'] ) {
-	pb_backupbuddy::$classes['core']->verify_directories();
+	backupbuddy_core::verify_directories();
 	pb_backupbuddy::status( 'details', 'Data structure version of `' . pb_backupbuddy::$options['data_version'] . '` behind current version of `' . $default_options['data_version'] . '`. Running activation upgrade.' );
 	require_once( pb_backupbuddy::plugin_path() . '/controllers/activation.php' );
 }
@@ -51,7 +62,7 @@ if ( pb_backupbuddy::$options['data_version'] < $default_options['data_version']
 
 // Schedule daily housekeeping.
 if ( false === wp_next_scheduled( pb_backupbuddy::cron_tag( 'housekeeping' ) ) ) { // if schedule does not exist...
-	pb_backupbuddy::$classes['core']->schedule_event( time() + ( 60*60 * 2 ), 'daily', pb_backupbuddy::cron_tag( 'housekeeping' ), array() ); // Add schedule.
+	backupbuddy_core::schedule_event( time() + ( 60*60 * 2 ), 'daily', pb_backupbuddy::cron_tag( 'housekeeping' ), array() ); // Add schedule.
 }
 
 
@@ -75,7 +86,7 @@ if ( pb_backupbuddy::$options['backup_reminders'] == '1' ) {
 }
 
 // Display warning to network activate if running in normal mode on a MultiSite Network.
-if ( is_multisite() && !pb_backupbuddy::$classes['core']->is_network_activated() ) {
+if ( is_multisite() && !backupbuddy_core::is_network_activated() ) {
 	pb_backupbuddy::add_action( array( 'all_admin_notices', 'multisite_network_warning' ) ); // BB should be network activated while on Multisite.
 }
 
@@ -129,10 +140,14 @@ pb_backupbuddy::add_ajax( 'file_tree' ); // Display file listing of zip.
 pb_backupbuddy::add_ajax( 'restore_file_view' ); // File viewer (view content only) in the file restore page.
 pb_backupbuddy::add_ajax( 'restore_file_restore' ); // File restorer (actual unzip/restore) in the file restore page.
 //pb_backupbuddy::add_ajax( 'quickstart_stash_test' ); // Getting Started Quick Start Stash auth testing.
-pb_backupbuddy::add_ajax( 'quickstart_form' ); // Getting Started Quick Start form saving.
-pb_backupbuddy::add_ajax( 'backup_profile_settings' ); // Settings page backup profile editing.
+pb_backupbuddy::add_ajax( 'quickstart_skip' ); // Quick Start form saving.
+pb_backupbuddy::add_ajax( 'quickstart_form' ); // Quick Start form saving.
+pb_backupbuddy::add_ajax( 'quickstart' ); // Quick Start form modal.
+pb_backupbuddy::add_ajax( 'profile_settings' ); // Settings page backup profile editing.
 pb_backupbuddy::add_ajax( 'email_error_test' ); // Test email error notification.
-
+pb_backupbuddy::add_ajax( 'remotesend_details' ); // Display backup integrity status.
+pb_backupbuddy::add_ajax( 'remotesend_abort' ); // Abort an in-process remote destination send.
+pb_backupbuddy::add_ajax( 'destination_ftp_pathpicker' ); // FTP destination path picker.
 
 /********** DASHBOARD (admin) **********/
 
@@ -151,24 +166,21 @@ pb_backupbuddy::add_filter( 'plugin_row_meta', 10, 2 );
 
 /********** PAGES (admin) **********/
 
-if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() && !defined( 'PB_DEMO_MODE' ) ) { // Multisite installation.
+$icon = '';
+
+if ( is_multisite() && backupbuddy_core::is_network_activated() && !defined( 'PB_DEMO_MODE' ) ) { // Multisite installation.
 	if ( defined( 'PB_BACKUPBUDDY_MULTISITE_EXPERIMENT' ) && ( PB_BACKUPBUDDY_MULTISITE_EXPERIMENT == TRUE ) ) { // comparing with bool but loose so string is acceptable.
 		
 		if ( is_network_admin() ) { // Network Admin pages
-			pb_backupbuddy::add_page( '', 'getting_started', array( pb_backupbuddy::settings( 'name' ), 'Getting Started' ) );
-			pb_backupbuddy::add_page( 'getting_started', 'backup', __( 'Backup', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'migrate_restore', __( 'Migrate, Restore', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'destinations', __( 'Remote Destinations', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-			pb_backupbuddy::add_page( 'getting_started', 'multisite_import', __( 'MS Import (beta)', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'server_info', __( 'Server Information', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'malware_scan', __( 'Malware Scan', 'it-l10n-backupbuddy' ), 'manage_network' );
-			//pb_backupbuddy::add_page( 'getting_started', 'server_tools', __( 'Server Tools', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'scheduling', __( 'Scheduling', 'it-l10n-backupbuddy' ), 'manage_network' );
-			pb_backupbuddy::add_page( 'getting_started', 'settings', __( 'Settings', 'it-l10n-backupbuddy' ), 'manage_network' );
-		} else { // Subsite pages.
-			// TODO: Make the following work so the network admin ALWAYS can export even if admin exports are not enabled. Problem: current_user_can() is not available this early. Not sure best fix yet.
-			//if ( current_user_can( 'manage_network' ) || ( ( current_user_can( 'activate_plugins' ) ) && ( pb_backupbuddy::$options[ 'multisite_export' ] == '1' ) ) ) { // Add export menus if: is network admin _OR_ ( is an admin AND exporting is enabled ).
-			
+			pb_backupbuddy::add_page( '', 'backup', array( pb_backupbuddy::settings( 'name' ), __( 'Backup', 'it-l10n-backupbuddy' ) ), 'manage_network', $icon );
+			pb_backupbuddy::add_page( 'backup', 'migrate_restore', __( 'Migrate, Restore', 'it-l10n-backupbuddy' ), 'manage_network' );
+			pb_backupbuddy::add_page( 'backup', 'destinations', __( 'Remote Destinations', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+			pb_backupbuddy::add_page( 'backup', 'multisite_import', __( 'MS Import (beta)', 'it-l10n-backupbuddy' ), 'manage_network' );
+			pb_backupbuddy::add_page( 'backup', 'server_tools', __( 'Server Tools', 'it-l10n-backupbuddy' ), 'manage_network' );
+			pb_backupbuddy::add_page( 'backup', 'malware_scan', __( 'Malware Scan', 'it-l10n-backupbuddy' ), 'manage_network' );
+			pb_backupbuddy::add_page( 'backup', 'scheduling', __( 'Schedules', 'it-l10n-backupbuddy' ), 'manage_network' );
+			pb_backupbuddy::add_page( 'backup', 'settings', __( 'Settings', 'it-l10n-backupbuddy' ), 'manage_network' );
+		} else { // Subsite pages.			
 			$export_note = '';
 			
 			$options = get_site_option( 'pb_' . pb_backupbuddy::settings( 'slug' ) );
@@ -184,7 +196,7 @@ if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() 
 			}
 			
 			//pb_backupbuddy::add_page( '', 'getting_started', array( pb_backupbuddy::settings( 'name' ), 'Getting Started' . $export_note ), $capability );
-			pb_backupbuddy::add_page( '', 'multisite_export', $export_title, $capability );
+			pb_backupbuddy::add_page( '', 'multisite_export', $export_title, $capability, $icon );
 			pb_backupbuddy::add_page( 'multisite_export', 'malware_scan', __( 'Malware Scan', 'it-l10n-backupbuddy' ), $capability );
 		}
 		
@@ -192,17 +204,14 @@ if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() 
 		pb_backupbuddy::status( 'error', 'Multisite detected but PB_BACKUPBUDDY_MULTISITE_EXPERIMENT definition not found in wp-config.php / not defined to boolean TRUE.' );
 	}
 } else { // Standalone site.
-	pb_backupbuddy::add_page( '', 'getting_started', array( pb_backupbuddy::settings( 'name' ), 'Getting Started' ) );
-	pb_backupbuddy::add_page( 'getting_started', 'backup', __( 'Backup', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'migrate_restore', __( 'Restore / Migrate', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'destinations', __( 'Remote Destinations', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'server_info', __( 'Server Information', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'malware_scan', __( 'Malware Scan', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	//pb_backupbuddy::add_page( 'getting_started', 'server_tools', __( 'Server Tools', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'scheduling', __( 'Scheduling', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
-	pb_backupbuddy::add_page( 'getting_started', 'settings', __( 'Settings', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( '', 'backup', array( pb_backupbuddy::settings( 'name' ), __( 'Backup', 'it-l10n-backupbuddy' ) ), pb_backupbuddy::$options['role_access'], $icon );
+	pb_backupbuddy::add_page( 'backup', 'migrate_restore', __( 'Restore / Migrate', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( 'backup', 'destinations', __( 'Remote Destinations', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( 'backup', 'server_tools', __( 'Server Tools', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( 'backup', 'malware_scan', __( 'Malware Scan', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( 'backup', 'scheduling', __( 'Schedules', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
+	pb_backupbuddy::add_page( 'backup', 'settings', __( 'Settings', 'it-l10n-backupbuddy' ), pb_backupbuddy::$options['role_access'] );
 }
-
 
 
 /********** LIBRARIES & CLASSES (admin) **********/
@@ -210,7 +219,45 @@ if ( is_multisite() && pb_backupbuddy::$classes['core']->is_network_activated() 
 
 
 /********** OTHER (admin) **********/
-
+add_filter( 'contextual_help', 'pb_backupbuddy_contextual_help', 10, 3 );
+function pb_backupbuddy_contextual_help( $contextual_help, $screen_id, $screen ) { // Loads help from file in controllers/help/:PAGENAME:.php
+	
+	// WordPress pre-v3.3 so no contextual help.
+	if ( ! method_exists( $screen, 'add_help_tab' ) ) {
+		return $contextual_help;
+	}
+	
+	// Not a backupbuddy page.
+	if ( false === stristr( $screen_id, 'backupbuddy' ) ) {
+		return $contextual_help;
+	}
+	
+	// Load page-specific help.
+	$page = str_replace( 'pb_backupbuddy_', '', str_replace( 'toplevel_page_', '', str_replace( 'backupbuddy_page_pb_backupbuddy_', '', $screen_id ) ) );
+	$helpFile = dirname( __FILE__ ) . '/controllers/help/' . $page . '.php';
+	if ( file_exists( $helpFile ) ) {
+		include( $helpFile );
+	}
+	
+	// Global help.
+	$screen->add_help_tab(
+	array(
+	'id'      => 'pb_backupbuddy_additionalhelp',
+	'title'   => __( 'Tutorials & Support', 'it-l10n-backupbuddy' ),
+	'content' => '<p>
+					<a href="http://ithemes.com/publishing/getting-started-with-backupbuddy/" target="_new">' . __( 'Getting Started eBook', 'it-l10n-backupbuddy' ) . '</a>
+					<br>
+					<a href="http://ithemes.tv/category/backupbuddy/" target="_new">' . __( 'Getting Started Videos', 'it-l10n-backupbuddy' ) . '</a>
+					<br>
+					<a href="http://ithemes.com/codex/" target="_new">' . __( 'Knowledge Base & Tutorials', 'it-l10n-backupbuddy' ) . '</a>
+					<br>
+					<a href="http://ithemes.com/support/" target="_new"><b>' . __( 'Support Forum', 'it-l10n-backupbuddy' ) . '</b></a>
+				</p>',
+	));
+	
+	return $contextual_help;
+	
+} // End pb_backupbuddy_contextual_help().
 
 
 ?>

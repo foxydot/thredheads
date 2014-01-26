@@ -1,12 +1,56 @@
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		
+		jQuery( '.pb_backupbuddy_remotesend_abort' ).click( function(){
+			jQuery.ajax({
+				type: 'POST',
+				url: jQuery(this).attr( 'href' ),
+				success: function(data){
+					data = jQuery.trim( data );
+					if ( '1' == data ) {
+						alert( 'Remote transfer aborted. This may take a moment to take effect.' );
+					} else {
+						alert( 'Error #85448949. Unexpected server response. Details: `' + data + '`.' );
+					}
+				}
+			});
+			return false;
+		});
+	});
+</script>
 <?php
+backupbuddy_core::trim_remote_send_stats();
 
-pb_backupbuddy::$classes['core']->trim_remote_send_stats();
 
-$remote_sends = array_reverse( pb_backupbuddy::$options['remote_sends'] ); // Reverse array so most recent is first.
+
+$remote_sends = array();
+$send_fileoptions = pb_backupbuddy::$filesystem->glob_by_date( backupbuddy_core::getLogDirectory() . 'fileoptions/send-*.txt' );
+if ( ! is_array( $send_fileoptions ) ) {
+	$send_fileoptions = array();
+}
+foreach( $send_fileoptions as $send_fileoption ) {
+	
+	$send_id = str_replace( '.txt', '', str_replace( 'send-', '', basename( $send_fileoption ) ) );
+	
+	pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+	require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+	$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = true, $ignore_lock = true, $create_file = false );
+	if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+		pb_backupbuddy::status( 'error', __('Fatal Error #9034.32393. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+		return false;
+	}
+	pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+	
+	$remote_sends[$send_id] = $fileoptions_obj->options;
+	unset( $fileoptions_obj );
+	
+}
+
+
 
 $sends = array();
 //echo '<pre>' . print_r( $remote_sends, true ) . '</pre>';
-foreach( $remote_sends as $remote_send ) {
+foreach( $remote_sends as $send_id => $remote_send ) {
 	
 	// Set up some variables based on whether file finished sending yet or not.
 	if ( $remote_send['finish_time'] > 0 ) { // Finished sending.
@@ -26,6 +70,7 @@ foreach( $remote_sends as $remote_send ) {
 		$send_importbuddy = '';
 	}
 	
+	
 	// Show file size (if available).
 	if ( isset( $remote_send['file_size'] ) ) {
 		$file_size = '<br><span class="description" style="margin-left: 10px;">Size: ' . pb_backupbuddy::$format->file_size( $remote_send['file_size'] ) . '</span>';
@@ -33,19 +78,29 @@ foreach( $remote_sends as $remote_send ) {
 		$file_size = '';
 	}
 	
+	
 	// Status verbage & styling based on send status.
 	if ( $remote_send['status'] == 'success' ) {
 		$status = '<span class="pb_label pb_label-success">Success</span>';
 	} elseif ( $remote_send['status'] == 'timeout' ) {
-		$status = '<span class="pb_label pb_label-warning">In progress or timed out</span>';
+		$status = '<span class="pb_label pb_label-warning">In progress or timed out</span>'; // <a class="pb_backupbuddy_remotesend_abort" href="' . pb_backupbuddy::ajax_url( 'remotesend_abort' ) . '&send_id=' . $send_id  . '">( Abort )</a>';
+	} elseif ( $remote_send['status'] == 'aborted' ) {
+		$status = '<span class="pb_label pb_label-warning">Aborted by user</span>';
 	} elseif ( $remote_send['status'] == 'multipart' ) {
-		$status = '<span class="pb_label pb_label-info">Multipart transfer</span>';
-		if ( isset( $remote_send['_multipart_status'] ) ) {
-			$status .= '<br>' . $remote_send['_multipart_status'];
-		}
+		$status = '<span class="pb_label pb_label-info">Multipart transfer</span>'; // <a class="pb_backupbuddy_remotesend_abort" href="' . pb_backupbuddy::ajax_url( 'remotesend_abort' ) . '&send_id=' . $send_id  . '">( Abort )</a>';
 	} else {
 		$status = '<span class="pb_label pb_label-important">' . ucfirst( $remote_send['status'] ) . '</span>';
 	}
+	if ( isset( $remote_send['_multipart_status'] ) ) {
+		$status .= '<br>' . $remote_send['_multipart_status'];
+	}
+	
+	// Display 'View Log' link if log available for this send.
+	$log_file = backupbuddy_core::getLogDirectory() . 'status-remote_send-' . $send_id . '_' . pb_backupbuddy::$options['log_serial'] . '.txt';
+	if ( file_exists( $log_file ) ) {
+		$status .= '<br><a title="' . __( 'Backup Process Technical Details', 'it-l10n-backupbuddy' ) . '" href="' . pb_backupbuddy::ajax_url( 'remotesend_details' ) . '&send_id=' . $send_id . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox">View Log</a>';
+	}
+	
 	
 	// Determine destination.
 	if ( isset( pb_backupbuddy::$options['remote_destinations'][$remote_send['destination']] ) ) { // Valid destination.
@@ -54,11 +109,26 @@ foreach( $remote_sends as $remote_send ) {
 		$destination = '<span class="description">Unknown</span>';
 	}
 	
+	$write_speed = '';
+	if ( isset( $remote_send['write_speed'] ) && ( '' != $remote_send['write_speed'] ) ) {
+		$write_speed = 'Transfer Speed: ' . pb_backupbuddy::$format->file_size( $remote_send['write_speed'] ) . '/sec<br>';
+	}
+	
+	$trigger = ucfirst( $remote_send['trigger'] );
+	$base_file = basename( $remote_send['file'] );
+	if ( 'remote-send-test.php' == $base_file ) {
+		$base_file = __( 'Remote destination test', 'it-l10n-backupbuddy' ) . '<br><span class="description" style="margin-left: 10px;">(Send & delete test file remote-send-test.php)</span>';
+		$file_size = '';
+		$trigger = __( 'Manual settings test', 'it-l10n-backupbuddy' );
+		$destination = '<span class="description">Test settings</span>';
+	}
+	
 	// Push into array.
 	$sends[] = array(
-		basename( $remote_send['file'] ) . $file_size . $send_importbuddy,
+		$base_file . $file_size . $send_importbuddy,
 		$destination,
-		ucfirst( $remote_send['trigger'] ),
+		$trigger,
+		$write_speed .
 		'Start: ' . pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time(  $remote_send['start_time'] ) ) . '<br>' .
 		'Finish: ' . $finish_time . '<br>' .
 		'<span class="description">' . $time_ago  . $duration . '</span>',
@@ -78,7 +148,7 @@ if ( count( $sends ) == 0 ) {
 				__( 'Backup File', 'it-l10n-backupbuddy' ),
 				__( 'Destination', 'it-l10n-backupbuddy' ),
 				__( 'Trigger', 'it-l10n-backupbuddy' ),
-				__( 'Transfer Time', 'it-l10n-backupbuddy' ) . ' <img src="' . pb_backupbuddy::plugin_url() . '/images/sort_down.png" style="vertical-align: 0px;" title="Sorted most recent started first">',
+				__( 'Transfer Information', 'it-l10n-backupbuddy' ) . ' <img src="' . pb_backupbuddy::plugin_url() . '/images/sort_down.png" style="vertical-align: 0px;" title="Sorted most recent started first">',
 				__( 'Status', 'it-l10n-backupbuddy' ),
 				),
 			'css'			=>		'width: 100%;',

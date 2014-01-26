@@ -150,6 +150,261 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 		}
 	
 	}
+	
+	/**
+	 *	pb_backupbuddy_pclzip_helper Class
+	 *
+	 *	Extends the parent pb_backupbuddy_zip_helper class for the pclzip method.
+	 *	We need a single instance of this class with a static method to get the
+	 *	instance that can be called in the pclzip callbacks and then from within
+	 *	the callbacks the non-static class methods can be called on the instance.
+	 *	So conventional usage would be to do a new to get an instance of the
+	 *	class and then the callback can call the static function to get that instance
+	 *	and the object can also be called as usual. Equally the static function could
+	 *	be called and have it actually create the instance and if we need it later
+	 *	outside of pclzip we can call the static function to get the instance.
+	 *
+	 */
+	class pb_backupbuddy_pclzip_helper extends pb_backupbuddy_zip_helper {
+	
+        /**
+         * Our object instance
+         * 
+         * @var $_instance 	object
+         */
+		protected static $_instance = NULL;
+	
+		// Create an instance - normally would call this
+		/**
+		 *	__construct()
+		 *	
+		 *	Default constructor.
+		 *	Record our own instance and then use the parent constructor.
+		 *	
+		 *	@return		none
+		 *
+		 */
+		public function __construct() {
+		
+			self::$_instance = $this;
+			parent::__construct();
+			
+		}
+		
+		/**
+		 *	__destruct()
+		 *	
+		 *	Default destructor.
+		 *	Nullify our own instance and then use the parent destructor.
+		 *	
+		 *	@return		none
+		 *
+		 */
+		public function __destruct() {
+		
+			self::$_instance = NULL;
+			parent::__destruct();
+		
+		}
+	
+		/**
+		 * 
+		 *	get_instance()
+		 *
+		 *	If the object is already created then simply return the instance else
+		 *	create an object and return the instance.
+		 *	Currently only one instance is allowed at a time but currently there is
+		 *	no scenario that would require more than one at any time.
+		 *
+		 *	@return		object					This object instance	
+		 *
+		 */
+		public static function get_instance() {
+		
+			if ( NULL === self::$_instance ) {
+			
+				self::$_instance = new self;
+				
+			}
+		
+			return self::$_instance;
+			
+		}
+	
+		/**
+		 * 
+		 *	event_handler()
+		 *
+		 *	Callback function from pclzip to call appropriate event handler function.
+		 *
+		 *	@param		int			$event		The callback event identifier
+		 *	@param		reference	&$header	The element header array
+		 *	@return		bool					True|False based on handler function result	
+		 *
+		 */
+		public function event_handler( $event, &$header ) {
+		
+			$result = true;
+		
+			switch ( $event ) {
+			
+				case PCLZIP_CB_POST_ADD:
+				
+					$result = $this->element_added( $header );
+					break;
+				
+				default:
+				
+					pb_backupbuddy::status( 'details', sprintf( __("Unknown PclZip Callback Event: %1$s",'it-l10n-backupbuddy' ), $event ) );
+			
+			}
+			
+			return $result;
+			
+		}
+		
+		/**
+		 * 
+		 *	element_added()
+		 *
+		 *	Callback function handler for after an element has been added.
+		 *	Only process the element if it has been added (header status is 'ok')
+		 *	Keep track of and log progress.
+		 *	Keep track of and log usage data - in particular the user space time used
+		 *	which relates to what is counted against execution time.
+		 *	Optionally handle multi-burst processing by an execution time reset.
+		 *	Optionally handle server tickling by dummy flush to server.
+		 *
+		 *	@param		reference	&$header	The element header array
+		 *	@return		bool					True always	
+		 *
+		 */
+		private function element_added( &$header ) {
+		
+			$usage_data = array();
+			$current_log_period = 0;
+			$current_burst_period = 0;
+			$current_tickle_period = 0;
+			$reported = false;
+			$result = true;
+		
+			// Only if the dir/file was added ok
+			if ( 'ok' === $header[ 'status' ] ) {
+			
+				// Always logging progress
+				// Increment the appropriate count and decide if we need to log progress
+				( true === $header[ 'folder' ] ) ? $this->incr_added_dir_count() : $this->incr_added_file_count() ;
+				if ( 0 === ( ( $this->get_added_file_count() + $this->get_added_dir_count() ) % 100 ) ) {
+				
+					pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s/%2$s (directories/files) added to backup zip archive','it-l10n-backupbuddy' ), $this->get_added_dir_count(), $this->get_added_file_count() ) );
+				
+				}
+				
+				// Would expect to log except on Windows which doesn't support getrusage()
+				if ( true === $this->is_logging_usage() ) {
+				
+					// Decide if we need to log usage data
+					$current_log_period = ( time() - $this->get_log_start_time() );
+					if ( $this->get_log_threshold_period() < $current_log_period ) {
+				
+						if ( false === $reported ) {
+					
+							// Log where we are at and connection status for information
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s/%2$s (directories/files) added to backup zip archive','it-l10n-backupbuddy' ), $this->get_added_dir_count(), $this->get_added_file_count() ) );
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: Connection status: %1$s (%2$s)','it-l10n-backupbuddy' ), $this->connection_status_tostring( connection_status() ), connection_status() ) );
+							$reported = true;
+						
+						}
+					
+						// Get some usage data from the server (check that function available) and log it
+						$usage_data = getrusage();
+					
+						// Determine the total user space time since we initialized the logging (relative)
+						$this->_elapsed_user_time = ( $usage_data[ 'ru_utime.tv_sec' ] - $this->_start_user_time );
+						pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: Usage data (raw/relative): ( %1$s, %2$s, %3$s, %4$s, %5$s )/( -, %6$s, -, -, - )','it-l10n-backupbuddy' ), $usage_data[ 'ru_stime.tv_sec' ], $usage_data[ 'ru_utime.tv_sec' ], $usage_data[ 'ru_majflt' ], $usage_data[ 'ru_nvcsw' ], $usage_data[ 'ru_nivcsw' ], $this->_elapsed_user_time ) );
+
+						// Reset the logging period start time
+						$this->set_log_start_time( time() );
+
+					}
+				
+				}
+				
+				// Only bother with burst handling if multi-burst mode selected
+				if ( true === $this->is_multi_burst() ) {
+				
+					// Decide if we have been running long enough to need to reset time limit
+					$current_burst_period = ( time() - $this->get_burst_start_time() );
+					if ( $this->get_burst_threshold_period() < $current_burst_period ) {
+				
+						if ( false === $reported ) {
+						
+							// Log where we are at and connection status for information
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s/%2$s (directories/files) added to backup zip archive','it-l10n-backupbuddy' ), $this->get_added_dir_count(), $this->get_added_file_count() ) );
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: Connection status: %1$s (%2$s)','it-l10n-backupbuddy' ), $this->connection_status_tostring( connection_status() ), connection_status() ) );
+							$reported = true;
+							
+						}
+					
+						// Log how long the burst ran for and then reset the burst start time and max period
+						pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s seconds elapsed - resetting timebase to %2$s seconds','it-l10n-backupbuddy' ), $current_burst_period, $this->get_burst_max_period() ) );
+
+						// Reset the burst period start time
+						$this->set_burst_start_time( time() );
+					
+						// Reset the execution time timer (if the server honours this)
+						@set_time_limit( $this->get_burst_max_period() );
+						// Maybe use ini_set() if set_time_limit() were to be disabled (test that on object creation)
+						//@ini_set( 'max_execution_time', 30 );
+					
+					}
+				
+				}
+			
+				// Only bother with server tickling if it is selected
+				if ( true === $this->is_server_tickling() ) {
+				
+					// Decide if we have been running long enough to need to tickle the server
+					$current_tickle_period = ( time() - $this->get_tickle_start_time() );
+					if ( $this->get_tickle_threshold_period() < $current_tickle_period ) {
+				
+						if ( false === $reported ) {
+						
+							// Log where we are at and connection status for information
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s/%2$s (directories/files) added to backup zip archive','it-l10n-backupbuddy' ), $this->get_added_dir_count(), $this->get_added_file_count() ) );
+							pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: Connection status: %1$s (%2$s)','it-l10n-backupbuddy' ), $this->connection_status_tostring( connection_status() ), connection_status() ) );
+							$reported = true;
+							
+						}
+					
+						// Log how long since we last tickled and indicate tickling
+						pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s seconds elapsed - tickling server','it-l10n-backupbuddy' ), $current_tickle_period ) );
+						$this->set_tickle_start_time( time() );
+					
+						// Output the tickler to give something to flush
+						echo $this->get_server_tickler();
+					
+						// Force flushing and end of buffering
+						// Possibly should need to do this because nothing should have started buffering
+						// should it? It's possible that PHP config could have enabled one level of buffering
+						// so at least handle that with the method as exemplified in the PHP manual. Also do
+						// a staright flush as that should cause a flush at least to the server which is
+						// actually all we want in this particular case.
+						while ( @ob_end_flush() );
+						flush();
+
+					}
+				
+				}
+			
+			}
+			
+			// Just return based on whether what we tried to do worked or not
+			return $result;
+		
+		}
+	
+	}
 
 	class pluginbuddy_zbzippclzip extends pluginbuddy_zbzipcore {
 	
@@ -384,6 +639,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 						$this->_method_details[ 'attr' ][ 'is_lister' ] = true;
 						$this->_method_details[ 'attr' ][ 'is_commenter' ] = true;
 						$this->_method_details[ 'attr' ][ 'is_unarchiver' ] = true;
+						$this->_method_details[ 'attr' ][ 'is_extractor' ] = true;
 						
 						pb_backupbuddy::status( 'details', __('PclZip test PASSED.','it-l10n-backupbuddy' ) );
 						$result = true;
@@ -457,6 +713,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 			$zip_other = array();
 			$zip_ignoring_symlinks = false;
 			$symlinks_found = array();
+			$zip_helper = NULL;
 			
 			// The basedir must have a trailing normalized directory separator
 			$basedir = ( rtrim( trim( $dir ), self::DIRECTORY_SEPARATORS ) ) . self::NORM_DIRECTORY_SEPARATOR;
@@ -698,6 +955,35 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 		
 				}
 				
+				// Add a post-add function for progress logging, usage data logging,
+				// burst handling and server tickling
+				$post_add_func = '';
+				
+				// Create the helper function here so we can use it outside of the post-add
+				// function. Using all defaults so includes multi-burst and server tickling
+				// for now but with options we can modify this.				
+				$zip_helper = new pb_backupbuddy_pclzip_helper();
+				
+				if (true) {
+				
+					$args = '$event, &$header';
+					$code = '';
+					$code .= '$result = true; ';
+					$code .= '$zip_helper = pb_backupbuddy_pclzip_helper::get_instance();';
+					$code .= '$result = $zip_helper->event_handler( $event, $header );';
+					$code .= 'return $result;';
+				
+					$post_add_func = create_function( $args, $code );
+				
+				}
+
+				// If we had cause to create a pre add function then add it to the argument list here
+				if ( !empty( $post_add_func ) ) {
+				
+					array_push( $arguments, PCLZIP_CB_POST_ADD, $post_add_func );
+		
+				}
+
 				if ( @file_exists( $zip ) ) {
 	
 					pb_backupbuddy::status( 'details', __('Existing ZIP Archive file will be replaced.','it-l10n-backupbuddy' ) );
@@ -717,6 +1003,9 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 				
 				pb_backupbuddy::status( 'details', $this->get_method_tag() . __( ' command arguments','it-l10n-backupbuddy' ) . ': ' . implode( ';', $imploded_arguments ) );
 				
+				// Do this as close to when we actually want to start monitoring usage
+				$zip_helper->initialize_logging_usage();
+				
 				$output = call_user_func_array( array( &$za, 'create' ), $arguments );
 				
 				// Work out whether we have a problem or not
@@ -724,7 +1013,10 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 				
 					// It's an array so at least we produced a zip archive 
 					$exitcode = 0;
-					
+
+					// We can report how many dirs/files added according to pclzip					
+					pb_backupbuddy::status( 'details', sprintf( __('Zip process reported: %1$s/%2$s (directories/files) added to backup zip archive (final)','it-l10n-backupbuddy' ), $zip_helper->get_added_dir_count(), $zip_helper->get_added_file_count() ) );
+
 					// Process the array for any "warnings" or other reportable conditions
 					$id = 0; // Create a unique key (like a line number) for later sorting
 					foreach( $output as $file ) {
@@ -885,6 +1177,9 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 						
 						$this->log_archive_file_stats( $zip );
 						
+						// Temporary for now - try and incorporate into stats logging (makes the stats logging function part of the zip helper class?)
+						pb_backupbuddy::status( 'details', sprintf( __('Zip Archive file size: %1$s/%2$s (directories/files) added','it-l10n-backupbuddy' ), $zip_helper->get_added_dir_count(), $zip_helper->get_added_file_count() ) );
+					
 						$result = true;
 						
 					} else {
@@ -970,7 +1265,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 			// TODO: Need a temporary directory that we can use for this
 			//define( 'PCLZIP_TEMPORARY_DIR', $tempdir );
 			
-			// This should give us a new archive object, of not catch it and bail out
+			// This should give us a new archive object, if not catch it and bail out
 			try {
 					
 				$za = new pluginbuddy_PclZip( $zip_file );
@@ -1033,8 +1328,188 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 		 */
 		protected function extract_generic_selected( $zip_file, $destination_directory = '', $items ) {
 		
-			// Should never get here
-			return false;
+			$result = false;
+			$za = NULL;
+			$stat = array();
+			
+			// This should give us a new archive object, if not catch it and bail out
+			try {
+			
+				$za = new pluginbuddy_PclZip( $zip_file );
+				$result = true;
+				
+			} catch ( Exception $e ) {
+			
+				// Something fishy - the methods indicated ziparchive but we couldn't find the class
+				$error_string = $e->getMessage();
+				pb_backupbuddy::status( 'details', sprintf( __('pclzip indicated as available method but error reported: %1$s','it-l10n-backupbuddy' ), $error_string ) );
+				$result = false;
+				
+			}
+			
+			// Only continue if we have a valid archive object
+			if ( true === $result ) {
+				
+				// Make sure we opened the zip ok and it has content
+				if ( ( $content_list = $za->listContent() ) !== 0 ) {
+				
+					// Now we need to take each item and run an unzip for it - unfortunately there is no easy way of combining
+					// arbitrary extractions into a single command if some might be to a 
+					foreach ( $items as $what => $where ) {
+			
+						$rename_required = false;
+						$result = false;
+				
+						// Decide how to extract based on where
+						if ( empty( $where) ) {
+					
+							// First we'll extract and junk the path
+							// Note: For some odd reason when we have a $what file that is a hidden (dot) file
+							// the file_exists() test in pclzip for the filepath to extract to returns true even
+							// though only the parent directory exists and not the file itself. No idea why at
+							// present. Because of that we have to use the PCL_ZIP_OPT_REPLACE_NEWER option
+							// so the fact the test returns true is ignored.
+							$extract_list = $za->extract( PCLZIP_OPT_PATH, $destination_directory, PCLZIP_OPT_BY_NAME, $what, PCLZIP_OPT_REMOVE_ALL_PATH, PCLZIP_OPT_REPLACE_NEWER );
+								
+							// Check whether we succeeded or not (would only be no list array for a zip file problem)
+							// but extraction of the file itself may still have failed
+							$result = ( $extract_list !== 0  && ( $extract_list[ 0 ][ 'status' ] == 'ok' ) );
+															
+						} elseif ( !empty( $where ) ) {
+					
+							if ( $what === $where ) {
+							
+								// Check for wildcard directory extraction like dir/* => dir/*
+								if ( "*" == substr( trim( $what ), -1 ) ) {
+
+									// Turn this into a preg_match pattern
+									$whatmatch = "|^" . $what . "|";									
+
+									// First we'll extract but we're not junking the paths
+									// Note: For some odd reason when we have a $what file that is a hidden (dot) file
+									// the file_exists() test in pclzip for the filepath to extract to returns true even
+									// though only the parent directory exists and not the file itself. No idea why at
+									// present. Because of that we have to use the PCL_ZIP_OPT_REPLACE_NEWER option
+									// so the fact the test returns true is ignored.
+									$extract_list = $za->extract( PCLZIP_OPT_PATH, $destination_directory, PCLZIP_OPT_BY_PREG, $whatmatch, PCLZIP_OPT_REPLACE_NEWER );
+
+									// Check whether we succeeded or not (would only be no list array for a zip file problem)
+									// but extraction of individual files themselves may still have failed
+									if ( 0 !== $extract_list ) {
+									
+										// So far so good - assume everything will be ok
+										$result = true;
+	
+										// At least we got no major failure so check the extracted files
+										foreach ( $extract_list as $file ) {
+										
+											if ( 'ok' !== $file[ 'status' ] ) {
+											
+												// Oops - we found a file that didn't extract ok so bail out with false
+												$result = false;
+												break;
+											
+											}
+										
+										}
+									
+									}
+								
+								} else {
+								
+									// It's just a single file extraction - breath a sign of relief
+									// Extract to same directory structure - don't junk path, no need to add where to destnation as automatic
+									// Note: For some odd reason when we have a $what file that is a hidden (dot) file
+									// the file_exists() test in pclzip for the filepath to extract to returns true even
+									// though only the parent directory exists and not the file itself. No idea why at
+									// present. Because of that we have to use the PCL_ZIP_OPT_REPLACE_NEWER option
+									// so the fact the test returns true is ignored.
+									$extract_list = $za->extract( PCLZIP_OPT_PATH, $destination_directory, PCLZIP_OPT_BY_NAME, $what, PCLZIP_OPT_REPLACE_NEWER );
+									
+									// Check whether we succeeded or not (would only be no list array for a zip file problem)
+									// but extraction of the file itself may still have failed
+									$result = ( $extract_list !== 0  && ( $extract_list[ 0 ][ 'status' ] == 'ok' ) );
+
+								}
+						
+							} else {
+
+								// First we'll extract and junk the path
+								// Note: For some odd reason when we have a $what file that is a hidden (dot) file
+								// the file_exists() test in pclzip for the filepath to extract to returns true even
+								// though only the parent directory exists and not the file itself. No idea why at
+								// present. Because of that we have to use the PCL_ZIP_OPT_REPLACE_NEWER option
+								// so the fact the test returns true is ignored.
+								$extract_list = $za->extract( PCLZIP_OPT_PATH, $destination_directory, PCLZIP_OPT_BY_NAME, $what, PCLZIP_OPT_REMOVE_ALL_PATH, PCLZIP_OPT_REPLACE_NEWER );
+																							
+								// Check whether we succeeded or not (would only be no list array for a zip file problem)
+								// but extraction of the file itself may still have failed
+								$result = ( $extract_list !== 0  && ( $extract_list[ 0 ][ 'status' ] == 'ok' ) );
+
+								// Will need to rename if the extract is ok
+								$rename_required = true;
+						
+							}
+					
+						}
+				
+						// Note: we don't open the file and then do stuff but it's all done in one action
+						// so we need to interpret the return code to dedide what to do
+						// Currently we can only distinguish between success and failure but no finer grain
+						if ( true === $result ) {
+					
+							pb_backupbuddy::status( 'details', sprintf( __('pclzip extracted file contents (%1$s from %2$s to %3$s%4$s)','it-l10n-backupbuddy' ), $what, $zip_file, $destination_directory, $where ) );
+
+							// Rename if we have to
+							if ( true === $rename_required) {
+							
+								// Note: we junked the path on the extraction so just the filename of $what is the source but
+								// $where could be a simple file name or a file path 
+								$result = $result && rename( $destination_directory . DIRECTORY_SEPARATOR . basename( $what ),
+															 $destination_directory . DIRECTORY_SEPARATOR . $where );
+							
+							}
+
+						} else {
+					
+							// For now let's just print the error code and drop through
+							$error_string = $za->errorInfo();
+							pb_backupbuddy::status( 'details', sprintf( __('pclzip failed to open/process file to extract file contents (%1$s from %2$s to %3$s%4$s) - Error Info: %5$s.','it-l10n-backupbuddy' ), $what, $zip_file, $destination_directory, $where, $error_string ) );
+					
+							// May seem redundant but belt'n'braces
+							$result = false;
+							
+						}
+					
+						// If the extraction failed (or rename after extraction) then break out of the foreach and simply return false
+						if ( false === $result ) {
+					
+							break;
+						
+						}
+					
+					}
+				
+				} else {
+				
+					// Couldn't open archive - will return for maybe another method to try
+					$error_string = $za->errorInfo( $result );
+					pb_backupbuddy::status( 'details', sprintf( __('pclzip failed to open file to extract contents (%1$s to %2$s) - Error Info: %3$s.','it-l10n-backupbuddy' ), $zip_file, $destination_directory, $error_string ) );
+
+					// Return an error code and a description - this needs to be handled more generically
+					//$result = array( 1, "Unable to get archive contents" );
+					// Currently as we are returning an array as a valid result we just return false on failure
+					$result = false;
+
+				}
+				
+				$za->close();
+			
+			}
+			
+		  	if ( NULL != $za ) { unset( $za ); }		
+			
+			return $result;
 			
 		}
 		
@@ -1052,7 +1527,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 		 */
 		public function file_exists( $zip_file, $locate_file, $leave_open = false ) {
 		
-			$result = false;
+			$result = array( 1, "Generic failure indication" );
 			$za = NULL;
 			$stat = array();
 								
@@ -1116,7 +1591,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 					pb_backupbuddy::status( 'details', sprintf( __('pclzip failed to open file to check if file exists (looking for %1$s in %2$s) - Error Info: %3$s.','it-l10n-backupbuddy' ), $locate_file , $zip_file, $error_string ) );
 
 					// Return an error code and a description - this needs to be handled more generically
-					$result = array( 1, "Unable to get archive contents" );
+					$result = array( 1, "Failed to open/process file" );
 
 				}
 							

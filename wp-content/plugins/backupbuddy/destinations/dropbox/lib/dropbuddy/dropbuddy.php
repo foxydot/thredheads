@@ -114,5 +114,4 @@ if ( !class_exists( "pb_backupbuddy_dropbuddy" ) ) {
 		}
 	} // End class
 	
-	//$pb_backupbuddy_dropbuddy = new pb_backupbuddy_dropbuddy( pb_backupbuddy::$options['backup_directory'] );
 }

@@ -329,12 +329,16 @@ class pb_backupbuddy_settings {
 			}
 			
 			if ( $settings['type'] == 'title' ) { // Title item.
-				$return .= '<tr><th colspan="2" class="' . $settings['row_class'] . '"><div class="pb_htitle"';
-				if ( $first_title === true ) {
-					$return .= ' style="margin-top: 0;"';
+				if ( $first_title === true ) { // First title in list.
+					$return .= '<tr style="border: 0;"><th colspan="2" style="border: 0; padding-top: 0; padding-bottom: 0;" class="' . $settings['row_class'] . '"><h3 class="title"';
+					$return .= ' style="margin-top: 0; margin-bottom: 0.5em;"';
 					$first_title = false;
+				} else { // Subsequent titles.
+					$return .= '<tr style="border: 0;"><th colspan="2" style="border: 0;" class="' . $settings['row_class'] . '"><h3 class="title"';
+					$return .= ' style="margin: 0.5em 0;"';
 				}
-				$return .= '>' . $settings['title'] . '</div></th>';
+				
+				$return .= '>' . $settings['title'] . '</h3></th>';
 			} elseif ( $settings['type'] == 'hidden' ) { // hidden form item. no title.
 				$return .= $this->_form->get( $settings['name'], $settings['css'], $settings['classes'] );
 			} else { // Normal item.

@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2010-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2010-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -155,12 +155,11 @@ class AuthV4JSON extends Signer implements Signable
 		// Add headers to request and compute the string to sign
 		foreach ($this->headers as $header_key => $header_value)
 		{
-			// Strip linebreaks from header values as they're illegal and can allow for security issues
-			$header_value = str_replace(array("\r", "\n"), '', $header_value);
+			// Strip line breaks and remove consecutive spaces. Services collapse whitespace in signature calculation
+			$header_value = preg_replace('/\s+/', ' ', trim($header_value));
 
 			$request->add_header($header_key, $header_value);
 			$this->canonical_headers[] = strtolower($header_key) . ':' . $header_value;
-
 			$this->signed_headers[] = strtolower($header_key);
 		}
 
@@ -271,7 +270,7 @@ class AuthV4JSON extends Signer implements Signable
 	{
 		$pieces = explode('.', $this->endpoint);
 
-		// Handle cases with single/no region (i.e. service.region.amazonaws.com vs. service.amazonaws.com)
+		// Handle cases with single/no region (i.e., service.amazonaws.com vs. service.region.amazonaws.com)
 		if (count($pieces) < 4)
 		{
 			return 'us-east-1';

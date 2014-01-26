@@ -89,11 +89,8 @@ echo '	<li style="list-style-type: none;"><a href="http://ithemes.com/find/theme
 echo '	<li style="list-style-type: none;"><a href="http://pluginbuddy.com/subscribe/" style="text-decoration: none;">Subscribe to Email Newsletter</a></li>';
 echo '</ol>';
 
-echo '<p style="font-weight: bold; left: -10px;"><a href="http://twitter.com/ithemes/" style="text-decoration: none;"><img src="' . pb_backupbuddy::plugin_url() . '/pluginbuddy/images/twitter.png" style="vertical-align: -3px;"> @ithemes</a></p>';
-echo pb_backupbuddy::$ui->get_feed( 'http://ithemes.com/feed/', 3 );
-echo '<p style="font-weight: bold; left: -10px;"><a href="http://twitter.com/backup_buddy/" style="text-decoration: none;"><img src="' . pb_backupbuddy::plugin_url() . '/pluginbuddy/images/twitter.png" style="vertical-align: -3px;"> @backup_buddy</a></p>';
-
-echo pb_backupbuddy::$ui->get_feed( 'https://api.twitter.com/1/statuses/user_timeline.rss?screen_name=backup_buddy', 3, '', 'Backup_Buddy: ' );
+echo '<p style="font-weight: bold; left: -10px;"><a href="http://twitter.com/ithemes/" style="text-decoration: none;"><img src="' . pb_backupbuddy::plugin_url() . '/pluginbuddy/images/pluginbuddy.png" style="vertical-align: -3px;"> iThemes.com News</a></p>';
+echo pb_backupbuddy::$ui->get_feed( 'http://ithemes.com/feed/', 5 );
 
 pb_backupbuddy::$ui->end_metabox();
 

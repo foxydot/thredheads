@@ -4,23 +4,23 @@
  *	Plugin Name: BackupBuddy
  *	Plugin URI: http://ithemes.com/purchase/backupbuddy/
  *	Description: The most complete WordPress solution for Backup, Restoration, and Migration. Backs up a customizable selection of files, settings, and content for the complete snapshot of your site. Restore and/or migrate your site to a new host or new domain with complete ease-of-mind.
- *	Version: 4.0.2.1
- *	Author: Dustin Bolton
- *	Author URI: http://dustinbolton.com/
- *	Author URL: http://pluginbuddy.com/
+ *	Version: 4.2.13.0
+ *	Author: iThemes
+ *	Author URI: http://ithemes.com/
+ *	iThemes Package: backupbuddy
  *	
  *	Installation:
- * 
  *	1. Download and unzip the latest release zip file.
  *	2. If you use the WordPress plugin uploader to install this plugin skip to step 4.
  *	3. Upload the entire plugin directory to your `/wp-content/plugins/` directory.
  *	4. Activate the plugin through the 'Plugins' menu in WordPress Administration.
  * 
  *	Usage:
- * 
- *	1. Navigate to the new plugin menu in the Wordpress Administration Panel.
+ *	1. Navigate to the new plugin menu labeled 'BackupBuddy' in the Wordpress Administration Panel.
  *
- *	NOTE: DO NOT EDIT THIS OR ANY OTHER PLUGIN FILES. NO USER-CONFIGURABLE OPTIONS WITHIN.
+ *	Written by Dustin Bolton for iThemes.com
+ *	BackupBuddy v1.0 launched March 4, 2010.
+ *
  */
 
 
@@ -30,7 +30,7 @@ $pluginbuddy_settings = array(
 				'slug'				=>		'backupbuddy',
 				'series'			=>		'',
 				'default_options'	=>		array(
-												'data_version'						=>		'7',				// Data structure version. Added BB 2.0 to ease updating.												
+												'data_version'						=>		'8',				// Data structure version. Added BB 2.0 to ease updating.												
 												'importbuddy_pass_hash'				=>		'',					// ImportBuddy password hash.
 												'importbuddy_pass_length'			=>		0,					// Length of the ImportBuddy password before it was hashed.
 												
@@ -40,6 +40,7 @@ $pluginbuddy_settings = array(
 												'last_backup_start'					=>		0,					// Timestamp of when last backup started.
 												'last_backup_finish'				=>		0,					// Timestamp of when the last backup finished.
 												'last_backup_serial'				=>		'',					// Serial of last backup zip.
+												'last_backup_stats'					=>		array(),			// Some misc stats about the last backup which completed. Also used by iThemes Sync.
 												'force_compatibility'				=>		0,					// Force compatibility mode even if normal is detected.
 												'force_mysqldump_compatibility'		=>		0,					// Force compatibility mode for mysql db dumping. Uses PHP-based rather than command line mysqldump.
 												'schedules'							=>		array(),			// Array of scheduled schedules.
@@ -64,15 +65,14 @@ $pluginbuddy_settings = array(
 												'email_notify_error_body'                  => "An error occurred with BackupBuddy v{backupbuddy_version} on {current_datetime} for the site {site_url}. Error details:\r\n\r\n{message}",
 												'email_return'								=> '',				// Return email address for emails sent. Defaults to admin email if none specified.
 												
-												'remote_sends'						=>		array(),			// Keep a record of several remote sends.
 												'remote_destinations'				=>		array(),			// Array of remote destinations (S3, Rackspace, email, ftp, etc)
 												'role_access'						=>		'activate_plugins',	// Default role access to the plugin.
 												'dropboxtemptoken'					=>		'',					// Temporary Dropbox token for oauth.
 												'backup_mode'						=>		'2',				// 1 = 1.x, 2 = 2.x mode
 												'multisite_export'					=>		'0',				// Allow individual sites to be exported by admins of said subsite? (Network Admins can always export individual sites).
-												'backup_directory'					=>		'',					// Backup directory to store all archives in.
-												'temp_directory'					=>		'',					// Temporary directory to use for writing into.
-												'log_directory'						=>		'',					// Log directory. Also holds fileoptions.
+												'backup_directory'					=>		'',					// Custom backup directory to store all archives in. BLANK for default.
+												'temp_directory'					=>		'',					// Custom temporary directory to use for writing into. BLANK for default.
+												'log_directory'						=>		'',					// Custom log directory. Also holds fileoptions. BLANK for default.
 												'log_serial'						=>		'',					// Current log serial to send all output to. Used during backups.
 												'notifications'						=>		array(),			// TODO: currently not used.
 												'zip_method_strategy'				=>		'0',				// 0 = Not Set, 1 = Best Available, 2 = All Available, 3 = Force Compatibility.
@@ -80,7 +80,7 @@ $pluginbuddy_settings = array(
 												'ignore_zip_warnings'				=>		'0',				// Ignore non-fatal zip warnings during the zip process (ie symlink, cant read file, etc).
 												'ignore_zip_symlinks'				=>		'1',				// When enabled (1) zip will not-follow (zip utility) or ignore (pclzip) any symbolic links
 												'disable_zipmethod_caching'			=>		'0',				// When enabled the available zip methods are not cached. Useful for always showing the test for debugging or customer logging purposes for support.
-												'archive_name_format'				=>		'date',				// Valid options: date, datetime
+												'archive_name_format'				=>		'datetime',			// Valid options: date, datetime
 												'disable_https_local_ssl_verify'	=>		'0',				// When enabled (1) disabled WordPress from verifying SSL certificates for loopbacks, etc.
 												'save_comment_meta'					=>		'1',				// When enabled (1) meta data will not be stored in backups during creation.
 												'ignore_command_length_check'		=>		'0',				// When enabled, the command line length result provided by the OS will be ignored. Sometimes we cannot reliably get it.
@@ -93,11 +93,13 @@ $pluginbuddy_settings = array(
 																								'db_size_updated'		=>		0,
 																							),
 												'disalerts'							=>		array(),			// Array of alerts that have been dismissed/hidden.
-												'breakout_tables'					=>		'0',						// Whether or not to breakout some tables into individual steps (for sites with larger dbs).
-												'include_importbuddy'				=>		'1',						// Whether or not to include importbuddy.php script inside backup ZIP file.
-												'max_site_log_size'					=>		'10',						// Size in MB to clear the log file if it is exceeded.
-												'compression'						=>		'1',						// Zip compression.
-												'no_new_backups_error_days'			=>		'45',						// Send an error email notification if no new backups have been created in X number of days.
+												'breakout_tables'					=>		'0',				// Whether or not to breakout some tables into individual steps (for sites with larger dbs).
+												'include_importbuddy'				=>		'1',				// Whether or not to include importbuddy.php script inside backup ZIP file.
+												'max_site_log_size'					=>		'10',				// Size in MB to clear the log file if it is exceeded.
+												'compression'						=>		'1',				// Zip compression.
+												'no_new_backups_error_days'			=>		'45',				// Send an error email notification if no new backups have been created in X number of days.
+												'skip_quicksetup'					=>		'0',				// When 1 the quick setup will not pop up on Getting Started page.
+												'prevent_flush'						=>		'0',				// When 1 pb_backupbuddy::flush() will return instead of flushing to workaround some odd server issues on some servers.
 												'profiles'							=>		array(
 																								0 => array(
 																													'type'							=>		'defaults',
@@ -114,7 +116,7 @@ $pluginbuddy_settings = array(
 																													'title'		=>	'Database Only',
 																													'tip'		=>	'Just your database. I like your minimalist style.',
 																												),
-																								2	   => array(
+																								2 => array(
 																													'type'		=>	'full',
 																													'title'		=>	'Complete Backup',
 																												),
@@ -132,6 +134,7 @@ $pluginbuddy_settings = array(
 													'integrity_check'				=>		'-1',					// Zip file integrity check on the backup listing.
 													'profile_globaltables'			=>		'1',					// Whether or not custom table inclusions/exclusions enabled for this profile.
 													'profile_globalexcludes'		=>		'1',					// Whether or not custom file excludes enabled for this profile.
+													'backup_mode'					=>		'-1',					// -1= use global default, 1=classic (single page load), 2=modern (crons)
 												),
 				'migration_defaults'		=>	array(
 													'web_address'			=>		'',
@@ -161,12 +164,10 @@ $pluginbuddy_settings = array(
 												'last_run'					=>		0,
 												'on_off'					=>		'1',
 											),
-				'wp_minimum'		=>		'3.3.0',
+				'wp_minimum'		=>		'3.5.0',
 				'php_minimum'		=>		'5.2',
 				
 				'modules'			=>		array(
-												'updater'		=>		true,
-												'downsizer'		=>		false,
 												'filesystem'	=>		true,
 												'format'		=>		true,
 											),
@@ -181,6 +182,16 @@ $pluginbuddy_init = 'backupbuddy.php';
 // Load compatibility functions.
 require_once( dirname( __FILE__ ) . '/_compat.php' );
 
+
 // $settings is expected to be populated prior to including PluginBuddy framework. Do not edit below.
 require( dirname( __FILE__ ) . '/pluginbuddy/_pluginbuddy.php' );
+
+
+
+// Updater & Licensing System - Aug 23, 2013.
+function ithemes_backupbuddy_updater_register( $updater ) { 
+    $updater->register( 'backupbuddy', __FILE__ );
+}
+add_action( 'ithemes_updater_register', 'ithemes_backupbuddy_updater_register' );
+require( dirname( __FILE__ ) . '/lib/updater/load.php' );
 ?>

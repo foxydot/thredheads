@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2010-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2010-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -30,94 +30,24 @@ class Parser_Exception extends Exception {}
 
 
 /*%******************************************************************************************%*/
-// DETERMINE WHAT ENVIRONMENT DATA TO ADD TO THE USERAGENT FOR METRIC TRACKING
-
-/*
-	Define a temporary callback function for this calculation. Get the PHP version and any
-	required/optional extensions that are leveraged.
-
-	Tracking this data gives Amazon better metrics about what configurations are being used
-	so that forward-looking plans for the code can be made with more certainty (e.g. What
-	version of PHP are most people running? Do they tend to have the latest PCRE?).
-*/
-function __aws_sdk_ua_callback()
-{
-	$ua_append = '';
-	$extensions = get_loaded_extensions();
-	$sorted_extensions = array();
-
-	if ($extensions)
-	{
-		foreach ($extensions as $extension)
-		{
-			if ($extension === 'curl' && function_exists('curl_version'))
-			{
-				$curl_version = curl_version();
-				$sorted_extensions[strtolower($extension)] = $curl_version['version'];
-			}
-			elseif ($extension === 'pcre' && defined('PCRE_VERSION'))
-			{
-				$pcre_version = explode(' ', PCRE_VERSION);
-				$sorted_extensions[strtolower($extension)] = $pcre_version[0];
-			}
-			elseif ($extension === 'openssl' && defined('OPENSSL_VERSION_TEXT'))
-			{
-				$openssl_version = explode(' ', OPENSSL_VERSION_TEXT);
-				$sorted_extensions[strtolower($extension)] = $openssl_version[1];
-			}
-			else
-			{
-				$sorted_extensions[strtolower($extension)] = phpversion($extension);
-			}
-		}
-	}
-
-	foreach (array('simplexml', 'json', 'pcre', 'spl', 'curl', 'openssl', 'apc', 'xcache', 'memcache', 'memcached', 'pdo', 'pdo_sqlite', 'sqlite', 'sqlite3', 'zlib', 'xdebug') as $ua_ext)
-	{
-		if (isset($sorted_extensions[$ua_ext]) && $sorted_extensions[$ua_ext])
-		{
-			$ua_append .= ' ' . $ua_ext . '/' . $sorted_extensions[$ua_ext];
-		}
-		elseif (isset($sorted_extensions[$ua_ext]))
-		{
-			$ua_append .= ' ' . $ua_ext . '/0';
-		}
-	}
-
-	foreach (array('memory_limit', 'date.timezone', 'open_basedir', 'safe_mode', 'zend.enable_gc') as $cfg)
-	{
-		$cfg_value = ini_get($cfg);
-
-		if (in_array($cfg, array('memory_limit', 'date.timezone'), true))
-		{
-			$ua_append .= ' ' . $cfg . '/' . str_replace('/', '.', $cfg_value);
-		}
-		elseif (in_array($cfg, array('open_basedir', 'safe_mode', 'zend.enable_gc'), true))
-		{
-			if ($cfg_value === false || $cfg_value === '' || $cfg_value === 0)
-			{
-				$cfg_value = 'off';
-			}
-			elseif ($cfg_value === true || $cfg_value === '1' || $cfg_value === 1)
-			{
-				$cfg_value = 'on';
-			}
-
-			$ua_append .= ' ' . $cfg . '/' . $cfg_value;
-		}
-	}
-
-	return $ua_append;
-}
-
-
-/*%******************************************************************************************%*/
 // INTERMEDIARY CONSTANTS
 
 define('CFRUNTIME_NAME', 'aws-sdk-php');
-define('CFRUNTIME_VERSION', '1.5.14');
-define('CFRUNTIME_BUILD', '20120831150000');
-define('CFRUNTIME_USERAGENT', CFRUNTIME_NAME . '/' . CFRUNTIME_VERSION . ' PHP/' . PHP_VERSION . ' ' . str_replace(' ', '_', php_uname('s')) . '/' . str_replace(' ', '_', php_uname('r')) . ' Arch/' . php_uname('m') . ' SAPI/' . php_sapi_name() . ' Integer/' . PHP_INT_MAX . ' Build/' . CFRUNTIME_BUILD . __aws_sdk_ua_callback());
+define('CFRUNTIME_VERSION', '1.6.2');
+define('CFRUNTIME_BUILD', '20130314130000');
+$user_agent = sprintf('%s/%s PHP/%s', CFRUNTIME_NAME, CFRUNTIME_VERSION, PHP_VERSION);
+if (function_exists('curl_version'))
+{
+	$curl_version = curl_version();
+	$user_agent .= ' curl/' . $curl_version['version'];
+}
+if (defined('OPENSSL_VERSION_TEXT'))
+{
+	$openssl_version = explode(' ', OPENSSL_VERSION_TEXT);
+	$user_agent .=  ' openssl/' . $openssl_version[1];
+}
+define('CFRUNTIME_USERAGENT', $user_agent);
+unset($user_agent);
 
 
 /*%******************************************************************************************%*/
@@ -229,7 +159,7 @@ class CFRuntime
 	/**
 	 * The state of SSL certificate verification.
 	 */
-	public $ssl_verification = false;
+	public $ssl_verification = true;
 
 	/**
 	 * The proxy to use for connecting.
@@ -1047,10 +977,12 @@ class CFRuntime
 
 		$data = new $this->response_class($headers, ($this->parse_the_response === true) ? $this->parse_callback($request->get_response_body()) : $request->get_response_body(), $request->get_response_code());
 
+		$response_body = (string) $request->get_response_body();
+
 		// Was it Amazon's fault the request failed? Retry the request until we reach $max_retries.
 		if (
-		    (integer) $request->get_response_code() === 500 || // Internal Error (presumably transient)
-		    (integer) $request->get_response_code() === 503)   // Service Unavailable (presumably transient)
+			(integer) $request->get_response_code() === 500 || // Internal Error (presumably transient)
+			(integer) $request->get_response_code() === 503)   // Service Unavailable (presumably transient)
 		{
 			if ($this->redirects <= $this->max_retries)
 			{
@@ -1062,26 +994,41 @@ class CFRuntime
 			}
 		}
 
-		// DynamoDB has custom logic
-		elseif (
-			(integer) $request->get_response_code() === 400 &&
-			 stripos((string) $request->get_response_body(), 'com.amazonaws.dynamodb.') !== false && (
-				stripos((string) $request->get_response_body(), 'ProvisionedThroughputExceededException') !== false
-			)
-		)
+		// DynamoDB has additional, custom logic for retrying requests
+		else
 		{
-			if ($this->redirects === 0)
+			// If the request to DynamoDB was throttled, we need to retry
+			$need_to_retry_dynamodb_request = (
+				(integer) $request->get_response_code() === 400 &&
+				stripos($response_body, 'com.amazonaws.dynamodb.') !== false &&
+				stripos($response_body, 'ProvisionedThroughputExceededException') !== false
+			);
+
+			// If the CRC32 of the response does not match the expected value, we need to retry
+			$response_headers = $request->get_response_header();
+			if (!$need_to_retry_dynamodb_request && isset($response_headers['x-amz-crc32']))
 			{
-				$this->redirects++;
-				$data = $this->authenticate($operation, $original_payload);
+				$crc32_expected = $response_headers['x-amz-crc32'];
+				$crc32_actual = hexdec(hash('crc32b', $response_body));
+				$need_to_retry_dynamodb_request = ($crc32_expected != $crc32_actual);
 			}
-			elseif ($this->redirects <= max($this->max_retries, 10))
+
+			// Perform retry if necessary using a more aggressive exponential backoff
+			if ($need_to_retry_dynamodb_request)
 			{
-				// Exponential backoff
-				$delay = (integer) (pow(2, ($this->redirects - 1)) * 50000);
-				usleep($delay);
-				$this->redirects++;
-				$data = $this->authenticate($operation, $original_payload);
+				if ($this->redirects === 0)
+				{
+					$this->redirects++;
+					$data = $this->authenticate($operation, $original_payload);
+				}
+				elseif ($this->redirects <= max($this->max_retries, 10))
+				{
+					// Exponential backoff
+					$delay = (integer) (pow(2, ($this->redirects - 1)) * 50000);
+					usleep($delay);
+					$this->redirects++;
+					$data = $this->authenticate($operation, $original_payload);
+				}
 			}
 		}
 
@@ -1294,8 +1241,7 @@ class CFRuntime
 	 * <set_cache_config()>.
 	 *
 	 * @param string|integer $expires (Required) The time the cache is to expire. Accepts a number of seconds as an integer, or an amount of time, as a string, that is understood by <php:strtotime()> (e.g. "1 hour").
-	 * @param $this A reference to the current instance.
-	 * @return $this
+	 * @return $this A reference to the current instance.
 	 */
 	public function cache($expires)
 	{
@@ -1467,7 +1413,7 @@ class CFLoader
 		elseif ($class === 'Signer')
 		{
 			if (!interface_exists('Signable', false) &&
-			    file_exists($require_this = $path . 'authentication' . DIRECTORY_SEPARATOR . 'signable.interface.php'))
+				file_exists($require_this = $path . 'authentication' . DIRECTORY_SEPARATOR . 'signable.interface.php'))
 			{
 				require_once $require_this;
 			}
@@ -1504,6 +1450,9 @@ spl_autoload_register(array('CFLoader', 'autoloader'));
 /*%******************************************************************************************%*/
 // CONFIGURATION
 
+// If config auto-discovery is explicitly disabled, stop here
+if (defined('AWS_DISABLE_CONFIG_AUTO_DISCOVERY')) return;
+
 // Look for include file in the same directory (e.g. `./config.inc.php`).
 if (file_exists(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'config.inc.php'))
 {
@@ -1525,7 +1474,16 @@ else
 		}
 		else
 		{
-			$_ENV['HOME'] = `cd ~ && pwd`;
+			$dir = exec('(cd ~ && pwd) 2>&1', $out, $exit);
+			if ($exit === 0)
+			{
+				$_ENV['HOME'] = trim($dir);
+			}
+			else
+			{
+				error_log('Failed to determine HOME directory after trying "' . $dir . '" (exit code ' . $exit . ')');
+				$_ENV['HOME'] = false;
+			}
 		}
 
 		if (!$_ENV['HOME'])
@@ -1549,8 +1507,11 @@ else
 		}
 	}
 
-	if (getenv('HOME') && file_exists(getenv('HOME') . DIRECTORY_SEPARATOR . '.aws' . DIRECTORY_SEPARATOR . 'sdk' . DIRECTORY_SEPARATOR . 'config.inc.php'))
+	$path = DIRECTORY_SEPARATOR . '.aws' . DIRECTORY_SEPARATOR . 'sdk' . DIRECTORY_SEPARATOR . 'config.inc.php';
+	if (isset($_ENV['HOME']) && file_exists($_ENV['HOME'] . $path))
 	{
-		include_once getenv('HOME') . DIRECTORY_SEPARATOR . '.aws' . DIRECTORY_SEPARATOR . 'sdk' . DIRECTORY_SEPARATOR . 'config.inc.php';
+		include_once $_ENV['HOME'] . $path;
 	}
+
+	unset($os, $dir, $out, $exit, $path);
 }

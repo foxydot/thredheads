@@ -3,7 +3,7 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 	die( '<html></html>' );
 }
 
-$page_title = 'Database Migration (Updating URLs, paths, etc)';
+$page_title = 'Step <span class="step_number">' . $step . '</span> of 6: Database Migration (Updating URLs, paths, etc)';
 require_once( '_header.php' );
 ?>
 
@@ -36,7 +36,11 @@ pb_backupbuddy::flush();
 $result = migrate_database();
 
 
-verify_database();
+if ( ( true === pb_backupbuddy::$options['skip_database_import'] ) && ( true === pb_backupbuddy::$options['skip_database_migration'] ) ) {
+	pb_backupbuddy::status( 'details', 'Skipping database verification as both Import and Migration steps were skipped so no modifications were made to it.' );
+} else {
+	verify_database();
+}
 
 
 // Remove any temporary .maintenance file created by ImportBuddy.
@@ -54,15 +58,11 @@ if ( true === $result ) {
 	if ( $wpconfig_result !== true ) {
 		pb_backupbuddy::alert( 'Error: Unable to update wp-config.php file. Verify write permissions for the wp-config.php file then refresh this page. You may manually update your wp-config.php file by changing it to the following:<textarea readonly="readonly" style="width: 80%;">' . $wpconfig_result . '</textarea>' );
 	}
-	
 	pb_backupbuddy::status( 'message', 'Import complete!' );
-	echo '<h3>Imported Site: <a href="' . pb_backupbuddy::$options['home'] . '" target="_new">' . pb_backupbuddy::$options['home'] . '</a></h3>';
-	echo '<img src="' . pb_backupbuddy::plugin_url() . '/images/bullet_error.png" style="float: left;"><div style="margin-left: 20px;"><b>Verify site functionality then proceed to the next step below</b> to cleanup the backup ZIP file, importbuddy.php, and other temporary files. You may view your entire import log for providing to support by clicking the "View Import Log" button below.</div>';
 	
 	echo '<form action="?step=6" method=post>';
 	echo '<input type="hidden" name="pass_hash" id="pass_hash" value="' . htmlspecialchars( pb_backupbuddy::_POST( 'pass_hash' ) ) . '">';
 	echo '<input type="hidden" name="options" value="' . htmlspecialchars( serialize( pb_backupbuddy::$options ) ) . '" />';
-	
 	
 	// Scan for 'trouble' such as a remaining .maintenance file, index.htm, index.html, missing wp-config.php, missing .htaccess, etc etc.
 	$trouble = trouble_scan();
@@ -73,13 +73,15 @@ if ( true === $result ) {
 			$trouble_text .= '<li>' . $this_trouble . '</li>';
 		}
 		$trouble_text = '<ul>' . $trouble_text . '</ul>';
-		pb_backupbuddy::alert( 'Warning: One or more potential issues may have been detected and <i>may</i> require your attention.' . $trouble_text );
-	} else {
-		echo '<br>';
+		pb_backupbuddy::alert( '<b>Warning:</b> One or more potential issues detected that <i>may</i> require your attention.' . $trouble_text );
 	}
 	?>
-
-	<h3>Simple Problems & Solutions</h3>
+	
+	
+	<h3>Verify imported site functionality before proceeding:<br><br><a href="<?php echo pb_backupbuddy::$options['home']; ?>" target="_new"><?php echo pb_backupbuddy::$options['home']; ?></a></h3><br>
+	
+	
+	<h3>Problems? Click to view possible solutions:</h3>
 	<div class="expander-box">
 		<a class="expander" href="#">Clicking on a posts results in a 404 Not Found</a>
 		<div class="content">
@@ -95,15 +97,16 @@ if ( true === $result ) {
 	<div class="expander-box">
 		<a class="expander" href="#">Source site has changed to the destination URL</a>
 		<div class="content">
-			This is caused if you restored over your source site database by entering the source site database settings on Step 3. You may re-restore using correct settings.  You may correct the modified URL on the source site by using the Server Information page's Mass Text Replace tool.
+			This is caused if you restored over your source site database by entering the source site database settings on Step 3. You may re-restore using correct settings.  You may correct the modified URL on the source site by using the Server Tools page's Mass Text Replace tool within the Database tab.
 		</div>
 	</div>
 	
+	
 	<br>
-	<h3>Last step: File Cleanup</h3>
+	<h3>Final cleanup step next:</h3>
 	<table><tr><td>
 		<label for="delete_backup" style="width: auto; font-size: 12px;"><input type="checkbox" name="delete_backup" id="delete_backup" value="1" checked> Delete backup zip archive</label>
-		<br>		
+		<br>
 		<label for="delete_temp" style="width: auto; font-size: 12px;"><input type="checkbox" name="delete_temp" id="delete_temp" value="1" checked> Delete temporary import files</label>
 	</td><td>
 		<label for="delete_importbuddy" style="width: auto; font-size: 12px;"><input type="checkbox" name="delete_importbuddy" id="delete_importbuddy" value="1" checked> Delete ImportBuddy tool files</label>

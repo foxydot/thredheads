@@ -51,7 +51,13 @@ function parse_options() {
 	} else {
 		pb_backupbuddy::$options['max_execution_time'] = 30;
 	}
-
+	
+	// Override for files only backup type.
+	if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+		pb_backupbuddy::$options['skip_database_import'] = true;
+		pb_backupbuddy::$options['skip_database_migration'] = true;
+		pb_backupbuddy::$options['skip_database_migration'] = true;
+	}
 	
 	
 	// Multisite domain.
@@ -148,6 +154,7 @@ function import_database() {
 		
 		// Look through and try to find .SQL file to import.
 		$possible_sql_files = array( // Possible locations of .SQL file.
+			pb_backupbuddy::$options['temp_serial_directory'] . '/db_1.sql',										// Determined from detecting DAT file. Should always be the location really... As of v4.1.
 			ABSPATH . 'wp-content/uploads/temp_'.pb_backupbuddy::$options['zip_id'].'/db.sql',						// Full backup < v2.0.
 			ABSPATH . 'db.sql',																						// Database backup < v2.0.
 			ABSPATH . 'wp-content/uploads/backupbuddy_temp/' . pb_backupbuddy::$options['zip_id'] . '/db_1.sql',	// Full backup >= v2.0.
@@ -158,15 +165,19 @@ function import_database() {
 			$possible_sql_files[] = pb_backupbuddy::$options['database_directory'] . 'db_1.sql';																																	// Multisite import >= v2.0.
 		}
 		$sql_file = '';
+		pb_backupbuddy::status( 'details', 'Determining SQL file location...' );
 		foreach( $possible_sql_files as $possible_sql_file ) { // Check each file location to see which hits.
+			pb_backupbuddy::status( 'details', 'Looking for SQL file at `' . $possible_sql_file . '`.' );
 			if ( file_exists( $possible_sql_file ) ) {
 				$sql_file = $possible_sql_file; // Set SQL file location.
+				pb_backupbuddy::status( 'details', 'Found SQL file as `' . $sql_file . '`.' );
 				break; // Search is over. Use ths found file.
 			}
 		} // End foreach().
 		unset( $possible_sql_files );
 		if ( $sql_file == '' ) {
-			pb_backupbuddy::status( 'error', 'Unable to find db_1.sql or other expected database file in the extracted files. Make sure you did not rename your backup ZIP file. You may manually restore your SQL file if you can find it via phpmyadmin or similar tool then on Step 1 of ImportBuddy select the advanced option to skip database import. This will allow you to proceed.' );
+			pb_backupbuddy::status( 'error', 'Unable to find db_1.sql or other expected database file in the extracted files in the expected location. Make sure you did not rename your backup ZIP file. You may manually restore your SQL file if you can find it via phpmyadmin or similar tool then on Step 1 of ImportBuddy select the advanced option to skip database import. This will allow you to proceed.' );
+			return false;
 		}
 		
 		// Whether or not to ignore existing tables errors.

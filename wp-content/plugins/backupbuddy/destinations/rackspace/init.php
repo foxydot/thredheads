@@ -1,6 +1,6 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_rackspace { // Change class name end to match destination name.
 	
@@ -29,7 +29,7 @@ class pb_backupbuddy_destination_rackspace { // Change class name end to match d
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array() ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
 		
 		$rs_username = $settings['username'];
 		$rs_api_key = $settings['api_key'];
@@ -60,7 +60,7 @@ class pb_backupbuddy_destination_rackspace { // Change class name end to match d
 				if ( $limit > 0 ) {
 					pb_backupbuddy::status( 'details', 'Archive limit of `' . $limit . '` in settings.' );
 					
-					$bkupprefix = pb_backupbuddy::$classes['core']->backup_prefix();
+					$bkupprefix = backupbuddy_core::backup_prefix();
 					
 					$results = $container->get_objects( 0, NULL, 'backup-' . $bkupprefix . '-' );
 					// Create array of backups and organize by date
@@ -88,7 +88,7 @@ class pb_backupbuddy_destination_rackspace { // Change class name end to match d
 						if ( $delete_fail_count !== 0 ) {
 							$error_message = 'Rackspace remote limit could not delete `' . $delete_fail_count . '` backups.';
 							pb_backupbuddy::status( 'error', $error_message );
-							pb_backupbuddy::$classes['core']->mail_error( $error_message );
+							backupbuddy_core::mail_error( $error_message );
 						}
 					}
 				} else {
@@ -100,7 +100,7 @@ class pb_backupbuddy_destination_rackspace { // Change class name end to match d
 			} else { // Failed.
 				$error_message = 'ERROR #9025: Connected to Rackspace but unable to put file. Verify Rackspace settings included Rackspace permissions.' . "\n\n" . 'http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#9025';
 				pb_backupbuddy::status( 'details',  $error_message, 'error' );
-				pb_backupbuddy::$classes['core']->mail_error( __( $error_message, 'it-l10n-backupbuddy' ) );
+				backupbuddy_core::mail_error( __( $error_message, 'it-l10n-backupbuddy' ) );
 				
 				return false; // Failed.
 			}

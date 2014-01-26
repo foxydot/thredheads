@@ -48,7 +48,7 @@ global $current_site;
 		
 		
 		
-		$files = glob( pb_backupbuddy::$options['backup_directory'] . 'backup*.zip' );
+		$files = glob( backupbuddy_core::getBackupDirectory() . 'backup*.zip' );
 		if ( !is_array( $files ) || empty( $files ) ) {
 			$files = array();
 		}

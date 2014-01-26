@@ -7,12 +7,9 @@
 	}
 	
 	
-	$manage_file = pb_backupbuddy::plugin_path() . '/destinations/' . $destination['type'] . '/_manage.php';
-	if ( file_exists( $manage_file ) ) {
-		require( $manage_file );
-	} else {
-		_e( 'A remote destination client is not available for this destination. Its files cannot be viewed & managed from within BackupBuddy.', 'it-l10n-backupbuddy' );
-	}
+	require_once( pb_backupbuddy::plugin_path() . '/destinations/bootstrap.php' );
+	pb_backupbuddy_destinations::manage( $destination );
+	
 	
 	echo '<br><br><br>';
 	echo '<a class="button" href="';

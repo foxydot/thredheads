@@ -11,6 +11,7 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 <html xmlns="http://www.w3.org/1999/xhtml"  dir="ltr" lang="en-US">
 <!--<![endif]-->
 	<head>
+		<meta charset="utf-8">
 		<title>ImportBuddy v<?php echo pb_backupbuddy::$options['bb_version']; ?> Restore / Migration Tool - Powered by BackupBuddy</title>
 		<meta name="robots" content="noindex">
 		
@@ -58,7 +59,28 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 		<?php
 		if ( pb_backupbuddy::$options['display_mode'] == 'normal' ) {
 			echo '<body>';
-			echo '<center><img src="importbuddy/images/bb-logo.png" title="BackupBuddy Restoration & Migration Tool" style="margin-top: 10px;"></center><br>';
+			echo '<div class="topNav">';
+				
+				if ( true === Auth::is_authenticated() ) { // Only display these links if logged in.
+					echo '<a ';
+					if ( pb_backupbuddy::_GET( 'step' ) != '' ) { echo 'class="activePage" '; }
+					echo 'href="?step=1">Restore / Migrate</a>';
+					
+					
+					echo '<a ';
+					if ( pb_backupbuddy::_GET( 'page' ) == 'dbreplace' ) { echo 'class="activePage" '; }
+					echo 'href="?page=dbreplace">Database Text Replace</a>';
+					
+				}
+				
+				$simpleVersion = pb_backupbuddy::$options['bb_version'];
+				if ( strpos( pb_backupbuddy::$options['bb_version'], ' ' ) > 0 ) {
+					$simpleVersion = substr( pb_backupbuddy::$options['bb_version'], 0, strpos( pb_backupbuddy::$options['bb_version'], ' ' ) );
+				}
+				echo '<a href="http://ithemes.com/purchase/backupbuddy/" target="_new" title="Visit BackupBuddy Website in New Window" style="float: right;"><img src="importbuddy/images/icon_menu_32x32.png" width="16" height="16">&nbsp;&nbsp;ImportBuddy v' . $simpleVersion . ' for BackupBuddy</a>';
+				echo '<br style="clear: both;">';
+			echo '</div>';
+			//echo '<center><img src="importbuddy/images/bb-logo.png" title="BackupBuddy Restoration & Migration Tool" style="margin-top: 10px;"></center><br>';
 		} else { // Magic migration mode inside WordPress (in an iframe).
 			echo '<body onLoad="window.parent.scroll(0,0);">'; // Auto scroll to top of parent while in iframe.
 		}
@@ -68,7 +90,7 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 		
 		<center>
 		<?php
-		if ( $step > 1 ) { // Only show advanced option settings after Step 1 to hide on logging screen.
+		if ( isset( $step ) && ( $step > 1 ) ) { // Only show advanced option settings after Step 1 to hide on logging screen.
 			if ( pb_backupbuddy::$options['skip_files'] != false ) {
 				echo '<img src="' . pb_backupbuddy::plugin_url() . '/images/bullet_error.png" style="vertical-align: -3px;">';
 				echo 'Advanced Option to skip files is set to true. Files will not be extracted.<br>';
@@ -130,5 +152,5 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 		<div style="max-width: 800px; margin-left: auto; margin-right: auto;">
 			<div class="main_box">
 				<div class="main_box_head">
-					Step <span class="step_number"><?php echo $step; ?></span> of 6: <?php echo $page_title; ?>
+					<?php echo $page_title; ?>
 				</div>

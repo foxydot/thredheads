@@ -29,8 +29,9 @@ if ( $profile_array['type'] != 'defaults' ) {
 		'title'		=>		__('Skip database dump on backup', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__('[Default: disabled] - (WARNING: This prevents BackupBuddy from backing up the database during any kind of backup. This is for troubleshooting / advanced usage only to work around being unable to backup the database.', 'it-l10n-backupbuddy' ),
 		'css'		=>		'',
-		'after'		=>		'<br><span class="description"> ' . __('Skip if to completely bypass backing up database. Use with caution.', 'it-l10n-backupbuddy' ) . '</span>',
+		//'after'		=>		'<br><span class="description"> ' . __('Use with caution.', 'it-l10n-backupbuddy' ) . '</span>',
 		'rules'		=>		'required',
+		'orientation' =>	'vertical',
 	) );
 
 
@@ -55,7 +56,8 @@ if ( $profile_array['type'] != 'defaults' ) {
 		'title'		=>		__('Perform integrity check on backup files', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__('[Default: enabled] - By default each backup file is checked for integrity and completion the first time it is viewed on the Backup page.  On some server configurations this may cause memory problems as the integrity checking process is intensive.  If you are experiencing out of memory errors on the Backup file listing, you can uncheck this to disable this feature.', 'it-l10n-backupbuddy' ),
 		'css'		=>		'',
-		'after'		=>		'<br><span class="description"> ' . __( 'Disable if having problems viewing your backup listing.', 'it-l10n-backupbuddy' ) . '</span>',
+		//'after'		=>		'<br><span class="description"> ' . __( 'Disable if unable to view backup listing.', 'it-l10n-backupbuddy' ) . '</span>',
 		'rules'		=>		'required',
+		'orientation' =>	'vertical',
 	) );
 }

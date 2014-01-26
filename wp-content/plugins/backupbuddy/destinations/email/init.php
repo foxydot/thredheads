@@ -1,6 +1,6 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_email {
 	
@@ -25,7 +25,7 @@ class pb_backupbuddy_destination_email {
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array() ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
 				
 		$email = $settings['address'];
 		
@@ -37,7 +37,7 @@ class pb_backupbuddy_destination_email {
 		
 		pb_backupbuddy::status( 'details',  'Sending remote email.' );
 		$headers = 'From: BackupBuddy <' . $email_return . '>' . "\r\n";
-		$wp_mail_result = wp_mail( $email, 'BackupBuddy Backup', 'BackupBuddy backup for ' . site_url(), $headers, $files );
+		$wp_mail_result = wp_mail( $email, 'BackupBuddy backup for ' . site_url(), 'BackupBuddy backup for ' . site_url(), $headers, $files );
 		pb_backupbuddy::status( 'details',  'Sent remote email.' );
 		
 		if ( $wp_mail_result === true ) { // WP sent. Hopefully it makes it!
@@ -62,8 +62,8 @@ class pb_backupbuddy_destination_email {
 		$email = $settings['address'];
 		
 		pb_backupbuddy::status( 'details', 'Testing email destination. Sending ImportBuddy.php.' );
-		$importbuddy_temp = pb_backupbuddy::$options['temp_directory'] . 'importbuddy_' . pb_backupbuddy::random_string( 10 ) . '.php.tmp'; // Full path & filename to temporary importbuddy
-		pb_backupbuddy::$classes['core']->importbuddy( $importbuddy_temp ); // Create temporary importbuddy.
+		$importbuddy_temp = backupbuddy_core::getTempDirectory() . 'importbuddy_' . pb_backupbuddy::random_string( 10 ) . '.php.tmp'; // Full path & filename to temporary importbuddy
+		backupbuddy_core::importbuddy( $importbuddy_temp ); // Create temporary importbuddy.
 		
 		$files = array( $importbuddy_temp );
 		
