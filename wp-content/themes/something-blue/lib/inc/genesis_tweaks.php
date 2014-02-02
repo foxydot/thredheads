@@ -30,6 +30,7 @@ add_action('genesis_after_header','msd_post_image');//add the image above the en
 
 //*** SIDEBARS ***/
 //add_action('genesis_before', 'msdlab_ro_layout_logic'); //This ensures that the primary sidebar is always to the left.
+add_action('after_setup_theme','msdlab_add_product_sidebar');
 add_filter('widget_text', 'do_shortcode');//shortcodes in widgets
 
 /*** CONTENT ***/
