@@ -4,7 +4,9 @@ jQuery(document).ready(function($) {
     $('.case-studies .widget-icon i.fa').addClass('fa-folder-o');
     $('.featured-article .widget-icon i.fa').addClass('fa-bookmark-o');
     $('.right .readmore').append('<i class="fa fa-chevron-circle-right"></i>');
-    $('.carousel').carousel();
+    $('.carousel').carousel({
+       interval: 10000
+    });
     $('.modal .gform_footer').after('<div class="gform_post_footer"><button type="button" class="button" data-dismiss="modal">Thanks, just browsing</button></div>');
     $('.modal').wrapInner('<div class="modal-dialog"><div class="modal-content"></div></div>');
     setTimeout(function(){ 
