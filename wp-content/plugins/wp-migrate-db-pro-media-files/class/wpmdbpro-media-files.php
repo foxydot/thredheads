@@ -4,7 +4,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 	function __construct( $plugin_file_path ) {
 		parent::__construct( $plugin_file_path );
 
-		if( ! $this->meets_version_requirements( '1.3' ) ) return;
+		if( ! $this->meets_version_requirements( '1.3.1' ) ) return;
 
 		add_action( 'wpmdb_after_advanced_options', array( $this, 'migration_form_controls' ) );
 		add_action( 'wpmdb_load_assets', array( $this, 'load_assets' ) );
@@ -20,9 +20,19 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 		add_action( 'wp_ajax_nopriv_wpmdbmf_get_remote_media_listing', array( $this, 'respond_to_get_remote_media_listing' ) );
 	}
 
-	function get_local_attachments() {
+	function get_local_attachments( $use_temporary_prefix = false ) {
 		global $wpdb;
 		$prefix = $wpdb->prefix;
+		$temp_prefix = $this->temp_prefix;
+
+		$local_tables = array_flip( $this->get_tables() );
+
+		$posts_table_name = "{$temp_prefix}{$prefix}posts";
+		$postmeta_table_name = "{$temp_prefix}{$prefix}postmeta";
+
+		if( isset( $local_tables[$posts_table_name] ) && isset( $local_tables[$postmeta_table_name] ) && $use_temporary_prefix ) {
+			$prefix = $temp_prefix . $prefix;
+		}
 
 		$local_attachments = $wpdb->get_results(
 			"SELECT `{$prefix}posts`.`post_modified_gmt` AS 'date', pm1.`meta_value` AS 'file', pm2.`meta_value` AS 'metadata'
@@ -34,7 +44,13 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 
 		if( is_multisite() ) {
 			$blogs = $this->get_blogs();
+			$prefix = $wpdb->prefix;
 			foreach( $blogs as $blog ) {
+				$posts_table_name = "{$temp_prefix}{$prefix}{$blog}_posts";
+				$postmeta_table_name = "{$temp_prefix}{$prefix}{$blog}_postmeta";
+				if( isset( $local_tables[$posts_table_name] ) && isset( $local_tables[$postmeta_table_name] ) && $use_temporary_prefix ) {
+					$prefix = $temp_prefix . $prefix;
+				}
 				$attachments = $wpdb->get_results(
 					"SELECT `{$prefix}{$blog}_posts`.`post_modified_gmt` AS 'date', pm1.`meta_value` AS 'file', pm2.`meta_value` AS 'metadata', {$blog} AS 'blog_id'
 					FROM `{$prefix}{$blog}_posts`
@@ -53,6 +69,17 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 		return $local_attachments;
 	}
 
+	function get_flat_attachments( $attachments ) {
+		$flat_attachments = array();
+		foreach( $attachments as $attachment ) {
+			$flat_attachments[] = $attachment['file'];
+			if( isset( $attachment['sizes'] ) ) {
+				$flat_attachments = array_merge( $flat_attachments, $attachment['sizes'] );
+			}
+		}
+		return $flat_attachments;
+	}
+
 	function process_attachment_data( $attachment ) {
 		if( isset( $attachment['blog_id'] ) ) { // used for multisite
 			if( defined( 'UPLOADBLOGSDIR' ) ) {
@@ -63,12 +90,13 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 			}
 			$attachment['file'] = $upload_dir . $attachment['file'];
 		}
-		$upload_dir = substr( $attachment['file'], 0, strrpos( $attachment['file'], '/' ) + 1 );
+		$upload_dir = str_replace( basename( $attachment['file'] ), '', $attachment['file'] );
 		if( ! empty( $attachment['metadata'] ) ) {
 			$attachment['metadata'] = @unserialize( $attachment['metadata'] );
-			if( ! isset( $attachment['metadata']['sizes'] ) ) return;
-			foreach( $attachment['metadata']['sizes'] as $size ) {
-				$attachment['sizes'][] = $upload_dir . $size['file'];
+			if( isset( $attachment['metadata']['sizes'] ) ) {
+				foreach( $attachment['metadata']['sizes'] as $size ) {
+					$attachment['sizes'][] = $upload_dir . $size['file'];
+				}
 			}
 		}
 		unset( $attachment['metadata'] );
@@ -88,6 +116,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 
 	function get_local_media() {
 		$upload_dir = untrailingslashit( $this->uploads_dir() );
+		if( ! file_exists( $upload_dir ) ) return array();
 
 		$files = new RecursiveIteratorIterator( new RecursiveDirectoryIterator( $upload_dir ), RecursiveIteratorIterator::SELF_FIRST );
 		$local_media = array();
@@ -104,20 +133,25 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 		$this->set_time_limit();
 		$files_to_download = $_POST['file_chunk'];
 		$remote_uploads_url = trailingslashit( $_POST['remote_uploads_url'] );
+		$parsed = parse_url( $_POST['url'] );
+		if( ! empty( $parsed['user'] ) ) {
+			$credentials = sprintf( '%s:%s@', $parsed['user'], $parsed['pass'] );
+			$remote_uploads_url = str_replace( '://', '://' . $credentials, $remote_uploads_url );
+		}
 
 		$upload_dir = $this->uploads_dir();
 
 		$errors = array();
 		foreach( $files_to_download as $file_to_download ) {
 			$temp_file_path = $this->download_url( $remote_uploads_url . $file_to_download );
-
+			
 			if( is_wp_error( $temp_file_path ) ) {
 				$download_error = $temp_file_path->get_error_message();
 				$errors[] = 'Could not download file: ' . $remote_uploads_url . $file_to_download . ' - ' . $download_error;
 				continue;
 			}
 
-			$date = substr( $file_to_download, 0, strrpos( $file_to_download, '/' ) + 1 );
+			$date = str_replace( basename( $file_to_download ), '', $file_to_download );
 			$new_path = $upload_dir . $date . basename( $file_to_download  );
 
 			$move_result = @rename( $temp_file_path, $new_path );
@@ -159,7 +193,7 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 	function ajax_determine_media_to_migrate() {
 		$this->set_time_limit();
 
-		$local_attachments = $this->get_local_attachments();
+		$local_attachments = $this->get_local_attachments( true );
 		$local_media = $this->get_local_media();
 
 		$data = array();
@@ -199,15 +233,22 @@ class WPMDBPro_Media_Files extends WPMDBPro_Addon {
 		$return['total_size'] = array_sum( $files_to_migrate );
 		$return['remote_uploads_url'] = $response['remote_uploads_url'];
 
+		$flat_remote_attachments = array_flip( $this->get_flat_attachments( $remote_attachments ) );
+
 		// remove local media if it doesn't exist on the remote site
+		$temp_local_media = array_keys( $local_media );
+		$allowed_mime_types = array_flip( get_allowed_mime_types() );
 		if( $_POST['remove_local_media'] == '1' ) {
-			foreach( $local_attachments as $local_attachment ) {
-				if( false !== $this->multidimensional_search( array( 'file' => $local_attachment['file'] ), $remote_attachments ) ) continue;
-				@unlink( $upload_dir . $local_attachment['file'] );
-				if( empty( $local_attachment['sizes'] ) ) continue;
-				foreach( $local_attachment['sizes'] as $size ) {
-					@unlink( $upload_dir . $size );
-				}
+			foreach( $temp_local_media as $local_media_file ) {
+				// don't remove folders
+				if( false === is_file( $upload_dir . $local_media_file ) ) continue;
+				$filetype = wp_check_filetype( $local_media_file );
+				// don't remove files that we shouldn't remove, e.g. .php, .sql, etc
+				if( false === isset( $allowed_mime_types[$filetype['type']] ) ) continue;
+				// don't remove files that exist on the remote site
+				if( true === isset( $flat_remote_attachments[$local_media_file] ) ) continue;
+				
+				@unlink( $upload_dir . $local_media_file );
 			}
 		}
 

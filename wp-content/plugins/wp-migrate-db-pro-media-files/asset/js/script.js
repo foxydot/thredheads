@@ -82,7 +82,7 @@ var remote_connection_data;
 			hide_show_options( remote_media_files_unavailable );
 		});
 
-		$.wpmdb.add_filter('wpmdb_migration_complete_hooks',function(hooks) {
+		$.wpmdb.add_filter('wpmdb_before_migration_complete_hooks',function(hooks) {
 			if( false == is_media_migration() || 'pull' != migration_type() ) return hooks;
 			hooks.push( 'determine_media_to_migrate' );
 			return hooks;
@@ -117,7 +117,7 @@ var remote_connection_data;
 					console.log( jqXHR );
 					console.log( textStatus );
 					console.log( errorThrown );
-					table_migration_error = true;
+					migration_error = true;
 					migration_complete_events();
 					return;
 				},
@@ -140,7 +140,7 @@ var remote_connection_data;
 			$('.progress-title').html('Migration failed');
 			$('.progress-text').html(data);
 			$('.progress-text').addClass('migration-error');
-			table_migration_error = true;
+			migration_error = true;
 			migration_complete_events();
 		}
 
@@ -201,6 +201,8 @@ var remote_connection_data;
 				}
 			});
 
+			var connection_info = $.trim( $('.pull-push-connection-info').val() ).split("\n");
+
 			$.ajax({
 				url: 		ajaxurl,
 				type: 		'POST',
@@ -210,6 +212,7 @@ var remote_connection_data;
 					action: 			'wpmdbmf_migrate_media',
 					file_chunk:			file_chunk_to_migrate,
 					remote_uploads_url: args.remote_uploads_url,
+					url: 				connection_info[0],
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					$('.progress-title').html('Migration failed');
@@ -218,7 +221,7 @@ var remote_connection_data;
 					console.log( jqXHR );
 					console.log( textStatus );
 					console.log( errorThrown );
-					table_migration_error = true;
+					migration_error = true;
 					migration_complete_events();
 					return;
 				},
