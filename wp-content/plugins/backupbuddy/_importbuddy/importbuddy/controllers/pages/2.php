@@ -78,7 +78,7 @@ function parse_options() {
 	if ( ! isset( pb_backupbuddy::$options['file'] ) ) {
 		die( 'No backup zip file specified to process. Go back and make sure you selected a ZIP file to extract and restore on Step 1.' );
 	}
-	pb_backupbuddy::$options['zip_id'] = pb_backupbuddy::$classes['core']->get_serial_from_file( pb_backupbuddy::$options['file'] );
+	pb_backupbuddy::$options['zip_id'] = backupbuddy_core::get_serial_from_file( pb_backupbuddy::$options['file'] );
 }
 
 
@@ -154,7 +154,7 @@ function extract_files() {
 	// Handle meta data in comment.
 	pb_backupbuddy::status( 'details', 'Retrieving meta data from ZIP file (if any).' );
 	$comment = pb_backupbuddy::$classes['zipbuddy']->get_comment( $backup_archive );
-	$comment = pb_backupbuddy::$classes['core']->normalize_comment_data( $comment );
+	$comment = backupbuddy_core::normalize_comment_data( $comment );
 	$comment_text = print_r( $comment, true );
 	$comment_text = str_replace( array( "\n", "\r" ), '; ', $comment_text );
 	pb_backupbuddy::status( 'details', 'Backup meta data: `' . $comment_text . '`.' );
@@ -202,6 +202,7 @@ function extract_files() {
 	
 	// Get DAT file contents & save into options..
 	pb_backupbuddy::$options['dat_file'] = pb_backupbuddy::$classes['import']->get_dat_file_array( $dat_file );
+	pb_backupbuddy::$options['temp_serial_directory'] = basename( $dat_file );
 	pb_backupbuddy::save();
 	
 	return true;

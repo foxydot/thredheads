@@ -1,4 +1,7 @@
 <?php
+//print_r( backupbuddy_api0::getOverview() );
+
+
 //pb_backupbuddy::load_script( 'jquery-ui-core', true ); // WP core script.
 pb_backupbuddy::load_script( 'jquery-ui-datepicker', true ); // WP core script.
 pb_backupbuddy::load_script( 'jquery-ui-slider', true ); // WP core script.
@@ -24,7 +27,7 @@ jQuery(document).ready(function(){
 
 <?php
 
-pb_backupbuddy::$classes['core']->versions_confirm();
+backupbuddy_core::versions_confirm();
 $date_format_example = 'mm/dd/yyyy hh:mm [am/pm]'; // Example date format for displaying to user.
 
 
@@ -35,7 +38,7 @@ if ( pb_backupbuddy::_POST( 'bulk_action' ) == 'delete_schedule' ) {
 	foreach( pb_backupbuddy::_POST( 'items' ) as $id ) {
 		$deleted_schedules[] = htmlentities( pb_backupbuddy::$options['schedules'][$id]['title'] );
 		$next_scheduled_time = wp_next_scheduled( 'pb_backupbuddy-cron_scheduled_backup', array( (int)$id ) );
-		if ( FALSE === pb_backupbuddy::$classes['core']->unschedule_event( $next_scheduled_time, 'pb_backupbuddy-cron_scheduled_backup', array( (int)$id ) ) ) {
+		if ( FALSE === backupbuddy_core::unschedule_event( $next_scheduled_time, 'pb_backupbuddy-cron_scheduled_backup', array( (int)$id ) ) ) {
 			pb_backupbuddy::alert( 'Error #67686793. Unable to remove schedule. Please check your BackupBuddy error log.' );
 		}
 		unset( pb_backupbuddy::$options['schedules'][$id] );
@@ -57,7 +60,7 @@ if ( pb_backupbuddy::_GET( 'run' ) != '' ) {
 // Edit existing schedule.
 if ( pb_backupbuddy::_GET( 'edit' ) != '' ) {
 	$mode = 'edit';
-	$data['mode_title'] = __('Edit Schedule', 'it-l10n-backupbuddy' );
+	$data['mode_title'] = __('Save Schedule', 'it-l10n-backupbuddy' );
 	$savepoint = 'schedules#' . pb_backupbuddy::_GET( 'edit' );
 	
 	$first_run_value = date('m/d/Y h:i a', pb_backupbuddy::$options['schedules'][pb_backupbuddy::_GET( 'edit' )]['first_run'] + ( get_option( 'gmt_offset' ) * 3600 ) );
@@ -68,7 +71,7 @@ if ( pb_backupbuddy::_GET( 'edit' ) != '' ) {
 		if ( isset( $destination ) && ( $destination != '' ) ) {
 			$remote_destinations_html .= '<li id="pb_remotedestination_' . $destination . '">';
 			$remote_destinations_html .= pb_backupbuddy::$options['remote_destinations'][$destination]['title'];
-			$remote_destinations_html .= ' (' . pb_backupbuddy::$classes['core']->pretty_destination_type( pb_backupbuddy::$options['remote_destinations'][$destination]['type'] ) . ') ';
+			$remote_destinations_html .= ' (' . backupbuddy_core::pretty_destination_type( pb_backupbuddy::$options['remote_destinations'][$destination]['type'] ) . ') ';
 			$remote_destinations_html .= '<img class="pb_remotedestionation_delete" src="' . pb_backupbuddy::plugin_url() . '/images/redminus.png" style="vertical-align: -3px; cursor: pointer;" title="' . __( 'Remove remote destination from this schedule.', 'it-l10n-backupbuddy' ) . '" />';
 			$remote_destinations_html .= '</li>';
 		}
@@ -102,7 +105,9 @@ foreach( pb_backupbuddy::$options['profiles'] as $profile_id => $profile ) {
 	if ( $profile['type'] == 'full' ) {
 		$pretty_type = 'Full';
 	} elseif ( $profile['type'] == 'db' ) {
-		$pretty_type = 'Database';
+		$pretty_type = 'Database Only';
+		} elseif ( $profile['type'] == 'files' ) {
+		$pretty_type = 'Files Only';
 	} else {
 		$pretty_type = 'Unknown';
 	}
@@ -125,6 +130,7 @@ $schedule_form->add_setting( array(
 							'monthly'		=>		'Monthly',
 							'twicemonthly'	=>		'Twice Monthly',
 							'weekly'		=>		'Weekly',
+							'twiceweekly'	=>		'Twice Weekly',
 							'daily'			=>		'Daily',
 							'twicedaily'	=>		'Twice Daily',
 							'hourly'		=>		'Hourly',
@@ -145,7 +151,7 @@ $schedule_form->add_setting( array(
 $schedule_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'remote_destinations',
-	'title'		=>		'Remote backup destination',
+	'title'		=>		'Remote backup destination(s)',
 	'rules'		=>		'',
 	'css'		=>		'display: none;',
 	'after'		=>		$remote_destinations . '<a href="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" style="margin-top: 3px;" title="' . __( 'Select a Destination', 'it-l10n-backupbuddy' ) . '">' . __('+ Add Remote Destination', 'it-l10n-backupbuddy' ) . '</a>',
@@ -206,7 +212,7 @@ if ( ( $submitted_schedule != '' ) && ( count ( $submitted_schedule['errors'] ) 
 		
 		if ( $error === false ) {
 			
-			$add_response = pb_backupbuddy::$classes['core']->add_backup_schedule(
+			$add_response = backupbuddy_core::add_backup_schedule(
 				$title = $submitted_schedule['data']['title'],
 				$profile = $submitted_schedule['data']['profile'],
 				$interval = $submitted_schedule['data']['interval'],
@@ -235,11 +241,11 @@ if ( ( $submitted_schedule != '' ) && ( count ( $submitted_schedule['errors'] ) 
 		//echo 'first: ' . $first_run;
 		
 		$next_scheduled_time = wp_next_scheduled( 'pb_backupbuddy-cron_scheduled_backup', array( (int)$_GET['edit'] ) );
-		$result = pb_backupbuddy::$classes['core']->unschedule_event( $next_scheduled_time, 'pb_backupbuddy-cron_scheduled_backup', array( (int)$_GET['edit'] ) ); // Remove old schedule. pb_backupbuddy::$options['schedules'][$_GET['edit']]['first_run']
+		$result = backupbuddy_core::unschedule_event( $next_scheduled_time, 'pb_backupbuddy-cron_scheduled_backup', array( (int)$_GET['edit'] ) ); // Remove old schedule. pb_backupbuddy::$options['schedules'][$_GET['edit']]['first_run']
 		if ( $result === FALSE ) {
 			pb_backupbuddy::alert( 'Error #589689. Unable to unschedule scheduled cron job with WordPress. Please see your BackupBuddy error log for details.' );
 		}
-		$result = pb_backupbuddy::$classes['core']->schedule_event( $first_run, $submitted_schedule['data']['interval'], 'pb_backupbuddy-cron_scheduled_backup', array( (int)$_GET['edit'] ) ); // Add new schedule.
+		$result = backupbuddy_core::schedule_event( $first_run, $submitted_schedule['data']['interval'], 'pb_backupbuddy-cron_scheduled_backup', array( (int)$_GET['edit'] ) ); // Add new schedule.
 		if ( $result === FALSE ) {
 			pb_backupbuddy::alert( 'Error scheduling event with WordPress. Your schedule may not work properly. Please try again. Error #3488439. Check your BackupBuddy error log for details.', true );
 		}
@@ -268,10 +274,12 @@ foreach ( pb_backupbuddy::$options['schedules'] as $schedule_id => $schedule ) {
 	$profile = pb_backupbuddy::$options['profiles'][ (int)$schedule['profile'] ];
 	
 	$title = $schedule['title'];
-	if (  $profile['type'] == 'full' ) {
+	if ( $profile['type'] == 'full' ) {
 		$type = 'Full';
+	} elseif ( $profile['type'] == 'files' ) {
+		$type = 'Files only';
 	} elseif ( $profile['type'] == 'db' ) {
-		$type = 'Database';
+		$type = 'Database only';
 	} else {
 		$type = 'Unknown (' . $schedule['type'] . ')';
 	}
@@ -288,7 +296,7 @@ foreach ( pb_backupbuddy::$options['schedules'] as $schedule_id => $schedule ) {
 	$destination_array = array();
 	foreach( $destinations as &$destination ) {
 		if ( isset( $destination ) && ( $destination != '' ) ) {
-			$destination_array[] = pb_backupbuddy::$options['remote_destinations'][$destination]['title'] . ' (' . pb_backupbuddy::$classes['core']->pretty_destination_type( pb_backupbuddy::$options['remote_destinations'][$destination]['type'] ) . ')';
+			$destination_array[] = pb_backupbuddy::$options['remote_destinations'][$destination]['title'] . ' (' . backupbuddy_core::pretty_destination_type( pb_backupbuddy::$options['remote_destinations'][$destination]['type'] ) . ')';
 		}
 	}
 	

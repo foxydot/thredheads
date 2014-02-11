@@ -1556,7 +1556,7 @@ msgstr "Förslag"
 #: controllers/pages/server_info/permissions.php:140
 #: controllers/pages/server_info/server.php:548
 #: controllers/pages/server_info/server.php:560
-#: controllers/pages/server_info.php:88
+#: controllers/pages/server_tools.php:88
 #@ it-l10n-backupbuddy
 msgid "Value"
 msgstr "Värde"
@@ -1802,59 +1802,59 @@ msgstr "Visa storlek kataloglista"
 msgid "Size with Children"
 msgstr "Storlek med underkataloger"
 
-#: controllers/pages/server_info.php:7
+#: controllers/pages/server_tools.php:7
 #: init_admin.php:108
 #: init_admin.php:140
 #@ it-l10n-backupbuddy
 msgid "Server Information"
 msgstr "Serverinformation"
 
-#: controllers/pages/server_info.php:7
+#: controllers/pages/server_tools.php:7
 #@ it-l10n-backupbuddy
 msgid "Server information"
 msgstr "Serverinformation"
 
-#: controllers/pages/server_info.php:12
+#: controllers/pages/server_tools.php:12
 #@ it-l10n-backupbuddy
 msgid "Server Configuration"
 msgstr "Serverkonfiguration"
 
-#: controllers/pages/server_info.php:24
+#: controllers/pages/server_tools.php:24
 #@ it-l10n-backupbuddy
 msgid "File Permissions"
 msgstr "Filbehörigheter"
 
-#: controllers/pages/server_info.php:30
+#: controllers/pages/server_tools.php:30
 #@ it-l10n-backupbuddy
 msgid "Site Size Map"
 msgstr "Översikt storlek webbplat"
 
-#: controllers/pages/server_info.php:36
+#: controllers/pages/server_tools.php:36
 #@ it-l10n-backupbuddy
 msgid "Database/table Size"
 msgstr "Storlek databastabell"
 
-#: controllers/pages/server_info.php:42
+#: controllers/pages/server_tools.php:42
 #@ it-l10n-backupbuddy
 msgid "WordPress Scheduled Actions (CRON)"
 msgstr "WordPress planerade åtgärder (CRON)"
 
-#: controllers/pages/server_info.php:49
+#: controllers/pages/server_tools.php:49
 #@ it-l10n-backupbuddy
 msgid "URLs & Paths"
 msgstr "URL: er och sökvägar"
 
-#: controllers/pages/server_info.php:87
+#: controllers/pages/server_tools.php:87
 #@ it-l10n-backupbuddy
 msgid "Setting"
 msgstr "Inställning"
 
-#: controllers/pages/server_info.php:89
+#: controllers/pages/server_tools.php:89
 #@ it-l10n-backupbuddy
 msgid "Obtained via"
 msgstr "Erhålls via"
 
-#: controllers/pages/server_info.php:100
+#: controllers/pages/server_tools.php:100
 #: controllers/pages/server_tools.php:11
 #@ it-l10n-backupbuddy
 msgid "Database Mass Text Replacement"
@@ -3967,7 +3967,7 @@ msgstr "Rensa Loggen"
 
 #: views/getting_started.php:151
 #@ it-l10n-backupbuddy
-msgid "Cleanup Temporary Files"
+msgid "Cleanup Temporary Files Now"
 msgstr "Rensa Temporära Filer"
 
 #: views/getting_started.php:160

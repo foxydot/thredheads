@@ -5,6 +5,7 @@ body {
 	font-size: 1em;
 	color: #464646;
 	font-weight: 200;
+	margin: 0;
 }
 
 .main_box {
@@ -79,7 +80,8 @@ div.error {
 	margin-bottom: 12px;
 }
 .footer_text {
-	font-size: 0.8em;
+	font-size: 0.7em;
+	color: #777;
 }
 .footer {
 	clear: both;
@@ -289,7 +291,7 @@ label {
 
 #tooltip {
 	position: absolute;
-	z-index: 12000;
+	z-index: 999999;
 	border: 1px solid #111;
 	background-color: #eee;
 	padding: 5px;
@@ -493,6 +495,34 @@ hr {
 
 
 .pb_backupbuddy_begintour {
+	float: right;
 	margin-top: 6px !important;
 	font-size: 14px !important;
+}
+
+.topNav {
+	background: #464646;
+	color: #CCC;
+	margin-bottom: 50px;
+	font-size: 0.9em;
+	
+	background-image: -webkit-gradient(linear,left bottom,left top,color-stop(0,#373737),color-stop(18%,#464646));
+	background-image: -webkit-linear-gradient(bottom,#373737 0,#464646 5px);
+	background-image: -moz-linear-gradient(bottom,#373737 0,#464646 5px);
+	background-image: -o-linear-gradient(bottom,#373737 0,#464646 5px);
+	background-image: linear-gradient(to top,#373737 0,#464646 5px);
+}
+.topNav a {
+	display: inline-block;
+	border-left: 1px solid #555555;
+	border-right: 1px solid #333333;
+	padding: 6px;
+	padding-left: 12px;
+	padding-right: 12px;
+	color: #CCC;
+	cursor: pointer;
+}
+.topNav a:hover,.topNav .activePage {
+	background: #252525;
+	text-decoration: none;
 }

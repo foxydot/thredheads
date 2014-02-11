@@ -1,6 +1,6 @@
 <?php
 /*
- * Copyright 2010-2012 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ * Copyright 2010-2013 Amazon.com, Inc. or its affiliates. All Rights Reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License").
  * You may not use this file except in compliance with the License.
@@ -21,7 +21,7 @@
  * Amazon DynamoDB removes traditional scalability limitations on data storage while maintaining
  * low latency and predictable performance.
  *
- * @version 2012.08.17
+ * @version 2013.01.14
  * @license See the included NOTICE.md file for complete information.
  * @copyright See the included NOTICE.md file for complete information.
  * @link http://aws.amazon.com/dynamodb/ Amazon DynamoDB
@@ -83,6 +83,16 @@ class AmazonDynamoDB extends CFRuntime
 	const REGION_SINGAPORE = self::REGION_APAC_SE1;
 
 	/**
+	 * Specify the queue URL for the Asia Pacific Southeast (Singapore) Region.
+	 */
+	const REGION_APAC_SE2 = 'dynamodb.ap-southeast-2.amazonaws.com';
+
+	/**
+	 * Specify the queue URL for the Asia Pacific Southeast (Singapore) Region.
+	 */
+	const REGION_SYDNEY = self::REGION_APAC_SE2;
+
+	/**
 	 * Specify the queue URL for the Asia Pacific Northeast (Tokyo) Region.
 	 */
 	const REGION_APAC_NE1 = 'dynamodb.ap-northeast-1.amazonaws.com';
@@ -91,6 +101,21 @@ class AmazonDynamoDB extends CFRuntime
 	 * Specify the queue URL for the Asia Pacific Northeast (Tokyo) Region.
 	 */
 	const REGION_TOKYO = self::REGION_APAC_NE1;
+
+	/**
+	 * Specify the queue URL for the South America (Sao Paulo) Region.
+	 */
+	const REGION_SA_E1 = 'dynamodb.sa-east-1.amazonaws.com';
+
+	/**
+	 * Specify the queue URL for the South America (Sao Paulo) Region.
+	 */
+	const REGION_SAO_PAULO = self::REGION_SA_E1;
+
+	/**
+	 * Specify the queue URL for the United States GovCloud Region.
+	 */
+	const REGION_US_GOV1 = 'dynamodb.us-gov-west-1.amazonaws.com';
 
 	/**
 	 * Default service endpoint.
@@ -304,7 +329,7 @@ class AmazonDynamoDB extends CFRuntime
 	/**
 	 * This allows you to explicitly sets the region for the service to use.
 	 *
-	 * @param string $region (Required) The region to explicitly set. Available options are <REGION_US_E1>, <REGION_US_W1>, <REGION_US_W2>, <REGION_EU_W1>, <REGION_APAC_SE1>, <REGION_APAC_NE1>.
+	 * @param string $region (Required) The region to explicitly set. Available options are <REGION_US_E1>, <REGION_US_W1>, <REGION_US_W2>, <REGION_EU_W1>, <REGION_APAC_SE1>, <REGION_APAC_SE2>, <REGION_APAC_NE1>, <REGION_SA_E1>, <REGION_US_GOV1>.
 	 * @return $this A reference to the current instance.
 	 */
 	public function set_region($region)
@@ -445,8 +470,8 @@ class AmazonDynamoDB extends CFRuntime
 			return null;
 		}
 
-		// Create the info to return. Treat all values as strings by default
-		$info = array('value' => (string) $value, 'type' => self::TYPE_STRING);
+		// Create the attribute value info
+		$info = array();
 
 		// Handle boolean values
 		if (is_bool($value))
@@ -458,6 +483,7 @@ class AmazonDynamoDB extends CFRuntime
 		elseif (is_int($value) || is_float($value))
 		{
 			$info['type'] = self::TYPE_NUMBER;
+			$info['value'] = (string) $value;
 		}
 		// Handle arrays
 		elseif (is_array($value))
@@ -493,6 +519,11 @@ class AmazonDynamoDB extends CFRuntime
 
 			// Make sure the type is changed to be the appropriate array/set type
 			$info['type'] = $set_type . self::SUFFIX_FOR_TYPES;
+		}
+		// Handle strings
+		else
+		{
+			$info = array('value' => (string) $value, 'type' => self::TYPE_STRING);
 		}
 
 		return $info;
@@ -571,6 +602,7 @@ class AmazonDynamoDB extends CFRuntime
 	 * 				</ul></li>
 	 * 			</ul></li>
 	 * 			<li><code>AttributesToGet</code> - <code>string|array</code> - Optional - List of <code>Attribute</code> names. If attribute names are not specified then all attributes will be returned. If some attributes are not found, they will not appear in the result. Pass a string for a single value, or an indexed array for multiple values.</li>
+	 * 			<li><code>ConsistentRead</code> - <code>boolean</code> - Optional - If set to <code>true</code>, then a consistent read is issued. Otherwise eventually-consistent is used.</li>
 	 * 		</ul></li>
 	 * 	</ul></li>
 	 * 	<li><code>curlopts</code> - <code>array</code> - Optional - A set of values to pass directly into <code>curl_setopt()</code>, where the key is a pre-defined <code>CURLOPT_*</code> constant.</li>

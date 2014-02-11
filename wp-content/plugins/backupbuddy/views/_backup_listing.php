@@ -1,11 +1,13 @@
 <?php
+// Incoming variables: $backups generated via core.php backups_list() function.
+
 
 // $listing_mode should be either:  default,  migrate
 
 $hover_actions = array();
 
 // If download URL is within site root then allow downloading via web.
-$backup_directory = pb_backupbuddy::$options['backup_directory']; // Normalize for Windows paths.
+$backup_directory = backupbuddy_core::getBackupDirectory(); // Normalize for Windows paths.
 $backup_directory = str_replace( '\\', '/', $backup_directory );
 $backup_directory = rtrim( $backup_directory, '/\\' ) . '/'; // Enforce single trailing slash.
 if ( ( $listing_mode != 'restore_files' ) && ( FALSE !== stristr( $backup_directory, ABSPATH ) ) ) {
@@ -24,6 +26,7 @@ if ( $listing_mode == 'default' ) {
 	$hover_actions['zip_viewer'] = 'View & Restore files';
 	//$hover_actions['hash'] = 'Get hash';
 	$hover_actions['note'] = 'Note';
+	$hover_actions['hash'] = 'View Hash';
 	$bulk_actions = array( 'delete_backup' => 'Delete' );
 }
 
@@ -66,15 +69,15 @@ if ( count( $backups ) == 0 ) {
 } else {
 	
 	$columns = array(
-		__('Backup File', 'it-l10n-backupbuddy' ) . pb_backupbuddy::tip( __('Files include random characters in their name for increased security. Verify that write permissions are available for this directory. Backup files are stored in ', 'it-l10n-backupbuddy' ) . str_replace( '\\', '/', pb_backupbuddy::$options['backup_directory'] ), '', false ) . '<span class="pb_backupbuddy_backuplist_loading" style="display: none; margin-left: 10px;"><img src="' . pb_backupbuddy::plugin_url() . '/images/loading.gif" alt="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" title="' . __('Loading...', 'it-l10n-backupbuddy' ) . '" width="16" height="16" style="vertical-align: -3px;" /></span>',
-		__('Type', 'it-l10n-backupbuddy' ),
+		__('Backups', 'it-l10n-backupbuddy' ) . ' <img src="' . pb_backupbuddy::plugin_url() . '/images/sort_down.png" style="vertical-align: 0px;" title="Sorted most recent first">',
+		__('Type', 'it-l10n-backupbuddy' ) . ' | ' . __('Profile', 'it-l10n-backupbuddy' ),
 		__('File Size', 'it-l10n-backupbuddy' ),
-		__('Created', 'it-l10n-backupbuddy' ) . ' <img src="' . pb_backupbuddy::plugin_url() . '/images/sort_down.png" style="vertical-align: 0px;" title="Sorted most recent first">',
 		__('Status', 'it-l10n-backupbuddy' ) . pb_backupbuddy::tip( __('Backups are checked to verify that they are valid BackupBuddy backups and contain all of the key backup components needed to restore. Backups may display as invalid until they are completed. Click the refresh icon to re-verify the archive.', 'it-l10n-backupbuddy' ), '', false ),
 	);
 	
 	
 	// Remove some columns for migration mode.
+	/*
 	if ( $listing_mode != 'default' ) {
 		
 		foreach( $backups as &$backup ) {
@@ -88,6 +91,7 @@ if ( count( $backups ) == 0 ) {
 		
 		
 	}
+	*/
 	
 	
 	pb_backupbuddy::$ui->list_table(

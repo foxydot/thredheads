@@ -15,19 +15,6 @@ function msdlab_pre_header(){
 }
 
 //add language widget after subnav
-function good_advice_language_widget(){
-    $instance = array (
-    'type' => 'both',
-    'hide-title' => 'on',
-  );
-  $attr = array();
-  ob_start();
-  the_widget('qTranslateWidget',$instance,$attr);
-  $ret = ob_get_contents();
-  ob_end_clean();
-  preg_match('@<ul.*?>(.*?)</ul>@i',$ret,$matches);
-  return $matches[0];
-}
 
 function good_advice_subnav_right( $menu, $args ) {
     $args = (array) $args;
@@ -68,6 +55,13 @@ function msdlab_search_form($form, $search_text, $button_text, $label){
 
 
 /*** SIDEBARS ***/
+function msdlab_add_product_sidebar(){
+    genesis_register_sidebar(array(
+    'name' => 'Product Sidebar',
+    'description' => 'Sidebar on individual shirt showcase page',
+    'id' => 'product-sidebar'
+            ));
+}
 /**
  * Reversed out style SCS
  * This ensures that the primary sidebar is always to the left.

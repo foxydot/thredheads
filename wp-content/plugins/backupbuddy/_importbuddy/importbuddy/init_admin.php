@@ -23,7 +23,6 @@ pb_backupbuddy::load();
 
 // ********** LIBRARIES & CLASSES (admin) **********
 require_once( 'classes/core.php' );
-pb_backupbuddy::$classes['core'] = new pb_backupbuddy_core();
 
 require_once( 'classes/import.php' );
 pb_backupbuddy::$classes['import'] = new pb_backupbuddy_import();

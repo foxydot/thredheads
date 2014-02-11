@@ -3,7 +3,7 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 	die( '<html></html>' );
 }
 
-$page_title = 'Database Import';
+$page_title = 'Step <span class="step_number">' . $step . '</span> of 6: Database Import';
 require_once( '_header.php' );
 echo '<div class="wrap">';
 

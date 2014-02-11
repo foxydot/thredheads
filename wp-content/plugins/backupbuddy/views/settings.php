@@ -1,5 +1,10 @@
 <?php
 if ( !is_admin() ) { die( 'Access Denied.' ); }
+
+// Display additional information for users on Windows systems.
+if ( stristr( PHP_OS, 'WIN' ) && !stristr( PHP_OS, 'DARWIN' ) ) { // Show in WINdows but not darWIN.
+	pb_backupbuddy::disalert( 'windows_boost', __('Windows servers may be able to significantly boost performance, if the server allows executing .exe files (or can be configured to allow this file as an exception), by adding native Zip compatibility executable files <a href="http://ithemes.com/backupbuddy_files/backupbuddy_windows_unzip.zip">available for download here</a>. Instructions are provided within the readme.txt in the package.  This package prevents Windows from falling back to Zip compatiblity mode and works for both BackupBuddy and importbuddy.php. This is particularly useful for <a href="http://ithemes.com/codex/page/BackupBuddy:_Local_Development">local development on a Windows machine using a system like XAMPP</a>.', 'it-l10n-backupbuddy' ) );
+}
 ?>
 
 
@@ -7,6 +12,13 @@ if ( !is_admin() ) { die( 'Access Denied.' ); }
 <style type="text/css">
 	.pb_backupbuddy_customize_email_error_row, .pb_backupbuddy_customize_email_scheduled_start_row, .pb_backupbuddy_customize_email_scheduled_complete_row {
 		display: none;
+	}
+	
+	.form-table th {
+		white-space: nowrap;
+	}
+	.form-table td {
+		word-break: break-all;
 	}
 </style>
 <script type="text/javascript">
@@ -47,10 +59,6 @@ if ( !is_admin() ) { die( 'Access Denied.' ); }
 
 
 
-<br><br>
-
-
-
 <?php
 if ( is_numeric( pb_backupbuddy::_GET( 'tab' ) ) ) {
 	$active_tab = pb_backupbuddy::_GET( 'tab' );
@@ -61,19 +69,19 @@ pb_backupbuddy::$ui->start_tabs(
 	'settings',
 	array(
 		array(
-			'title'		=>		__( 'General', 'it-l10n-backupbuddy' ),
+			'title'		=>		__( 'General Settings', 'it-l10n-backupbuddy' ),
 			'slug'		=>		'general',
-			'css'		=>		'margin-top: -12px;',
+			'css'		=>		'margin-top: -11px;',
 		),
 		array(
-			'title'		=>		__( 'Backup Profiles', 'it-l10n-backupbuddy' ),
-			'slug'		=>		'profiles',
-			'css'		=>		'margin-top: -12px;',
-		),
-		array(
-			'title'		=>		__( 'Advanced & Troubleshooting', 'it-l10n-backupbuddy' ),
+			'title'		=>		__( 'Advanced Settings / Troubleshooting', 'it-l10n-backupbuddy' ),
 			'slug'		=>		'advanced',
-			'css'		=>		'margin-top: -12px;',
+			'css'		=>		'margin-top: -11px;',
+		),
+		array(
+			'title'		=>		__( 'Logs & Other', 'it-l10n-backupbuddy' ),
+			'slug'		=>		'other',
+			'css'		=>		'margin-top: -11px;',
 		),
 	),
 	'width: 100%;',
@@ -88,18 +96,13 @@ require_once( 'settings/_general.php' );
 pb_backupbuddy::$ui->end_tab();
 
 
-
-pb_backupbuddy::$ui->start_tab( 'profiles' );
-require_once( 'settings/_profiles.php' );
-pb_backupbuddy::$ui->end_tab();
-
-
-
 pb_backupbuddy::$ui->start_tab( 'advanced' );
 require_once( 'settings/_advanced.php' );
 pb_backupbuddy::$ui->end_tab();
 
-
+pb_backupbuddy::$ui->start_tab( 'other' );
+require_once( 'settings/_other.php' );
+pb_backupbuddy::$ui->end_tab();
 
 ?>
 

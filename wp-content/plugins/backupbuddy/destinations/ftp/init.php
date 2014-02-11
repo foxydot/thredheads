@@ -1,6 +1,6 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_ftp {
 	
@@ -32,7 +32,7 @@ class pb_backupbuddy_destination_ftp {
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array() ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
 		
 		pb_backupbuddy::status( 'details', 'FTP class send() function started.' );
 		
@@ -91,7 +91,7 @@ class pb_backupbuddy_destination_ftp {
 		// Log in.
 		$login_result = @ftp_login( $conn_id, $username, $password );
 		if ( $login_result === false ) {
-			pb_backupbuddy::$classes['core']->mail_error( 'ERROR #9011 ( http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#9011 ).  FTP/FTPs login failed on scheduled FTP.' );
+			backupbuddy_core::mail_error( 'ERROR #9011 ( http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#9011 ).  FTP/FTPs login failed on scheduled FTP.' );
 			return false;
 		} else {
 			pb_backupbuddy::status( 'details',  'Logged in. Sending backup via FTP/FTPs ...' );
@@ -119,6 +119,8 @@ class pb_backupbuddy_destination_ftp {
 		ftp_chdir( $conn_id, $path );
 		
 		// Upload files.
+		$total_transfer_size = 0;
+		$total_transfer_time = 0;
 		foreach( $files as $file ) {
 			
 			if ( ! file_exists( $file ) ) {
@@ -128,13 +130,19 @@ class pb_backupbuddy_destination_ftp {
 				pb_backupbuddy::status( 'error', 'Error #8594846548. Could not read local file `' . $file . '` to sendto FTP as it is not readable. Verify permissions of file, parent directory, and that ownership is correct. You may need suphp installed on the server.' );
 			}
 			
-			$destination_file = $path . '/' . basename( $file );
-			pb_backupbuddy::status( 'details', 'About to put to FTP local file `' . $file . '` to remote file `' . $destination_file . '`.' );
+			$filesize = filesize( $file );
+			$total_transfer_size += $filesize;
+			
+			$destination_file = basename( $file ); // Using chdir() so path not needed. $path . '/' . basename( $file );
+			pb_backupbuddy::status( 'details', 'About to put to FTP local file `' . $file . '` of size `' . pb_backupbuddy::$format->file_size( $filesize ) . '` to remote file `' . $destination_file . '`.' );
+			$send_time = -microtime( true );
 			$upload = ftp_put( $conn_id, $destination_file, $file, FTP_BINARY );
+			$send_time += microtime( true );
+			$total_transfer_time += $send_time;
 			if ( $upload === false ) {
 				$error_message = 'ERROR #9012 ( http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#9012 ).  FTP/FTPs file upload failed. Check file permissions & disk quota.';
 				pb_backupbuddy::status( 'error',  $error_message );
-				pb_backupbuddy::$classes['core']->mail_error( $error_message );
+				backupbuddy_core::mail_error( $error_message );
 				
 				return false;
 			} else {
@@ -148,7 +156,7 @@ class pb_backupbuddy_destination_ftp {
 					$contents = ftp_nlist( $conn_id, '' );
 					
 					// Create array of backups
-					$bkupprefix = pb_backupbuddy::$classes['core']->backup_prefix();
+					$bkupprefix = backupbuddy_core::backup_prefix();
 					
 					$backups = array();
 					foreach ( $contents as $backup ) {
@@ -174,7 +182,7 @@ class pb_backupbuddy_destination_ftp {
 							}
 						}
 						if ( $delete_fail_count !== 0 ) {
-							pb_backupbuddy::$classes['core']->mail_error( sprintf( __('FTP remote limit could not delete %s backups. Please check and verify file permissions.', 'it-l10n-backupbuddy' ), $delete_fail_count  ) );
+							backupbuddy_core::mail_error( sprintf( __('FTP remote limit could not delete %s backups. Please check and verify file permissions.', 'it-l10n-backupbuddy' ), $delete_fail_count  ) );
 						}
 					}
 				} else {
@@ -184,6 +192,25 @@ class pb_backupbuddy_destination_ftp {
 			}
 			
 		} // end $files loop.
+		
+		
+		// Load destination fileoptions.
+		pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+		$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+		if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+			pb_backupbuddy::status( 'error', __('Fatal Error #9034.84838. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+			return false;
+		}
+		pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+		$fileoptions = &$fileoptions_obj->options;
+		
+		// Save stats.
+		$fileoptions['write_speed'] = $total_transfer_size / $total_transfer_time;
+		//$fileoptions['finish_time'] = time();
+		//$fileoptions['status'] = 'success';
+		$fileoptions_obj->save();
+		unset( $fileoptions_obj );
 		
 		
 		ftp_close( $conn_id );
@@ -204,6 +231,22 @@ class pb_backupbuddy_destination_ftp {
 	 */
 	public static function test( $settings ) {
 		
+		if ( ( $settings['address'] == '' ) || ( $settings['username'] == '' ) || ( $settings['password'] == '' ) ) {
+			return __('Missing required input.', 'it-l10n-backupbuddy' );
+		}
+		
+		// Try sending a file.
+		$send_response = pb_backupbuddy_destinations::send( $settings, dirname( dirname( __FILE__ ) ) . '/remote-send-test.php', $send_id = 'TEST-' . pb_backupbuddy::random_string( 12 ) ); // 3rd param true forces clearing of any current uploads.
+		if ( false === $send_response ) {
+			$send_response = 'Error sending test file to FTP.';
+		} else {
+			$send_response = 'Success.';
+		}
+		
+		// Now we will need to go and cleanup this potentially uploaded file.
+		$delete_response = 'Error deleting test file from FTP.'; // Default.
+		
+		// Settings.
 		$server = $settings['address'];
 		$username = $settings['username'];
 		$password = $settings['password'];
@@ -215,12 +258,6 @@ class pb_backupbuddy_destination_ftp {
 			$active_mode = true;
 		}
 		$url = $settings['url']; // optional url for using with migration.
-		
-				
-		if ( ( $server == '' ) || ( $username == '' ) || ( $password == '' ) ) {
-			return __('Missing required input.', 'it-l10n-backupbuddy' );
-		}
-		
 		$port = '21';
 		if ( strstr( $server, ':' ) ) {
 			$server_params = explode( ':', $server );
@@ -229,21 +266,22 @@ class pb_backupbuddy_destination_ftp {
 			$port = $server_params[1];
 		}
 		
+		// Connect.
 		if ( $ftps == '0' ) {
 			$conn_id = @ftp_connect( $server, $port, 10 ); // timeout of 10 seconds.
 			if ( $conn_id === false ) {
 				$error = __( 'Unable to connect to FTP address `' . $server . '` on port `' . $port . '`.', 'it-l10n-backupbuddy' );
 				$error .= "\n" . __( 'Verify the server address and port (default 21). Verify your host allows outgoing FTP connections.', 'it-l10n-backupbuddy' );
-				return $error;
+				return $send_response . ' ' . $error;
 			}
 		} else {
 			if ( function_exists( 'ftp_ssl_connect' ) ) {
 				$conn_id = @ftp_ssl_connect( $server, $port );
 				if ( $conn_id === false ) {
-					return __('Destination server does not support FTPS?', 'it-l10n-backupbuddy' );
+					return $send_response . ' ' . __('Destination server does not support FTPS?', 'it-l10n-backupbuddy' );
 				}
 			} else {
-				return __('Your web server doesnt support FTPS.', 'it-l10n-backupbuddy' );
+				return $send_response . ' ' . __('Your web server doesnt support FTPS.', 'it-l10n-backupbuddy' );
 			}
 		}
 		
@@ -255,12 +293,12 @@ class pb_backupbuddy_destination_ftp {
 			if ( $ftps != '0' ) {
 				$response .= "\n\nNote: You have FTPs enabled. You may get this error if your host does not support encryption at this address/port.";
 			}
-			return $response;
+			return $send_response . ' ' . $response;
 		}
 		
 		pb_backupbuddy::status( 'details', 'FTP test: Success logging in.' );
 		
-		
+		// Handle active/pasive mode.
 		if ( $active_mode === true ) {
 			// do nothing, active is default.
 			pb_backupbuddy::status( 'details', 'Active FTP mode based on settings.' );
@@ -272,56 +310,45 @@ class pb_backupbuddy_destination_ftp {
 			pb_backupbuddy::status( 'error', 'Unknown FTP active/passive mode: `' . $active_mode . '`.' );
 		}
 		
-		
-		// Create directory if it does not exist.
-		pb_backupbuddy::status( 'details', 'FTP test: Making directory.' );
-		@ftp_mkdir( $conn_id, $path );
-	
-		pb_backupbuddy::status( 'details', 'FTP test: Uploading temp test file.' );
-		$tmp = tmpfile(); // Write tempory text file to stream.
-		fwrite( $tmp, 'Upload test for BackupBuddy' );
-		rewind( $tmp );
-		$upload = @ftp_fput( $conn_id, $path . '/backupbuddy.txt', $tmp, FTP_BINARY );
-		fclose( $tmp );
-		
-		if ( !$upload ) {
-			pb_backupbuddy::status( 'details', 'FTP test: Failure uploading test file.' );
-			@ftp_delete( $conn_id, $path . '/backupbuddy.txt' ); // Just in case it partionally made file. This has happened oddly.
-			return __('Failure uploading. Check path & permissions.', 'it-l10n-backupbuddy' );
-		} else { // File uploaded.
-			
-			
-			if ( $url != '' ) {
-				$response = wp_remote_get( $url . '/backupbuddy.txt', array(
-						'method' => 'GET',
-						'timeout' => 20,
-						'redirection' => 5,
-						'httpversion' => '1.0',
-						'blocking' => true,
-						'headers' => array(),
-						'body' => null,
-						'cookies' => array()
-					)
-				);
-								
-				if ( is_wp_error( $response ) ) {
-					return __( 'Failure. Unable to connect to the provided optional URL.', 'it-l10n-backupbuddy' );
-				}
-				
-				if ( stristr( $response['body'], 'backupbuddy' ) === false ) {
-					return __('Failure. The path appears valid but the URL does not correspond to it. Leave the URL blank if not using this destination for migrations.', 'it-l10n-backupbuddy' );
-				}
-			}
-			
-			
-			pb_backupbuddy::status( 'details', 'FTP test: Deleting temp test file.' );
-			ftp_delete( $conn_id, $path . '/backupbuddy.txt' );
+		// Delete test file.
+		pb_backupbuddy::status( 'details', 'FTP test: Deleting temp test file.' );
+		if ( true === ftp_delete( $conn_id, $path . '/remote-send-test.php' ) ) {
+			$delete_response = 'Success.';
 		}
 		
+		// Close FTP connection.
 		pb_backupbuddy::status( 'details', 'FTP test: Closing FTP connection.' );
 		@ftp_close($conn_id);
 		
-		return true; // Success if we got this far.
+		
+		// Load destination fileoptions.
+		pb_backupbuddy::status( 'details', 'About to load fileoptions data.' );
+		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
+		$fileoptions_obj = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/send-' . $send_id . '.txt', $read_only = false, $ignore_lock = false, $create_file = false );
+		if ( true !== ( $result = $fileoptions_obj->is_ok() ) ) {
+			pb_backupbuddy::status( 'error', __('Fatal Error #9034.72373. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
+			return false;
+		}
+		pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
+		$fileoptions = &$fileoptions_obj->options;
+		
+		if ( ( 'Success.' != $send_response ) || ( 'Success.' != $delete_response ) ) {
+			$fileoptions['status'] = 'failure';
+			
+			$fileoptions_obj->save();
+			unset( $fileoptions_obj );
+			
+			return 'Send details: `' . $send_response . '`. Delete details: `' . $delete_response . '`.';
+		} else {
+			$fileoptions['status'] = 'success';
+			$fileoptions['finish_time'] = time();
+		}
+		
+		$fileoptions_obj->save();
+		unset( $fileoptions_obj );
+		
+		return true;
+		
 	} // End test().
 	
 	

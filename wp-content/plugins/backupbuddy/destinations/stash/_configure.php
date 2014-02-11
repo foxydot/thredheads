@@ -91,7 +91,7 @@ if ( $mode == 'add' ) { // ADD MODE.
 
 
 if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) {
-	$default_name = 'My Stash';
+	$default_name = NULL;
 	
 	if ( $mode != 'save' ) {
 		if ( $account_info === false ) {
@@ -99,8 +99,6 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 			$pb_hide_save = true;
 			return false;
 		}
-		
-		
 		
 		
 		$account_details = 'Welcome to your BackupBuddy Stash, <b>' . $itxapi_username . '</b>. Your account is ';
@@ -139,38 +137,16 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		echo pb_backupbuddy_destination_stash::get_quota_bar( $account_info );
 		
 		echo '<div style="text-align: center;">';
-		echo '<a href="http://ithemes.com/member/stash.php" target="_new">Manage Offsite</a> &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; <a href="http://ithemes.com/member/stash.php" target="_new">Upgrade to More Storage</a><br><br>';
-		echo '</div>';
+		echo '
+		<b>Upgrade to get more Stash space:</b> &nbsp;
+		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 300;">+ 5GB</a>, &nbsp;
+		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 600; font-size: 1.1em;">+ 10GB</a>, &nbsp;
+		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 800; font-size: 1.2em;">+ 25GB</a>
+		&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
+		<a href="http://ithemes.com/member/panel/stash.php" target="_new" style="text-decoration: none;"><b>Manage Files & Account</b></a>
+		';
+		echo '<br><br></div>';
 		
-		/*
-		$settings_form->add_setting( array(
-			'type'		=>		'plaintext',
-			'name'		=>		'plaintext_account',
-			'title'		=>		__('Account', 'it-l10n-backupbuddy' ),
-			'default'	=>		$account_details,
-		) );
-		$settings_form->add_setting( array(
-			'type'		=>		'plaintext',
-			'name'		=>		'plaintext_quotausage',
-			'title'		=>		__('Quota Usage', 'it-l10n-backupbuddy' ),
-			'default'	=>		pb_backupbuddy::$format->file_size( $account_info['quota_used'] ) . ' / ' . pb_backupbuddy::$format->file_size( $account_info['quota_total'] ) . ' (' . $account_info['quota_used_percent'] . '%)&nbsp;&nbsp;&nbsp;<a href="http://ithemes.com/member/stash.php" target="_new" style="color: #C63D05; text-decoration: none;">Upgrade</a>',
-		) );
-		$settings_form->add_setting( array(
-			'type'		=>		'plaintext',
-			'name'		=>		'plaintext_quotalimit',
-			'title'		=>		__('Quota Limit', 'it-l10n-backupbuddy' ),
-			'default'	=>		$account_info['quota_free_nice'] . ' free + ' . $account_info['quota_paid_nice'] . ' paid = ' . $account_info['quota_total_nice'] . ' max storage',
-		) );
-		
-		if ( isset( $account_info['quota_warning'] ) && ( $account_info['quota_warning'] != '' ) ) {
-			$settings_form->add_setting( array(
-				'type'		=>		'plaintext',
-				'name'		=>		'plaintext_quotawarning',
-				'title'		=>		'&nbsp;',
-				'default'	=>		'<span style="color: red;"><b>Warning</b>: ' . $account_info['quota_warning'] . '</span>',
-			) );
-		}
-		*/
 		echo '<!-- STASH DETAILS: ' . print_r( $account_info, true ) . ' -->';
 		
 	} // end if NOT in save mode.
@@ -196,18 +172,27 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 	*/
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
-		'name'		=>		'db_archive_limit',
-		'title'		=>		__( 'Database backup limit', 'it-l10n-backupbuddy' ),
-		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of database backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
+		'name'		=>		'full_archive_limit',
+		'title'		=>		__( 'Full backup limit', 'it-l10n-backupbuddy' ),
+		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of Full (complete) backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|int[0-9999999]',
 		'css'		=>		'width: 50px;',
 		'after'		=>		' backups',
 	) );
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
-		'name'		=>		'full_archive_limit',
-		'title'		=>		__( 'Full backup limit', 'it-l10n-backupbuddy' ),
-		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of full backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
+		'name'		=>		'db_archive_limit',
+		'title'		=>		__( 'Database only backup limit', 'it-l10n-backupbuddy' ),
+		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of Database Only backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
+		'rules'		=>		'required|int[0-9999999]',
+		'css'		=>		'width: 50px;',
+		'after'		=>		' backups',
+	) );
+	$settings_form->add_setting( array(
+		'type'		=>		'text',
+		'name'		=>		'files_archive_limit',
+		'title'		=>		__( 'Files only backup limit', 'it-l10n-backupbuddy' ),
+		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of Files Only backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|int[0-9999999]',
 		'css'		=>		'width: 50px;',
 		'after'		=>		' backups',
@@ -216,10 +201,10 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		'type'		=>		'text',
 		'name'		=>		'max_chunk_size',
 		'title'		=>		__( 'Max chunk size', 'it-l10n-backupbuddy' ),
-		'tip'		=>		__( '[Example: 5] - Enter 0 for no chunking; minimum of 5 if enabling. This is the maximum file size to send in one whole piece. Files larger than this will be transferred in pieces up to this file size one part at a time. This allows to transfer of larger files than you server may allow by breaking up the send process. Chunked files may be delayed if there is little site traffic to trigger them.', 'it-l10n-backupbuddy' ),
+		'tip'		=>		__( '[Example: 5] - Enter 0 for no chunking; minimum of 5 if enabling. This is the maximum file size to send in one whole piece. Files larger than this will be transferred in pieces up to this file size one part at a time. This allows to transfer of larger files than you server may allow by breaking up the send process. Chunked files may be delayed if there is little site traffic to trigger them. 100 MB chunk sizes or less are recommended.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|int[0-9999999]',
 		'css'		=>		'width: 50px;',
-		'after'		=>		' MB (leave at 0 if unsure)',
+		'after'		=>		' MB. <span class="description">' . __( 'Default', 'it-l10n-backupbuddy' ) . ': 100 MB</span>',
 	) );
 	$settings_form->add_setting( array(
 		'type'		=>		'checkbox',
@@ -228,7 +213,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		'title'		=>		__( 'Encrypt connection', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Disabling this may aid in connection troubles but results in lessened security. Note: Once your files arrive on our server they are encrypted using AES256 encryption. They are automatically decrypted upon download as needed.', 'it-l10n-backupbuddy' ),
 		'css'		=>		'',
-		'after'		=>		'<span class="description"> ' . __('Enable connecting over SSL', 'it-l10n-backupbuddy' ) . '</span>',
+		'after'		=>		'<span class="description"> ' . __('Enable connecting over SSL.', 'it-l10n-backupbuddy' ) . '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Files are always encrypted with AES256 upon arrival at Stash.</span>',
 		'rules'		=>		'',
 	) );
 	if ( $mode !== 'edit' ) {

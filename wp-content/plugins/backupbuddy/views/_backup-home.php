@@ -1,21 +1,69 @@
 <?php
+// Incoming variables: $backup from controllers/pages/_backup_home.php
 
 pb_backupbuddy::$ui->title( 'Backup Site' . ' ' . pb_backupbuddy::video( '9ZHWGjBr84s', __('Backups page tutorial', 'it-l10n-backupbuddy' ), false ) );
 
-/*
-wp_enqueue_style('dashboard');
-wp_print_styles('dashboard');
-wp_enqueue_script('dashboard');
-wp_print_scripts('dashboard');
-*/
 wp_enqueue_script( 'thickbox' );
 wp_print_scripts( 'thickbox' );
 wp_print_styles( 'thickbox' );
+
+
+// Handle deleting profile.
+if ( ( pb_backupbuddy::_GET( 'delete_profile' ) != '' ) && ( is_numeric( pb_backupbuddy::_GET( 'delete_profile' ) ) ) ) {
+	if ( pb_backupbuddy::_GET( 'delete_profile' ) > 2 ) {
+		if ( isset( pb_backupbuddy::$options['profiles'][pb_backupbuddy::_GET( 'delete_profile' )] ) ) {
+			$profile_title = pb_backupbuddy::$options['profiles'][pb_backupbuddy::_GET( 'delete_profile' )]['title'];
+			unset( pb_backupbuddy::$options['profiles'][pb_backupbuddy::_GET( 'delete_profile' )] );
+			pb_backupbuddy::save();
+			pb_backupbuddy::alert( 'Deleted profile "' . htmlentities( $profile_title ) . '".' );
+		}
+	} else {
+		pb_backupbuddy::alert( 'Invalid profile ID. Cannot delete base profiles.' );
+	}
+}
+
+
+// Add new profile.
+if ( pb_backupbuddy::_POST( 'add_profile' ) == 'true' ) {
+	$error = false;
+	if ( pb_backupbuddy::_POST( 'title' ) == '' ) {
+		pb_backupbuddy::alert( 'Error: You must provide a new profile title.', true );
+		$error = true;
+	}
+	if ( false === $error ) {
+		$profile = array(
+			'title'		=> htmlentities( pb_backupbuddy::_POST( 'title' ) ),
+			'type'		=>	pb_backupbuddy::_POST( 'type' ),
+		);
+		$profile = array_merge( pb_backupbuddy::settings( 'profile_defaults' ), $profile );
+		pb_backupbuddy::$options['profiles'][] = $profile;
+		pb_backupbuddy::save();
+		pb_backupbuddy::alert( 'New profile "' . htmlentities( pb_backupbuddy::_POST( 'title' ) ) . '" added. Select it from the list below to customize its settings and override global defaults.' );
+	}
+} // end if add profile.
+
+
 ?>
+
 <script type="text/javascript">
 	jQuery(document).ready(function() {
 		
-		jQuery( '.pb_backupbuddy_backuplaunch' ).click( function() {
+		<?php
+		// Popup Quickstart modal if appears to be new install & quickstart not skip.
+		if ( 
+			  ( '0' == pb_backupbuddy::$options['skip_quicksetup'] )
+				&&
+			  ( 0 == count( pb_backupbuddy::$options['schedules'] ) )
+				&&
+				( '' == pb_backupbuddy::$options['importbuddy_pass_hash'] )
+			  )
+		  {
+			echo "tb_show( 'BackupBuddy Quick Setup', '" . pb_backupbuddy::ajax_url( 'quickstart' ) . "&TB_iframe=1&width=640&height=455', null );";
+		}
+		?>
+		
+		
+		jQuery( '.profile_item_select' ).click( function() {
 			var url = jQuery(this).attr( 'href' );
 			url = url + '&after_destination=' + jQuery( '#pb_backupbuddy_backup_remotedestination' ).val();
 			url = url + '&delete_after=' + jQuery( '#pb_backupbuddy_backup_deleteafter' ).val();
@@ -23,8 +71,17 @@ wp_print_styles( 'thickbox' );
 			return false;
 		});
 		
+		
+		// Click meta option in backup list to send a backup to a remote destination.
 		jQuery( '.pb_backupbuddy_hoveraction_send' ).click( function(e) {
 			tb_show( 'BackupBuddy', '<?php echo pb_backupbuddy::ajax_url( 'destination_picker' ); ?>&callback_data=' + jQuery(this).attr('rel') + '&sending=1&action_verb=to%20send%20to&TB_iframe=1&width=640&height=455', null );
+			return false;
+		});
+		
+		
+		// Backup listing View Hash meta clicked.
+		jQuery( '.pb_backupbuddy_hoveraction_hash' ).click( function(e) {
+			tb_show( 'BackupBuddy', '<?php echo pb_backupbuddy::ajax_url( 'hash' ); ?>&callback_data=' + jQuery(this).attr('rel') + '&TB_iframe=1&width=640&height=455', null );
 			return false;
 		});
 		
@@ -50,13 +107,22 @@ wp_print_styles( 'thickbox' );
 		});
 		
 		
-		jQuery( '.pb_backupbuddy_hoveraction_hash' ).click( function(e) {
-			tb_show( 'BackupBuddy', '<?php echo pb_backupbuddy::ajax_url( 'hash' ); ?>&callback_data=' + jQuery(this).attr('rel') + '&TB_iframe=1&width=640&height=455', null );
+		// Click profile config gear next to a profile to pop up modal for editing its settings.
+		jQuery( '.profile_settings' ).click( function(e) {
+			tb_show( 'BackupBuddy', '<?php echo pb_backupbuddy::ajax_url( 'profile_settings' ); ?>&profile=' + jQuery(this).attr( 'rel' ) + '&callback_data=' + jQuery(this).attr('rel') + '&TB_iframe=1&width=640&height=455', null );
 			return false;
 		});
 		
 		
+		// Clicked + sign to add a new profile.
+		jQuery( '#pb_backupbuddy_profileadd_plusbutton' ).click( function() {
+			jQuery(this).hide();
+			jQuery( '#pb_backupbuddy_profileadd' ).slideDown();
+			return false;
+		});
 		
+		
+		// Click the meta option in the backup list to apply a note to a backup.
 		jQuery( '.pb_backupbuddy_hoveraction_note' ).click( function(e) {
 			
 			var existing_note = jQuery(this).parents( 'td' ).find('.pb_backupbuddy_notetext').text();
@@ -85,7 +151,14 @@ wp_print_styles( 'thickbox' );
 		
 		
 		
-	});
+	}); // end jquery document ready.
+	
+	
+	
+	function pb_backupbuddy_profile_updated( profileID, profileTitle ) {
+		jQuery( '#profile_title_' + profileID ).text( profileTitle );
+	}
+	
 	
 	function pb_backupbuddy_selectdestination( destination_id, destination_title, callback_data, delete_after ) {
 		
@@ -111,20 +184,11 @@ wp_print_styles( 'thickbox' );
 				}
 			);
 		} else if ( callback_data == 'delayed_send' ) { // Specified a destination to send to later.
-			/*
-			if ( delete_after == true ) {
-				var delete_alert_text = "<?php _e( 'The local backup will be deleted upon successful transfer as selected.', 'it-l10n-backupbuddy' ); ?>";
-			} else {
-				var delete_alert_text = '';
-			}
-			alert( 'delayed' + delete_alert_text );
-			*/
 			jQuery( '#pb_backupbuddy_backup_remotedestination' ).val( destination_id );
 			jQuery( '#pb_backupbuddy_backup_deleteafter' ).val( delete_after );
 			jQuery( '#pb_backupbuddy_backup_remotetitle' ).html( 'Destination: "' + destination_title + '".' );
 			jQuery( '#pb_backupbuddy_backup_remotetitle' ).slideDown();
 		} else {
-			//window.location.href = '<?php echo pb_backupbuddy::page_url(); ?>&custom=remoteclient&destination_id=' + destination_id;
 			window.location.href = '<?php
 			if ( is_network_admin() ) {
 				echo network_admin_url( 'admin.php' );
@@ -133,222 +197,239 @@ wp_print_styles( 'thickbox' );
 			}
 			?>?page=pb_backupbuddy_backup&custom=remoteclient&destination_id=' + destination_id;
 		}
-	}
+	} // end pb_backupbuddy_selectdestination().
 	
 	
 	function afterbackupremote() {
 		tb_show( 'BackupBuddy', '<?php echo pb_backupbuddy::ajax_url( 'destination_picker' ); ?>&callback_data=delayed_send&sending=1&action_verb=to%20send%20to&TB_iframe=1&width=640&height=455', null );
-	}
+	} // end afterbackupremote().
 	
 	
 </script>
 
 <style> 
-	.therightspot {
-		margin: 105px 0 0 158px;
-		background: #fff;
-		display: block;
-		height: 160px;
-		width: 985px;
-	}
-	
-	.duo-button {
-		background: #f5f5f5;
-		background: #ECECEC;
+	.profile_box {
+		background: #F8F8F8;
 		margin: 0;
-		display: inline-block;
+		display: block;
 		border-radius: 5px;
-		padding: 9px 10px;
+		padding: 10px 10px 0px 10px;
+		margin-bottom: 40px;
 		border-radius: 5px;
 		border: 1px solid #d6d6d6;
 		border-top: 1px solid #ebebeb;
 		box-shadow: 0px 3px 0px 0px #aaaaaa;
 		box-shadow: 0px 3px 0px 0px #CFCFCF;
-		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
+		font-size: auto;
+		//min-height: 65px;
 	}
-	.duo-button .choose {
+	.profile_text {
+		display: block;
+		float: left;
+		line-height: 26px;
+		//margin-right: 8px;
+		font-weight: bold;
+		padding-right: 8px;
+	}
+	.profile_type {
+		display: block;
+		float: left;
+		line-height: 26px;
+		margin-right: 10px;
+		//width: 68px;
+		color: #aaa;
+		
+		padding-right: 10px;
+		border-right: 1px solid #EBEBEB;
+	}
+	
+	.profile_item_select,.profile_item_noselect {
+		display: block;
+		background: #fff;
+		border: 1px solid #e7e7e7;
+		border-top: 1px solid #ebebeb;
+		border-bottom: 1px solid #c9c9c9;
+		border-radius: 4px 0 0 4px;
+		//padding: 15px 20px 15px 15px;
+		padding: 15px 1%;
+		margin-bottom: 10px;
+		text-decoration: none;
+		color: #252525;
+		float: left;
+		//width: 90%;
+		line-height: 2;
+		font-size: medium;
+	}
+	.bb-dest-option .info.add-new {
+		width: 95%;
+		padding-right: 3%;
+		border-radius: 4px;
+	}
+	
+	
+	
+	
+	.profile_item_select:hover,.profile_item_noselect:hover {
+		color: #da2828;
+	}
+	.profile_item_select:active, .profile_item_select:focus,.profile_item_noselect:active, .profile_item_noselect:focus {
+		box-shadow: inset 0 0 5px #da2828;
+	}
+	
+	
+	
+	
+	
+	
+	
+	.profile_item {
+		margin-right: 15px;
+	}
+	.profile_item:hover {
+		color: #da2828;
+		cursor: pointer;
+	}
+	
+	.profile_item_add_select {
+		border-radius: 4px 4px 4px 4px;
+		padding: 12px;
+	}
+
+	.profile_item_selected {
+		border-bottom: 3px solid #da2828;
+		margin-bottom: 10px;
+	}
+
+	.profile_choose {
 		font-size: 20px;
 		font-family: "HelveticaNeue-Light","Helvetica Neue Light","Helvetica Neue",sans-serif;
 		padding: 5px 0 15px 5px;
 		color: #464646;
 	}
-	.duo-button a {
-		font-size: 18px;
-		//line-height: 17px;
+	.backupbuddyFileTitle {
+		color: #0084CB;
+		font-size: 1.2em;
+	}
+	
+	.profile_settings {
 		display: block;
 		float: left;
-		margin: 0;
-		margin-right: 3px;
-		text-decoration: none;
-		background: #fff;
-		border: 1px solid #CFCFCF;
+		height: 34px;
+		/*
+		width: 20px;
+		padding: 11px;
+		*/
+		padding: 11px 1%;
+		width: 20px;
+		margin-top: 0;
+		margin-right: 12px;
+		margin-bottom: 10px;
+		background-size: 20px 20px;
+		border-radius: 0 4px 4px 0;
+		border-right: 1px solid #e7e7e7;
 		border-top: 1px solid #ebebeb;
 		border-bottom: 1px solid #c9c9c9;
-		border-radius: 2px;
-		padding: 20px 30px;
-		color: #666;
+		
+		background-position: center;
+		background-repeat:no-repeat;
+		background-color: #fff;	
+		background-size: 20px 20px;
 	}
-	.duo-button a:hover {
-		box-shadow: inset 0 1px 8px #aaaaaa;
-		background: #fff;
+	.profile_settings:hover {
+		background-color: #a8a8a8;
+		background-size: 20px 20px;
+		box-shadow: inset 0 0 8px #666;
 	}
-	.duo-button a:active {
-		color: #fff;
-		background: #da2828;
-		background: #da2828 url('<?php echo pb_backupbuddy::plugin_url();; ?>/images/red-grad.png') top repeat-x;
-		box-shadow: inset 0 1px 4px #561818;
-		text-shadow: 0 -1px #561818;
-	}
-	.duo-button .left {
-		border-radius: 4px 0 0 4px;
-		border-right: 1px solid #d6d6d6;
-	}
-	.duo-button .right {
-		border-radius: 0 4px 4px 0;
-		border-left: none;
-	}
-	.duo-button .leftright {
-		border-radius: 4px 4px 4px 4px;
-		border-right: 1px solid #d6d6d6;
-	}
-	.backupbutton {
-		background: url('<?php echo pb_backupbuddy::plugin_url();; ?>/images/press.png') top no-repeat;
-		width: 400px;
+	.profile_add {
+		display: block;
+		width: 32px;
 		height: 32px;
-		display: block;
-		margin: 12px auto 0;
+		background: transparent url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_plus.png') top left no-repeat;
+		vertical-align: -3px;
 	}
-	.backupbutton:active {
-		background-position: bottom;
-	}
-	
-	
-	
-	.step {
-	/*	background: url('blue.png') 0 5px no-repeat; */
-		padding: 11px 30px 11px 45px;
-		width: 120px;
-		color: #464646;
-		display: block;
-		float: left;
-	}
-	.step.settings {
-		background: url('settings.png') 6px 4px no-repeat;
-	}
-	.step.database {
-		background: url('database.png') 6px 4px no-repeat;
-	}
-	.step.files {
-		background: url('files.png') 6px 4px no-repeat;
-	}
-	.glow {
-		background: url('blue.png') -4px 1px no-repeat;
-		width: 35px;
-		height: 41px;
-		float: left;
-		border-right: 1px solid #d6d6d6;
-	}
-	.step.end {
-		width: 20px;
-		height: 19px;
-		padding: 11px;
-		border: none;
-		border-radius: 0 4px 4px 0;
-	}
-	.empty {
-		background: url('empty.png') -4px 1px no-repeat;
-		width: 35px;
-		height: 41px;
-		float: left;
-		border-right: 1px solid #d6d6d6;
-	}
-	.end.empty {
-		background: url('empty.png') 1px 1px no-repeat;
-	}
-	.step.end.win {
-		background: #ffffff url('green.png') 1px 1px no-repeat;
-	}
-	.step.end.fail {
-		background: #ffffff url('yellow.png') 1px 1px no-repeat;
-	}
-	.step.end.codered {
-		background: #ffffff url('red.png') 1px 1px no-repeat;
-	}
-	.activate {
-		background-color: #fff !important;
-	}
-	.afterbackupoptionswp {
-		margin: 10px 0;
-	}
-	.afterbackupoptions a {
-		font-size: 16px;
-		color: #21759B;
-		margin-right: 20px;
-		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
-		text-decoration: none;
-	}
-	.afterbackupoptionswp a {
-		background: #f5f5f5;
-		text-shadow: rgba(255, 255, 255, 1) 0 1px 0;
-		border: 1px solid #BBB;
-		border-radius: 11px;
-		color: #464646;
-		text-decoration: none;
-		font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
-		font-size: 12px;
-		line-height: 13px;
-		padding: 3px 8px;
-		cursor: pointer;
+	.profile_add:hover {
+		background: transparent url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_plus.png') bottom left no-repeat;
 	}
 </style>
 
 
 <br>
-<div class="duo-button">
-	<div class="choose"><?php _e( 'Choose a backup profile to run', 'it-l10n-backupbuddy' ) ?>:</div>
+
+
+
+<div class="profile_box">
+	<div class="profile_choose">
+		<?php _e( 'Choose a backup profile to run:', 'it-l10n-backupbuddy' ); ?>
+	</div>
+	
 	<?php
-	global $pb_backupbuddy_directory_verification;
-	if ( false === $pb_backupbuddy_directory_verification ) {
-		echo '&nbsp;&nbsp;&nbsp;&nbsp;<b>' . __( 'Error: Fatal errors listed above prevent ability to create a backup. Correct them to proceed.', 'it-l10n-backupbuddy' ) . '</b>';
-	} else {
-		foreach( pb_backupbuddy::$options['profiles'] as $profile_id => $profile ) {
-			if ( $profile_id == 0 ) { continue; }
-			if ( $profile['type'] == 'db' ) {
-				$type = 'database';
-			} elseif ( $profile['type'] == 'full' ) {
-				$type = 'full';
-			} else {
-				$type = '{unknown_type:' . htmlentities( $profile['type'] ) . '}';
-			}
-			?>
-			<a class="pb_backupbuddy_backuplaunch leftright" title="Create this <?php echo $type; ?> backup" href="<?php echo pb_backupbuddy::page_url(); ?>&backupbuddy_backup=<?php echo $profile_id; ?>"><?php echo htmlentities( $profile['title'] ); ?></a>
-			<?php
-		}
+	foreach( pb_backupbuddy::$options['profiles'] as $profile_id => $profile ) {
+		if ( $profile['type'] == 'defaults' ) { continue; } // Skip showing defaults here...
+		?>
+		<div class="profile_item">
+			<a class="profile_item_select" href="<?php echo pb_backupbuddy::page_url(); ?>&backupbuddy_backup=<?php echo $profile_id; ?>" title="Create this <?php echo $profile['type']; ?> backup.">
+				<span class="profile_type"><?php
+					if ( $profile['type'] == 'db' ) {
+						_e( 'Database', 'it-l10n-backupbuddy' );
+					} elseif ( $profile['type'] == 'full' ) {
+						_e( 'Full', 'it-l10n-backupbuddy' );
+					} elseif( $profile['type'] == 'files' ) {
+						_e( 'Files', 'it-l10n-backupbuddy' );
+					} else {
+						echo 'unknown(' . htmlentities( $profile['type'] ). ')';
+					}
+				?></span>
+				<span class="profile_text" id="profile_title_<?php echo $profile_id; ?>"><?php echo htmlentities( $profile['title'] ); ?></span>
+			</a>
+			<a href="#settings" rel="<?php echo $profile_id; ?>" class="profile_settings" style="background-image: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_gear.png');" title="<?php _e( "Configure this profile's settings.", 'it-l10n-backupbuddy' ); ?>"></a>
+		</div>
+		<?php
 	}
 	?>
-	<div style="clear: both; padding-top: 9px; padding-left: 4px;">
+	
+	<div class="profile_item" id="pb_backupbuddy_profileadd_plusbutton">
+		<a class="profile_item_noselect profile_item_add_select" title="<?php _e( 'Create new profile.', 'it-l10n-backupbuddy' ); ?>">
+			<span class="profile_add"></span>
+		</a>
+	</div>
+	
+	<div class="profile_item" id="pb_backupbuddy_profileadd" style="display: none;" href="<?php echo pb_backupbuddy::ajax_url( 'backup_profile_settings' ); ?>&profile=<?php echo $profile_id; ?>">
+		<div class="profile_item_noselect" style="padding: 11px;">
+			<form method="post" action="?page=pb_backupbuddy_backup" style="white-space:nowrap;">
+				<input type="hidden" name="add_profile" value="true">
+				<span class="profile_type">
+					<select name="type">
+						<option value="db"><?php _e( 'Database only', 'it-l10n-backupbuddy' ); ?></option>
+						<option value="full"><?php _e( 'Full (DB + Files)', 'it-l10n-backupbuddy' ); ?></option>
+						<option value="files"><?php _e( 'Files only (BETA)', 'it-l10n-backupbuddy' ); ?></option>
+					</select>
+				</span>
+				<span class="profile_text"><input type="text" name="title" style="width: 150px" maxlength="20" placeholder="<?php _e( 'New profile title...', 'it-l10n-backupbuddy' ); ?>"></span>
+				<input type="submit" name="submit" value="+ <?php _e( 'Add', 'it-l10n-backupbuddy' ); ?>" class="button button-primary" style="vertical-align: 3px; margin-left: 3px;">
+			</form>
+		</div>
+	</div>
+	
+	<br style="clear: both;">
+	
+	<!-- Remote send after successful backup? -->
+	<div style="clear: both; padding-left: 4px;">
 		<input type="checkbox" name="pb_backupbuddy_afterbackupremote" id="pb_backupbuddy_afterbackupremote_box"> <label id="pb_backupbuddy_afterbackupremote" for="pb_backupbuddy_afterbackupremote">Send to remote destination as part of backup process. <span id="pb_backupbuddy_backup_remotetitle"></span></label>
 		
 		<input type="hidden" name="remote_destination" id="pb_backupbuddy_backup_remotedestination">
 		<input type="hidden" name="delete_after" id="pb_backupbuddy_backup_deleteafter">
 		
-		<?php //echo '<a href="' . pb_backupbuddy::ajax_url( 'destination_picker' ) . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox button secondary-button" style="margin-top: 3px;" title="' . __( 'Select a Destination', 'it-l10n-backupbuddy' ) . '">' . __('Select Remote Destination', 'it-l10n-backupbuddy' ) . '</a>'; ?>
 	</div>
-	<div class="clearfix"></div>
+	<br style="clear: both;">
+	
 </div>
 
 
 
 
 
-<br style="clear: both;"><br><br><br>
-
 <?php
 pb_backupbuddy::flush();
-
-
-
-
 
 
 /********** START TABS **********/
@@ -358,12 +439,12 @@ pb_backupbuddy::$ui->start_tabs(
 	'backup_locations',
 	array(
 		array(
-			'title'		=>		'Local Archive Files',
+			'title'		=>		'Local Backups',
 			'slug'		=>		'local',
 			'css'		=>		'margin-top: -11px;',
 		),
 		array(
-			'title'		=>		'Recent Backups Status',
+			'title'		=>		'Recently Made Backups',
 			'slug'		=>		'recent_backups',
 			'css'		=>		'margin-top: -11px;',
 		),
@@ -377,7 +458,6 @@ pb_backupbuddy::$ui->start_tabs(
 
 
 pb_backupbuddy::$ui->start_tab( 'local' );
-echo '<br>';
 $listing_mode = 'default';
 require_once( '_backup_listing.php' );
 
@@ -401,17 +481,9 @@ pb_backupbuddy::$ui->end_tab();
 
 pb_backupbuddy::$ui->start_tab( 'recent_backups' );
 
-?>
-<br>
-<h3 style="
-		margin: 6px 0 10px 0px;
-		font-weight: 200;
-		font-size: 20px;
-		font-family: " helveticaneue-light","helvetica="" neue="" light","helvetica="" neue",sans-serif;="" color:="" #464646;="" "="">Most recent backups (including scheduled, transferred, or deleted):</h3>
-<br>
-<?php
 
-$backups_list = glob( pb_backupbuddy::$options['log_directory'] . 'fileoptions/*.txt' );
+$backups_list = glob( backupbuddy_core::getLogDirectory() . 'fileoptions/*.txt' );
+
 if ( ! is_array( $backups_list ) ) {
 	$backups_list = array();
 }
@@ -419,15 +491,18 @@ if ( ! is_array( $backups_list ) ) {
 if ( count( $backups_list ) == 0 ) {
 	_e( 'No backups have been created recently.', 'it-l10n-backupbuddy' );
 } else {
-	$log_directory = WP_CONTENT_DIR . '/uploads/pb_' . pb_backupbuddy::settings( 'slug' ) . '/';
 	
-	$recent_backup_count = 0; // Counter.
+	// Backup type.
+	$pretty_type = array(
+		'full'	=>	'Full',
+		'db'	=>	'Database',
+		'files' =>	'Files',
+	);
+	
+	// Read in list of backups.
 	$recent_backup_count_cap = 5; // Max number of recent backups to list.
 	$backups = array();
 	foreach( $backups_list as $backup_fileoptions ) {
-		if ( $recent_backup_count > $recent_backup_count_cap ) {
-			break;
-		}
 		
 		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
 		$backup = new pb_backupbuddy_fileoptions( $backup_fileoptions, $read_only = true );
@@ -440,7 +515,7 @@ if ( count( $backups_list ) == 0 ) {
 		if ( !isset( $backup['serial'] ) || ( $backup['serial'] == '' ) ) {
 			continue;
 		}
-		if ( $backup['finish_time'] > $backup['start_time'] ) {
+		if ( ( $backup['finish_time'] >= $backup['start_time'] ) && ( 0 != $backup['start_time'] ) ) {
 			$status = '<span class="pb_label pb_label-success">Completed</span>';
 		} elseif ( $backup['finish_time'] == -1 ) {
 			$status = '<span class="pb_label pb_label-warning">Cancelled</span>';
@@ -449,13 +524,6 @@ if ( count( $backups_list ) == 0 ) {
 		}
 		$status .= '<br>';
 		
-		// Log link (if log file exists still).
-		/*
-		$serial_file = $log_directory . 'status-' . $backup['serial'] . '_' . pb_backupbuddy::$options['log_serial'] . '.txt';
-		if ( file_exists( $serial_file ) ) {
-			$status .= '<a title="' . __( 'Backup Process Status Log', 'it-l10n-backupbuddy' ) . '" href="' . pb_backupbuddy::ajax_url( 'view_status_log' ) . '&serial=' . $backup['serial'] . '&#038;TB_iframe=1&#038;width=640&#038;height=600" class="thickbox">Status Log</a> | ';
-		}
-		*/
 		
 		// Technical details link.
 		$status .= '<div class="row-actions">';
@@ -469,28 +537,63 @@ if ( count( $backups_list ) == 0 ) {
 			$finish_time = '<i>Unfinished</i>';
 		}
 		
+		$backupTitle = '<span class="backupbuddyFileTitle" style="color: #000;" title="' . basename( $backup['archive_file'] ) . '">' . pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $backup['start_time'] ), 'l, F j, Y - g:i:s a' ) . ' (' . pb_backupbuddy::$format->time_ago( $backup['start_time'] ) . ' ago)</span><br><span class="description">' . basename( $backup['archive_file'] ) . '</span>';
+		
+		if ( isset( $backup['profile'] ) ) {
+			$backupType = '<div>
+				<span style="color: #AAA; float: left;">' . pb_backupbuddy::$format->prettify( $backup['profile']['type'], $pretty_type ) . '</span>
+				<span style="display: inline-block; float: left; height: 15px; border-right: 1px solid #EBEBEB; margin-left: 6px; margin-right: 6px;"></span>'
+				. $backup['profile']['title'] .
+			'</div>';
+		} else {
+			$backupType = '<span class="description">Unknown</span>';
+		}
+		
+		if ( isset( $backup['archive_size'] ) && ( $backup['archive_size'] > 0 ) ) {
+			$archive_size = pb_backupbuddy::$format->file_size( $backup['archive_size'] );
+		} else {
+			$archive_size = 'n/a';
+		}
+		
 		// Append to list.
 		$backups[ $backup['serial'] ] = array(
-			basename( $backup['archive_file'] ),
-			pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $backup['start_time'] ) ) . '<br><span class="description">' . pb_backupbuddy::$format->time_ago( $backup['start_time'] ) . ' ago</span>',
-			$finish_time,
-			$backup['trigger'],
+			array( basename( $backup['archive_file'] ), $backupTitle ),
+			$backupType,
+			$archive_size,
+			ucfirst( $backup['trigger'] ),
 			$status,
+			'start_timestamp' => $backup['start_time'], // Used by array sorter later to put backups in proper order.
 		);
 		
-		$recent_backup_count++;
 	}
 
 	$columns = array(
-		__('Backup', 'it-l10n-backupbuddy' ),
-		__('Started', 'it-l10n-backupbuddy' ),
-		__('Finished', 'it-l10n-backupbuddy' ),
+		__('Backups (Start Time)', 'it-l10n-backupbuddy' ),
+		__('Type | Profile', 'it-l10n-backupbuddy' ),
+		__('File Size', 'it-l10n-backupbuddy' ),
 		__('Trigger', 'it-l10n-backupbuddy' ),
 		__('Status', 'it-l10n-backupbuddy' ),
 	);
 
-	$backups = array_reverse( $backups );
+	function pb_backupbuddy_aasort (&$array, $key) {
+		$sorter=array();
+		$ret=array();
+		reset($array);
+		foreach ($array as $ii => $va) {
+		    $sorter[$ii]=$va[$key];
+		}
+		asort($sorter);
+		foreach ($sorter as $ii => $va) {
+		    $ret[$ii]=$array[$ii];
+		}
+		$array=$ret;
+	}
 
+	pb_backupbuddy_aasort( $backups, 'start_timestamp' ); // Sort by multidimensional array with key start_timestamp.
+	$backups = array_reverse( $backups ); // Reverse array order to show newest first.
+	
+	$backups = array_slice( $backups, 0, $recent_backup_count_cap ); // Only display most recent X number of backups in list.
+	
 	pb_backupbuddy::$ui->list_table(
 		$backups,
 		array(
@@ -519,25 +622,11 @@ pb_backupbuddy::$ui->end_tabs();
 
 
 
+echo '<br style="clear: both;"><br><br><br>';
 
-
-
-
-
-
-
-
-echo '<br /><br />';
-?>
-
-
-
-
-
-<?php
 // Handles thickbox auto-resizing. Keep at bottom of page to avoid issues.
 if ( !wp_script_is( 'media-upload' ) ) {
 	wp_enqueue_script( 'media-upload' );
 	wp_print_scripts( 'media-upload' );
 }
-?>
+

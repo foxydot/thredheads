@@ -43,11 +43,7 @@ function shutdown_function() {
 	
 	
 	// Calculate log directory.
-	if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
-		$log_directory = ABSPATH . 'importbuddy/';
-	} else {
-		$log_directory = pb_backupbuddy::$options['log_directory'];
-	}
+	$log_directory = backupbuddy_core::getLogDirectory(); // Also handle when in importbuddy.
 	$main_file = $log_directory . 'log-' . pb_backupbuddy::$options['log_serial'] . '.txt';
 	
 	
@@ -105,6 +101,28 @@ if ( $ajax != '' ) {
 	}
 	
 /********** PAGES **********/
+
+// Standalone pages.
+} elseif ( pb_backupbuddy::_GET( 'page' ) != '' ) {
+	
+	Auth::require_authentication(); // Die if not logged in.
+	
+	$pageSlug = str_replace( '/\\', '', pb_backupbuddy::_GET( 'page' ) );
+	if ( ! ctype_alnum( str_replace( array( '-', '_' ), '', $pageSlug ) ) ) { // Disallow non-alphanumeric except dash, underscore.
+		die( 'Error #85747833. Page contains disallowed characters. Only alphanumeric, dashes, and underscores permitted.' );
+	} 
+	
+	$pageFile = ABSPATH . 'importbuddy/controllers/pages/' . $pageSlug . '.php';
+	if ( file_exists( $pageFile ) ) {
+		echo '<!-- Starting page ' . $pageSlug . '. -->';
+		require_once( $pageFile );
+		pb_backupbuddy::status( 'details', 'Finished page ' . $pageSlug . '.' );
+	} else {
+		echo '{Error: Invalid page `' . htmlentities( pb_backupbuddy::_GET( 'step' ) ) . '.php' . '`.}';
+		die();
+	}
+	
+// Import steps.
 } elseif ( ( pb_backupbuddy::_GET( 'step' ) != '' ) && is_numeric( pb_backupbuddy::_GET( 'step' ) ) ) {
 	
 	$step = pb_backupbuddy::_GET( 'step' );

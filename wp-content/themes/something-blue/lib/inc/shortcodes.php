@@ -7,10 +7,13 @@ function product_info_function($atts,$content){
     $ret .= '</div>';
     $ret .= '<div class="product-sidebar pull-right col-md-4">';
     $menu .= wp_nav_menu(array('menu'=>'Shirt Tools','echo'=>0));
-    
     $menu = preg_replace('/<ul(.*?)>/i','<ul class="fa-ul"\1>',$menu);
     $menu = preg_replace('/<li(.*?)>\s?/i','<li\1><i class="fa fa-caret-right"></i> ',$menu);
     $ret .= $menu;
+    ob_start();
+    dynamic_sidebar('product-sidebar');
+    $ret .= ob_get_contents();
+    ob_end_clean();
     $ret .= '</div>';
     $ret .= '</div></div>';
     return $ret;

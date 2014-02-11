@@ -148,16 +148,14 @@ RewriteRule . /index.php [L]\n
 		// Connect to database.
 		$this->connect_database();
 		
-		$query = "SHOW TABLES LIKE '" . mysql_real_escape_string( str_replace( '_', '\_', $prefix ) ) . "%'"; // Underscore must be escaped for use in mysql LIKE to make literal.
-		
-		pb_backupbuddy::status( 'message', 'Drop query: `' . $query . '`.' );
-		$result = mysql_query( $query );
-		$table_wipe_count = mysql_num_rows( $result );
-		while( $row = mysql_fetch_row( $result ) ) {
-			pb_backupbuddy::status( 'details', 'Dropping table `' . $row[0] . '`.' );
-			mysql_query( 'DROP TABLE `' . $row[0] . '`' );
+		global $wpdb;
+		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '" . mysql_real_escape_string( str_replace( '_', '\_', $prefix ) ) . "%' AND table_schema = DATABASE()", ARRAY_A );
+		$table_wipe_count = count( $rows );
+		foreach( $rows as $row ) {
+			pb_backupbuddy::status( 'details', 'Dropping table `' . $row['table_name'] . '`.' );
+			$wpdb->query( 'DROP TABLE `' . $row['table_name'] . '`' );
 		}
-		mysql_free_result( $result ); // Free memory.
+		unset( $rows );
 		pb_backupbuddy::status( 'message', 'Wiped database of ' . $table_wipe_count . ' tables.' );
 		
 		return true;
@@ -182,16 +180,14 @@ RewriteRule . /index.php [L]\n
 		// Connect to database.
 		$this->connect_database();
 		
-		$query = "SHOW TABLES";
-		
-		pb_backupbuddy::status( 'message', 'Drop query: `' . $query . '`.' );
-		$result = mysql_query( $query );
-		$table_wipe_count = mysql_num_rows( $result );
-		while( $row = mysql_fetch_row( $result ) ) {
-			pb_backupbuddy::status( 'details', 'Dropping table `' . $row[0] . '`.' );
-			mysql_query( 'DROP TABLE `' . $row[0] . '`' );
+		global $wpdb;
+		$rows = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()", ARRAY_A );
+		$table_wipe_count = count( $rows );
+		foreach( $rows as $row ) {
+			pb_backupbuddy::status( 'details', 'Dropping table `' . $row['table_name'] . '`.' );
+			$wpdb->query( 'DROP TABLE `' . $row['table_name'] . '`' );
 		}
-		mysql_free_result( $result ); // Free memory.
+		unset( $rows );
 		pb_backupbuddy::status( 'message', 'Wiped database of ' . $table_wipe_count . ' tables.' );
 		
 		return true;
@@ -381,23 +377,13 @@ RewriteRule . /index.php [L]\n
 	 *	@return		boolean		True on success; else false. Success testing is very loose.
 	 */
 	function connect_database() {
-		// Set up database connection.
-		if ( false === @mysql_connect( pb_backupbuddy::$options['db_server'], pb_backupbuddy::$options['db_user'], pb_backupbuddy::$options['db_password'] ) ) {
-			pb_backupbuddy::alert( 'ERROR: Unable to connect to database server and/or log in. Verify the database server name, username, and password. Details: ' . mysql_error(), true, '9006' );
-			return false;
-		}
-		$database_name = mysql_real_escape_string( pb_backupbuddy::$options['db_name'] );
 		
 		pb_backupbuddy::flush();
 		
-		// Select the database.
-		if ( false === @mysql_select_db( pb_backupbuddy::$options['db_name'] ) ) {
-			pb_backupbuddy::status( 'error', 'Error: Unable to connect or authenticate to database `' . pb_backupbuddy::$options['db_name'] . '`.' );
-			return false;
-		}
+		global $wpdb;
+		$wpdb = new wpdb( pb_backupbuddy::$options['db_user'], pb_backupbuddy::$options['db_password'], pb_backupbuddy::$options['db_name'], pb_backupbuddy::$options['db_server'] );
 		
-		// Set up character set. Important.
-		mysql_query("SET NAMES 'utf8'");
+		pb_backupbuddy::flush();
 		
 		return true;
 	}

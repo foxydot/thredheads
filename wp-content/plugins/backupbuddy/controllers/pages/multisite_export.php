@@ -5,7 +5,7 @@ if ( pb_backupbuddy::_GET( 'backupbuddy_backup' ) == '' ) {
 	
 	pb_backupbuddy::$ui->title( 'Multisite: Export Site (EXPERIMENTAL)' . ' ' . pb_backupbuddy::video( '_oKGIzzuVzw', __('Multisite export', 'it-l10n-backupbuddy' ), false ) );
 	
-	$view_data['backups'] = pb_backupbuddy::$classes['core']->backups_list( 'default', true ); // Second param true makes subsite mode only. Only lists backups for this subsite.
+	$view_data['backups'] = backupbuddy_core::backups_list( 'default', true ); // Second param true makes subsite mode only. Only lists backups for this subsite.
 	
 	// Load view.
 	pb_backupbuddy::load_view( 'multisite_export', $view_data );

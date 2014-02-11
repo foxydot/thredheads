@@ -1424,7 +1424,7 @@ if ( !class_exists( "pluginbuddy_zipbuddy" ) ) {
 			$sanitized_exclusions = array();
 			
 			pb_backupbuddy::status( 'details', 'Creating backup exclusions file `' . $file . '`.' );
-			//$exclusions = pb_backupbuddy::$classes['core']->get_directory_exclusions();
+			//$exclusions = backupbuddy_core::get_directory_exclusions();
 			
 			// Test each exclusion for validity (presence) and drop those not actually present
 			foreach( $exclusions as $exclusion ) {
@@ -1475,6 +1475,5 @@ if ( !class_exists( "pluginbuddy_zipbuddy" ) ) {
 		
 	} // End class
 	
-	//$pluginbuddy_zipbuddy = new pluginbuddy_zipbuddy( pb_backupbuddy::$options['backup_directory'] );
 }
 ?>

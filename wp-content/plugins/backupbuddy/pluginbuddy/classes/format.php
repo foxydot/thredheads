@@ -57,10 +57,15 @@ class pb_backupbuddy_format {
 	 *	Formats a timestamp into a nice human date format.
 	 *	
 	 *	@param		int		$timestamp		Timestamp to make pretty.
+	 *	@param		string	$customFormat	Custom timestamp format. Else uses $this->_timestamp defined at top of this file.
 	 *	@return		string					Pretty human timestamp.
 	 */
-	function date( $timestamp ) {
-		return date( $this->_timestamp, $timestamp );
+	function date( $timestamp, $customFormat = '' ) {
+		if ( '' == $customFormat ) {
+			return date( $this->_timestamp, $timestamp );
+		} else {
+			return date( $customFormat, $timestamp );
+		}
 	} // End date().
 	
 	

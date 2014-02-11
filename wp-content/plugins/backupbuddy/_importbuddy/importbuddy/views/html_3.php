@@ -3,7 +3,8 @@ if ( ! defined( 'PB_IMPORTBUDDY' ) || ( true !== PB_IMPORTBUDDY ) ) {
 	die( '<html></html>' );
 }
 
-$page_title = '<a href="" class="pb_backupbuddy_begintour">Tour This Page</a>URL & Database Settings';
+$page_title = '';
+$page_title = 'Step <span class="step_number">' . $step . '</span> of 6: <a href="" class="pb_backupbuddy_begintour">Tour This Page</a>URL & Database Settings';
 require_once( '_header.php' );
 echo '<div class="wrap">';
 ?>
@@ -85,6 +86,11 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 				skip_database_migration = '0';
 			}
 			
+			if ( jQuery( '#ignore_sql_errors' ).is( ':checked' ) ) {
+				ignore_sql_errors = '1';
+			} else {
+				ignore_sql_errors = '0';
+			}
 			
 			
 			jQuery.post('importbuddy.php', {
@@ -99,11 +105,12 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 					skip_database_import: skip_database_import,
 					skip_database_migration: skip_database_migration,
 					prefix: jQuery('#mysql_prefix').val(),
+					ignore_sql_errors: ignore_sql_errors,
 					options: jQuery('#pb_options').val()
 				 }, function(data) {
 				 	data = jQuery.trim( data );
 					jQuery('#ithemes_loading').html( data );
-					if ( data.slice( -17 ) == '<!-- Success. -->' ) {
+					if ( data.toLowerCase().indexOf( 'overall result success' ) >= 0 ) {
 						jQuery('.pb_database_next_submit').removeClass( 'button_disabled' );
 					} else {
 						jQuery('.pb_database_next_submit').addClass( 'button_disabled' );
@@ -142,6 +149,22 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 		jQuery( '.cpanel_createdb_create' ).click( function() {
 			//alert( 'do ajax here' );
 			//return false;
+			
+			// Validate db stuff is all alphanumeric.
+			if (
+				( false == /^[a-zA-Z0-9]+$/.test( jQuery('#cpanel_dbname').val() ) )
+				||
+				( false == /^[a-zA-Z0-9]+$/.test( jQuery('#cpanel_dbuser').val() ) )
+				) {
+				alert( 'Database values (except password) must contain alphanumeric characters only and no spaces. Correct this and try again.' );
+				return false;
+			}
+			
+			// Validate input lengths.
+			if ( jQuery('#cpanel_dbpass').val().length < 5 ) {
+				alert( 'Database passwords must be 5 or more characters in length.' );
+				return false;
+			}
 			
 			jQuery( '.cpanel_createdb_loading' ).show();
 			
@@ -183,140 +206,157 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 	<input type="hidden" name="options" id="pb_options" value="<?php echo htmlspecialchars( serialize( pb_backupbuddy::$options ) ); ?>">
 	<input type="hidden" name="pass_hash" id="pass_hash" value="<?php echo htmlspecialchars( pb_backupbuddy::_POST( 'pass_hash' ) ); ?>">
 	
-	<h3>URL Settings</h3>
-	<div style="margin-left: 20px;">
+	<?php
+	if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+		pb_backupbuddy::alert( 'This is a Files Only restoration, no database will be imported or migrated so the next two steps will be skipped. Additionally, your wp-config.php configuration will remain intact without modification, including database settings.' );
+		echo '<br><br>';
+	}
+	?>
+	
+	<div <?php if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) { echo 'style="display: none;"'; } ?>><!-- begin wrapping url and db settings -->
 		
-		<label>
-			WordPress Address
-			<?php pb_backupbuddy::tip( 'This is the address where you want the final WordPress site you are
-				restoring / migrating to reside. Ex: http://foo.com/wp', '', true ); ?>
-			<br>
-			<span class="light">(Site URL)</span>
-			<br><br>&nbsp;
-		</label>
-		<input type="text" name="siteurl" id="site_url" value="<?php echo $default_url; ?>" size="40" /><br>
-		&nbsp;<span class="light" style="display: inline-block; width: 475px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['siteurl']; ?></span>
 		
-		<?php if ( isset( pb_backupbuddy::$options['dat_file']['is_multisite'] ) && ( ( pb_backupbuddy::$options['dat_file']['is_multisite'] === true ) || ( pb_backupbuddy::$options['dat_file']['is_multisite'] == 'true' ) ) ) { // multisite ?>
-			<br><br>Note: This URL above will also be the new Multisite Network URL.
-			<br><br>
+		<h3>URL Settings</h3>
+		<div style="margin-left: 20px;">
+			
 			<label>
-				MultiSite Domain
-				<?php pb_backupbuddy::tip( 'This is the MultiSite main domain. Ex: foo.com. WARNING: Changing this may result in URL problems. Use caution.', '', true ); ?><br>
-				<br><br>&nbsp;
-			</label>
-			<input type="text" name="domain" value="<?php echo get_default_domain(); ?>" size="40" /><br>
-			&nbsp;<span class="light" style="display: inline-block; width: 400px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['domain']; ?></span>
-			<br><br>
-		<?php } else { ?>
-		
-		<label style="width: 420px; margin-left: 200px;">
-			<input type="checkbox" name="custom_home" class="option_toggle" value="on" id="custom_home">
-			Use optional custom site address (Home URL)?
-			<?php pb_backupbuddy::tip( $custom_home_tip, '', true ); ?>
-		</label>
-		<br style="clear: both;">
-		
-		<div class="custom_home_toggle" style="display: none; width: 100%;">
-			<label>
-				Site Address
-				<?php pb_backupbuddy::tip( $custom_home_tip, '', true ); ?>
+				WordPress Address
+				<?php pb_backupbuddy::tip( 'This is the address where you want the final WordPress site you are
+					restoring / migrating to reside. Ex: http://foo.com/wp', '', true ); ?>
 				<br>
-				<span class="light">(Home URL)</span>
+				<span class="light">(Site URL)</span>
 				<br><br>&nbsp;
 			</label>
-			<input type="text" name="home" value="<?php echo $default_url; ?>" size="40" />			<br>
-			&nbsp;<span class="light" style="display: inline-block; width: 475px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['homeurl']; ?></span>
+			<input type="text" name="siteurl" id="site_url" value="<?php echo $default_url; ?>" size="40" /><br>
+			&nbsp;<span class="light" style="display: inline-block; width: 475px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['siteurl']; ?></span>
+			
+			<?php if ( isset( pb_backupbuddy::$options['dat_file']['is_multisite'] ) && ( ( pb_backupbuddy::$options['dat_file']['is_multisite'] === true ) || ( pb_backupbuddy::$options['dat_file']['is_multisite'] == 'true' ) ) ) { // multisite ?>
+				<br><br>Note: This URL above will also be the new Multisite Network URL.
+				<br><br>
+				<label>
+					MultiSite Domain
+					<?php pb_backupbuddy::tip( 'This is the MultiSite main domain. Ex: foo.com. WARNING: Changing this may result in URL problems. Use caution.', '', true ); ?><br>
+					<br><br>&nbsp;
+				</label>
+				<input type="text" name="domain" value="<?php echo get_default_domain(); ?>" size="40" /><br>
+				&nbsp;<span class="light" style="display: inline-block; width: 400px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['domain']; ?></span>
+				<br><br>
+			<?php } else { ?>
+			
+			<label style="width: 420px; margin-left: 200px;">
+				<input type="checkbox" name="custom_home" class="option_toggle" value="on" id="custom_home">
+				Use optional custom site address (Home URL)?
+				<?php pb_backupbuddy::tip( $custom_home_tip, '', true ); ?>
+			</label>
+			<br style="clear: both;">
+			
+			<div class="custom_home_toggle" style="display: none; width: 100%;">
+				<label>
+					Site Address
+					<?php pb_backupbuddy::tip( $custom_home_tip, '', true ); ?>
+					<br>
+					<span class="light">(Home URL)</span>
+					<br><br>&nbsp;
+				</label>
+				<input type="text" name="home" value="<?php echo $default_url; ?>" size="40" />			<br>
+				&nbsp;<span class="light" style="display: inline-block; width: 475px;">previously: <?php echo pb_backupbuddy::$options['dat_file']['homeurl']; ?></span>
+			</div>
+			
+			<?php } // end non-multisite ?>
+			
 		</div>
 		
-		<?php } // end non-multisite ?>
+		<br style="clear: both;">
+		<hr>
 		
-	</div>
-	
-	<br style="clear: both;">
-	<hr>
-	
-	<h3>Database Settings<?php
-		pb_backupbuddy::tip( 'These settings control where your backed up database will be restored to.
-		If you are restoring to the same server, the settings below will import the database
-		to your existing WordPress database location, overwriting your existing WordPress database
-		already on the server.  If you are moving to a new host you will need to create a database
-		to import into. The database settings MUST be unique for each WordPress installation.  If
-		you use the same settings for multiple WordPress installations then all blog content and
-		settings will be shared, causing conflicts!', '', true );
-	?></h3>
-	<div style="margin-left: 20px;">
-		
-		
-		<div>
+		<h3>Database Settings<?php
+			pb_backupbuddy::tip( 'These settings control where your backed up database will be restored to.
+			If you are restoring to the same server, the settings below will import the database
+			to your existing WordPress database location, overwriting your existing WordPress database
+			already on the server.  If you are moving to a new host you will need to create a database
+			to import into. The database settings MUST be unique for each WordPress installation.  If
+			you use the same settings for multiple WordPress installations then all blog content and
+			settings will be shared, causing conflicts!', '', true );
+		?></h3>
+		<div style="margin-left: 20px;">
 			
-			<table width="100%"><tr>
-				<td>
-					<a target="_new" id="new_cpanel_db_link" href="http://ithemes.com/tutorial-create-database-in-cpanel/">
-						Use your host's control panel to create a database (if it doesn't exist yet) then enter its settings below
-					</a>
-				</td>
-				<td style="width: 50px;" align="center">
-					<b>OR</b>
-				</td>
-				<td align="right" style="white-space: nowrap;">
-					<a href="#pb_createdb_modal" class="button leanModal createdb_modal_link" style="float: right; font-size: 13px;">Have cPanel? Click to create a database</a>
-				</td>
+			
+			<div>
 				
+				<table width="100%"><tr>
+					<td>
+						<a target="_new" id="new_cpanel_db_link" href="http://ithemes.com/tutorial-create-database-in-cpanel/">
+							Use your host's control panel to create a database (if it doesn't exist yet) then enter its settings below
+						</a>
+					</td>
+					<td style="width: 50px;" align="center">
+						<b>OR</b>
+					</td>
+					<td align="right" style="white-space: nowrap;">
+						<a href="#pb_createdb_modal" class="button leanModal createdb_modal_link" style="float: right; font-size: 13px;">Have cPanel? Click to create a database</a>
+					</td>
+					
 
-			</tr></table>
+				</tr></table>
+				
+			</div>
+			<br><br>
 			
-		</div>
-		<br><br>
-		
-		<label>
-			MySQL Server
-			<?php pb_backupbuddy::tip( 'This is the address to the mySQL server where your database will be stored.
-					99% of the time this is localhost.  The location of your mySQL server will be provided
-					to you by your host if it differs.', '', true ); ?>
-		</label>
-		<input class="db_setting" type="text" name="db_server" id="mysql_server" value="<?php echo $database_defaults['server']; ?>" style="width: 175px;" />
-		<?php if ( $database_previous['server'] != '' ) { echo '<span class="light">previously: ' . $database_previous['server'] . '</span>'; } ?>
-		<br>
-		
-		<label>
-			Database Name
-			<?php pb_backupbuddy::tip( 'This is the name of the database you want to import your blog into. The database
-				user must have permissions to be able to access this database.  If you are migrating this blog
-				to a new host you will need to create this database (ie using CPanel or phpmyadmin) and create
-				a mysql database user with permissions.', '', true ); ?>
-		</label>
-		<input class="db_setting" type="text" name="db_name" id="mysql_name" value="<?php echo $database_defaults['database']; ?>" style="width: 175px;" />
-		<?php if ( $database_previous['database'] != '' ) { echo '<span class="light">previously: ' . $database_previous['database'] . '</span>'; } ?>
-		<br>
-		
-		<label>
-			Database User
-			<?php pb_backupbuddy::tip( 'This is the database user account that has permission to access the database name
-				in the input above.  This user must be given permission to this database for the import to work.', '', true ); ?>
-		</label>
-		<input class="db_setting" type="text" name="db_user" id="mysql_user" value="<?php echo $database_defaults['user']; ?>" style="width: 175px;" />
-		<?php if ( $database_previous['user'] != '' ) { echo '<span class="light">previously: ' . $database_previous['user'] . '</span>'; } ?>
-		<br>
-		
-		<label>
-			Database Pass
-			<?php pb_backupbuddy::tip( 'This is the password for the database user.', '', true ); ?>
-		</label>
-		<input class="db_setting" type="text" name="db_password" id="mysql_password" value="<?php echo $database_defaults['password']; ?>" style="width: 175px;" />
-		<?php if ( $database_previous['password'] != '' ) { echo '<span class="light">previously: ' . $database_previous['password'] . '</span>'; } ?>
-		<br>
-		
-		<label>
-			Database Prefix
-			<?php pb_backupbuddy::tip( 'This is the prefix given to all tables in the database.  If you are cloning the site
-				on the same server AND the same database name then you will want to change this or else the imported
-				database will overwrite the existing tables.', '', true ); ?>
-		</label>
-		<input class="db_setting" type="text" name="db_prefix" id="mysql_prefix" id="mysql_prefix" value="<?php echo $database_defaults['prefix']; ?>" style="width: 175px;" />
-		<?php if ( $database_previous['prefix'] != '' ) { echo '<span class="light">previously: ' . $database_previous['prefix'] . '</span>'; } ?>
-		<br>
-		
+			<?php if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+				pb_backupbuddy::alert( 'Note: This is a Files Only backup. The database import step will be skipped. You may also wish to skip migrating & updating URLs and paths within the database. This may be disabled by selecting the Advanced Options button below.' );
+				echo '<br>';
+			}
+			?>
+			
+			<label>
+				MySQL Server
+				<?php pb_backupbuddy::tip( 'This is the address to the mySQL server where your database will be stored.
+						99% of the time this is localhost.  The location of your mySQL server will be provided
+						to you by your host if it differs.', '', true ); ?>
+			</label>
+			<input class="db_setting" type="text" name="db_server" id="mysql_server" value="<?php echo $database_defaults['server']; ?>" style="width: 175px;" />
+			<?php if ( $database_previous['server'] != '' ) { echo '<span class="light">previously: ' . $database_previous['server'] . '</span>'; } ?>
+			<br>
+			
+			<label>
+				Database Name
+				<?php pb_backupbuddy::tip( 'This is the name of the database you want to import your blog into. The database
+					user must have permissions to be able to access this database.  If you are migrating this blog
+					to a new host you will need to create this database (ie using CPanel or phpmyadmin) and create
+					a mysql database user with permissions.', '', true ); ?>
+			</label>
+			<input class="db_setting" type="text" name="db_name" id="mysql_name" value="<?php echo $database_defaults['database']; ?>" style="width: 175px;" />
+			<?php if ( $database_previous['database'] != '' ) { echo '<span class="light">previously: ' . $database_previous['database'] . '</span>'; } ?>
+			<br>
+			
+			<label>
+				Database User
+				<?php pb_backupbuddy::tip( 'This is the database user account that has permission to access the database name
+					in the input above.  This user must be given permission to this database for the import to work.', '', true ); ?>
+			</label>
+			<input class="db_setting" type="text" name="db_user" id="mysql_user" value="<?php echo $database_defaults['user']; ?>" style="width: 175px;" />
+			<?php if ( $database_previous['user'] != '' ) { echo '<span class="light">previously: ' . $database_previous['user'] . '</span>'; } ?>
+			<br>
+			
+			<label>
+				Database Pass
+				<?php pb_backupbuddy::tip( 'This is the password for the database user.', '', true ); ?>
+			</label>
+			<input class="db_setting" type="text" name="db_password" id="mysql_password" value="<?php echo $database_defaults['password']; ?>" style="width: 175px;" />
+			<?php if ( $database_previous['password'] != '' ) { echo '<span class="light">previously: ' . $database_previous['password'] . '</span>'; } ?>
+			<br>
+			
+			<label>
+				Database Prefix
+				<?php pb_backupbuddy::tip( 'This is the prefix given to all tables in the database.  If you are cloning the site
+					on the same server AND the same database name then you will want to change this or else the imported
+					database will overwrite the existing tables.', '', true ); ?>
+			</label>
+			<input class="db_setting" type="text" name="db_prefix" id="mysql_prefix" id="mysql_prefix" value="<?php echo $database_defaults['prefix']; ?>" style="width: 175px;" />
+			<?php if ( $database_previous['prefix'] != '' ) { echo '<span class="light">previously: ' . $database_previous['prefix'] . '</span>'; } ?>
+			<br>
+			
+		</div><!-- end wrapping url and db settings -->
 		
 		
 		<label>&nbsp;</label>
@@ -349,9 +389,13 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 	</div><!-- /wrap -->
 	<div class="main_box_foot">
 		<a href="#pb_advanced_modal" class="button button-tertiary leanModal" id="advanced_options_button" style="float: left; font-size: 13px;">Advanced Options</a>
+		
+		<?php if ( 'files' != pb_backupbuddy::$options['dat_file']['backup_type'] ) { ?>
 		<input type="submit" name="submit" id="test_db_button" value="Test Database Settings" class="button pb_database_next_test">
+		<?php } ?>
+		
 		&nbsp;&nbsp;&nbsp;
-		<input type="submit" name="submit" id="next_step_button" value="Next Step &rarr;" class="button button_disabled pb_database_next_submit">
+		<input type="submit" name="submit" id="next_step_button" value="Next Step &rarr;" class="button <?php if ( 'files' != pb_backupbuddy::$options['dat_file']['backup_type'] ) { echo 'button_disabled'; } ?> pb_database_next_submit">
 	</div>
 
 
@@ -383,8 +427,17 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 				if ( $detected_max_execution_time == '0' ) {
 					$detected_max_execution_time = '30';
 				}
+				
+				if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {
+					echo 'Advanced database options unavailable as this is a files only backup. Import of the database, migration of paths & URLs, as well as updates to the wp-config.php database settings will be skipped.<br><br>';
+					pb_backupbuddy::$options['skip_database_import'] = true;
+					pb_backupbuddy::$options['skip_database_migration'] = true;
+					pb_backupbuddy::$options['skip_database_migration'] = true;
+				}
 				?>
+				
 				<h4 style="margin-top: 0px;">Database Import (Step 4)</h4>
+				
 				<input class="db_setting" type="checkbox" value="on" name="skip_database_import" id="skip_database_import" onclick="
 					if ( jQuery(this).is( ':checked' ) ) { // On checking this box, we need to hide options; unchecking show options.
 						jQuery( '#database_import_options' ).slideUp();
@@ -396,7 +449,8 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 				
 				
 				
-				<?php if ( pb_backupbuddy::$options['skip_database_import'] == true ) { echo 'checked="checked"'; } ?>
+				<?php if ( true == pb_backupbuddy::$options['skip_database_import'] ) { echo 'checked="checked"'; } ?>
+				<?php if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) { echo ' disabled="true"'; } ?>
 				> Skip import of database. <br>
 				<div id="database_import_options" <?php if ( pb_backupbuddy::$options['skip_database_import'] == true ) { echo 'style="display: none;"'; } ?>>
 					
@@ -427,7 +481,7 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 					<input type="checkbox" value="on" name="mysqlbuddy_compatibility"
 					<?php if ( pb_backupbuddy::$options['mysqlbuddy_compatibility'] == true ) { echo 'checked="checked"'; } ?>
 					> Force database import compatibility (pre-v3.0) mode. <br>
-					<input class="db_setting" type="checkbox" value="on" name="ignore_sql_errors"
+					<input class="db_setting" type="checkbox" value="on" id="ignore_sql_errors" name="ignore_sql_errors"
 					<?php if ( pb_backupbuddy::$options['ignore_sql_errors'] == true ) { echo 'checked="checked"'; } ?>
 					> Ignore existing WordPress tables and import (merge tables) anyways. <?php pb_backupbuddy::tip( 'When checked ImportBuddy will allow importing database tables that have the same name as existing tables. This results in a merge of the existing data with the imported database being merged. Note that this is does NOT update existing data and only ADDS new database table rows. All other SQL conflict errors will be suppressed as well. Use this feature with caution.' ); ?><br>
 					Maximum time allowed per import chunk: <input type="text" name="max_execution_time" value="<?php echo $detected_max_execution_time; ?>" size="5"> seconds. <?php pb_backupbuddy::tip( 'The maximum amount of time ImportBuddy should allow a database import chunk to run. ImportBuddy by default limits each chunk to your Maximum PHP runtime. If your database import step is timing out then lowering this value will instruct the script to limit each `chunk` to allow it to finish within this time period. Raising this value above your servers limits will not increase or override server settings.' ); ?>
@@ -436,6 +490,7 @@ $custom_home_tip = 'OPTIONAL. This is also known as the site address. This is th
 				<h4>Database Migration (Step 5)</h4>
 				<input type="checkbox" value="on" name="skip_database_migration" id="skip_database_migration"
 				<?php if ( pb_backupbuddy::$options['skip_database_migration'] == true ) { echo 'checked="checked"'; } ?>
+				<?php if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) { echo ' disabled="true"'; } ?>
 				onclick="
 				if ( jQuery(this).is( ':checked' ) ) { // On checking this box, we need to hide options; unchecking show options.
 						jQuery( '#database_migrate_options' ).slideUp();

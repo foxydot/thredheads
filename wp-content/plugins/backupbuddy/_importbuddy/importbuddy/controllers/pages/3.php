@@ -61,6 +61,10 @@ function get_database_defaults() {
 		return $response;
 	}
 	
+	/*
+	
+	TODO: Future: This may need to be done with AJAX if at all because sometimes we cannot override timeout and it hangs the page.
+	
 	$old_connect_timeout = @ini_get( 'mysql.connect_timeout' );
 	$old_socket_timeout = @ini_get( 'default_socket_timeout' );
 	@ini_set( 'mysql.connect_timeout', 5 );
@@ -83,6 +87,19 @@ function get_database_defaults() {
 	
 	@ini_set( 'mysql.connect_timeout', $old_connect_timeout );
 	@ini_set( 'default_socket_timeout', $old_socket_timeout );
+	*/
+	
+	
+	$response['server'] = pb_backupbuddy::$options['dat_file']['db_server'];
+	$response['user'] = pb_backupbuddy::$options['dat_file']['db_user'];
+	$response['password'] = pb_backupbuddy::$options['dat_file']['db_password'];
+	$response['database'] = pb_backupbuddy::$options['dat_file']['db_name'];
+	$response['prefix'] = pb_backupbuddy::$options['dat_file']['db_prefix'];
+	if ( substr_count( $response['prefix'], '_' ) > 1 ) {
+		pb_backupbuddy::alert( 'Important: Your old database prefix contained more than one underscore. We highly suggest importing using a prefix below in the Database Settings with only one underscore to maximize compatibility.' );
+		$response['prefix'] = '';
+	}
+	
 	
 	return $response;
 }

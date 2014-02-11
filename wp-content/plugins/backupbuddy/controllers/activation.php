@@ -194,10 +194,10 @@ if ( pb_backupbuddy::$options['data_version'] < 4 ) {
 // ********** BEGIN 3.3.0 -> 3.3.0.1 BACKUP DATASTRUCTURE OPTIONS to FILEOPTIONS MIGRATION **********
 if ( pb_backupbuddy::$options['data_version'] < 5 ) {
 	if ( isset( pb_backupbuddy::$options['backups'] ) && ( count( pb_backupbuddy::$options['backups'] ) > 0 ) ) {
-		pb_backupbuddy::anti_directory_browsing( pb_backupbuddy::$options['log_directory'] . 'fileoptions/' );
+		pb_backupbuddy::anti_directory_browsing( backupbuddy_core::getLogDirectory() . 'fileoptions/' );
 		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
 		foreach( pb_backupbuddy::$options['backups'] as $serial => $backup ) {
-			$backup_options = new pb_backupbuddy_fileoptions( pb_backupbuddy::$options['log_directory'] . 'fileoptions/' . $serial . '.txt', $read_only = false, $ignore_lock = false, $create_file = true );
+			$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = false, $ignore_lock = false, $create_file = true );
 			$backup_options->options = $backup;
 			if ( true === $backup_options->save() ) {
 				unset( pb_backupbuddy::$options['backups'][$serial] );
@@ -255,13 +255,43 @@ if ( pb_backupbuddy::$options['data_version'] < 6 ) {
 }
 if ( pb_backupbuddy::$options['data_version'] < 7 ) {
 	pb_backupbuddy::$options['data_version'] = '7';
-	pb_backupbuddy::$options['profiles'][0]['excludes'] = pb_backupbuddy::$options['excludes'];
+	if ( isset( pb_backupbuddy::$options['excludes'] ) ) {
+		pb_backupbuddy::$options['profiles'][0]['excludes'] = pb_backupbuddy::$options['excludes'];
+	}
 	unset( pb_backupbuddy::$options['excludes'] );
 	pb_backupbuddy::save();
 }
 // ********** END 4.0 UPGRADE **********
 
 
+
+
+
+// ********** BEGIN 4.2 UPGRADE **********
+if ( pb_backupbuddy::$options['data_version'] < 8 ) {
+	pb_backupbuddy::$options['data_version'] = '8';
+	
+	// Update backup dir.
+	$default_backup_dir = ABSPATH . 'wp-content/uploads/backupbuddy_backups/';
+	if ( pb_backupbuddy::$options['backup_directory'] == $default_backup_dir ) { // If backup dir is in the default location, set blank.
+		pb_backupbuddy::$options['backup_directory'] = '';
+	}
+	
+	// Update temp dir.
+	pb_backupbuddy::$options['temp_directory'] = ''; // Default blank. This is currently always hard-coded relative to site root.
+	
+	// Update log dir.
+	$uploads_dirs = wp_upload_dir();
+	$new_default_log_dir = $uploads_dirs['basedir'] . '/pb_backupbuddy/';
+	if ( pb_backupbuddy::$options['log_directory'] == $new_default_log_dir ) { // If log dir is in the new default location, set blank.
+		pb_backupbuddy::$options['log_directory'] = '';
+	}
+	unset( $uploads_dirs );
+	unset( $new_default_log_dir );
+	
+	pb_backupbuddy::save();
+}
+// ********** END 4.2 UPGRADE **********
 
 
 
@@ -294,7 +324,7 @@ if ( '0' === pb_backupbuddy::$options[ 'zip_method_strategy' ] ) {
 
 // Schedule daily housekeeping.
 if ( false === wp_next_scheduled( pb_backupbuddy::cron_tag( 'housekeeping' ) ) ) { // if schedule does not exist...
-	pb_backupbuddy::$classes['core']->schedule_event( time() + ( 60*60 * 2 ), 'daily', pb_backupbuddy::cron_tag( 'housekeeping' ), array() ); // Add schedule.
+	backupbuddy_core::schedule_event( time() + ( 60*60 * 2 ), 'daily', pb_backupbuddy::cron_tag( 'housekeeping' ), array() ); // Add schedule.
 }
 
 

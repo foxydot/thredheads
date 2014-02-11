@@ -13,7 +13,7 @@ $settings_form->add_setting( array(
 $settings_form->add_setting( array(
 	'type'		=>		'text',
 	'name'		=>		'no_new_backups_error_days',
-	'title'		=>		__('Send notification if no completed backups in X days', 'it-l10n-backupbuddy' ),
+	'title'		=>		__('Send notification after period of no backups', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 30] - Maximum number of days (set to 0 to disable) that may pass with no new backups created before sending an error notifcation email. Create schedules to automatically back up your site regularly. Alert notification emails will only be sent once every 24 hours at most.', 'it-l10n-backupbuddy' ),
 	'rules'		=>		'required|string[0-99999]',
 	'css'		=>		'width: 50px;',

@@ -76,6 +76,4 @@ $pluginbuddy_settings = array(
 
 // $settings is expected to be populated prior to including PluginBuddy framework. Do not edit below.
 require( dirname( __FILE__ ) . '/pluginbuddy/_pluginbuddy.php' );
-
-
 ?>

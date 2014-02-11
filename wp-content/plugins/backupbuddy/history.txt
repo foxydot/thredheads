@@ -1,3 +1,4 @@
+** See history_archived.txt for older version history. Most recent updates at bottom.
 4.0.0 - 2013-06-10 - Dustin Bolton
 	ENHANCEMENT:
 		Various user interface and layout improvements for usability and simplification.
@@ -128,11 +129,354 @@
 4.0.1.11 - 2013-07-02 - Dustin Bolton
 	Fixed Quick Start form directing to wrong URL after completion in Multisite.
 	Fixed javascript error that could cause backup status to stop updating despite backup potentially continuing behind the scenes.
-	*
 4.0.2 - 2013-07-02 - Dustin Bolton
-	Automatic updates release.
+	Automatic updates release of minor versions 4.0.1 through 4.0.1.11.
 4.0.2.1 - 2013-07-02 - Dustin Bolton
-	* off
-	Small changes.
-	
+	Minor changes.
+4.0.2.2 - 2013-08-15 - Dustin Bolton
+	See v4.1 release notes ABOVE.
+4.0.2.4 - 2013-08-16 - Dustin Bolton
+	ImportBuddy: Fixed problem where a renamed ZIP file could not determine location of database SQL file to restore (even though DAT file location was determined).
+	ImportBuddy unpacking no longer trimming base64 decoded unpack data to avoid risk of altering binary data packed into ImportBuddy such as test files, images, etc.
+4.1.0.1 - 2013-08-19 - Dustin Bolton
+	OVERVIEW (since 4.0.2.1-4.1):
+		This update focuses primarily on the Remote Destinations system with major feature additions, enhancements, and bug fixes to it.
+		Remote Destination performance across all destinations has improved, as well as robustness and adding various features such as transfer speed tracking for most destinations.
+		Dropbox destination added for users of PHP v5.3 or newer with _significant_ improvements including but not limited to: No more 150mb API limit, significant memory usage reduction, and multipart chunked sends for breaking up large files.
+		sFTP (beta) destination added. Provide feedback of success or any problems encountered during beta stage.
+		New S3 library in uses to support multipart chunked transfers.
+	Menu icon now has retina support for high resolution version.
+	File restoration temp directory cleanup is now part of periodic cleanup function.
+	ImportBuddy: cpanel database creation verifies valid characters are used.
+	New remote destination additions are now confirmed on next page as inline alert rather than popup javascript alert box.
+	Fixed update link showing minor version available on Server Info page even if on latest minor version.
+	Fixed "Recent Backups" page listing backups out of proper chronological order for some.
+	periodic_cleanup() now has a minimum age limit before orphaned fileoptions files will be purged. This helps keep Recent Backups page properly populated.
+	Deleting a backup via backups_list()'s form no longer immediately deletes its fileoptions file. The cleanup function is now handling all purging of this.
+	Removed call to undefined function on Error #4455484589.
+	Updated zipbuddy library regarding file_exists() issue.
+	Fixed issue where Recent Backups page may not always show all backups.
+	FEATURE:
+		New Dropbox destination available for users of PHP 5.3 or newer with much improved performance. Only displayed to users with PHP 5.3 or newer.
+		Improved performance and large file support.
+		Supports multipart chunking to increase file sizes able to be transferred to Dropbox.
+	ENHANCEMENT:
+		Added new "View Log" link on Remote Destinations "Recent Transfer Status" tab. Ability to view log details specific to a certain send. Useful for troubleshooting.
+	ENHANCEMENT:
+		Write speed information now available under "Transfer Information" column in Recent Remote Destinations send list for most destinations.
+	Remote destination sends now stored within individual fileoptions files prefixed with "send-" to prevent race conditions when multiple destination sends active simultaneously (ie due to chunking).
+	Misc minor destination bug fixes.
+	Misc improvement to logging for troubleshooting remote sends.
+	Updated Malware scan plan URL.
+	Many misc destination improvements behind the scenes.
+	ImportBuddy option to ignore existing WordPress tables now only warns rather than blocking proceeding.
+	S3 instantiation now casting SSL parameter to bool to insure proper passing.
+	FEATURE:
+		Amazon S3 destination updated to new version with support for chunked multipart file transfers for handling larger files.
+		All files transferred to S3 are now automatically encrypted with AES256 encryption on destination server.
+	Rackspace destination now masks API key in edit mode.
+	Fixed file viewer temporary files not being cleaned up after viewing.
+	Fixed "Extract File with Extraction Failure Does Not Clean Up the Backup Specific Temporary Directory".
+	Loopback error notification on Backups page now lists error details for troubleshooting in box.
+	Email destination test button on Settings page allows testing email sending capabilities.
+	When full error logging is enabled, backup error notification emails will include the log file for the backup as an attachment.
+	ImportBuddy: Fixed tooltip being hidden in popup windows due to z-index issue.
+	UI lib call for alert function now pre-initialized pb_backupbuddy::$ui in case it is not yet initialized.
+	Reversed order of history.txt so that newest updates are now at the top.
+	ENHANCEMENT:
+		Updated ZipBuddy library to now support extracting individual files via ZipArchive and Pclzip as fallbacks (in that order). - Jeremy
+	Fixed issue where Stash chunking could prevent backup limiting from ocurring.
+	Added additional check prior to sending to Stash to verify authentication credentials are valid to avoid error cascade.
+	Updated ZipBuddy library files to use pre-built test ZIP file.
+	Amazon S3: Prior to each chunked send any existing multipart transfers stalled will be aborted with S3 if they exceed cerain age to free up resources in S3 account.
+	Amazon S3: Periodic BackupBuddy housekeeping function will look for and cleanup and multipart chunk transfers (for destinations having chunking enabled). This will cleanup backups that stalled by checking they exceed a certain age (72hrs currently).
+	PHP database dump now logs which table it is about to dump.
+	PHP database dump now logs last query attempted on fatal failure (eg. on error mysql server went away).
+	Added additional check for existance of profile index when setting up profile for manually triggered backup.
+	Disabled spawn_cron() call for manual backups. Prevents very odd race condition where an additional spawned process could run concurrently -- but ONLY immediately after the database dump. This may have been the cause of some servers' cron failing to schedule immediately after the Database dump step.
+	Updated Windows ZIP executable ZIP file to include newer zip versions at a new URL: http://ithemes.com/backupbuddy_files/backupbuddy_windows_unzip.zip
+	Updated file_tree() function to handle missing wp-content and other edge cases. Sorts directories first. - Jeremy
+	ImportBuddy: Server Information Server Load no longer displayed in ImpotBuddy information for compatibility.
+	ImportBuddy: "Tour this page" link no longer displayed in Server Information section.
+	FEATURE (beta):
+		New BETA Remote Destination: sFTP (Secure FTP over SSH). Please provide feedback for this new beta feature.
+	Added sFTP icon for Remote Destination.
+4.1.0.3 - 2013-08-21 - Dustin Bolton
+	Remote Destination: Amazon S3 re-added support for existing buckets with disallowed characters such as underscores or dashes IF the bucket already exists. New buckets should match s3 naming conventions. Create buckets via the Amazon Console if non-standard naming is required.
+	Remote Destination: Amazon S3 clarified logging of determination whether to chunk or not. Added new constant for mimimum allowed chunk size.
+	Remote Destination: Stash clarified logging of determination whether to chunk or not. Added new constant for mimimum allowed chunk size.
+4.1.0.4 - 2013-08-28 - Dustin Bolton
+	New Automatic Upgrades & Licensing System - Complete overhaul
+	Removed old automatic upgrade & licensing system.
+	Fixed Multisite menu icon not displaying since last release due to retina update.
+	Remote destination test details on Recent Transfers section now denotes this as a test and uses the filename 'remote-send-test.php' for test transfers.
+4.1.1.0 - 2013-09-04 - Dustin Bolton
+	Improved error reporting on manual file send to Stash if unable to connect to account (ie bad password).
+	Reversed history.txt ordering to display latest updates at the bottom for compatibility with updater repository updating.
+	Fixed S3 file browser being unable to detect backup type since v4.1.
+	S3 file browser no longer displays files within subdirectories deeper than the destination directory/root.
+	S3 file browser no longer displays files that do not match the BackupBuddy filename format.
+	Bug since v4.1: S3 file limit fixed to not delete any files within a deeper subdirectory.
+	Bug since v4.1: S3 file limit fixed to not delete any files for a different site that are both in the same bucket / directory location for safety.
+	Critical S3 fix for bug since vBackupBuddy v4.1 under a SPECIFIC scenario which could result in inadvertant deletion of files within S3 bucket subdirectories deeper than the remote destinations'. Requirements for this to occur:
+		1) Must be running BackupBuddy v4.1.0.0 - v4.1.0.4.
+		1) Limits must be enabled for an S3 destination containing subdirectories within said destination's bucket & directory.
+		2) Subdirectories within this destination's bucket/directory must contain content that pushes the backup limit over the threshold.
+	Fixed undefined index in Dropbox PHPv5.3+ when no backups are available in location yet.
+	Added additional check to Dropbox destinations to not list directories. Also omitted from file limits even if the directory name matches a BackupBuddy filename format for an additional layer of security.
+4.1.1.1 - 2013-09-09 - Dustin Bolton
+	Database queries and error retrievals update to reference identifier $wpdb->dbh.
+	ImportBuddy now stores mysql connection in global $wpdb->dbh for compatibility with libraries using $wpdb->dbh for identifier in BackupBuddy.
+	Fixed remote destination send log being prematurely deleted after short period of time.
+	FTP upload no longer uses full path for send as the path is already in place via chdir().
+	Editing Remote Destination no longer resets destination name back to default.
+	mysqlbuddy PHP-based import now logs table creation to better indicate SQL import status.
+	mysqlbuddy PHP-based database dump now selects database rows limited to X number of rows at a time to help mitigate memory usage. X currently = 3000 rows.
+	Misc minor changes.
+4.1.1.2 - 2013-09-11 - Dustin Bolton
+	Zip file contents viewer now supports viewing .ini file contents as text.
+	Fixed trim_remote_send_stats() warning on remote destinations page due to missing. Default age-limit now set.
+	S3 bucket creation failure now logs server response for troubleshooting.
+4.1.1.3 - 2013-09-13 - Dustin Bolton
+	ImportBuddy:
+		Now stores a unique hash cookie for one hour to aid in usage without needing to login as often if re-starting the process or using additional tool pages.
+		Slight redesign adding new toolbar to top for additional pages.
+	Updated Amazon SDK to version 1.6.2.
+	Updated plugin meta information to be consistent across iThemes plugins, including new meta row information for Support & Documentation.
+4.1.1.5 - 2013-09-14 - Dustin Bolton
+	S3 SDK rolled back to v1.5.14 due to issues introduced by Amazon's newer version.
+	Fixed ImportBuddy error on Step 3.
+4.1.1.6 - 2013-10-02 - Packaging Bot (lib/updater)
+	Big rewrite to the updater in order to make the code more flexible. This improves compatibility with plugins that allow for remote updating of plugins and themes.
+	The updater now supports providing changelog details for plugins and themes that have updates available. These details can be viewed by clicking the "View version **** details" link for the appropriate plugin or theme.
+4.1.1.7 - 2013-10-02 - Dustin Bolton
+	ENHANCEMENT:
+		ImportBuddy: Now scans for php.ini file and warns of its existance and potential issues if found, particularly if importing to a new server.
+	FEATURE:
+		ImportBuddy: Ability to view MD5 file hash for backup files added.
+	ImportBuddy: Database test AJAX no longer passes success via HTML comment to prevent problems with comments being stripped server-side. eg by Cloudflare.
+	ImportBuddy: Mass database text replacement tool now available in ImportBuddy via the top menu bar to making replacements on existing WordPress installations.
+	Missing Backup page backup listing "View Hash" option re-added.
+	ENHANCEMENT:
+		Simplified backup listing using backup date & time as primary listing criteria.
+	Recent Backups page added Backup Type.
+	S3 SDK 1.6.2 re-deployed.
+	Updated S3 init and manage files to use modified method of getting bucket region to fix compatibility with some PHP 5.4 versions.s - Jeremy Trask
+	ENHANCEMENT:
+		Backup details now displays start and finish times of the overall backup process.
+	ENHANCEMENT:
+		Added File Size to Recent Backups listing.
+	Updated zbzipexec to use zip -h rather than zip -v for determining version for wider server support. - Jeremy Trask
+	No longer displaying S3 multipart upload cleanup filename & details by default. - Jeremy Trask
+	Fixed issue where file/directory excluder list did not show files for directories containing less than 3 files/directories within.
+	FEATURE:
+		New database table backup option "None" to not backup any database tables by default. A warning will be displayed in all logs to use with caution.
+	Fixed array to string conversion error on FTP management page.
+	Fixed invalid argument for foreach during integrity check when tests array is missing/invalid.
+	FEATURE:
+		Amazon S3 destination now supports setting the region for any new buckets that are created by BackupBuddy.
+	Malware scan affiliate links removed.
+4.1.1.12 - 2013-10-03 - Dustin Bolton
+	Fix for `Undefined index: ithemes_updater_path & associated error under some circumstances.`.
+	Server Information page link to force update to latest minor version removed until feature available in updater.
+	Addendum: Re-added Server Information page link to force update to latest minor version.
+4.1.1.13 - 2013-10-04 - Dustin Bolton for Updater
+	Enhancement: When releases with four version digits are released (such as 2.1.0.3), by default, the updater will not offer to update if just this last digit is updated. For instance, it will not automatically offer to update 2.1.0.1 to 2.1.0.3; rather, an automatic upgrade will become available when version 2.1.1 or greater is released. If you wish to force an update to these versions, you can add ithemes-updater-force-minor-update=1 to an admin page request (such as http://domain.com/wp-admin/index.php?ithemes-updater-force-minor-update=1) in order to force the updater make these releases available for an hour. If the update is not performed within the hour, the updater reverts back to default behavior.
+	Bug Fix: Corrected source of the following error when updating: Download failed. SSL certificate problem, verify that the CA cert is OK. Details: error:14090086:SSL routines:SSL3_GET_SERVER_CERTIFICATE:certificate verify failed
+	Bug Fix: Corrected source of the following warning: Warning: require_once(/api.php) [function.require-once]: failed to open stream: No such file or directory
+4.1.1.14 - 2013-10-07 - Packaging Bot (lib/updater)
+	Bug Fix: Corrected another source of the following warning which occur immediate after updating the plugin or theme: Warning: require_once(/api.php) [function.require-once]: failed to open stream: No such file or directory
+4.1.2.0 - 2013-10-07 - Dustin Bolton
+	S3 Remote Destination: Ability to copy remote S3 file back to server via management page.
+	S3 Remote Destination: Ability to get a download link to download remotely stored S3 file to your computer. Links valid for 1 hour.
+	Major version release of updates from 4.1.1.0 through 4.1.1.14.
+4.1.2.1 - 2013-10-08 - Dustin Bolton
+	Fixed multiple S3 copy to local issues.  Moved bucket region checking/setting to separate function to unify this code into one area so it may be used across multiple functions.
+	Fixed undefined index warning on Backup Details view when fileoptions unavailable.
+	Fixed Javascript warning in Chrome on Remote Destinations page.
+	BETA FEATURE:
+		FTP Destination path browser added. Browse your FTP server directories to help in picking FTP remote path.
+4.1.2.2 - 2013-10-14 - Dustin Bolton
+	Fixed cron hook filter not properly accepting existing incoming cron periods for plugins that run before BackupBuddy.
+	S3 destination: Translate returned bucket region of 'EU' to 'eu-west-1'.
+4.1.2.3 - 2013-10-28 - Packaging Bot (lib/updater)
+	Enhancement: Added a "Quick Release Updates" setting to the bottom of the licensing page. Enabling this option allows the site to receive automatic update notices for product quick releases (releases that do not have automatic update support by default).
+	Enhancement: Changed how the licensing page works on Multisite. Now it will appear at Settings > iThemes Licensing in the network admin Dashboard and at Settings > iThemes Licensing on sites when the current user is a network admin. This prevents exposing the licensing page to users that don't are not super users and thus should not be performing updates. As this update makes the functionality of the "Licensing Page Access" setting obsolete, the setting has been removed.
+	Enhancement: Using the ithemes-updater-force-minor-update query string variable will now force a data flush, allowing any available quick release updates to appear instantly.
+	Enhancement: Added "License" links to the Plugins and Themes pages for the Network Admin Dashboard of multisite installs.
+4.1.2.4 - 2013-10-30 - Dustin Bolton
+	Updated Stash panel links to http://ithemes.com/member/panel/stash.php
+	Fixed undefined notice warning when sending an error email alert based on PHP error reporting level.
+	Added new Stash storage upgrade links to configuration and management pages.
+	Updated suggested minimum WordPress version to 3.5 for maximum best functionality. Note: Older versions should function fine and we work to keep backward compatibility. However, some features may require newer versions.
+	New BETA feature: Files Only backup profile type. Does not include the Database in backups.
+	UI improvements for better consistency.
+	Fixed broken cpanel instruction URLs in ImportBuddy.
+	Various ImportBuddy modifications to support new Files Only type backups and skip database-related steps and verifications.
+	Various BackupBuddy modifications to support new Files Only type backups and improve display of type.
+	Added additional checks and warnings for verifying exclusions of database tables, paths, and files do not get accidently excluded without notification.
+	Fixed Quick Setup Blogger Schedules having incorrect name on Scheduling page.
+	Prepared Files backup type for new inclusions-based file/path selection.
+	Misc minor bug fixes.
+	Misc error message wording improvements.
+4.1.2.5 - 2013-10-31 - Dustin Bolton
+	Happy Halloween!
+	ENHANCEMENT:
+		Email destination now includes the site URL in the subject for easier determination of which site is sending the backup in addition to the email body.
+	ImportBuddy: If previous ABSPATH was / then ABSPATH database migrations are skipped as we cannot safely search/replace on simply "/" as it will break many things.
+4.1.2.6 - 2013-11-01 - Dustin Bolton
+	ENHANCEMENT:
+		On Remote Destination hover:
+		Remote Destinations page: Text now appears indicating that clicking will allow viewing Remote Files.
+		Backups listing to send backup: Text now appears indicating that clicking will send backup to this destination.
+		Migration page backups listing to migrate backup: Text now appears indicating that clicking will migrate the backup to this destination.
+	Empty parsed fileoptions file contents now returns descriptive error and status logs raw file contents for troubleshooting.
+4.2.5 - 2013-12-12 - Dustin Bolton
+	Compilation of quick release versions: 4.1.2.7, 4.1.2.8.
+	FEATURE:
+		New backup type: Files Only (beta)
+	FEATURE:
+		Amazon S3 destination now optionally supports Reduced Redundancy storage class for cheaper storage options. See Amazon for details about this class of storage.
+	FEATURE:
+		Added command line support via WP-CLI < http://wp-cli.org >. Command line backups run in classic mode, outputting status log to command line.
+	FEATURE:
+		FTP path browser out of beta.
+		Easily click to view remote file paths on the FTP server you are adding to easily determine which path to send backups into.
+	ENHANCEMENT:
+		Updated entire BackupBuddy user interface to support WordPress 3.8's new MP6 styling, look, and feel.
+	ENHANCEMENT:
+		Getting Started page removed; default page is now the 'Backups' page for simplifying plugin.
+		Help/instructions added to "Help" tab at upper right of each page.
+	ENHANCEMENT:
+		Profiles are now configured on the 'Backups' page instead of the 'Settings' page for easier configuration.
+	ENHANCEMENT:
+		Contextual help added to BackupBuddy pages. "Help" tab at upper right of pages displays additional help and information, including links to Support & Knowledge Base.
+	ENHANCEMENT:
+		Improved instructions on 'Restore / Migrate' page.
+	ENHANCEMENT:
+		Quick Setup moved to Backup page, popping up on unconfigured sites.
+		Optionally skip & dismiss by clicking the large "Skip Quick Setup" button in the window. Re-open Quick Setup by clicking link on upper right of page.
+	ENHANCEMENT:
+		Added Stash ability to limit number of Files Only backup type.
+	ENHANCEMENT:
+		General overall improvement to BackupBuddy user interfaces.
+	ENHANCEMENT:
+		Backup mode setting (Modern vs Classic mode) now applies to both manual and scheduled backups.
+	ENHANCEMENT:
+		Added BackupBuddy directories (backup storage, logs, temp directory) to Server Tools URLs & Paths page.
+	Files Only backup types no longer require wp-config.php inclusion to pass integrity check.
+	Files Only backup types no longer warn about database not being included.
+	More strings localized for better translations.
+	Fixed bug where cached integrity scan results would not be shown if scanning for that profile type was set as disabled, even if the results were already known.
+	Fixed bug where loading the Backups page would attempt to scan backups created with a profile where integrity scanning was disabled.
+	Added advanced sftp logging when full error logging enabled.
+	ImportBuddy now outputs to status log where it is looking for SQL files at when searching for db_1.sql.
+	Manual temporary file cleanup now cleans up all temporary files regardless of age.
+	Page Tour links now appear in meta links on upper right of pages next to Help links.
+	Quick Setup link on Backup page now appears in meta links on upper right of pages next to Help links.
+	Schedules page modified for better usability.
+	Moved backup reminders option to Advanced Settings tab as most users will never desire to disable this.
+	New BackupBuddy installations now include the backup time in the filename by default.
+	Moved backup time in filename option to Advanced Settings tab.
+	Files only backup type no longer displays 'Database skipped' note as the database backup is not applicable to this type.
+	Fixed portion of integrity check log from not being displayed during backup.
+	A warning is now displayed in the status log noting exclusions if wp-config.php unable to be found in the integrity checked.
+	New methods backupbuddy_core::getBackupDirectory(), backupbuddy_core::getTempDirectory(), backupbuddy_core::getLogDirectory() for retrieving those paths.
+	Fixed {backup_size} item in email notification template from only showing as 0MB. Correctly displays size now.
+	Backup directory, temp directory, and log directory are no longer stored in options if using default locations. A blank value is stored to indicate default. Custom locations are set by defining a path.
+	New options data structure version 8. Upgrade/activation script resets default backup directory set to blank value unless a custom location has been defined. Temp and log directories set to blank value as these are not currently user-definable.
+	Fixed chunking not activating when set to 5MB (the minimum) for Stash or S3 destinations.
+	Remote send now verifies file exists before proceeding to attempt file transfer to prevent errors.
+	Fixed Stash and S3 destination edge case with chunking set to exactly 5mb.
+	Early stages of iThemes Sync implementation.
+	Fixed FTP path picker hover text when hovering the select icon.
+	Transition to using $wpdb class for database interactions. BackupBuddy-side functionality migrated.  ImportBuddy side partionally transitioned.
+	ImportBuddy: If database prefix being imported previously contained more than one underscore then a notice is displayed suggesting importing using only one underscore to maximize compatibility and stick with WordPress conventions.
+	ImportBuddy: If existing database tables exist Step 3 provides information that the Advanced Options button has options for deleting existing tables.
+	Multisite: Fixed warning when importing an old Exported backup.
+	Multisite: Tested Multisite compatibility with latest WordPress version to verify compatibility.
+	Remote Destination transfer logs are now kept for 4 days instead of 2 to ease troubleshooting.
+	Added text comment to top of importbuddy.php to notify users that if they are reading this when trying to restore their site, their server is not properly handling PHP files.
+	Various UI fixes for 3.8 compatibility.
+	Fixed remote destination picker on Scheduling page.
+	Reduced font size on Backup page process bar slightly for some Linux OS compatibility issues with overflow.
+	Fixed directory size listing extending off side of page requiring scrolling on smaller screens.
+	Fixed files profile types sometimes showing as Database type due to integrity scan misdetection of type.
+	Misc bug fixes, tweaks, and other small changes.
+4.2.6 - 2013-12-12 - Dustin Bolton
+	Version number now included in asset enqueing to prevent caching of old assets after upgrade.
+4.2.7 - 2013-12-12 - Dustin Bolton
+	ImportBuddy: Fixed undefined index $rows in mysqlbuddy during command line DB import.
+4.2.8.1 - 2013-12-13 - Packaging Bot (lib/updater)
+	Enhancement: Recently updated plugins and themes no longer report that an update is available.
+	Enhancement: Added alternate line styling to the listings on the licensing page.
+	Enhancement: Products with iThemes in the name will now properly capitalize the name.
+	Enhancement: The updater and licensing system now handle iThemes server outages without causing long page delays or by reporting confusing error messages.
+4.2.9.2 - 2013-12-17 - Dustin Bolton
+	Fixed bug where character encoding was not forced to UTF8 on database import when in compatibility mode (PHP-based) database import mode.
+	Fixed Backup page 'Send to remote destination as part of backup process.' feature not sending to remote destination.
+	FEATURE:
+		Added new Scheduling period of Twice Weekly.
+	Fixed unintentional error logging of beta iThemes Sync details when using BackupBuddy alongside iThemes Sync.
+	Misc UI adjustments.
+	Fixed 'View Hash' link on backups listing not working.
+	Fixed wrapping of long text on Settings forms.
+4.2.9.3 - 2013-12-17 - Dustin Bolton
+	Fixed double semicolon in mysqlbuddy at end of line.
+	Added additional logging to PB flush() function.
+	PB flush() function now only sets ini and env variables once per PHP load.
+4.2.9.4 - 2013-12-18 - Packaging Bot (lib/updater)
+	Bug Fix: Removed unneeded check on package-info.ithemes.com which was causing performance issues on some sites.
+4.2.10.1 - 2013-12-18 - Dustin Bolton
+	Fixed circular reference in flush() function and status() causing trouble running ImportBuddy. since 4.2.9.3.
+	Fixed database mass text replace tool error in ImportBuddy since v4.2.
+4.2.10.2 - 2013-12-19 - Packaging Bot (lib/updater)
+	Bug Fix: Licensing will now be universal across all sites of a multisite network. This means that you will only need to license on one site to have the license apply across the entire network.
+4.2.10.4 - 2013-12-19 - Dustin Bolton
+	Fixed deprecated notice ereg_replace when setting backup note.
+	BackupBuddy buffer flushing can be skipped by advanced option OR defining the following in wp-config.php if backup hangs part-way through dumping databases in compatibility mode: define( 'BACKUPBUDDY_NOFLUSH', true );
+	Fixed modal popups not working on Server Tools page.
+4.2.10.6 - 2013-12-20 - Dustin Bolton
+	Updated alpha iThemes Sync functionality.
+4.2.11.0 - 2013-12-23 - Dustin Bolton
+	Fixed Profile Add button not working on Backups page.
+4.2.12.0 - 2013-12-23 - Dustin Bolton
+	Multisite: Fixed missing icon for subsite Multisite Export menu item & clicking going to a non-existant 404 page.
+4.2.12.1 - 2013-12-23 - Dustin Bolton
+	Multisite: Fixed bug where users would be skipped on import even though they did not already exist.
+4.2.12.2 - 2014-01-09 - Dustin Bolton
+	Major updates to xzipbuddy library improving performance, compatibility, and aids in troubleshooting server problems. - Jeremy Trask
+	Added enhanced iThemes Sync support for additional BackupBuddy interoperability and features.
+	Backup page no longer waits for document ready to perform AJAX request to check status. Prevents Status page from hanging.
+	ImportBuddy: DBreplace PHP-based replacements now retrieve content to replace 500 rows per query to reduce memory usage.
+	Misc minor bug updates & small performance tweaks.
+	Mysqlbuddy performance improved for PHP-based database dumps.
+4.2.12.4 - 2014-01-09 - Dustin Bolton
+	Fixed Sync backup stats not being available.
+4.2.12.6 - 2014-01-13 - Dustin Bolton
+	Added new Sync overview verb return data: latestBackupProcess
+4.2.12.7 - 2014-01-13 - Dustin Bolton
+	Fixed hardcoded uploads directory for logging in Settings page code.
+	Expired transient deletion now directly deletes in SQL rather than looping for performance boost.
+	Fixed hardcoded access permission based on ability to activate plugins rather configured access level (via Settings page).
+4.2.12.9 - 2014-01-13 - Dustin Bolton
+	Removal of remaining hardcoded WP_CONTENT_DIR usages.
+	Added Sync verb backupbuddy-get-latestBackupProcess.
+4.2.12.10 - 2014-01-22 - Dustin Bolton
+	Fixed inability to clear out ImportBuddy password on Settings page.
+	ImportBuddy provides more details on failure detecting writability on unpacking.
+	Fixed Database Check & Scan features not working on Server Tools -> Database page.
+	Began updating temp directory calls to all use backupbuddy_core::getTempDirectory()
+	Updated remaining usages of wp-content/uploads to direct to proper uploads directory where applicable.
+	Misc minor fixes & tweaks.
+	Updated Sync download URL for direct linking.
+4.2.12.12 - 2014-01-22 - Dustin Bolton
+	Fixed Send Backup to Remote Destination & Stop Backup buttons not working after backup completes.
+	Added beginnings of BackupBuddy API v0.
+4.2.13.0 - 2014-01-23 - Dustin Bolton
+	Full release of quick release updates 4.2.12.1 through 4.2.12.12.
+	Fixed non-static API functions.
+	Fixed undefined index warnings on bad backups during integrity scan.
+	Fixed Stash feature 'Copy to Local' not functioning.
+	Improved error differentiation for Multisite failure to find required form data on moving to next step.
 	

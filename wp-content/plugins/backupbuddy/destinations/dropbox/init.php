@@ -1,11 +1,11 @@
 <?php
 
-// DO NOTE CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
+// DO NOT CALL THIS CLASS DIRECTLY. CALL VIA: pb_backupbuddy_destination in bootstrap.php.
 
 class pb_backupbuddy_destination_dropbox { // Change class name end to match destination name.
 	
 	public static $destination_info = array(
-		'name'			=>		'Dropbox',
+		'name'			=>		'Dropbox v1 (legacy)',
 		'description'	=>		'Dropbox.com is a popular online storage provider offering 2 GB of free storage to start with. Premium upgrades are available.',
 	);
 	
@@ -38,7 +38,7 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 	 *	@param		array			$files		Array of one or more files to send.
 	 *	@return		boolean						True on success, else false.
 	 */
-	public static function send( $settings = array(), $files = array() ) {
+	public static function send( $settings = array(), $files = array(), $send_id = '' ) {
 		
 		$token = &$settings['token'];
 		$directory = '/' . ltrim( $settings['directory'], '/\\' );
@@ -88,10 +88,13 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 				$meta_data = $dropbuddy->get_meta_data( $directory );
 				
 				// Create array of backups and organize by date
-				$bkupprefix = pb_backupbuddy::$classes['core']->backup_prefix();
+				$bkupprefix = backupbuddy_core::backup_prefix();
 				
 				$backups = array();
 				foreach ( (array) $meta_data['contents'] as $looping_file ) {
+					if ( '1' == $looping_file['is_dir'] ) { // Additional safety layer to ignore subdirectory.
+						continue;
+					}
 					// check if file is backup
 					if ( ( strpos( $looping_file['path'], 'backup-' . $bkupprefix . '-' ) !== false ) ) {
 						$backups[$looping_file['path']] = strtotime( $looping_file['modified'] );
@@ -114,7 +117,7 @@ class pb_backupbuddy_destination_dropbox { // Change class name end to match des
 					}
 					
 					if ( $delete_fail_count !== 0 ) {
-						pb_backupbuddy::$classes['core']->mail_error( sprintf( __('Dropbox remote limit could not delete %s backups.', 'it-l10n-backupbuddy' ), $delete_fail_count) );
+						backupbuddy_core::mail_error( sprintf( __('Dropbox remote limit could not delete %s backups.', 'it-l10n-backupbuddy' ), $delete_fail_count) );
 					}
 				}
 			} else {

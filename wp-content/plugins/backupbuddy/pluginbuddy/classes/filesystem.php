@@ -316,6 +316,25 @@ class pb_backupbuddy_filesystem {
 		}
 	}
 	
+	// Newest to oldest.
+	function glob_by_date( $pattern ) {
+		$file_array = array();
+		$glob_result = glob( $pattern );
+		if ( ! is_array( $glob_result ) ) {
+			$glob_result = array();
+		}
+		foreach ( $glob_result as $filename ) {
+			$ctime = filectime( $filename );
+			while( isset( $file_array[$ctime] ) ) { // Avoid collisions.
+				$ctime = $ctime + 0.1;
+			}
+			$file_array[$ctime] = $filename; // or just $filename
+		}
+		krsort( $file_array );
+		return $file_array;
+		
+	} // End glob_by_date().
+	
 	
 } // End class pluginbuddy_settings.
 

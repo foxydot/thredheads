@@ -104,6 +104,384 @@ if ( !class_exists( "pluginbuddy_zbzipcore" ) ) {
 	
 	}
 
+	/**
+	 *	pb_backupbuddy_zip_helper Class
+	 *
+	 *	Class that is used during a zip archive file build to monitor the progress
+	 *	of the build and provide optional logging and actions to keep the process
+	 *	running. This is a parent class which a method will extend for a method
+	 *	specific class that contains additional functions, etc. to manage the specific
+	 *	needs of that method.
+	 *
+	 */
+	abstract class pb_backupbuddy_zip_helper {
+	
+		// Enumerate the burst modes
+		const ZIP_SINGLE_BURST = 1;
+		const ZIP_MULTI_BURST  = 2;
+		
+		// Various period defaults
+		const ZIP_DEFAULT_BURST_MAX_PERIOD = 30;
+		const ZIP_DEFAULT_BURST_THRESHOLD_PERIOD = 10;
+		const ZIP_DEFAULT_LOG_THRESHOLD_PERIOD = 10;
+		const ZIP_DEFAULT_TICKLE_THRESHOLD_PERIOD = 10;
+	
+		protected $_added_dir_count = 0;
+		protected $_added_file_count = 0;
+		protected $_burst_threshold_period = 0;
+		protected $_burst_start_time = 0;
+		protected $_burst_max_period = 0;
+		protected $_log_threshold_period = 0;
+		protected $_log_start_time = 0;
+		protected $_logging_usage = false;
+		protected $_tickle_threshold_period = 0;
+		protected $_tickle_start_time = 0;
+		protected $_start_user_time = 0;
+		protected $_elapsed_user_time = 0;
+		protected $_server_tickling = false;
+		protected $_server_tickler = '';
+		protected $_burst_mode = 0;
+		
+		public function __construct() {
+		
+			$now = time();
+			
+			$this->set_burst_start_time( $now );
+			$this->set_burst_max_period( 'auto' );
+			//$this->set_burst_threshold_period( 'auto' );
+			$this->set_log_start_time( $now );
+			$this->set_log_threshold_period( self::ZIP_DEFAULT_LOG_THRESHOLD_PERIOD );
+			$this->set_tickle_start_time( $now );
+			$this->set_tickle_threshold_period( self::ZIP_DEFAULT_TICKLE_THRESHOLD_PERIOD );
+			$this->initialize_logging_usage();
+			$this->set_server_tickling( true );
+			$this->set_burst_mode( self::ZIP_MULTI_BURST );
+			$this->_server_tickler = '<!--' . str_shuffle( substr( str_repeat( implode( '', range( 'a', 'z' ) ), 40 ), 0, 1024 ) ) . '-->' . chr(13) . chr(10);
+
+		}
+		
+		public function __destruct() {
+		
+		}
+		
+		public function get_added_dir_count() {
+		
+			return $this->_added_dir_count;
+		
+		}
+	
+		public function set_added_dir_count( $count = 0 ) {
+		
+			$this->_added_dir_count = $count;
+			return $this;
+		
+		}
+	
+		public function incr_added_dir_count( $incr = 1 ) {
+		
+			$this->_added_dir_count += $incr;
+			return $this;
+		
+		}
+	
+		public function get_added_file_count() {
+		
+			return $this->_added_file_count;
+		
+		}
+		
+		public function set_added_file_count( $count = 0 ) {
+		
+			$this->_added_file_count = $count;
+			return $this;
+		
+		}
+		
+		public function incr_added_file_count( $incr = 1 ) {
+		
+			$this->_added_file_count += $incr;
+			return $this;
+		
+		}
+		
+		public function get_burst_threshold_period() {
+		
+			return $this->_burst_threshold_period;
+		
+		}
+	
+		public function set_burst_threshold_period( $period = self::ZIP_DEFAULT_BURST_THRESHOLD_PERIOD ) {
+		
+			$burst_max_period = 0;
+		
+			if ( true === is_string( $period ) ) {
+			
+				switch ( $period ) {
+				
+					case 'auto':
+						// If auto then set based on burst max period
+						if ( 0 === ( $burst_max_period = $this->get_burst_max_period() ) ) {
+						
+							// Not set yet so we need to set it with auto
+							// Ensure we don't get into a recursive loop...
+							$burst_max_period = $this->set_burst_max_period( 'auto', false )->get_burst_max_period();
+						
+						}
+					
+						// Bit of an arbitrary proportion...
+						$this->_burst_threshold_period = ( $burst_max_period / 3 );
+						break;
+						
+					default:
+						// Unknown mode so use default value
+						$this->_burst_threshold_period = self::ZIP_DEFAULT_BURST_THRESHOLD_PERIOD;
+				
+				}
+			
+			} else {
+			
+				// Assume integer?
+				$this->_burst_threshold_period = $period;
+				
+			}
+			
+			return $this;
+		
+		}
+	
+		public function get_burst_start_time() {
+		
+			return $this->_burst_start_time;
+		
+		}
+	
+		public function set_burst_start_time( $time = 0 ) {
+		
+			( 0 === $time ) ? $this->_burst_start_time = time() : $this->_burst_start_time = $time ;
+			return $this;
+		
+		}
+	
+		public function get_burst_max_period() {
+		
+			return $this->_burst_max_period;
+		
+		}
+	
+		public function set_burst_max_period( $period = self::ZIP_DEFAULT_BURST_MAX_PERIOD, $auto_set_threshold = true ) {
+		
+			$configured_execution_time = @get_cfg_var( 'max_execution_time' );
+			$current_execution_time = @ini_get( 'max_execution_time' );
+		
+			if ( true === is_string( $period ) ) {
+			
+				switch ( $period ) {
+				
+					case 'auto':
+						// Try for the currently set execution time
+						if ( ( false === $current_execution_time ) ||
+						     ( 0 === (int) $current_execution_time ) ||
+						     ( 7200 === (int) $current_execution_time ) ) {
+						
+							// Couldn't get a value or was 0 or 7200 so try for configured value
+							if ( false === $configured_execution_time ) {
+						
+								// Couldn't get a configured value for some reason so use default
+								$this->_burst_max_period = self::ZIP_DEFAULT_BURST_MAX_PERIOD;
+							
+							} else {
+						
+								// Got a configured value so use it
+								$this->_burst_max_period = (int) $configured_execution_time;
+						
+							}
+							
+						} else {
+						
+							// Got a non-zero current execution time so use it
+							$this->_burst_max_period = (int) $current_execution_time;
+						
+						}
+						
+						// If set by auto then make sure we (re)set threshold as auto _unless_
+						// told not to...
+						if ( true === $auto_set_threshold ) {
+						
+							$this->set_burst_threshold_period( 'auto' );
+							
+						}
+						break;
+					
+					default:
+						// Unknown mode so use default value
+						$this->_burst_max_period = self::ZIP_DEFAULT_BURST_MAX_PERIOD;
+				
+				}
+			
+			} else {
+			
+				// Assume integer?
+				$this->_burst_max_period = $period;
+			
+			}
+		
+			return $this;
+		
+		}
+	
+		public function get_log_threshold_period() {
+		
+			return $this->_log_threshold_period;
+		
+		}
+	
+		public function set_log_threshold_period( $period = self::ZIP_DEFAULT_LOG_THRESHOLD_PERIOD ) {
+		
+			$this->_log_threshold_period = $period;
+			return $this;
+		
+		}
+	
+		public function get_log_start_time() {
+		
+			return $this->_log_start_time;
+		
+		}
+	
+		public function set_log_start_time( $time = 0 ) {
+		
+			( 0 === $time ) ? $this->_log_start_time = time() : $this->_log_start_time = $time ;
+			return $this;
+		
+		}
+		
+		public function initialize_logging_usage( $reset = true ) {
+		
+			$usage_data = array();
+		
+			// Must determine if we can log usage data
+			if ( function_exists( 'getrusage' ) && is_callable( 'getrusage' ) ) {
+				
+				$this->_logging_usage = true;
+		
+				// We need to know the user time value at the start so we can monitor how
+				// much actual user time we are using (which counts against max_execution_time)
+				// We call this when object is created to maek sure the init is done but we can
+				// make a later call closer to when we wnt to start monitoring it and that will
+				// reset the start time.
+				if ( ( 0 === $this->_start_user_time ) || ( true === $reset ) ) {
+			
+					$usage_data = getrusage();
+					$this->_start_user_time = $usage_data[ 'ru_utime.tv_sec' ];
+			
+				}
+			
+			}
+			
+		}
+		
+		public function is_logging_usage() {
+		
+			return ( true === $this->_logging_usage );
+		
+		}
+		
+		public function get_tickle_threshold_period() {
+		
+			return $this->_tickle_threshold_period;
+		
+		}
+	
+		public function set_tickle_threshold_period( $period = self::ZIP_DEFAULT_TICKLE_THRESHOLD_PERIOD ) {
+		
+			$this->_tickle_threshold_period = $period;
+			return $this;
+		
+		}
+	
+		public function get_tickle_start_time() {
+		
+			return $this->_tickle_start_time;
+		
+		}
+	
+		public function set_tickle_start_time( $time = 0 ) {
+		
+			( 0 === $time ) ? $this->_tickle_start_time = time() : $this->_tickle_start_time = $time ;
+			return $this;
+		
+		}
+	
+		public function set_server_tickling( $tickle = true ) {
+		
+			$this->_server_tickling = $tickle;
+			return $this;
+		
+		}
+		
+		public function get_server_tickling() {
+		
+			return $this->_server_tickling;
+		
+		}
+		
+		public function is_server_tickling() {
+		
+			return ( true === $this->_server_tickling );
+		
+		}
+		
+		public function get_server_tickler() {
+		
+			return $this->_server_tickler;
+		
+		}
+		
+		public function set_burst_mode( $burst_mode = self::ZIP_MULTI_BURST ) {
+		
+			$this->_burst_mode = $burst_mode;
+			return $this;
+		
+		}
+		
+		public function get_burst_mode() {
+		
+			return $this->_burst_mode;
+		
+		}
+		
+		public function is_multi_burst() {
+		
+			return ( self::ZIP_MULTI_BURST === $this->_burst_mode );
+			
+		}
+		
+		public function connection_status_tostring( $status ) {
+		
+			$status_name = '';
+			
+			switch ( $status ) {
+			
+				case CONNECTION_NORMAL:
+					$status_name = 'Normal';
+					break;
+				case CONNECTION_ABORTED:
+					$status_name = 'Aborted';
+					break;
+				case CONNECTION_TIMEOUT:
+					$status_name = 'Timeout';
+					break;
+				default:
+					$status_name = 'Unknown';
+			
+			}
+			
+			return $status_name;
+		
+		}
+	
+	}
+
 	abstract class pluginbuddy_zbzipcore {
 	
 		// status method type parameter values - would like a class for this
@@ -792,7 +1170,7 @@ if ( !class_exists( "pluginbuddy_zbzipcore" ) ) {
 					// TODO: Supposedly change the perms on the item so we can delete it?
 					@chmod( $directory . "/" . $item, 0777 );
 					
-					if ( !$this->delete_directory__recursive( $directory . "/" . $item ) ) {
+					if ( !$this->delete_directory_recursive( $directory . "/" . $item ) ) {
 					
 						return false;
 						
@@ -820,7 +1198,7 @@ if ( !class_exists( "pluginbuddy_zbzipcore" ) ) {
 			$sanitized_exclusions = array();
 			
 			pb_backupbuddy::status( 'details', 'Creating backup exclusions file `' . $file . '`.' );
-			//$exclusions = pb_backupbuddy::$classes['core']->get_directory_exclusions();
+			//$exclusions = backupbuddy_core::get_directory_exclusions();
 			
 			// Test each exclusion for validity (presence) and drop those not actually present
 			foreach( $exclusions as $exclusion ) {

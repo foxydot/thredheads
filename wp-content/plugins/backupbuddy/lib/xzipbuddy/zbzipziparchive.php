@@ -521,6 +521,7 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 						$this->_method_details[ 'attr' ][ 'is_lister' ] = true;
 						$this->_method_details[ 'attr' ][ 'is_commenter' ] = true;
 						$this->_method_details[ 'attr' ][ 'is_unarchiver' ] = true;
+						$this->_method_details[ 'attr' ][ 'is_extractor' ] = true;
 						
 						pb_backupbuddy::status( 'details', __('ZipArchive test PASSED.','it-l10n-backupbuddy' ) );
 						$result = true;
@@ -635,7 +636,7 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 			$za = NULL;
 			$stat = array();
 			
-			// This should give us a new archive object, of not catch it and bail out
+			// This should give us a new archive object, if not catch it and bail out
 			try {
 			
 				$za = new pluginbuddy_ZipArchive();
@@ -715,9 +716,205 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 		 */
 		protected function extract_generic_selected( $zip_file, $destination_directory = '', $items ) {
 		
-			// Should never get here
-			return false;
+			$result = false;
+			$za = NULL;
 			
+			// This should give us a new archive object, if not catch it and bail out
+			try {
+			
+				$za = new pluginbuddy_ZipArchive();
+				$result = true;
+				
+			} catch ( Exception $e ) {
+			
+				// Something fishy - the methods indicated ziparchive but we couldn't find the class
+				$error_string = $e->getMessage();
+				pb_backupbuddy::status( 'details', sprintf( __('ziparchive indicated as available method but error reported: %1$s','it-l10n-backupbuddy' ), $error_string ) );
+				$result = false;
+				
+			}
+			
+			// Only continue if we have a valid archive object
+			if ( true === $result ) {
+				
+				$result = $za->open( $zip_file );
+				
+				// Make sure we opened the zip ok
+				if ( true === $result ) {
+				
+					// Now we need to take each item and run an unzip for it - unfortunately there is no easy way of combining
+					// arbitrary extractions into a single command if some might be to a 
+					foreach ( $items as $what => $where ) {
+			
+						$rename_required = false;
+						$result = false;
+				
+						// Decide how to extract based on where
+						if ( empty( $where) ) {
+					
+							// First we'll extract and then junk the path
+							$result = $za->extractTo( $destination_directory, $what );
+								
+							// Unlike exec zip we have to effectively junk the path after the extraction
+							// Do this by renaming the file to the destination directory and then getting rid of any directory
+							// structure it was under. If dirname is not . then we know there is a directry path and not
+							// just a simple file name (remember that $what should _not_ have any leading slash whether
+							// it is a filepath or a simple filename)
+							if ( "." != dirname( $what ) ) {
+							
+								rename( $destination_directory . DIRECTORY_SEPARATOR . $what,
+										$destination_directory . DIRECTORY_SEPARATOR . basename( $what) );
+										
+								// Get the path component of $what - note that dirname() adds a leading slash
+								// even if none was present originally. We must get the first directory component only
+								// so we can do a recursive delete on it. This is a bit klunky but functional.
+								$whatpath = $what;
+								do {
+									$whatpath = dirname( $whatpath );
+								} while ( 1 < strlen( dirname( $whatpath ) ) );
+
+								// Now we can do the recursive delete from that top level component
+								$this->delete_directory_recursive( $destination_directory . $whatpath );
+
+							}
+															
+					
+						} elseif ( !empty( $where ) ) {
+					
+							if ( $what === $where ) {
+							
+								// Check for wildcard directory extraction like dir/* => dir/*
+								if ( "*" == substr( trim( $what ), -1 ) ) {
+								
+									// Get our path match string (just clip off the wildcard)
+									$whatroot = substr( trim( $what ), 0, -1 );
+									$file_count = $za->numFiles;
+								
+									// Crikey, it's a directory tree extraction - don't panic
+									// We need to go through the whole zip and extract each file that matches
+									for ( $i = 0; $i < $file_count; $i++ ) {
+									
+										// Get the filename by index and see if it's in the tree
+										$filename = $za->getNameIndex( $i );
+										if ( 0 === strpos( $filename, $whatroot ) ) {
+										
+											// $what matched the root of this filename so extract it
+											$result = $za->extractTo( $destination_directory, $filename );
+
+											if ( false === $result ) {
+												
+												// An extraction failed so bail out here - this should just
+												// drop us through to the post-processing of $result which on
+												// a false should then drop us out of the foreach loop
+												break;
+												
+											}
+										
+										}
+									
+									}
+								
+								} else {
+								
+									// It's just a single file extraction - breath a sign of relief
+									// Extract to same directory structure - don't junk path, no need to add where to destnation as automatic
+									$result = $za->extractTo( $destination_directory, $what );
+
+								}
+						
+							} else {
+						
+								// First we'll extract and then junk the path
+								$result = $za->extractTo( $destination_directory, $what );
+								
+								// Unlike exec zip we have to effectively junk the path after the extraction
+								// Do this by renaming the file to the destination directory and then getting rid of any directory
+								// structure it was under. If dirname is not . then we know there is a directry path and not
+								// just a simple file name (remember that $what should _not_ have any leading slash whether
+								// it is a filepath or a simple filename)
+								if ( "." != dirname( $what ) ) {
+								
+									rename( $destination_directory . DIRECTORY_SEPARATOR . $what,
+											$destination_directory . DIRECTORY_SEPARATOR . basename( $what) );
+											
+									// Get the path component of $what - note that dirname() adds a leading slash
+									// even if none was present originally. We must get the first directory component only
+									// so we can do a recursive delete on it. This is a bit klunky but functional.
+									$whatpath = $what;
+									do {
+										$whatpath = dirname( $whatpath );
+									} while ( 1 < strlen( dirname( $whatpath ) ) );
+
+									// Now we can do the recursive delete from that top level component
+									$this->delete_directory_recursive( $destination_directory . $whatpath );
+
+								}
+															
+								// Will need to rename if the extract is ok
+								$rename_required = true;
+						
+							}
+					
+						}
+				
+						// Note: we don't open the file and then do stuff but it's all done in one action
+						// so we need to interpret the return code to dedide what to do
+						// Currently we can only distinguish between success and failure but no finer grain
+						if ( true === $result ) {
+					
+							pb_backupbuddy::status( 'details', sprintf( __('ziparchive extracted file contents (%1$s from %2$s to %3$s%4$s)','it-l10n-backupbuddy' ), $what, $zip_file, $destination_directory, $where ) );
+
+							// Rename if we have to
+							if ( true === $rename_required) {
+							
+								// Note: we junked the path on the extraction so just the filename of $what is the source but
+								// $where could be a simple file name or a file path 
+								$result = $result && rename( $destination_directory . DIRECTORY_SEPARATOR . basename( $what ),
+															 $destination_directory . DIRECTORY_SEPARATOR . $where );
+							
+							}
+
+						} else {
+					
+							// For now let's just print the error code and drop through
+							$error_string = $za->errorInfo();
+							pb_backupbuddy::status( 'details', sprintf( __('ziparchive failed to open/process file to extract file contents (%1$s from %2$s to %3$s%4$s) - Error Info: %5$s.','it-l10n-backupbuddy' ), $what, $zip_file, $destination_directory, $where, $error_string ) );
+					
+							// May seem redundant but belt'n'braces
+							$result = false;
+							
+						}
+					
+						// If the extraction failed (or rename after extraction) then break out of the foreach and simply return false
+						if ( false === $result ) {
+					
+							break;
+						
+						}
+					
+					}
+				
+				} else {
+				
+					// Couldn't open archive - will return for maybe another method to try
+					$error_string = $za->errorInfo( $result );
+					pb_backupbuddy::status( 'details', sprintf( __('ZipArchive failed to open file to extract contents (%1$s to %2$s) - Error Info: %3$s.','it-l10n-backupbuddy' ), $zip_file, $destination_directory, $error_string ) );
+
+					// Return an error code and a description - this needs to be handled more generically
+					//$result = array( 1, "Unable to get archive contents" );
+					// Currently as we are returning an array as a valid result we just return false on failure
+					$result = false;
+
+				}
+				
+				$za->close();
+			
+			}
+			
+		  	if ( NULL != $za ) { unset( $za ); }		
+			
+			return $result;
+						
 		}
 		
 		/**
@@ -734,7 +931,7 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 		 */
 		public function file_exists( $zip_file, $locate_file, $leave_open = false ) {
 		
-			$result = false;
+			$result = array( 1, "Generic failure indication" );
 			$za = NULL;
 			
 			// This should give us a new archive object, of not catch it and bail out
@@ -748,7 +945,9 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 				// Something fishy - the methods indicated ziparchive but we couldn't find the class
 				$error_string = $e->getMessage();
 				pb_backupbuddy::status( 'details', sprintf( __('ziparchive indicated as available method but error reported: %1$s','it-l10n-backupbuddy' ), $error_string ) );
-				$result = false;
+
+				// Return an error code and a description - this needs to be handled more generically
+				$result = array( 1, "Class not available to match method" );
 				
 			}
 			
@@ -783,7 +982,7 @@ if ( !class_exists( "pluginbuddy_zbzipziparchive" ) ) {
 					pb_backupbuddy::status( 'details', sprintf( __('ZipArchive failed to open file to check if file exists (looking for %1$s in %2$s) - Error Info: %3$s.','it-l10n-backupbuddy' ), $locate_file , $zip_file, $error_string ) );
 
 					// Return an error code and a description - this needs to be handled more generically
-					$result = array( 1, "Unable to get archive contents" );
+					$result = array( 1, "Failed to open/process file" );
 
 				}
 			

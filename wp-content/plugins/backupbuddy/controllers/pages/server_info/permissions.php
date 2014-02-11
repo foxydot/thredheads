@@ -1,7 +1,7 @@
 <br><?php
 $tests = array();
 
-
+$uploads_dirs = wp_upload_dir();
 $directories = array(
 	ABSPATH . '',
 	ABSPATH . 'wp-includes/',
@@ -9,11 +9,11 @@ $directories = array(
 	ABSPATH . 'wp-content/themes/',
 	ABSPATH . 'wp-content/plugins/',
 	ABSPATH . 'wp-content/',
-	ABSPATH . 'wp-content/uploads/',
+	rtrim( $uploads_dirs['basedir'], '\\/' ) . '/',
 	ABSPATH . 'wp-includes/',
-	pb_backupbuddy::$options['backup_directory'],
-	pb_backupbuddy::$options['log_directory'],
-	pb_backupbuddy::$options['temp_directory'],
+	backupbuddy_core::getBackupDirectory(),
+	backupbuddy_core::getTempDirectory(),
+	backupbuddy_core::getLogDirectory(),
 );
 
 

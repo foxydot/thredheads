@@ -4,7 +4,37 @@ pb_backupbuddy::load_script( 'jquery.joyride-2.0.3.js' );
 pb_backupbuddy::load_script( 'modernizr.mq.js' );
 pb_backupbuddy::load_style( 'joyride.css' );
 ?>
-<a href="" class="pb_backupbuddy_begintour">Tour This Page</a>
+
+
+
+<style type="text/css">
+#backupbuddy-meta-link-wrap a.show-settings {
+	float: right;
+	margin: 0 0 0 6px;
+}
+#screen-meta-links #backupbuddy-meta-link-wrap a {
+	background: none;
+}
+#screen-meta-links #backupbuddy-meta-link-wrap a:after {
+	content: '';
+	margin-right: 5px;
+}
+</style>
+<script type="text/javascript">
+jQuery(document).ready( function() {
+	jQuery('#screen-meta-links').append(
+		'<div id="backupbuddy-meta-link-wrap" class="hide-if-no-js screen-meta-toggle">' +
+			'<a href="" class="show-settings pb_backupbuddy_begintour"><?php _e( "Tour Page", "it-l10n-backupbuddy" ); ?></a>' +
+		'</div>'
+	);
+});
+</script>
+<?php
+// Tutorial
+pb_backupbuddy::load_script( 'jquery.joyride-2.0.3.js' );
+pb_backupbuddy::load_script( 'modernizr.mq.js' );
+pb_backupbuddy::load_style( 'joyride.css' );
+?>
 <ol id="pb_backupbuddy_tour" style="display: none;">
 	<li data-id="pb_backupbuddy_downloadimportbuddy">Download the ImportBuddy tool (importbuddy.php) to restore or migrate your site.</li>
 	<li data-id="pb_backupbuddy_sendimportbuddy">Send the ImportBuddy tool (importbuddy.php) to a remote destination for restoring or migrating on another server.</li>
@@ -12,7 +42,7 @@ pb_backupbuddy::load_style( 'joyride.css' );
 </ol>
 <script>
 jQuery(window).load(function() {
-	jQuery( '.pb_backupbuddy_begintour' ).click( function() {
+	jQuery(document).on( 'click', '.pb_backupbuddy_begintour', function(e) {
 		jQuery("#pb_backupbuddy_tour").joyride({
 			tipLocation: 'top',
 		});
@@ -38,14 +68,22 @@ if ( pb_backupbuddy::_GET( 'callback_data' ) == 'importbuddy.php' ) {
 	pb_backupbuddy::alert( '<span id="pb_backupbuddy_ib_sent">Sending ImportBuddy file. This may take several seconds. Please wait ...</span>' );
 	pb_backupbuddy::flush();
 	
-	$importbuddy_file = pb_backupbuddy::$options['temp_directory'] . 'importbuddy.php';
+	$importbuddy_file = backupbuddy_core::getTempDirectory() . 'importbuddy.php';
 	
 	// Render ImportBuddy to temp location.
-	pb_backupbuddy::$classes['core']->importbuddy( $importbuddy_file );
-	$response = pb_backupbuddy::$classes['core']->send_remote_destination( $_GET['destination'], $importbuddy_file, $trigger = 'manual' );
+	backupbuddy_core::importbuddy( $importbuddy_file );
+	if ( file_exists( $importbuddy_file ) ) {
+		$response = backupbuddy_core::send_remote_destination( $_GET['destination'], $importbuddy_file, $trigger = 'manual' );
+	} else {
+		pb_backupbuddy::alert( 'Error #4589: Local importbuddy.php file not found for sending. Check directory permissions and / or manually migrating by downloading importbuddy.php.' );
+		$response = false;
+	}
+	
 	
 	if ( file_exists( $importbuddy_file ) ) {
-		unlink( $importbuddy_file ); // Delete temporary ImportBuddy file.
+		if ( false === unlink( $importbuddy_file ) ) { // Delete temporary ImportBuddy file.
+			pb_backupbuddy::alert( 'Unable to delete file. For security please manually delete it: `' . $importbuddy_file . '`.' );
+		}
 	}
 	
 	
@@ -140,12 +178,6 @@ echo '<pre>' . print_r( $result, true ) . '</pre>';
 if ( count( $result['errors'] ) > 0 ) { // Form errors.
 } else { // No errors.
 	
-	
-	/*
-	wp_schedule_single_event( time(), pb_backupbuddy::cron_tag( 'remote_send' ), array( $_POST['destination_id'], pb_backupbuddy::$options['backup_directory'] . $_POST['file'] ) );
-	spawn_cron( time() + 150 ); // Adds > 60 seconds to get around once per minute cron running limit.
-	update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
-	*/
 }
 
 $view_data['migrate_form'] = &$migrate_form; // For use in view.
@@ -154,7 +186,7 @@ $view_data['migrate_form'] = &$migrate_form; // For use in view.
 
 
 // Load view.
-$view_data['backups'] = pb_backupbuddy::$classes['core']->backups_list( 'migrate' );
+$view_data['backups'] = backupbuddy_core::backups_list( 'migrate' );
 pb_backupbuddy::load_view( 'migrate-home', $view_data );
 
 

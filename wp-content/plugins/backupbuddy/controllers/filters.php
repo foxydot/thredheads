@@ -17,6 +17,7 @@ class pb_backupbuddy_filters extends pb_backupbuddy_filterscore {
 		}
 		
 		$schedules['twicedaily'] = array( 'interval' => 43200, 'display' => 'Twice Daily' );
+		$schedules['twiceweekly'] = array( 'interval' => 302400, 'display' => 'Twice Weekly' );
 		$schedules['weekly'] = array( 'interval' => 604800, 'display' => 'Once Weekly' );
 		$schedules['twicemonthly'] = array( 'interval' => 1296000, 'display' => 'Twice Monthly' );
 		$schedules['monthly'] = array( 'interval' => 2592000, 'display' => 'Once Monthly' );
@@ -27,9 +28,8 @@ class pb_backupbuddy_filters extends pb_backupbuddy_filterscore {
 	
 	public function plugin_row_meta( $plugin_meta, $plugin_file ) {
 		if ( isset( $plugin_meta[2] ) && strstr( $plugin_meta[2], 'backupbuddy' ) ) {
-			$plugin_meta[3] = $plugin_meta[2];
-			$plugin_meta[2] = $plugin_meta[1];
-			$plugin_meta[1] = 'By <a href="http://ithemes.com/team/">iThemes "Team BackupBuddy"</a>';
+			$plugin_meta[] = '<a href="http://ithemes.com/codex/page/BackupBuddy" target="_blank">' . __( 'Documentation', 'it-l10n-backupbuddy' ) . '</a>';
+			$plugin_meta[] = '<a href="http://ithemes.com/forum/" target="_blank">' . __( 'Support', 'it-l10n-backupbuddy' ) . '</a>';
 			
 			return $plugin_meta;
 		} else {
