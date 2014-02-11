@@ -640,4 +640,277 @@ class wpsc_purchaselogs {
 			$this->end_timestamp = mktime( 0, 0, 0, ($month + 1 ), 1, $year );
 			if ( ($this->end_timestamp >= $this->earliest_timestamp) && ($this->start_timestamp <= $this->current_timestamp) ) {
 			   $date_list[$j]['start'] = $this->start_timestamp;
-			   $date_list[$j]['end']
+			   $date_list[$j]['end'] = $this->end_timestamp;
+			   $j++;
+			}
+		 }
+	  }
+	  if ( is_object( $purchlogs ) ) {
+		 $purchlogs->current_start_timestamp = $purchlogs->earliest_timestamp;
+		 $purchlogs->current_end_timestamp = $purchlogs->current_timestamp;
+	  }
+	  return $date_list;
+   }
+
+   function deletelog( $deleteid ) {
+	global $wpdb;
+	  if ( is_numeric( $deleteid ) ) {
+
+		 $delete_log_form_sql = "SELECT * FROM `" . WPSC_TABLE_CART_CONTENTS . "` WHERE `purchaseid`='$deleteid'";
+		 $cart_content = $wpdb->get_results( $delete_log_form_sql, ARRAY_A );
+		 $wpdb->query( "DELETE FROM `" . WPSC_TABLE_CART_CONTENTS . "` WHERE `purchaseid`='$deleteid'" );
+		 $wpdb->query( "DELETE FROM `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "` WHERE `log_id` IN ('$deleteid')" );
+		 $wpdb->query( "DELETE FROM `" . WPSC_TABLE_PURCHASE_LOGS . "` WHERE `id`='$deleteid' LIMIT 1" );
+		 return '<div id="message" class="updated fade"><p>' . __( 'Thanks, the purchase log record has been deleted', 'wpsc' ) . '</p></div>';
+	  }
+   }
+
+   //individual purchase log functions
+   function next_purch_item() {
+	  $this->currentitem++;
+
+	  $this->purchitem = $this->allpurchaselogs[$this->currentitem];
+	  return $this->purchitem;
+   }
+
+   function the_purch_item() {
+	  $this->purchitem = $this->next_purch_item();
+   }
+
+   function have_purch_items() {
+	  if ( $this->currentitem + 1 < $this->purch_item_count ) {
+		 return true;
+	  } else if ( $this->currentitem + 1 == $this->purch_item_count && $this->purch_item_count > 0 ) {
+		 // Do some cleaning up after the loop,
+		 $this->rewind_purch_items();
+	  }
+	  return false;
+   }
+
+   function rewind_purch_items() {
+	  $this->currentitem = -1;
+	  if ( $this->purch_item_count > 0 ) {
+		 $this->purchitem = $this->allpurchaselogs[0];
+	  }
+   }
+
+   function the_purch_item_statuses() {
+	  global $wpdb, $wpsc_purchlog_statuses;
+	  $this->purch_status_count = count( $wpsc_purchlog_statuses );
+	  $this->allpurchaselogstatuses = $wpsc_purchlog_statuses;
+	  return $wpsc_purchlog_statuses;
+   }
+
+   // purchase status loop functions
+   function next_purch_status() {
+	  $this->currentstatus++;
+	  $this->purchstatus = $this->allpurchaselogstatuses[$this->currentstatus];
+	  return $this->purchstatus;
+   }
+
+   function the_purch_status() {
+	  $this->purchstatus = $this->next_purch_status();
+   }
+
+   function have_purch_status() {
+	  if ( $this->currentstatus + 1 < $this->purch_status_count ) {
+		 return true;
+	  } else if ( $this->currentstatus + 1 == $this->purch_status_count && $this->purch_status_count > 0 ) {
+		 // Do some cleaning up after the loop,
+		 $this->rewind_purch_status();
+	  }
+	  return false;
+   }
+
+   function rewind_purch_status() {
+	  $this->currentstatus = -1;
+	  if ( $this->purch_status_count > 0 ) {
+		 $this->purchstatus = $this->allpurchaselogstatuses[0];
+	  }
+   }
+
+   function is_checked_status() {
+	  if ( isset( $this->purchstatus['order'] ) && isset( $this->purchitem->processed ) && ($this->purchstatus['order'] == $this->purchitem->processed) ) {
+		 return 'selected="selected"';
+	  } else {
+		 return '';
+	  }
+   }
+
+   function the_purch_item_name() {
+	  global $wpdb;
+	  $i = 0;
+	  if ( $this->form_data == null ) {
+		 $this->getall_formdata();
+	  }
+	  foreach ( (array)$this->form_data as $formdata ) {
+		 if ( in_array( 'billingemail', $formdata ) ) {
+			$emailformid = $formdata['id'];
+		 }
+		 if ( in_array( 'billingfirstname', $formdata ) ) {
+			$fNameformid = $formdata['id'];
+		 }
+		 if ( in_array( 'billinglastname', $formdata ) ) {
+			$lNameformid = $formdata['id'];
+		 }
+		 $i++;
+	  }
+
+	  $sql = "SELECT value FROM " . WPSC_TABLE_SUBMITTED_FORM_DATA . " WHERE log_id=" . $this->purchitem->id . " AND form_id=" . $emailformid;
+	  $email = $wpdb->get_var( $sql );
+	  $sql = "SELECT value FROM " . WPSC_TABLE_SUBMITTED_FORM_DATA . " WHERE log_id=" . $this->purchitem->id . " AND form_id=" . $fNameformid;
+	  $fname = $wpdb->get_var( $sql );
+	  $sql = "SELECT value FROM " . WPSC_TABLE_SUBMITTED_FORM_DATA . " WHERE log_id=" . $this->purchitem->id . " AND form_id=" . $lNameformid;
+	  $lname = $wpdb->get_var( $sql );
+	  $namestring = esc_html( $fname ) . ' ' . esc_html( $lname ) . ' (<a href="mailto:' . esc_attr( $email ) . '?subject=Message From ' . home_url() . '">' . esc_html( $email ) . '</a>) ';
+	  if ( $fname == '' && $lname == '' && $email == '' ) {
+		 $namestring = __('N/A', 'wpsc');
+	  }
+	  return $namestring;
+   }
+
+   function the_purch_item_details() {
+	  global $wpdb;
+	  $sql = "SELECT SUM(quantity) FROM " . WPSC_TABLE_CART_CONTENTS . " WHERE purchaseid=" . $this->purchitem->id;
+	  $sum = $wpdb->get_var( $sql );
+	  return $sum;
+   }
+
+   function search_purchlog_view( $searchterm ) {
+	  global $wpdb;
+	  $sql = $wpdb->prepare( "SELECT DISTINCT `" . WPSC_TABLE_PURCHASE_LOGS . "` . * FROM `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "` LEFT JOIN `" . WPSC_TABLE_PURCHASE_LOGS . "` ON `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`log_id` = `" . WPSC_TABLE_PURCHASE_LOGS . "`.`id` WHERE `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`value` LIKE '%" . like_escape( $searchterm ) . "%' OR `" . WPSC_TABLE_PURCHASE_LOGS . "`.`transactid` = %s OR `" . WPSC_TABLE_PURCHASE_LOGS . "`.`track_id` LIKE '%" . like_escape( $searchterm )."%'", $searchterm );
+	  $newlogs = $wpdb->get_results( $sql );
+	  $_SESSION['newlogs'] = $newlogs;
+	  return $newlogs;
+   }
+
+}
+
+class wpsc_purchaselogs_items {
+
+   var $purchlogid;
+   var $extrainfo;
+   //the loop
+   var $currentitem = -1;
+   var $purchitem;
+   var $allcartcontent;
+   var $purch_item_count;
+   //grand total
+   var $totalAmount;
+   //usersinfo
+   var $userinfo;
+   var $shippinginfo;
+   var $customcheckoutfields = array( );
+   var $additional_fields = array();
+
+
+   function wpsc_purchaselogs_items( $id ) {
+	  $this->purchlogid = $id;
+	  $this->get_purchlog_details();
+   }
+
+   function shippingstate( $id ) {
+	  global $wpdb;
+	  if ( is_numeric( $id ) ) {
+		 $sql = "SELECT `name` FROM `" . WPSC_TABLE_REGION_TAX . "` WHERE id=" . $id;
+		 $name = $wpdb->get_var( $sql );
+		 return $name;
+	  } else {
+		 return $id;
+	  }
+   }
+
+   function get_purchlog_details() {
+      global $wpdb;
+
+      $cartcontent = $wpdb->get_results( "SELECT *  FROM `" . WPSC_TABLE_CART_CONTENTS . "` WHERE `purchaseid`=" . $this->purchlogid . "" );
+
+      $this->allcartcontent = $cartcontent;
+      $sql = "SELECT DISTINCT `" . WPSC_TABLE_PURCHASE_LOGS . "` . * FROM `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "` LEFT JOIN `" . WPSC_TABLE_PURCHASE_LOGS . "` ON `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`log_id` = `" . WPSC_TABLE_PURCHASE_LOGS . "`.`id` WHERE `" . WPSC_TABLE_PURCHASE_LOGS . "`.`id`=" . $this->purchlogid;
+      $extrainfo = $wpdb->get_results( $sql );
+
+      $this->extrainfo = $extrainfo[0];
+
+      $usersql = "SELECT `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`id`, `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`value`, `" . WPSC_TABLE_CHECKOUT_FORMS . "`.`name`, `" . WPSC_TABLE_CHECKOUT_FORMS . "`.`unique_name` FROM `" . WPSC_TABLE_CHECKOUT_FORMS . "` LEFT JOIN `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "` ON `" . WPSC_TABLE_CHECKOUT_FORMS . "`.id = `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`form_id` WHERE `" . WPSC_TABLE_SUBMITTED_FORM_DATA . "`.`log_id`=" . $this->purchlogid . " ORDER BY `" . WPSC_TABLE_CHECKOUT_FORMS . "`.`checkout_order`";
+      $userinfo = $wpdb->get_results( $usersql, ARRAY_A );
+
+      // the $additionaldetails array is buggy because if the fields have the same name, they will
+      // overwrite each other.
+      // $additional_fields is introduced to fix this. However, the $additionaldetails array as well
+      // as $this->customcheckoutfields needs to be kept for compatibility purposes.
+      $additional_fields = array();
+      foreach ( (array)$userinfo as $input_row ) {
+         if ( stristr( $input_row['unique_name'], 'shipping' ) ) {
+            $shippinginfo[$input_row['unique_name']] = $input_row;
+         } elseif ( stristr( $input_row['unique_name'], 'billing' ) ) {
+            $billingdetails[$input_row['unique_name']] = $input_row;
+         } else {
+            $additionaldetails[$input_row['name']] = $input_row;
+            $additional_fields[] = $input_row;
+         }
+      }
+      $this->userinfo = $billingdetails;
+      $this->shippinginfo = $shippinginfo;
+      if ( isset( $additionaldetails ) ) {
+         $this->customcheckoutfields = $additionaldetails;
+      }
+      if ( isset( $additional_fields ) )
+         $this->additional_fields = $additional_fields;
+
+      $this->purch_item_count = count( $cartcontent );
+   }
+
+   function next_purch_item() {
+	  $this->currentitem++;
+	  $this->purchitem = $this->allcartcontent[$this->currentitem];
+	  return $this->purchitem;
+   }
+
+   function the_purch_item() {
+	  $this->purchitem = $this->next_purch_item();
+   }
+
+   function have_purch_item() {
+	  if ( $this->currentitem + 1 < $this->purch_item_count ) {
+		 return true;
+	  } else if ( $this->currentitem + 1 == $this->purch_item_count && $this->purch_item_count > 0 ) {
+		 // Do some cleaning up after the loop,
+		 $this->rewind_purch_item();
+	  }
+	  return false;
+   }
+
+   function rewind_purch_item() {
+	  $this->currentitem = -1;
+	  if ( $this->purch_item_count > 0 ) {
+		 $this->purchitem = $this->allcartcontent[0];
+	  }
+   }
+
+   function have_downloads_locked() {
+	  global $wpdb;
+	  $sql = "SELECT `ip_number` FROM `" . WPSC_TABLE_DOWNLOAD_STATUS . "` WHERE purchid=" . $this->purchlogid;
+	  $ip_number = $wpdb->get_var( $sql );
+	  return $ip_number;
+   }
+}
+
+//edit purchase log status function
+function wpsc_purchlog_edit_status( $purchlog_id='', $purchlog_status='' ) {
+   global $wpdb;
+   if ( empty($purchlog_id) && empty($purchlog_status) ) {
+      $purchlog_id = absint( $_POST['id'] );
+      $purchlog_status = absint( $_POST['new_status'] );
+   }
+
+   $purchase_log = new WPSC_Purchase_Log( $purchlog_id );
+
+   //in the future when everyone is using the 2.0 merchant api, we should use the merchant class to update the staus,
+   // then you can get rid of this hook and have each person overwrite the method that updates the status.
+   do_action('wpsc_edit_order_status', array('purchlog_id'=>$purchlog_id, 'purchlog_data'=>$purchase_log->get_data(), 'new_status'=>$purchlog_status));
+
+   $result = wpsc_update_purchase_log_status( $purchlog_id, $purchlog_status );
+   wpsc_clear_stock_claims();
+
+   return $result;
+}
