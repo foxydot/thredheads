@@ -639,7 +639,6 @@ function wpsc_products_page( $content = '' ) {
 			if ( ! empty( $saved_display ) )
 				$display_type = $saved_display;
 		}
-
 		ob_start();
 		wpsc_include_products_page_template($display_type);
 		$is_single = false;

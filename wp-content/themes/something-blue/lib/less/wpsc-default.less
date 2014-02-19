@@ -37,7 +37,7 @@ Author URI: http://instinct.co.nz
 #default_products_page_container .imagecol img, #list_view_products_page_container img, #grid_view_products_page_container img {
 	margin:0;
 	padding:0;
-	border:1px solid #ccc;
+	border:0;
 }
 
 .wpsc_hidden{
@@ -48,7 +48,7 @@ Author URI: http://instinct.co.nz
 #default_products_page_container {
 	width:100%;	
 	position:relative;
-	line-height:1.2em;
+	line-height:inherit;
 }
 
 #default_products_page_container .wpsc_page_numbers_top {
@@ -132,13 +132,13 @@ Author URI: http://instinct.co.nz
 }
 
 .default_product_display .wpsc_description, #content .default_product_display .wpsc_description {
-	font-size:13px;	
-	line-height:1.4em;
+	font-size:inherit;	
+	line-height:inherit;
 }
 
 .default_product_display .additional_description, #content .default_product_display .additional_description {
-	font-size:13px;	
-	line-height:1.4em;
+	font-size:inherit;	
+	line-height:inherit;
 	margin:0;
 }
 
@@ -344,9 +344,10 @@ Author URI: http://instinct.co.nz
 }
 
 #list_view_products_page_container p, #content #list_view_products_page_container p {
-	line-height:1.2em;
-	margin:0;
-	padding:0;	
+	line-height:inherit;
+	margin:inherit;
+	margin-bottom: 2.6rem;
+	padding:inherit;	
 }
 
 #list_view_products_page_container span.sale {
@@ -1100,3 +1101,19 @@ background-color: #f5f5f5;
 	text-decoration: none;
 	font-size: 14px;
 }
+
+ul.wpsc_categories{
+	list-style: none outside none;
+	margin-left: 0;
+	li{
+		list-style: none outside none;
+		padding: 2rem 0;
+		border-bottom: 0.5px solid @ltgrey;
+		a:hover{text-decoration: none;}
+	}
+}
+.default_product_display.row{
+    padding: 2rem 0;
+    border-bottom: 0.5px solid @ltgrey;
+    .wpsc-product-old-price, .wpsc-product-you-save{display: none;}
+    }

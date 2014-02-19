@@ -1,4 +1,4 @@
-<?php
+LIST VIEW<?php
 global $wp_query, $wpdb;
 ?>
 <div id="list_view_products_page_container">
@@ -20,15 +20,20 @@ global $wp_query, $wpdb;
 	  <?php else:?>
 			<ul class="wpsc_categories">
 				<?php wpsc_start_category_query(array('category_group'=> 1, 'show_thumbnails'=> get_option('show_category_thumbnails'))); ?>
-						<li>
-							<?php wpsc_print_category_image(); ?>
-
-							<a href="<?php wpsc_print_category_url();?>" class="wpsc_category_link  <?php wpsc_print_category_classes_section(); ?>"><?php wpsc_print_category_name();?></a>
-							<?php if(get_option('wpsc_category_description')) :?>
-								<?php wpsc_print_category_description("<div class='wpsc_subcategory'>", "</div>"); ?>
-							<?php endif;?>
-
-							<?php wpsc_print_subcategory("<ul>", "</ul>"); ?>
+						<li class="row">
+						    <div class="col-md-4"><?php wpsc_print_category_image(); ?></div>
+							
+                            <div class="col-md-8">
+    							<a href="<?php wpsc_print_category_url();?>" class="wpsc_category_link  <?php wpsc_print_category_classes_section(); ?>"><h3><?php wpsc_print_category_name();?></h3></a>
+    							<?php if(get_option('wpsc_category_description')) :?>
+    								<?php wpsc_print_category_description("<div class='wpsc_subcategory'>", "</div>"); ?>
+    							<?php endif;?>
+    
+    							<?php wpsc_print_subcategory("<ul>", "</ul>"); ?>
+    							<div class="button-wrapper">
+    							     <a href="<?php wpsc_print_category_url();?>" class="wpsc_category_link button <?php wpsc_print_category_classes_section(); ?>" title="<?php wpsc_print_category_name();?>">Take a Closer Look</a>
+							     </div>
+							</div>
 						</li>
 				<?php wpsc_end_category_query(); ?>
 			</ul>

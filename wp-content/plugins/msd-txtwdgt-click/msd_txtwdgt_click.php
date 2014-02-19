@@ -20,11 +20,11 @@ class MSD_Widget_Text extends WP_Widget {
 		$control_ops = array('width' => 400, 'height' => 350);
 		parent::__construct('text', __('Text'), $widget_ops, $control_ops);
 		// For testing purpose, the site transient will be reset on each page load
-		add_action( 'init', array(&$this,'msd_altapi_delete_transient') );
+		//add_action( 'init', array(&$this,'msd_altapi_delete_transient') );
 		// Hook into the plugin update check
-		add_filter('pre_set_site_transient_update_plugins', array(&$this,'msd_altapi_check'));
+		//add_filter('pre_set_site_transient_update_plugins', array(&$this,'msd_altapi_check'));
 		// Hook into the plugin details screen
-		add_filter('plugins_api', array(&$this,'msd_altapi_information'), 10, 3);
+		//add_filter('plugins_api', array(&$this,'msd_altapi_information'), 10, 3);
 	}
 
 	function widget( $args, $instance ) {
