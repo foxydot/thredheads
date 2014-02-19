@@ -18,6 +18,19 @@ function product_info_function($atts,$content){
     $ret .= '</div></div>';
     return $ret;
 }
+
+function wpsc_product_sidebar(){
+    $menu .= wp_nav_menu(array('menu'=>'Shirt Tools','echo'=>0));
+    $menu = preg_replace('/<ul(.*?)>/i','<ul class="fa-ul"\1>',$menu);
+    $menu = preg_replace('/<li(.*?)>\s?/i','<li\1><i class="fa fa-caret-right"></i> ',$menu);
+    $ret .= $menu;
+    ob_start();
+    dynamic_sidebar('product-sidebar');
+    $ret .= ob_get_contents();
+    ob_end_clean();
+    return $ret;
+}
+
 add_filter('product_images_box_filters','do_shortcode');
 add_shortcode('product-images-box', 'product_images_box_function');
 function product_images_box_function($atts,$content){

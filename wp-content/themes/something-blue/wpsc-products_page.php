@@ -83,11 +83,11 @@ $image_width = get_option('product_image_width');
                                 <img class="no-image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="<?php esc_attr_e( 'No Image', 'wpsc' ); ?>" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo WPSC_CORE_THEME_URL; ?>wpsc-images/noimage.png" width="<?php echo get_option('product_image_width'); ?>" height="<?php echo get_option('product_image_height'); ?>" />
                                 </a>
                         <?php endif; ?>
-                        <?php
+                        <?php/*
                         if(gold_cart_display_gallery()) :
                             echo gold_shpcrt_display_gallery(wpsc_the_product_id(), true);
                         endif;
-                        ?>
+                        */?>
                     </div><!--close imagecol-->
                 <?php endif; ?></div>
                     

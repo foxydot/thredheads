@@ -27,27 +27,31 @@
 		 */
 
 		while ( wpsc_have_products() ) : wpsc_the_product(); ?>
-					<div class="imagecol">
+		              <?php do_action('wpsc_product_before_description', wpsc_the_product_id(), $wp_query->post); ?>
+                        <div class="product_description">
+                            <?php echo wpsc_the_product_description(); ?>
+                        </div><!--close product_description -->
+                    <div class="row">
 						<?php if ( wpsc_the_product_thumbnail() ) : ?>
-								<a rel="<?php echo wpsc_the_product_title(); ?>" class="<?php echo wpsc_the_product_image_link_classes(); ?>" href="<?php echo esc_url( wpsc_the_product_image() ); ?>">
+						        <div class="col-sm-4">
+								<a rel="<?php echo wpsc_the_product_title(); ?>" class="aligncenter <?php echo wpsc_the_product_image_link_classes(); ?>" href="<?php echo esc_url( wpsc_the_product_image() ); ?>">
 									<img class="product_image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="<?php echo wpsc_the_product_title(); ?>" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo wpsc_the_product_thumbnail(); ?>"/>
 								</a>
+								</div>                              
+								<div class="col-sm-8">
 								<?php
 								if ( function_exists( 'gold_shpcrt_display_gallery' ) )
 									echo gold_shpcrt_display_gallery( wpsc_the_product_id() );
 								?>
+								</div>
 						<?php else: ?>
 									<a href="<?php echo esc_url( wpsc_the_product_permalink() ); ?>">
 									<img class="no-image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="No Image" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo WPSC_CORE_THEME_URL; ?>wpsc-images/noimage.png" width="<?php echo get_option('product_image_width'); ?>" height="<?php echo get_option('product_image_height'); ?>" />
 									</a>
 						<?php endif; ?>
-					</div><!--close imagecol-->
-
-					<div class="productcol">
-						<?php do_action('wpsc_product_before_description', wpsc_the_product_id(), $wp_query->post); ?>
-						<div class="product_description">
-							<?php echo wpsc_the_product_description(); ?>
-						</div><!--close product_description -->
+                    </div>
+					<div class="row">
+					    <div class="col-sm-8">
 						<?php do_action( 'wpsc_product_addons', wpsc_the_product_id() ); ?>
 						<?php if ( wpsc_the_product_additional_description() ) : ?>
 							<div class="single_additional_description">
@@ -63,7 +67,7 @@
                         <?php if (wpsc_have_custom_meta()) : ?>
 						<div class="custom_meta">
 							<?php while ( wpsc_have_custom_meta() ) : wpsc_the_custom_meta(); ?>
-								<?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE) continue; ?>
+								<?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE && (stripos(wpsc_custom_meta_name(),'bwps_enable_ssl') !== TRUE)) continue; ?>
 								<strong><?php echo wpsc_custom_meta_name(); ?>: </strong><?php echo wpsc_custom_meta_value(); ?><br />
 							<?php endwhile; ?>
 						</div><!--close custom_meta-->
@@ -201,11 +205,15 @@
 	                        <iframe src="https://www.facebook.com/plugins/like.php?href=<?php echo wpsc_the_product_permalink(); ?>&amp;layout=standard&amp;show_faces=true&amp;width=435&amp;action=like&amp;font=arial&amp;colorscheme=light" frameborder="0"></iframe>
 	                        </div><!--close FB_like-->
                         <?php endif; ?>
-					</div><!--close productcol-->
 					<form onsubmit="submitform(this);return false;" action="<?php echo esc_url( wpsc_this_page_url() ); ?>" method="post" name="product_<?php echo wpsc_the_product_id(); ?>" id="product_extra_<?php echo wpsc_the_product_id(); ?>">
 						<input type="hidden" value="<?php echo wpsc_the_product_id(); ?>" name="prodid"/>
 						<input type="hidden" value="<?php echo wpsc_the_product_id(); ?>" name="item"/>
 					</form>
+					         </div>
+                                <div class="col-sm-4 product-sidebar pull-right">
+                                    <?php print wpsc_product_sidebar(); ?>
+                                </div>
+					</div><!--close row-->
 		</div><!--close single_product_display-->
 
 		<?php echo wpsc_product_comments(); ?>

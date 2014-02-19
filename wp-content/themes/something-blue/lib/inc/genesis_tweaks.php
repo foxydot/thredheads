@@ -67,3 +67,6 @@ add_action('after_setup_theme','msdlab_add_homepage_callout_sidebars'); //create
 /*** Blog Header ***/
 //add_action('genesis_before_loop','msd_add_blog_header');
 //add_action('wp_head', 'collections');
+
+/* WPSC Tweaks */
+add_action('wp','msdlab_single_product_layout');
