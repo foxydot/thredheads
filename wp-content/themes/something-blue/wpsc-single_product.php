@@ -59,19 +59,7 @@
 							</div><!--close single_additional_description-->
 						<?php endif; ?>
 						<?php do_action( 'wpsc_product_addon_after_descr', wpsc_the_product_id() ); ?>
-						<?php
-						/**
-						 * Custom meta HTML and loop
-						 */
-						?>
-                        <?php if (wpsc_have_custom_meta()) : ?>
-						<div class="custom_meta">
-							<?php while ( wpsc_have_custom_meta() ) : wpsc_the_custom_meta(); ?>
-								<?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE && (stripos(wpsc_custom_meta_name(),'bwps_enable_ssl') !== TRUE)) continue; ?>
-								<strong><?php echo wpsc_custom_meta_name(); ?>: </strong><?php echo wpsc_custom_meta_value(); ?><br />
-							<?php endwhile; ?>
-						</div><!--close custom_meta-->
-                        <?php endif; ?>
+						
 						<?php
 						/**
 						 * Form data
@@ -97,7 +85,7 @@
 							<?php endif; ?>
 						<?php /** the variation group HTML and loop */?>
                         <?php if (wpsc_have_variation_groups()) { ?>
-                        <fieldset><legend><?php _e('Product Options', 'wpsc'); ?></legend>
+                        <fieldset>
 						<div class="wpsc_variation_forms">
                         	<table>
 							<?php while (wpsc_have_variation_groups()) : wpsc_the_variation_group(); ?>
@@ -208,7 +196,19 @@
 					<form onsubmit="submitform(this);return false;" action="<?php echo esc_url( wpsc_this_page_url() ); ?>" method="post" name="product_<?php echo wpsc_the_product_id(); ?>" id="product_extra_<?php echo wpsc_the_product_id(); ?>">
 						<input type="hidden" value="<?php echo wpsc_the_product_id(); ?>" name="prodid"/>
 						<input type="hidden" value="<?php echo wpsc_the_product_id(); ?>" name="item"/>
-					</form>
+					</form><?php
+                        /**
+                         * Custom meta HTML and loop
+                         */
+                        ?>
+                        <?php if (wpsc_have_custom_meta()) : ?>
+                        <div class="custom_meta">
+                            <?php while ( wpsc_have_custom_meta() ) : wpsc_the_custom_meta(); ?>
+                                <?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE || (stripos(wpsc_custom_meta_name(),'bwps') !== FALSE)) continue; ?>
+                                <strong><?php echo wpsc_custom_meta_name(); ?>: </strong><?php echo wpsc_custom_meta_value(); ?><br />
+                            <?php endwhile; ?>
+                        </div><!--close custom_meta-->
+                        <?php endif; ?>
 					         </div>
                                 <div class="col-sm-4 product-sidebar pull-right">
                                     <?php print wpsc_product_sidebar(); ?>
