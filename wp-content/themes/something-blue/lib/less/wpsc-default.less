@@ -450,7 +450,10 @@ table.list_productdisplay p.soldout {
 	position:relative;
 }
 
-.single_product_display .imagecol img.product_image {
+.single_product_display .featured_image_holder a{
+  padding: 3rem 0;
+}
+.single_product_display img.product_image {
 	background-color:#efefef;
 	border:1px solid #ccc;	
 }
@@ -581,11 +584,11 @@ table.list_productdisplay p.soldout {
   text-align: right;
   a{
     display: inline-block;
+    padding: 3rem;
   }
   img{
-	padding: 3rem;
 	margin: 0;
-	border:0;	
+	border:1px solid @ltgrey;	
 	}
 }
 

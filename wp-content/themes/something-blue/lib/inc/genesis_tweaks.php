@@ -23,7 +23,7 @@ add_action( 'genesis_header', 'genesis_do_nav' );
  */
 remove_action( 'genesis_after_header', 'genesis_do_subnav' );
 add_action( 'msdlab_pre_header', 'genesis_do_subnav' );
-
+add_action('msdlab_pre_header','msdlab_header_right');
 add_action('genesis_after_header',array('MSDSocial','msdlab_bang_bar'));
 
 add_action('genesis_after_header','msd_post_image');//add the image above the entry
