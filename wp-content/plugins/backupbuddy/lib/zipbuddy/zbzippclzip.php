@@ -1134,7 +1134,7 @@ if ( !class_exists( "pluginbuddy_zbzippclzip" ) ) {
 									
 									// Check whether we succeeded or not (would only be no list array for a zip file problem)
 									// but extraction of the file itself may still have failed
-									$result = ( $extract_list !== 0  && ( $extract_list[ 0 ][ 'status' ] == 'ok' ) );
+									$result = ( $extract_list !== 0  && ( isset( $extract_list[ 0 ] ) ) && ( $extract_list[ 0 ][ 'status' ] == 'ok' ) );
 
 								}
 						

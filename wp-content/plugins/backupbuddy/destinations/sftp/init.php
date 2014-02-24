@@ -5,7 +5,7 @@
 class pb_backupbuddy_destination_sftp {
 	
 	public static $destination_info = array(
-		'name'			=>		'sFTP (beta)',
+		'name'			=>		'sFTP',
 		'description'	=>		'Secure File Transport Protocol (over SSH) is a more secure way of sending files between servers than FTP by using SSH. Web hosting accounts are more frequently providing this feature for greater security. This implementation is fully in PHP so PHP memory limits may be a limiting factor on some servers.',
 	);
 	

@@ -3,7 +3,7 @@
 /*
 Provides an easy to use interface for communicating with the iThemes updater server.
 Written by Chris Jean for iThemes.com
-Version 1.0.3
+Version 1.0.4
 
 Version History
 	1.0.0 - 2013-04-11 - Chris Jean
@@ -14,6 +14,8 @@ Version History
 		Updated ithemes-updater-object to ithemes-updater-settings.
 	1.0.3 - 2013-12-18 - Chris Jean
 		Updated the way that the site URL is generated to ensure consistency across multisite sites.
+	1.0.4 - 2014-01-31 - Chris Jean
+		Updated to normalize the site URL used for password hash generation and for sending to the server.
 */
 
 
@@ -77,14 +79,7 @@ class Ithemes_Updater_Server {
 			$data['iterations'] = self::$password_iterations;
 		
 		
-		if ( is_callable( 'network_home_url' ) ) {
-			$site_url = network_home_url();
-		} else {
-			$site_url = get_bloginfo( 'url' );
-		}
-		
-		$site_url = preg_replace( '/^https/', 'http', $site_url );
-		$site_url = preg_replace( '|/$|', '', $site_url );
+		$site_url = self::get_site_url();
 		
 		
 		$default_query = array(
@@ -163,10 +158,24 @@ class Ithemes_Updater_Server {
 		return $body;
 	}
 	
+	private static function get_site_url() {
+		if ( is_callable( 'network_home_url' ) ) {
+			$site_url = network_home_url();
+		} else {
+			$site_url = get_bloginfo( 'url' );
+		}
+		
+		$site_url = preg_replace( '/^https/', 'http', $site_url );
+		$site_url = preg_replace( '|/$|', '', $site_url );
+		
+		return $site_url;
+	}
+	
 	private static function get_password_hash( $username, $password ) {
 		require_once( ABSPATH . 'wp-includes/class-phpass.php');
 		
-		$salted_password = $password . $username . get_bloginfo( 'url' ) . $GLOBALS['wp_version'];
+		
+		$salted_password = $password . $username . self::get_site_url() . $GLOBALS['wp_version'];
 		$salted_password = substr( $salted_password, 0, max( strlen( $password ), 72 ) );
 		
 		$wp_hasher = new PasswordHash( self::$password_iterations, true );

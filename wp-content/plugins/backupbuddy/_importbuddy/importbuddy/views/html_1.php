@@ -267,7 +267,7 @@ if ( true !== Auth::is_authenticated() ) { // Need authentication.
 								// Show meta button if meta info available.
 								if ( $backup_archive['comment']['type'] != '' ) {
 									$file_hash = md5( $backup_archive['file'] );
-									echo '<a href="#hash_view" class="button button-tertiary leanModal view_hash_click" style="float: left; font-size: 10px; margin-right: 5px; padding: 4px; float: right;" id="view_hash_' . $i . '" data-file="' . $backup_archive['file'] . '">View Hash</a>';
+									echo '<a href="#hash_view" class="button button-tertiary leanModal view_hash_click" style="float: left; font-size: 10px; margin-right: 5px; padding: 4px; float: right;" id="view_hash_' . $i . '" data-file="' . $backup_archive['file'] . '">View Checksum</a>';
 									echo '<a href="#info_' . $file_hash . '" class="button button-tertiary leanModal" style="float: left; font-size: 10px; margin-right: 5px; padding: 4px; float: right;" id="view_meta_' . $i . '">View Meta</a>';
 									?>
 									<div id="hash_view" style="display: none; height: 30%;">

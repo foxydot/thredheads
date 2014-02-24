@@ -80,6 +80,18 @@ $settings_form->add_setting( array(
 
 
 $settings_form->add_setting( array(
+	'type'		=>		'checkbox',
+	'name'		=>		'rollback_beta',
+	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
+	'title'		=>		__( 'Database Rollback Feature (BETA)', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: Disabled] When enabled a new Database Rollback feature will be available on the Restore / Migrate page for easily rolling back the database to a prior backup state..', 'it-l10n-backupbuddy' ) . '</span>',
+	'css'		=>		'',
+	'after'		=>		'<span class="description"> ' . __( 'Experimental in-progress beta feature.', 'it-l10n-backupbuddy' ) . '</span>',
+	'rules'		=>		'required',
+) );
+
+
+$settings_form->add_setting( array(
 	'type'		=>		'title',
 	'name'		=>		'title_advanced',
 	'title'		=>		__( 'Technical & Server Compatibility', 'it-l10n-backupbuddy' ),

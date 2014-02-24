@@ -66,7 +66,6 @@ $pluginbuddy_settings = array(
 											),
 				'modules'			=>		array(
 												'updater'				=>	false,						// Load PluginBuddy automatic upgrades.
-												'downsizer'				=>	false,						// Load thumbnail image downsizer.
 												'filesystem'			=>	true,						// File system helper methods.
 												'format'				=>	true,						// Text / data formatting helper methods.
 											)
@@ -76,4 +75,3 @@ $pluginbuddy_settings = array(
 
 // $settings is expected to be populated prior to including PluginBuddy framework. Do not edit below.
 require( dirname( __FILE__ ) . '/pluginbuddy/_pluginbuddy.php' );
-?>

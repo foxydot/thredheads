@@ -108,53 +108,23 @@ function pb_backupbuddy_get_loadavg() {
 		
 		
 		// BACKUPBUDDY VERSION
-		$latest_backupbuddy_version_cache_minutes = 15; // Define how many minutes to cache the latest backupbuddy version number.
-		function pb_backupbuddy_split2( $string,$needle,$nth ) {
-			$max = strlen($string);
-			$n = 0;
-			for($i=0;$i<$max;$i++){
-				if ($string[$i]==$needle){
-					$n++;
-					if($n>=$nth){
-						break;
-					}
-				}
-			}
-			$arr[] = substr($string,0,$i);
-			$arr[] = substr($string,$i+1,$max);
-			return $arr;
-		}
-		$latest_backupbuddy_version = get_transient( 'pb_backupbuddy_latest_version' );
-		if ( false === $latest_backupbuddy_version ) {
-			$response = wp_remote_get( 'http://api.ithemes.com/product/version?apikey=ixho7dk0p244n0ob&package=backupbuddy&channel=stable', array(
-					'method' => 'GET',
-					'timeout' => 15,
-					'redirection' => 3,
-					'httpversion' => '1.0',
-					//'blocking' => true,
-					'headers' => array(),
-					'body' => null,
-					'cookies' => array()
-				)
-			);
-			if( is_wp_error( $response ) ) {
-				$latest_backupbuddy_version = '{Err:' . $response->get_error_message() . '}';
-			} else {
-				$latest_backupbuddy_version = $response['body'];
-				set_transient( 'pb_backupbuddy_latest_version', $response['body'], 60* $latest_backupbuddy_version_cache_minutes );
-			}
-		} // end not cached.
-		
-		$latest_backupbuddy_nonminor_version = pb_backupbuddy_split2( $latest_backupbuddy_version, '.', 3 );
-		$latest_backupbuddy_nonminor_version = $latest_backupbuddy_nonminor_version[0];
-		$suggestion_text = $latest_backupbuddy_nonminor_version;
-		if ( $latest_backupbuddy_version == pb_backupbuddy::settings( 'version' ) ) { // At absolute latest including minor.
-			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>)';
-		} elseif ( $latest_backupbuddy_nonminor_version != $latest_backupbuddy_version ) { // Minor version available that is newer than latest major.
-			$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>; <a href="plugins.php?ithemes-updater-force-minor-update=1" title="Once you have licensed BackupBuddy you may select this to go to the Plugins page to upgrade to the latest quick release version. Typically only the main major versions are available for automatic updates but this option instructs the updater to display minor version updates for approximately one hour. If it does not immediately become available on the Plugins page, try refreshing a couple of times.">enable quick release update</a>)';
+		if ( false === ( $latestVersion = backupbuddy_core::determineLatestVersion() ) ) {
+			$suggestion_text = '[information unavailable]';
+			$latest_backupbuddy_nonminor_version = 0;
 		} else {
-			$suggestion_text .= ' (latest)';
+			$latest_backupbuddy_version = $latestVersion[0];
+			$latest_backupbuddy_nonminor_version = $latestVersion[1];
+			
+			$suggestion_text = $latest_backupbuddy_nonminor_version;
+			if ( $latest_backupbuddy_version == pb_backupbuddy::settings( 'version' ) ) { // At absolute latest including minor.
+				$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release</a>)';
+			} elseif ( $latest_backupbuddy_nonminor_version != $latest_backupbuddy_version ) { // Minor version available that is newer than latest major.
+				$suggestion_text .= ' (major version) or ' . $latest_backupbuddy_version . ' (<a href="options-general.php?page=ithemes-licensing" title="You may enable upgrading to the quick release version on the iThemes Licensing page.">quick release version</a>; <a href="plugins.php?ithemes-updater-force-minor-update=1" title="Once you have licensed BackupBuddy you may select this to go to the Plugins page to upgrade to the latest quick release version. Typically only the main major versions are available for automatic updates but this option instructs the updater to display minor version updates for approximately one hour. If it does not immediately become available on the Plugins page, try refreshing a couple of times.">quick release settings</a>)';
+			} else {
+				$suggestion_text .= ' (latest)';
+			}
 		}
+		
 		$version_string = pb_backupbuddy::settings( 'version' );
 		// If on DEV system (.git dir exists) then append some details on current.
 		if ( @file_exists( pb_backupbuddy::plugin_path() . '/.git/logs/HEAD' ) ) {

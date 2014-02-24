@@ -177,7 +177,6 @@ if ( pb_backupbuddy::_GET( 'copy_file' ) != '' ) {
 
 // Handle download link
 if ( pb_backupbuddy::_GET( 'downloadlink_file' ) != '' ) {
-	
 	$link = $s3->get_object( $manage_data['bucket'], $manage_data['subkey'] . $remote_path . pb_backupbuddy::_GET( 'downloadlink_file' ), array('preauth'=>time()+3600));
 	pb_backupbuddy::alert( 'You may download this backup (' . pb_backupbuddy::_GET( 'downloadlink_file' ) . ') with <a href="' . $link . '">this link</a>. The link is valid for one hour.' );
 }

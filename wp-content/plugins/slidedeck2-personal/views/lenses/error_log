@@ -1,0 +1,7 @@
+[03-Feb-2014 01:55:48 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/add.php on line 40
+[03-Feb-2014 02:50:14 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/manage.php on line 36
+[05-Feb-2014 21:59:32 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/add.php on line 40
+[08-Feb-2014 11:48:32 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/manage.php on line 36
+[23-Feb-2014 04:50:43 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/add.php on line 40
+[24-Feb-2014 00:23:50 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/manage.php on line 36
+[24-Feb-2014 06:55:30 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/lenses/manage.php on line 36

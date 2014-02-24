@@ -27,6 +27,12 @@ class Ithemes_Sync_Verb_Backupbuddy_Get_Overview extends Ithemes_Sync_Verb {
 		$overview = backupbuddy_api0::getOverview();
 		
 		
+		// If archive file is set but actual file does not exist then clear out value.
+		if ( isset( $overview['lastBackupStats']['archiveFile'] ) && ( ! file_exists( $overview['lastBackupStats']['archiveFile'] ) ) ) {
+			$overview['lastBackupStats']['archiveFile'] = '';
+		}
+
+
 		return array(
 			'version' => '4',
 			'status' => 'ok',

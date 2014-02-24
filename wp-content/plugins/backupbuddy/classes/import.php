@@ -17,15 +17,11 @@ class pb_backupbuddy_import {
 			return true;
 		}
 		
-		if ( file_exists( ABSPATH . '.htaccess.bb_temp' ) && ( !is_writable( ABSPATH . '.htaccess.bb_temp' ) ) ) {
-			pb_backupbuddy::status( 'error', 'Error #9020: Unable to write to `.htaccess.bb_temp` file. Verify permissions.' );
-			pb_backupbuddy::alert( 'Warning: Unable to write to file `.htaccess.bb_temp`. Verify this file has proper write permissions. You may receive 404 Not Found errors on your site if this is not corrected. To fix after migration completes: Log in to your WordPress admin and select Settings:: Permalinks from the left menu then save.', '9020' );
-			return false;
-		}
+		$htaccessFile = ABSPATH . '.htaccess.bb_temp';
 		
 		// If no .htaccess.bb_temp file exists then create a basic default one then migrate that as needed. @since 2.2.32.
-		if ( !file_exists( ABSPATH . '.htaccess.bb_temp' ) ) {
-			pb_backupbuddy::status( 'message', 'No `.htaccess.bb_temp` file found. Creating basic default .htaccess.bb_temp file.' );
+		if ( ! file_exists( $htaccessFile ) ) {
+			pb_backupbuddy::status( 'message', 'No `' . basename( $htaccessFile ) . '` file found. Creating basic default .htaccess.bb_temp file (to be later renamed to .htaccess).' );
 			
 			// Default .htaccess file.
 			$htaccess_contents = 
@@ -39,11 +35,11 @@ RewriteCond %{REQUEST_FILENAME} !-d\n
 RewriteRule . /index.php [L]\n
 </IfModule>\n
 # END WordPress\n";
-			file_put_contents( ABSPATH . '.htaccess.bb_temp', $htaccess_contents );
+			file_put_contents( $htaccessFile, $htaccess_contents );
 			unset( $htaccess_contents );
 		}
 		
-		pb_backupbuddy::status( 'message', 'Migrating `.htaccess.bb_temp` file...' );
+		pb_backupbuddy::status( 'message', 'Migrating `' . basename( $htaccessFile ) . '` file...' );
 		
 		$oldurl = strtolower( pb_backupbuddy::$options['dat_file']['siteurl'] );
 		$oldurl = str_replace( '/', '\\', $oldurl );
@@ -61,7 +57,7 @@ RewriteRule . /index.php [L]\n
 		$newurl = explode( '\\', $newurl );
 		$newurl[0] = '';
 		
-		pb_backupbuddy::status( 'message', 'Checking `.htaccess.bb_temp` file.' );
+		pb_backupbuddy::status( 'message', 'Checking `' . basename( $htaccessFile ) . '` file.' );
 		
 		// If the URL (domain and/or URL subdirectory ) has changed, then need to update .htaccess.bb_temp file.
 		if ( $newurl !== $oldurl ) {
@@ -70,11 +66,11 @@ RewriteRule . /index.php [L]\n
 			$rewrite_lines = array();
 			$got_rewrite = false;
 			$rewrite_path = implode( '/', $newurl );
-			$file_array = file( ABSPATH . '.htaccess.bb_temp' );
+			$file_array = file( $htaccessFile );
 			
 			
 			// Loop through .htaccess lines, updating as needed.
-			foreach ($file_array as $line_number => $line) {
+			foreach ( (array)$file_array as $line_number => $line) {
 				if ( $got_rewrite == true ) { // In a WordPress section.
 					if ( strstr( $line, 'END WordPress' ) ) { // End of a WordPress block so stop replacing.
 						$got_rewrite = false;
@@ -115,15 +111,32 @@ RewriteRule . /index.php [L]\n
 				}
 			} // end foreach.
 			
+			// Check that we can write to this file (if it already exists).
+			if ( file_exists( $htaccessFile ) && ( ! is_writable( $htaccessFile ) ) ) {
+				pb_backupbuddy::status( 'warning', 'Warning #28573: Temp `' . basename( $htaccessFile ) . '` file shows to be unwritable. Attempting to override permissions temporarily.' );
+				$oldPerms = ( fileperms( $htaccessFile ) & 0777 );
+				@chmod( $htaccessFile, 0644 ); // Try to make writable.
+				// Check if still not writable...
+				if ( ! is_writable( $htaccessFile ) ) {
+					pb_backupbuddy::status( 'error', 'Error #9020: Unable to write to `' . basename( $htaccessFile ) . '` file. Verify permissions.' );
+					pb_backupbuddy::alert( 'Warning: Unable to write to temporary .htaccess file. Verify this file has proper write permissions. You may receive 404 Not Found errors on your site if this is not corrected. To fix after migration completes: Log in to your WordPress admin and select Settings: Permalinks from the left menu then save. To manually update, copy/paste the following into your .htaccess file: <textarea>' . implode( $rewrite_lines ) . '</textarea>', '9020' );
+					return false;
+				}
+			}
 			
-			$handling = fopen( ABSPATH . '.htaccess.bb_temp', 'w');
+			$handling = fopen( $htaccessFile, 'w');
 			fwrite( $handling, implode( $rewrite_lines ) );
 			fclose( $handling );
 			unset( $handling );
 			
-			pb_backupbuddy::status( 'message', 'Migrated `.htaccess.bb_temp` file. It will be renamed back to `.htaccess` on the final step.' );
+			// Restore prior permissions if applicable.
+			if ( isset( $oldPerms ) ) {
+				@chmod( $htaccessFile, $oldPerms );
+			}
+			
+			pb_backupbuddy::status( 'message', 'Migrated `' . basename( $htaccessFile ) . '` file. It will be renamed back to `.htaccess` on the final step.' );
 		} else {
-			pb_backupbuddy::status( 'message', 'No changes needed for `.htaccess.bb_temp` file.' );
+			pb_backupbuddy::status( 'message', 'No changes needed for `' . basename( $htaccessFile ) . '` file.' );
 		}
 		
 		return true;
@@ -223,12 +236,15 @@ RewriteRule . /index.php [L]\n
 		
 		pb_backupbuddy::flush();
 		
-		if ( file_exists( ABSPATH . 'wp-config.php' ) ) {
+		$configFile = ABSPATH . 'wp-config.php';
+		pb_backupbuddy::status( 'details', 'Config file: `' . $configFile . '`.' );
+
+		if ( file_exists( $configFile ) ) {
 			// Useful REGEX site: http://gskinner.com/RegExr/
 			
 			$updated_home_url = false;
 			$wp_config = array();
-			$lines = file( ABSPATH . 'wp-config.php' );
+			$lines = file( $configFile );
 			
 			$patterns = array();
 			$replacements = array();
@@ -275,19 +291,24 @@ RewriteRule . /index.php [L]\n
 			// Perform the actual replacement.
 			$lines = preg_replace( $pattern, $replace, $lines );
 			
-			
 			// Check that we can write to this file.
-			if ( !is_writable( ABSPATH . 'wp-config.php' ) ) {
-				pb_backupbuddy::alert( 'ERROR: Unable to write to file wp-config.php. Verify this file has proper write permissions.', true, '9020' );
-				return implode( "\n", $lines );
+			if ( ! is_writable( $configFile ) ) {
+				pb_backupbuddy::status( 'warning', 'Warning #28572: wp-config.php shows to be unwritable. Attempting to override permissions temporarily.' );
+				$oldPerms = ( fileperms( $configFile ) & 0777 );
+				@chmod( $configFile, 0644 ); // Try to make writable.
 			}
 			
 			// Write changes to config file.
-			if ( false === ( file_put_contents( ABSPATH . 'wp-config.php', $lines ) ) ) {
-				pb_backupbuddy::alert( 'ERROR: Unable to save changes to wp-config.php. Verify this file has proper write permissions.', true, '9020' );
+			if ( false === ( file_put_contents( $configFile, $lines ) ) ) {
+				pb_backupbuddy::alert( 'ERROR #84928: Unable to save changes to wp-config.php. Verify this file has proper write permissions. You may need to manually edit it.', true, '9020' );
 				return implode( "\n", $lines );
 			}
 			
+			// Restore prior permissions if applicable.
+			if ( isset( $oldPerms ) ) {
+				@chmod( $configFile, $oldPerms );
+			}
+
 			unset( $lines );
 		} else {
 			pb_backupbuddy::status( 'warning', 'Warning: wp-config.php file not found.' );
@@ -298,50 +319,6 @@ RewriteRule . /index.php [L]\n
 		
 		return true;
 	} // End migrate_wp_config().
-	
-	
-	
-	/* get_dat_file_array()
-	 *
-	 * Get the DAT file contents as an array.
-	 *
-	 * @param		string		$dat_file		Full path to DAT file to decode and parse.
-	 * @return		array|false					Array of DAT content. Bool false when unable to read.
-	 *
-	 */
-	function get_dat_file_array( $dat_file ) {
-		pb_backupbuddy::status( 'details', 'Loading backup dat file.' );
-		
-		if ( file_exists( $dat_file ) ) {
-			$backupdata = file_get_contents( $dat_file );
-		} else { // Missing.
-			pb_backupbuddy::status( 'error', 'Error #9003: BackupBuddy data file (backupbuddy_dat.php) missing or unreadable. There may be a problem with the backup file, the files could not be extracted (you may manually extract the zip file in this directory to manually do this portion of restore), or the files were deleted before this portion of the restore was reached.  Start the import process over or try manually extracting (unzipping) the files then starting over. Restore will not continue to protect integrity of any existing data.' );
-			die( ' Halted.' );
-		}
-		
-		// Unserialize data; If it fails it then decodes the obscufated data then unserializes it. (new dat file method starting at 2.0).
-		if ( !is_serialized( $backupdata ) || ( false === ( $return = unserialize( $backupdata ) ) ) ) {
-			// Skip first line.
-			$second_line_pos = strpos( $backupdata, "\n" ) + 1;
-			$backupdata = substr( $backupdata, $second_line_pos );
-			
-			// Decode back into an array.
-			$return = unserialize( base64_decode( $backupdata ) );
-		}
-		
-		if ( ! is_array( $return ) ) { // Invalid DAT content.
-			pb_backupbuddy::status( 'error', 'Error #545545. Unable to read/decode DAT file.' );
-			return false;
-		}
-		
-		pb_backupbuddy::status( 'details', 'Successfully loaded backup dat file `' . $dat_file . '`.' );
-		$return_censored = $return;
-		$return_censored['db_password'] = '*HIDDEN*';
-		$return_censored = print_r( $return_censored, true );
-		$return_censored = str_replace( array( "\n", "\r" ), '; ', $return_censored );
-		pb_backupbuddy::status( 'details', 'DAT contents: ' . $return_censored );
-		return $return;
-	} // End get_dat_file_array().
 	
 	
 	

@@ -201,7 +201,9 @@ function extract_files() {
 	}
 	
 	// Get DAT file contents & save into options..
-	pb_backupbuddy::$options['dat_file'] = pb_backupbuddy::$classes['import']->get_dat_file_array( $dat_file );
+	if ( false === ( pb_backupbuddy::$options['dat_file'] = backupbuddy_core::get_dat_file_array( $dat_file ) ) ) {
+		die( 'Error #43784334: Fatal error getting DAT file. Import halted.' );
+	}
 	pb_backupbuddy::$options['temp_serial_directory'] = basename( $dat_file );
 	pb_backupbuddy::save();
 	

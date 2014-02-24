@@ -1,0 +1,8 @@
+[05-Feb-2014 23:05:28 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[06-Feb-2014 08:57:26 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[06-Feb-2014 16:07:09 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[06-Feb-2014 23:14:31 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[14-Feb-2014 20:45:07 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[15-Feb-2014 05:16:03 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[15-Feb-2014 11:00:29 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35
+[15-Feb-2014 19:18:05 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/vimeo/views/show.php on line 35

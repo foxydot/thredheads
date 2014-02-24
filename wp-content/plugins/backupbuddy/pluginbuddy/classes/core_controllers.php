@@ -52,18 +52,6 @@ class pb_backupbuddy_ajaxcore {
 	} // End __call().
 	
 	
-	function media_library() {
-		require_once( pb_backupbuddy::plugin_path() . '/pluginbuddy/lib/media_library/media_library.php' );
-		$media_library = new pluginbuddy_medialibrary( pb_backupbuddy::_POST( 'save_point' ), pb_backupbuddy::_POST( 'default_options_point' ) );
-		$media_library->ajax( pb_backupbuddy::_GET( 'actionb' ) );
-	}
-	
-	/*
-	public function pbframework_troubleshooting() {
-		pb_backupbuddy::verify_nonce();
-	} // End ststst
-	*/
-	
 } // End class pb_backupbuddy_ajax.
 
 
@@ -215,8 +203,6 @@ class pb_backupbuddy_pagescore {
 		}
 		
 		if ( file_exists( $page_file ) ) { // Load from /controllers/pages/PAGE.php if it exists.
-			//pb_backupbuddy::load();
-			//pb_backupbuddy::init_class_controller(); // Adds ui controller if it doesnt exist yet. EDIT: now handled in pb_backupbuddy::__construct().
 			
 			// Display page.
 			pb_backupbuddy::load_script( 'admin.js', true );
@@ -226,10 +212,7 @@ class pb_backupbuddy_pagescore {
  			require_once( $page_file );
 			echo '</div>';
 			
-			// After page.
-			if ( ( pb_backupbuddy::$options['log_level'] == '3' ) || ( defined( 'PB_DEBUG') && ( PB_DEBUG === true ) ) ) {
-				pb_backupbuddy::debug();
-			}
+			echo '<div id="footer-thankyou" style="float: right; color: #777; margin-right: 21px; margin-top: 20px; margin-bottom: -34px;">Running BackupBuddy v' . pb_backupbuddy::settings( 'version' ) . '.</div>';
 			
 		} else { // Not found
 			echo '{Missing pages method `' . $name . '`.}';

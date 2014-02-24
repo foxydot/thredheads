@@ -10,33 +10,103 @@ class pb_backupbuddy_dashboard extends pb_backupbuddy_dashboardcore {
 	 *	@return		null
 	 */
 	function stats() {
-		echo '<style type="text/css">';
-		echo '	.pb_fancy {';
-		echo '		font-family: Georgia, "Times New Roman", "Bitstream Charter", Times, serif;';
-		echo '		font-size: 18px;';
-		echo '		color: #21759B;';
-		echo '	}';
-		echo '</style>';
-		
-		echo '<div>';
-		
+
+		$getOverview = backupbuddy_api0::getOverview();
 		$backup_url = 'admin.php?page=pb_backupbuddy_backup';
 		
-		$files = glob( backupbuddy_core::getBackupDirectory() . 'backup*.zip' );
-		if ( !is_array( $files ) || empty( $files ) ) {
-			$files = array();
-		}
 		
-		echo sprintf( __('You currently have %s stored backups.', 'it-l10n-backupbuddy' ), '<span class="pb_fancy"><a href="' . $backup_url . '">' . count( $files ) . '</a></span>');
-		if ( pb_backupbuddy::$options['last_backup_finish'] == 0 ) {
-			echo ' ', __( 'You have not successfully created any backups.', 'it-l10n-backupbuddy' );
+		// Red-Green status for editsSinceLastBackup
+		if ( $getOverview['editsSinceLastBackup'] == 0 )
+			$status = 'green';
+		else
+			$status = 'red';
+		
+
+		// Format file archiveSize to readable format
+		if ( isset( $getOverview['lastBackupStats']['archiveSize'] ) && ( is_numeric( $getOverview['lastBackupStats']['archiveSize'] ) ) ) {
+			$file_size = $getOverview['lastBackupStats']['archiveSize'];
+
+			if ( $file_size >= 1073741824 )
+				$archiveSize = round( $file_size / 1024 / 1024 / 1024 , 2 ) . ' GB';
+
+			elseif ( $file_size >= 1048576 )
+				$archiveSize = round( $file_size / 1024 / 1024 , 1 ) . ' MB';
+
+			elseif( $file_size >= 1024 )
+				$archiveSize = round( $file_size / 1024 , 0 ) . ' KB';
+
+			else
+				$archiveSize = $file_size . ' bytes';
 		} else {
-			echo ' ', sprintf( __(' Your most recent successful backup was %s ago.', 'it-l10n-backupbuddy' ), '<span class="pb_fancy"><a href="' . $backup_url . '">' . pb_backupbuddy::$format->time_ago( pb_backupbuddy::$options['last_backup_finish'] ) . '</a></span>');
+			$archiveSize = 'Unknown';
 		}
-		echo ' ', sprintf( __('There have been %s post/page modifications since your last backup.', 'it-l10n-backupbuddy' ), '<span class="pb_fancy"><a href="' . $backup_url . '">' . pb_backupbuddy::$options['edits_since_last'] . '</a></span>' );
-		echo ' <span class="pb_fancy"><a href="' . $backup_url . '">', __('Go create a backup!', 'it-l10n-backupbuddy' ), '</a></span>';
+
+		// Format timestamp
+		if ( isset( $getOverview['lastBackupStats']['finish'] ) ) {
+			$time = pb_backupbuddy::$format->localize_time( $getOverview['lastBackupStats']['finish'] );
+			$time_nice = date("M j - g:i A", $time);
+		} else {
+			$time_nice = 'Unknown';
+		}
 		
-		echo '</div>';
+		// Format Type
+		if ( isset( $getOverview['lastBackupStats']['type'] ) ) {
+			if ( $getOverview['lastBackupStats']['type'] == 'full' )
+				$backup_type = 'Full';
+			elseif ( $getOverview['lastBackupStats']['type'] == 'db' )
+				$backup_type = 'Database';
+			else
+				$backup_type = $getOverview['lastBackupStats']['type'];
+		} else {
+			$backup_type = 'Unknown';
+		}
+		
+		// Build widget markup
+		ob_start();
+		?>
+
+		<div class="edits-since-wrapper">
+			<p class="edits-since <?php echo $status; ?>">
+				<?php echo $getOverview['editsSinceLastBackup']; ?>
+			</p>
+			<h4 class="number-heading">Edits since<br>last Backup</h4>
+		</div>
+		
+		<?php if ( isset( $getOverview['lastBackupStats']['finish'] ) ) { // only show if a last backup exists. ?>
+			<div class="info-group">
+				<h3>Latest Backup</h3>
+				<ul class="backup-list">
+					<li>
+						<div class="list-wrapper">
+							<div class="list-title">
+								<a href="<?php if ( isset( $getOverview['lastBackupStats']['archiveURL'] ) ) { echo $getOverview['lastBackupStats']['archiveURL']; } ?>"><?php _e( 'Download', 'it-l10n-backupbuddy' ); ?></a>
+							</div>
+							<div class="list-description">
+								<div class="backup-type description-item">
+									<span>Type</span><br>
+									<?php echo $backup_type; ?>
+								</div>
+								<div class="backup-size description-item">
+									<span>Size</span><br>
+									<?php echo $archiveSize; ?>
+								</div>
+								<div class="backup-time description-item">
+									<span>Time</span><br>
+									<?php echo $time_nice; ?>
+								</div>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		<?php } ?>
+
+		<div class="backup-now">
+			<a href="<?php echo $backup_url; ?>"><?php _e( 'Backup Now', 'it-l10n-backupbuddy' ); ?></a>
+		</div>
+
+		<?php
+		ob_end_flush();
 	}
 
 

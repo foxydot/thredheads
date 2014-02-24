@@ -1,0 +1,175 @@
+[02-Feb-2014 23:40:55 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[02-Feb-2014 23:41:42 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35
+[02-Feb-2014 23:55:13 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[02-Feb-2014 23:55:13 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[02-Feb-2014 23:55:13 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[02-Feb-2014 23:55:44 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/cover-modal.php on line 35
+[03-Feb-2014 00:02:18 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[03-Feb-2014 00:03:39 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 00:04:03 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 00:04:03 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 00:04:03 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[03-Feb-2014 00:04:14 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/getcode-dialog.php on line 35
+[03-Feb-2014 00:04:26 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[03-Feb-2014 00:10:34 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/first-save-dialog.php on line 35
+[03-Feb-2014 00:30:35 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/gplus-posts-how-to.php on line 40
+[03-Feb-2014 07:39:37 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[03-Feb-2014 08:12:09 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35
+[03-Feb-2014 08:45:46 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[03-Feb-2014 08:45:46 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[03-Feb-2014 08:45:46 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[03-Feb-2014 10:05:32 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/cover-modal.php on line 35
+[03-Feb-2014 10:41:59 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[03-Feb-2014 11:12:46 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 12:34:37 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 12:34:37 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 12:34:37 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[03-Feb-2014 13:37:15 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/getcode-dialog.php on line 35
+[03-Feb-2014 16:59:42 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[03-Feb-2014 18:20:00 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[03-Feb-2014 18:53:48 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35
+[03-Feb-2014 19:21:19 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[03-Feb-2014 19:21:19 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[03-Feb-2014 19:21:19 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[03-Feb-2014 20:53:44 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35
+[03-Feb-2014 21:26:42 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/cover-modal.php on line 35
+[03-Feb-2014 21:54:19 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[03-Feb-2014 22:26:59 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 22:57:14 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 22:57:14 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[03-Feb-2014 22:57:14 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[03-Feb-2014 23:41:52 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[04-Feb-2014 00:16:25 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/first-save-dialog.php on line 35
+[04-Feb-2014 14:53:53 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/cover-modal.php on line 35
+[04-Feb-2014 20:24:56 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/getcode-dialog.php on line 35
+[05-Feb-2014 02:06:51 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/gplus-posts-how-to.php on line 40
+[15-Feb-2014 20:01:39 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[15-Feb-2014 23:31:40 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[16-Feb-2014 02:03:15 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[16-Feb-2014 08:09:38 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[16-Feb-2014 08:12:49 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[16-Feb-2014 15:13:33 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[16-Feb-2014 15:38:14 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[16-Feb-2014 23:16:38 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[17-Feb-2014 16:07:00 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[17-Feb-2014 16:20:29 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[18-Feb-2014 01:16:07 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[18-Feb-2014 01:16:24 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[18-Feb-2014 03:27:27 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[18-Feb-2014 09:29:53 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[18-Feb-2014 11:52:41 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-upgrades.php on line 35
+[18-Feb-2014 18:17:12 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/admin-options.php on line 35
+[19-Feb-2014 17:56:09 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/first-save-dialog.php on line 35
+[19-Feb-2014 23:58:55 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[20-Feb-2014 00:25:51 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/getcode-dialog.php on line 35
+[20-Feb-2014 03:30:59 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/first-save-dialog.php on line 35
+[20-Feb-2014 13:19:17 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/first-save-dialog.php on line 35
+[20-Feb-2014 20:52:43 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/gplus-posts-how-to.php on line 40
+[20-Feb-2014 22:33:19 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[21-Feb-2014 04:10:03 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/gplus-posts-how-to.php on line 40
+[21-Feb-2014 18:05:41 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[22-Feb-2014 08:40:38 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[22-Feb-2014 08:47:45 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[22-Feb-2014 08:47:45 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[22-Feb-2014 08:47:45 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[22-Feb-2014 19:59:23 America/Denver] PHP Fatal error:  Call to undefined function do_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/form.php on line 34
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[22-Feb-2014 20:55:16 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[22-Feb-2014 20:55:16 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[22-Feb-2014 20:55:16 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[22-Feb-2014 22:32:29 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[22-Feb-2014 22:32:29 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[22-Feb-2014 22:32:29 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[23-Feb-2014 04:04:17 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[23-Feb-2014 04:04:17 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[23-Feb-2014 04:04:17 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[23-Feb-2014 08:15:13 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[23-Feb-2014 08:15:13 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[23-Feb-2014 08:15:13 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 38
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 42
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_LICENSE - assumed 'SLIDEDECK2_LICENSE' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 43
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: scripts in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[23-Feb-2014 10:02:55 America/Denver] PHP Warning:  Invalid argument supplied for foreach() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 48
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: wp_styles in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Trying to get property of non-object in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 78
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Undefined variable: lens in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[23-Feb-2014 10:02:55 America/Denver] PHP Notice:  Use of undefined constant SLIDEDECK2_VERSION - assumed 'SLIDEDECK2_VERSION' in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 80
+[23-Feb-2014 10:02:55 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview-iframe.php on line 82
+[23-Feb-2014 15:51:18 America/Denver] PHP Notice:  Undefined variable: first_preview in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 35
+[23-Feb-2014 15:51:18 America/Denver] PHP Notice:  Undefined variable: preview_w in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 36
+[23-Feb-2014 15:51:18 America/Denver] PHP Fatal error:  Call to undefined function slidedeck() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/preview.php on line 37
+[23-Feb-2014 19:37:41 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[24-Feb-2014 03:07:11 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35
+[24-Feb-2014 03:30:56 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[24-Feb-2014 09:27:57 America/Denver] PHP Fatal error:  Call to undefined function language_attributes() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/insert-iframe.php on line 35
+[24-Feb-2014 09:39:40 America/Denver] PHP Fatal error:  Call to undefined function slidedeck2_flash() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/manage.php on line 35

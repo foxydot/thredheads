@@ -100,13 +100,6 @@ class pb_backupbuddy {
 		// Set the init file.
 		self::$_settings['init'] = $pluginbuddy_init;
 		
-		// Removed. see add_page(). Now using create_function() to bypass need for this. self::$_callbacks = new pluginbuddy_callbacks();
-		
-		// Load thumbnail live downsizer if needed.
-		if ( isset( self::$_settings['modules']['downsizer'] ) && ( self::$_settings['modules']['downsizer'] === true ) ) {
-			require_once( self::$_plugin_path . '/pluginbuddy/_image_downsize.php' );
-		}
-		
 		// filesystem class controller.
 		if ( isset( self::$_settings['modules']['filesystem'] ) && ( self::$_settings['modules']['filesystem'] === true ) ) {
 			self::init_class_controller( 'filesystem' );
@@ -120,14 +113,6 @@ class pb_backupbuddy {
 			
 			// Load UI system.
 			self::init_class_controller( 'ui' );
-			
-			// Load media library system if needed.
-			if ( isset( self::$_settings['modules']['media_library'] ) && ( self::$_settings['modules']['media_library'] === true ) ) {
-				self::add_ajax( 'media_library' );
-			}
-			
-			// Add troubleshooting sending system.
-			self::add_ajax( 'pbframework_troubleshooting' );
 			
 			// Load activation hook if in admin and activation file exists.
 			if ( file_exists( self::$_plugin_path . '/controllers/activation.php' ) ) {
@@ -775,7 +760,7 @@ class pb_backupbuddy {
 						@fwrite( $file_handle, trim( implode( $delimiter, $content_array ) ) . PHP_EOL );
 						@fclose( $file_handle );
 					} else {
-						pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
+						//pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
 					}
 				}
 			}
@@ -862,7 +847,7 @@ class pb_backupbuddy {
 			
 			return $status_lines;
 		} else {
-			self::alert( 'Unable to open file handler for status file `' . $status_file . '`. Unable to write status log.' );
+			//self::alert( 'Unable to open file handler for status file `' . $status_file . '`. Unable to write status log.' );
 		}
 	} // End get_status().
 	
@@ -976,53 +961,6 @@ class pb_backupbuddy {
 		}
 
 	} // End set_greedy_script_limits().
-	
-	
-	
-	/*	self::debug()
-	 *	
-	 *	Displays debugging information on screen via a toggleable box. Floats right. Includes all logged information logged in status() and self::$options.
-	 *
-	 *	@see self::status().
-	 *	@see self::get_status().
-	 *	
-	 *	@return		null
-	 */
-	public static function debug( $serial = '', $clear_retrieved = true ) {
-		echo '<div class="pb_debug"><span class="pb_debug_show">Debug</span><span class="pb_debug_hide">Hide</span>';
-		echo '<div class="pb_debug_content">';
-		
-		
-		// Status log:
-		if ( $serial == '' ) {
-			echo '<b>Debugging Status Information (all; no serial):</b>';
-		} else {
-			echo '<b>Debugging Status Information (serial: `' . $serial . '`):</b>';
-		}
-		echo '<textarea readonly="readonly" wrap="off">';
-		$status = self::get_status( $serial , $clear_retrieved );
-		foreach( (array)$status as $status_item ) { // $status_item: time, type, message
-			//echo '<pre>' . print_r( $status_item, true ) . '</pre>';
-			/*
-			if ( !isset( $status_item[4] ) ) {
-				echo 'BAD:<pre>' . print_r( $status_item, true ) . '</pre>';
-			}
-			*/
-			echo $status_item[0] . chr(9) . $status_item[1] . 'sec' . chr(9) . $status_item[2] . 'MB' . chr(9) . $status_item[3] . chr(9) .  chr(9) . $status_item[4] . "\n";
-		}
-		unset( $status );
-		echo '</textarea>';
-		
-		
-		// self::$options
-		echo '<b>Debugging Options Array:</b><textarea readonly="readonly" wrap="off">';
-		print_r( self::$options );
-		echo '</textarea>';
-				
-		
-		echo '</div>';
-		echo '</div>';
-	} // End debug().
 	
 	
 	
@@ -1625,15 +1563,6 @@ class pb_backupbuddy {
 		} else {
 			echo '{Error: Unable to load page controller `' . $controller . '`; file not found.}';
 		}
-		/*
-		if ( file_exists( self::plugin_path() . '/controllers/' . $controller . '.php' ) ) {
-			require_once( self::plugin_path() . '/controllers/' . $controller . '.php' );
-		} else {
-			echo '{Error: Unable to load controller `' . $controller . '`; file not found.}';
-		}
-		*/
-		
-		//self::$_pages->load_controller( $controller );
 	} // End load_controller().
 	
 	
@@ -1730,9 +1659,10 @@ if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
 // ********** Load core classes **********
 
 require_once( dirname( __FILE__ ) . '/classes/core_controllers.php' );
-require_once( dirname( __FILE__ ) . '/classes/form.php' );
-require_once( dirname( __FILE__ ) . '/classes/settings.php' );
-
+if ( is_admin() ) {
+	require_once( dirname( __FILE__ ) . '/classes/form.php' );
+	require_once( dirname( __FILE__ ) . '/classes/settings.php' );
+}
 
 
 // ********** Initialize PluginBuddy framework **********
@@ -1759,11 +1689,3 @@ if ( is_admin() ) {
 if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {
 	pb_backupbuddy::load_controller( 'pages/default' );
 }
-
-// Used for ManageWP support.
-/*
-if( !is_admin() && function_exists( 'add_action' ) ){
-	add_action( 'setup_theme', 'pb_backupbuddy::pb_filter_update' );
-}
-*/
-?>

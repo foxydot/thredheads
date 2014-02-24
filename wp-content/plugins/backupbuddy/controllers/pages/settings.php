@@ -45,7 +45,7 @@ jQuery(window).load(function() {
 </script>
 
 <?php
-pb_backupbuddy::$ui->title( __( 'BackupBuddy Settings', 'it-l10n-backupbuddy' ) );
+pb_backupbuddy::$ui->title( __( 'Settings', 'it-l10n-backupbuddy' ) );
 backupbuddy_core::versions_confirm();
 
 pb_backupbuddy::disalert( 'profile_suggest', '<span class="pb_label" style="font-size: 12px; margin-left: 10px; position: relative;">Tip</span> &nbsp; You can create & customize multiple different backup types with profiles on the <a href="?page=pb_backupbuddy_backup">Backups</a> page by selecting the gear icon next to each profile.' );
@@ -196,3 +196,4 @@ pb_backupbuddy::load_view( 'settings', $data );
 <br style="clear: both;">
 <br><br>
 <br><br>
+</div>

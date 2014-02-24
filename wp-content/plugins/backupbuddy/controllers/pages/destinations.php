@@ -2,6 +2,8 @@
 wp_enqueue_script( 'thickbox' );
 wp_print_scripts( 'thickbox' );
 wp_print_styles( 'thickbox' );
+
+pb_backupbuddy::disalert( 'backup_stash_advert', 'Active BackupBuddy customers already have a <b>BackupBuddy Stash</b> account with <span class="pb_label pb_label">1 GB Free Storage</span>. Just login on the <a href="?page=pb_backupbuddy_destinations">Remote Destinations</a> page.' );
 ?>
 
 
@@ -128,3 +130,4 @@ if ( !wp_script_is( 'media-upload' ) ) {
 	wp_print_scripts( 'media-upload' );
 }
 ?>
+</div>

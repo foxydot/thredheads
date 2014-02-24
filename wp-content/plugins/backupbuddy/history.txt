@@ -479,4 +479,55 @@
 	Fixed undefined index warnings on bad backups during integrity scan.
 	Fixed Stash feature 'Copy to Local' not functioning.
 	Improved error differentiation for Multisite failure to find required form data on moving to next step.
+4.2.13.1 - 2014-02-03 - Dustin Bolton
+	ImportBuddy: .htaccess and wp-config.php permissions set to be writable prior to writing. Restored to prior permission level after updating.
+	Added additional logging to imoportbuddy generation process to improve troubleshooting.
+	Performance: Removed unused PluginBuddy framework methods & code from PB framework to improve performance.
+	Performance: Added additional is_admin() conditionals into PB framework for slightly performance increase on front-end.
+	ENHANCEMENT:
+		Updated German translations. - Thanks to Thomas Heinrichsdobler.
+	ENHANCEMENT:
+		Updated Swedish translations. - Thanks to Per von Dolwitz.
+	iThemes Sync: If last backup file no longer exists on server, return empty string for this stats value.
+	Adjusted misc colors on Remote Destinations page to better match WordPress 3.8 styling.
+	ENHANCEMENT:
+		Updated BackupBuddy Dashboard widget. - Ty
+	ENHANCEMENT:
+		Now storing additional WordPress information in meta & DAT files such as WordPress version, total pages, posts, users, comments, etc.
+	Performance: Updated dbreplace library to address excess memory usage. - Jeremy
+4.2.13.2 - 2014-02-03 - Packaging Bot (lib/updater)
+	Bug Fix: Licensing on SSL-enabled sites now works properly.
+4.2.14.0 - 2014-02-06 - Dustin Bolton
+	Added additional logging when seeking database tables' matching prefix.
+	Beta Database Rollback -- New beta feature for rolling back database to a prior backup.
+	ImportBuddy: Fixed permission problems with wp-config.php and .htaccess files caused by recent update in 4.2.13.1. Also now only conditionally updates if file is deemed unwritable.
+	Suppressing alerts on inability to write to status log as they can clutter page.
+4.2.14.4 - 2014-02-06 - Dustin Bolton
+	Beta Database Rollback step process shortened.
+4.2.14.5 - 2014-02-07 - Dustin Bolton
+	Fixed Quick Setup Destination selection not displaying settings for adding a new destination.
+4.2.14.6 - 2014-02-07 - Dustin Bolton
+	Dashboard widget: Fixed backup button overflow.
+	Dashboard widget: Fixed time of last backup not being correct localized time.
+	Settings page: Added Licensing link to more easily find Licensing.
+	Added BackupBuddy version number to the bottom right of each BackupBuddy page.
+	Backups page now notifies if new MAJOR version (non-quick release) is available and instructs to upgrade via the WP Plugins page.
+	Changed some Malware Scan page wording for clarity.
+4.2.14.7 - 2014-02-11 - Dustin Bolton
+	Fixed undefined indexes on Dashboard if no backups have been made yet. Notices introduced in 4.2.13.1.
+4.2.14.8 - 2014-02-13 - Dustin Bolton
+	Fixed migration destination popup from mentioning non-migration destinations such as Stash, email, etc.
+	Added additional clarification working to denote that addable types in this popup are migration-related.
+	Added additional logging for Multisite export steps.
+	Fixed false failure notices of 9033 errors when in fact it was only being caused by javascript polling too quickly. - Jeremy
+	Quick Setup is now displayed in-page when visiting the Backups page for the first time for usability.
+	Stash destination configuration cleanup.
+	Rollback beta: Now fully imports tables with a temporary prefix prior to renaming to further minimize downtime.
+	Rollback beta: Many misc changes.
+	Rollback beta: Added advanced options.
+	Added additional logging for troubleshooting SQL issues trying to get table listings.
+4.2.14.9 - 2014-02-14 - Dustin Bolton
+	Rollback beta: Fixed problems finding SQL file when using full database types. SQL location detection much more robust now.
+4.2.14.11 - 2014-02-14 - Dustin Bolton
+	Rollback beta: Not catching PHP errors in advanced log.
 	

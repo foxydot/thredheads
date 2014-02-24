@@ -8,7 +8,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	public function backup_status() {
 		$serial = trim( pb_backupbuddy::_POST( 'serial' ) );
 		$serial = str_replace( '/\\', '', $serial );
-		
+		$init_wait_retry_count = (int)trim( pb_backupbuddy::_POST( 'initwaitretrycount' ) );
 		
 		if ( true == get_transient( 'pb_backupbuddy_stop_backup-' . $serial ) ) {
 			pb_backupbuddy::status( 'message', 'Backup STOPPED. Post backup cleanup step has been scheduled to clean up any temporary files.', $serial );
@@ -60,8 +60,14 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			
 			// Verify init completed.
 			if ( false === $backup['init_complete'] ) {
-				pb_backupbuddy::status( 'error', 'Error #9033: The pre-backup initialization for serial `' . $serial . '` was unable save pre-backup initialization options (init_complete===false) possibly because the pre-backup initialization step did not complete. If the log indicates the pre-backup procedure did indeed complete then something prevented BackupBuddy from updating the database such as an misconfigured caching plugin. Check for any errors above or in logs. Verify permissions & that there is enough server memory. See the BackupBuddy "Server Information" page to help assess your server.', $serial );
-				pb_backupbuddy::status( 'action', 'halt_script', $serial );
+				if ( 0 >= $init_wait_retry_count ) {
+					// Waited too long for init to complete, must be something wrong
+					pb_backupbuddy::status( 'error', 'Error #9033: The pre-backup initialization for serial `' . $serial . '` was unable save pre-backup initialization options (init_complete===false) possibly because the pre-backup initialization step did not complete. If the log indicates the pre-backup procedure did indeed complete then something prevented BackupBuddy from updating the database such as an misconfigured caching plugin. Check for any errors above or in logs. Verify permissions & that there is enough server memory. See the BackupBuddy "Server Information" page to help assess your server.', $serial );
+					pb_backupbuddy::status( 'action', 'halt_script', $serial );
+				} else {
+					pb_backupbuddy::status( 'details', 'Waiting for the pre-backup initialization for serial `' . $serial . '` to complete: ' . $init_wait_retry_count, $serial );				
+					pb_backupbuddy::status( 'action', 'wait_init', $serial );
+				}
 			}
 			
 			//***** Begin outputting status of the current step.
@@ -210,6 +216,11 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	
 	
 	
+	/* hash()
+	 *
+	 * Generate a hash/CRC for a file at user request.
+	 *
+	 */
 	public function hash() {
 		pb_backupbuddy::load();
 		
@@ -393,7 +404,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				}
 				pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
 				$fileoptions = &$fileoptions_obj->options;
-
+				
 				$migrate_send_status = $fileoptions['status'];
 				
 				if ( $migrate_send_status == 'timeout' ) {
@@ -492,8 +503,11 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	
 	
 	
-	
-	
+	/* remote_delete()
+	 *
+	 * description
+	 *
+	 */
 	public function remote_delete() {
 		
 		pb_backupbuddy::verify_nonce(); // Security check.
@@ -513,7 +527,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		}
 		
 		die();
-			
+		
 	} // End remote_delete().
 	
 	
@@ -583,7 +597,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		
 		$destination_id = trim( pb_backupbuddy::_GET( 'pb_backupbuddy_destinationid' ) );
 		
-
+		
 		if ( count( $save_result['errors'] ) == 0 ) { // NO ERRORS SO SAVE.
 			
 			if ( $destination_id == 'NEW' ) { // ADD NEW.
@@ -799,17 +813,17 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	 *	@return		null
 	 */
 	function file_tree() {
-	
+		
 		// How long to cache the specific backup file tree information for (seconds)
 		$max_cache_time = 86400;
 		
 		// This is the root directory we want the listing for
 		$root = trim( urldecode( pb_backupbuddy::_POST( 'dir' ) ) );
 		$root_len = strlen( $root );
-
+		
 		// This will identify the backup zip file we want to list
 		$serial = pb_backupbuddy::_GET( 'serial' );
-
+		
 		// The fileoptions file that contains the file tree information		
 		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
 		$fileoptions_file = backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '-filetree.txt';
@@ -822,7 +836,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		}
 		
 		$fileoptions = new pb_backupbuddy_fileoptions( $fileoptions_file );
-
+		
 		// Either we are getting cached file tree information or we need to create afresh		
 		if ( true !== ( $result = $fileoptions->is_ok() ) ) {
 			// Get file listing.
@@ -842,10 +856,10 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		
 		// To record subdirs of this root
 		$subdirs = array();
-
+		
 		// Strip out any files/subdirs that are not actually directly under the given root
 		foreach( $files as $key => $file ) {
-
+			
 			// If shorter than root length then certainly is not within this (root) directory.
 			// It's a quick test that is more effective the longer the root (the deeper you go
 			// into the tree)
@@ -866,7 +880,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				continue;
 				
 			}
-
+			
 			// If the file _is_ the root then we don't want to list it
 			// Don't want to do this on _every_ file as very specific so do it here after we have
 			// weeded out files for more common reasons
@@ -886,10 +900,10 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			// subdir/subsubdir/file. Find if we have any directory separator(s) in the filename
 			// and if so remember where the first is
 			if ( false !== ( $pos = strpos( $unrooted_file, '/' ) ) ) {
-
+				
 				// Get the subdir/ prefix part, discarding everything after the first /
 				$subdir = substr( $unrooted_file, 0, ( $pos + 1 ) );
-
+				
 				// Have we already seen it
 				if ( !in_array( $subdir, $subdirs ) ) {
 				
@@ -944,7 +958,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			// Hmm, the sort failed, just revert to original
 			$files = $saved_files;
 		}
-
+		
 		// Now we can start to build the listing to display
 		if( count( $files ) > 0 ) {
 			echo '<ul class="jqueryFileTree" style="display: none;">';
@@ -965,12 +979,6 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				if ( substr( $file[0], -1 ) == '/' ) { // Directory.
 					echo '<li class="directory collapsed">';
 					$return = '';
-					/*
-					$return .= '<div class="pb_backupbuddy_treeselect_control">';
-					$return .= '<img src="' . pb_backupbuddy::plugin_url() . '/images/greenplus.png" style="vertical-align: -3px;" title="Restore..." class="pb_backupbuddy_filetree_exclude">';
-					$return .= '</div>';
-					*/
-					//echo $return;
 					echo '<input type="checkbox">';
 					echo '<a class="hoverable" href="#" rel="' . htmlentities( $root . $file[0] ) . '" title="Toggle expand...">' . htmlentities( rtrim( $file[0], '/' ) ) . $return . '</a>';
 					echo '</li>';
@@ -1085,11 +1093,15 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	
 	
 	
-	// Server info page phpinfo button.
+	/* phpinfo()
+	 *
+	 * Server info page phpinfo button.
+	 *
+	 */
 	public function phpinfo() {
 		phpinfo();
 		die();
-	}
+	} // End phpinfo().
 	
 	
 	
@@ -1144,22 +1156,16 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	
 	
 	
+	/* integrity_status()
+	 *
+	 * description
+	 *
+	 */
 	public function integrity_status() {
 		$serial = pb_backupbuddy::_GET( 'serial' );
 		$serial = str_replace( '/\\', '', $serial );
 		pb_backupbuddy::load();
 		pb_backupbuddy::$ui->ajax_header();
-		
-		// Backup overall status.
-		/*
-		echo 'Backup status: ';
-		if ( $integrity['status'] == 'pass' ) { // Pass.
-			echo '<span class="pb_label pb_label-success">Good</span>';
-		} else { // Fail.
-			echo '<span class="pb_label pb_label-important">Bad</span>';
-		}
-		echo '<br>';
-		*/
 		
 		require_once( pb_backupbuddy::plugin_path() . '/classes/fileoptions.php' );
 		$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = true );
@@ -1170,7 +1176,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		
 		$integrity = $backup_options->options['integrity'];
 		
-		echo '<p><b>' . __( 'Backup File', 'it-l10n-backupbuddy' ) . '</b>: ' . $integrity['file'] . '</p>';
+		//echo '<p><b>' . __( 'Backup File', 'it-l10n-backupbuddy' ) . '</b>: ' . $integrity['file'] . '</p>';
 		
 		$start_time = 'Unknown';
 		$finish_time = 'Unknown';
@@ -1245,9 +1251,22 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			);
 		
 		} // end $integrity['status_details'] is an array.
+		echo '<br><br>';
 		//***** END TESTS AND RESULTS.
 		
 		
+		// Output meta info table (if any).
+		if ( false === ( $metaInfo = backupbuddy_core::getZipMeta( backupbuddy_core::getBackupDirectory() . $integrity['file'] ) ) ) { // $backup_options->options['archive_file']
+			echo '<i>No meta data found in zip comment. Skipping meta information display.</i>';
+		} else {
+			pb_backupbuddy::$ui->list_table(
+				$metaInfo,
+				array(
+					'columns'		=>	array( 'Backup Details', 'Value' ),
+					'css'			=>	'width: 100%; min-width: 200px;',
+				)
+			);
+		}
 		echo '<br><br>';
 		
 		
@@ -1322,7 +1341,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		);
 		
 		$columns = array(
-			__( 'Backup', 'it-l10n-backupbuddy' ),
+			__( 'Backup Steps', 'it-l10n-backupbuddy' ),
 			__( 'Time', 'it-l10n-backupbuddy' ),
 			__( 'Attempts', 'it-l10n-backupbuddy' ),
 		);
@@ -1342,47 +1361,13 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		//***** END STEPS.
 		
 		
-		//***** BEGIN COMMENT META.
-		if ( !isset( pb_backupbuddy::$classes['zipbuddy'] ) ) {
-			require_once( pb_backupbuddy::plugin_path() . '/lib/zipbuddy/zipbuddy.php' );
-			pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( backupbuddy_core::getBackupDirectory() );
-		}
-		$comment_meta = array();
-		if ( isset( $backup_options->options['archive_file'] ) ) {
-			$comment = pb_backupbuddy::$classes['zipbuddy']->get_comment( $backup_options->options['archive_file'] );
-			$comment = backupbuddy_core::normalize_comment_data( $comment );
-			
-			$comment_meta = array();
-			foreach( $comment as $comment_line_name => $comment_line_value ) { // Loop through all meta fields in the comment array to display.
-				
-				if ( false !== ( $response = backupbuddy_core::pretty_meta_info( $comment_line_name, $comment_line_value ) ) ) {
-					$comment_meta[] = $response;
-				}
-				
-			}
-		}
-		
-		if ( count( $comment_meta ) > 0 ) {
-			pb_backupbuddy::$ui->list_table(
-				$comment_meta,
-				array(
-					'columns'		=>	array( 'Meta Information', 'Value' ),
-					'css'			=>	'width: 100%; min-width: 200px;',
-				)
-			);
-		} else {
-			echo '<i>No meta data found in zip comment. Skipping meta information display.</i>';
-		}
-		//***** END COMMENT META.
-	
 		
 		if ( isset( $backup_options->options['trigger'] ) ) {
 			$trigger = $backup_options->options['trigger'];
 		} else {
 			$trigger = 'Unknown trigger';
 		}
-		$scanned = pb_backupbuddy::$format->date( $integrity['scan_time'] );
-		echo '<br><br>';
+		$scanned = pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $integrity['scan_time'] ) );
 		echo ucfirst( $trigger ) . " backup {$integrity['file']} last scanned {$scanned}.";
 		echo '<br><br><br>';
 		
@@ -1467,6 +1452,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		die();
 		
 	} // End db_repair().
+	
 	
 	
 	/*	php_max_runtime_test()
@@ -1770,6 +1756,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	 */
 	function quickstart() {
 		pb_backupbuddy::$ui->ajax_header();
+		pb_backupbuddy::load_style( 'thickboxed.css' );
 		require_once( pb_backupbuddy::plugin_path() . '/views/_quicksetup.php' );
 		pb_backupbuddy::$ui->ajax_footer();
 		die();
@@ -1899,18 +1886,6 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	
 	
 	
-	/* quickstart_skip()
-	 *
-	 * Skip the quickstart process.
-	 *
-	 */
-	function quickstart_skip() {
-		pb_backupbuddy::$options['skip_quicksetup'] = '1';
-		pb_backupbuddy::save();
-		die( '1' );
-	} // End quickstart_skip().
-	
-	
 	/* profile_settings()
 	 *
 	 * View a specified profile's settings.
@@ -1965,7 +1940,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		echo '<!-- ';
 		pb_backupbuddy::status( 'details', $message );
 		echo $message;
-
+		
 		
 		$extractions = array( $file => $temp_file );
 		$extract_result = $zipbuddy->extract( backupbuddy_core::getBackupDirectory() . $archive_file, $destination, $extractions );
@@ -2006,11 +1981,20 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 	 */
 	public function restore_file_restore() {
 		
-		$success = false;
+		$files = pb_backupbuddy::_GET( 'files' ); // file to extract.
+		$files_array = explode( ',', $files );
+		$files = array();
+		foreach( $files_array as $file ) {
+			if ( substr( $file, -1 ) == '/' ) { // If directory then add wildcard.
+				$file = $file . '*';
+			}
+			$files[$file] = $file;
+		}
+		unset( $files_array );
 		
 		pb_backupbuddy::$ui->ajax_header( true, false ); // js, no padding
-		
 		?>
+		
 		<script type="text/javascript">
 			function pb_status_append( status_string ) {
 				target_id = 'pb_backupbuddy_status'; // importbuddy_status or pb_backupbuddy_status
@@ -2023,148 +2007,29 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			}
 		</script>
 		<?php
-		
+		$success = false;
+
 		global $pb_backupbuddy_js_status;
 		$pb_backupbuddy_js_status = true;
 		echo pb_backupbuddy::status_box( 'Restoring . . .' );
 		echo '<div id="pb_backupbuddy_working" style="width: 100px;"><br><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
-		
+
 		pb_backupbuddy::set_status_serial( 'restore' );
 		global $wp_version;
 		pb_backupbuddy::status( 'details', 'BackupBuddy v' . pb_backupbuddy::settings( 'version' ) . ' using WordPress v' . $wp_version . ' on ' . PHP_OS . '.' );
 		
+		
 		$archive_file = pb_backupbuddy::_GET( 'archive' ); // archive to extract from.
-		$files = pb_backupbuddy::_GET( 'files' ); // file to extract.
-		$files_array = explode( ',', $files );
-		$files = array();
-		foreach( $files_array as $file ) {
-			if ( substr( $file, -1 ) == '/' ) { // If directory then add wildcard.
-				$file = $file . '*';
-			}
-			$files[$file] = $file;
-		}
-		unset( $files_array );
-		$serial = backupbuddy_core::get_serial_from_file( $archive_file ); // serial of archive.
+		require( pb_backupbuddy::plugin_path() . '/classes/_restoreFiles.php' );
+		$result = backupbuddy_restore_files::restore( backupbuddy_core::getBackupDirectory() . $archive_file, $files, $finalPath = ABSPATH );
 		
-		foreach( $files as $file ) {
-			$file = str_replace( '*', '', $file ); // Remove any wildcard.
-			if ( file_exists( ABSPATH . $file ) && is_dir( ABSPATH . $file ) ) {
-				if ( ( $file_count = @scandir( ABSPATH . $file ) ) && ( count( $file_count ) > 2 ) ) {
-					pb_backupbuddy::status( 'error', __( 'Error #9036. The destination directory being restored already exists and is NOT empty. The directory will not be restored to prevent inadvertently losing files within the existing directory. Delete existing directory first if you wish to proceed or restore individual files.', 'it-l10n-backupbuddy' ) . ' Existing directory: `' . ABSPATH . $file . '`.' );
-					echo '<script type="text/javascript">jQuery("#pb_backupbuddy_working").hide();</script>';
-					pb_backupbuddy::flush();
-					pb_backupbuddy::$ui->ajax_footer();
-					die();
-				}
-			}
-		}
-		
-		require_once( pb_backupbuddy::plugin_path() . '/lib/zipbuddy/zipbuddy.php' );
-		$zipbuddy = new pluginbuddy_zipbuddy( backupbuddy_core::getBackupDirectory() );
-		
-		// Calculate temp directory & lock it down.
-		$temp_dir = get_temp_dir();
-		$destination = $temp_dir . 'backupbuddy-' . $serial;
-		if ( ( ( ! file_exists( $destination ) ) && ( false === mkdir( $destination, 0777, true ) ) ) ) {
-			$error = 'Error #458485945: Unable to create temporary location.';
-			pb_backupbuddy::status( 'error', $error );
-			echo '<script type="text/javascript">jQuery("#pb_backupbuddy_working").hide();</script>';
-			pb_backupbuddy::flush();
-			pb_backupbuddy::$ui->ajax_footer();
-			die();
-		}
-		
-		// If temp directory is within webroot then lock it down.
-		$temp_dir = str_replace( '\\', '/', $temp_dir ); // Normalize for Windows.
-		$temp_dir = rtrim( $temp_dir, '/\\' ) . '/'; // Enforce single trailing slash.
-		if ( FALSE !== stristr( $temp_dir, ABSPATH ) ) { // Temp dir is within webroot.
-			pb_backupbuddy::anti_directory_browsing( $destination );
-		}
-		unset( $temp_dir );
-		
-		
-		
-		pb_backupbuddy::status( 'details', 'Extracting into temporary directory "' . $destination . '".' );
-		pb_backupbuddy::status( 'details', 'Files to extract: `' . htmlentities( pb_backupbuddy::_GET( 'files' ) ) . '`.' );
-		
-		// Make sure temp subdirectories exist.
-		/*
-		foreach( $files as $file => $null ) {
-			mkdir( $destination . '/' . basename( $file ), 0777, true );
-		}
-		*/
-		
-		pb_backupbuddy::flush();
-		
-		$extract_success = true;
-		$extract_result = $zipbuddy->extract( backupbuddy_core::getBackupDirectory() . $archive_file, $destination, $files );
-		if ( false === $extract_result ) { // failed.
-			
-			pb_backupbuddy::status( 'error', 'Error #584984458b. Unable to extract.' );
-			$extract_success = false;
-			
-		} else { // success.
-			
-			// Verify all files/directories to be extracted exist in temp destination directory. If any missing then delete everything and bail out.
-			foreach( $files as &$file ) {
-				$file = str_replace( '*', '', $file ); // Remove any wildcard.
-				if ( ! file_exists( $destination . '/' . $file ) ) {
-					// Cleanup.
-					foreach( $files as $file ) {
-						@trigger_error( '' ); // Clear out last error.
-						@unlink( $destination . '/' . $file);
-						$last_error = error_get_last();
-						if ( is_array( $last_error ) ) {
-							pb_backupbuddy::status( 'error', $last_error['message'] . ' File: `' . $last_error['file'] . '`. Line: `' . $last_error['line'] . '`.' );
-						}
-					}
-					pb_backupbuddy::status( 'error', 'Error #854783474. One or more expected files / directories missing.' );
-					
-					$extract_success = false;
-					break;
-				}
-			}
-			unset( $file );
-		}
-		
-		if ( true === $extract_success ) {
-			// Made it this far so files all exist. Move them all.
-			foreach( $files as $file ) {
-				@trigger_error( '' ); // Clear out last error.
-				if ( false === @rename( $destination . '/' . $file, ABSPATH . $file ) ) {
-					$last_error = error_get_last();
-					if ( is_array( $last_error ) ) {
-						//print_r( $last_error );
-						pb_backupbuddy::status( 'error', $last_error['message'] . ' File: `' . $last_error['file'] . '`. Line: `' . $last_error['line'] . '`.' );
-					}
-					$error = 'Error #9035. Unable to move restored file `' . $destination . '/' . $file . '` to `' . ABSPATH . $file . '`. Verify permissions on destination location & that the destination directory/file does not already exist.';
-					pb_backupbuddy::status( 'error', $error );
-				} else {
-					$details = 'Moved `' . $destination . '/' . $file . '` to `' . ABSPATH . $file . '`.<br>';
-					pb_backupbuddy::status( 'details', $details );
-					$success = true;
-				}
-			}
-			
-		} // end extract succeeded.
-		
-		
-		// Try to cleanup.
-		if ( file_exists( $destination ) ) {
-			if ( false === pb_backupbuddy::$filesystem->unlink_recursive( $destination ) ) {
-				pb_backupbuddy::status( 'details', 'Unable to delete temporary holding directory `' . $destination . '`.' );
-			} else {
-				pb_backupbuddy::status( 'details', 'Cleaned up temporary files.' );
-			}
-		}
-		
-		
-		if ( true === $success ) {
-			pb_backupbuddy::status( 'message', 'Restore completed successfully.' );
-		}
 		echo '<script type="text/javascript">jQuery("#pb_backupbuddy_working").hide();</script>';
 		pb_backupbuddy::flush();
-		
+		if ( false === $result ) {
+			
+		} else {
+		}
+		pb_backupbuddy::$ui->ajax_footer();
 		
 		pb_backupbuddy::$ui->ajax_footer();
 		die();
@@ -2350,13 +2215,9 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			$ftpRoot = ftp_pwd( $conn_id );
 		}
 		
+		
 		$ftpList = pb_backupbuddy_ftp_listDetailed( $conn_id, $ftpRoot );
 		
-		/*
-		echo '<pre>';
-		print_r( $ftpList );
-		echo '</pre>';
-		*/
 		
 		echo '<ul class="jqueryFileTree pb_backupbuddy_ftpdestination_pathpickerboxtree">';
 		if ( count( $ftpList ) > 2 ) {
@@ -2387,75 +2248,69 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		
 		die();
 		
-		
-		
-		
-		
-		
-		
-		$root = ABSPATH . urldecode( pb_backupbuddy::_POST( 'dir' ) );
-		
-		if( file_exists( $root ) ) {
-			$files = scandir( $root );
-			
-			natcasesort( $files );
-			
-			// Sort with directories first.
-			$sorted_files = array(); // Temporary holder for sorting files.
-			$sorted_directories = array(); // Temporary holder for sorting directories.
-			foreach( $files as $file ) {
-				if ( ( $file == '.' ) || ( $file == '..' ) ) {
-					continue;
-				}
-				if( is_file( str_replace( '//', '/', $root . $file ) ) ) {
-					array_push( $sorted_files, $file );
-				} else {
-					array_unshift( $sorted_directories, $file );
-				}
-			}
-			$files = array_merge( array_reverse( $sorted_directories ), $sorted_files );
-			unset( $sorted_files );
-			unset( $sorted_directories );
-			unset( $file );
-			
-			
-			if( count( $files ) > 0 ) { // Files found.
-				echo '<ul class="jqueryFileTree" style="display: none;">';
-				foreach( $files as $file ) {
-					if( file_exists( str_replace( '//', '/', $root . $file ) ) ) {
-						if ( is_dir( str_replace( '//', '/', $root . $file ) ) ) { // Directory.
-							echo '<li class="directory collapsed">';
-							$return = '';
-							$return .= '<div class="pb_backupbuddy_treeselect_control">';
-							$return .= '<img src="' . pb_backupbuddy::plugin_url() . '/images/redminus.png" style="vertical-align: -3px;" title="Add to exclusions..." class="pb_backupbuddy_filetree_exclude">';
-							$return .= '</div>';
-							echo '<a href="#" rel="' . htmlentities( str_replace( ABSPATH, '', $root ) . $file) . '/" title="Toggle expand...">' . htmlentities($file) . $return . '</a>';
-							echo '</li>';
-						} else { // File.
-							echo '<li class="file collapsed">';
-							$return = '';
-							$return .= '<div class="pb_backupbuddy_treeselect_control">';
-							$return .= '<img src="' . pb_backupbuddy::plugin_url() . '/images/redminus.png" style="vertical-align: -3px;" title="Add to exclusions..." class="pb_backupbuddy_filetree_exclude">';
-							$return .= '</div>';
-							echo '<a href="#" rel="' . htmlentities( str_replace( ABSPATH, '', $root ) . $file) . '">' . htmlentities($file) . $return . '</a>';
-							echo '</li>';
-						}
-					}
-				}
-				echo '</ul>';
-			} else {
-				echo '<ul class="jqueryFileTree" style="display: none;">';
-				echo '<li><a href="#" rel="' . htmlentities( pb_backupbuddy::_POST( 'dir' ) . 'NONE' ) . '"><i>Empty Directory ...</i></a></li>';
-				echo '</ul>';
-			}
-		} else {
-			echo 'Error #1127555. Unable to read site root.';
-		}
-		
-		die();
-		
 	} // End destination_ftp_pathpicker().
 	
+	
+	
+	/* rollback()
+	 *
+	 * Displayed in page by iframe via _rollback.php
+	 * Expects GET variables:
+	 * 		step		Numeric step number to run.
+	 * 		archive		Zip archive filename (basename only).
+	 *
+	 */
+	public function rollback() {
+		pb_backupbuddy::$ui->ajax_header();
+		pb_backupbuddy::load_script( 'jquery' );
+		echo '<div id="pb_backupbuddy_working" style="width: 100px; margin-bottom: 30px;"><br><center><img src="' . pb_backupbuddy::plugin_url() . '/images/working.gif" title="Working... Please wait as this may take a moment..."></center></div>';
+		?>
+		
+		
+		<script>
+		function pb_status_append( status_string ) {
+			var win = window.dialogArguments || opener || parent || top;
+			win.pb_status_append( status_string );
+		}
+		function pb_status_undourl( undo_url ) {
+			var win = window.dialogArguments || opener || parent || top;
+			win.pb_status_undourl( undo_url );
+		}
+		
+		var win = window.dialogArguments || opener || parent || top;
+		win.window.scrollTo(0,0);
+		</script>
+		
+		
+		<?php
+		global $pb_backupbuddy_js_status;
+		$pb_backupbuddy_js_status = true;
+		pb_backupbuddy::set_status_serial( 'restore' );
+		
+		
+		$step = strip_tags( pb_backupbuddy::_GET( 'step' ) );
+		if ( ( '' == $step ) || ( ! is_numeric( $step ) ) ) {
+			$step = 0;
+		}
+		$backupFile = strip_tags( pb_backupbuddy::_GET( 'archive' ) );
+		if ( '' == $backupFile ) {
+			pb_backupbuddy::alert( 'The backup file to restore from must be specified.' );
+			die();
+		}
+		$stepFile = pb_backupbuddy::plugin_path() . '/controllers/pages/rollback/_step' . $step . '.php';
+		if ( ! file_exists( $stepFile ) ) {
+			pb_backupbuddy::alert( 'Error #849743. Invalid roll back step `' . htmlentities( pb_backupbuddy::_GET( 'step' ) ) . '` (' . $step . ').' );
+			die();
+		}
+		require( $stepFile );
+		
+		echo '<br><br><br>';
+		echo '<script type="text/javascript">jQuery("#pb_backupbuddy_working").hide();</script>';
+		pb_backupbuddy::$ui->ajax_footer();
+		pb_backupbuddy::flush();
+		
+		die();
+	} // End rollback().
 	
 	
 } // end class.

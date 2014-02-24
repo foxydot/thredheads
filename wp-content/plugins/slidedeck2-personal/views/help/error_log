@@ -1,0 +1,5 @@
+[03-Feb-2014 03:03:03 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/help/faqs.php on line 46
+[04-Feb-2014 06:38:20 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/help/faqs.php on line 46
+[21-Feb-2014 11:10:39 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/help/faqs.php on line 46
+[21-Feb-2014 20:43:40 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/help/faqs.php on line 46
+[22-Feb-2014 04:58:48 America/Denver] PHP Fatal error:  Call to undefined function admin_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/views/help/faqs.php on line 46

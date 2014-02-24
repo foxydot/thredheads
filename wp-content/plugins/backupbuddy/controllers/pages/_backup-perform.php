@@ -1,7 +1,4 @@
 <?php
-//pb_backupbuddy::$filesystem->recursive_copy( 
-//pb_backupbuddy::load_script( 'admin.js' );
-
 // Thickbox used for remote send button for user after backup.
 wp_enqueue_script( 'thickbox' );
 wp_print_scripts( 'thickbox' );
@@ -118,6 +115,8 @@ if ( 'true' == pb_backupbuddy::_GET( 'quickstart_wizard' ) ) {
 	var last_archive_change = 0; // Time where archive size last changed.
 	var last_archive_size = ''; // Last archive size string.
 	
+	var backup_init_complete_poll_retry_count = 5; // How many polls to wait for backup init to complete
+	
 	function blink_ledz( this_status ) {
 		if ( pb_blink_status == 1 ) {
 			jQuery( '.pb_backupbuddy_blinkz' ).addClass( 'pb_backupbuddy_empty' );
@@ -185,7 +184,7 @@ if ( 'true' == pb_backupbuddy::_GET( 'quickstart_wizard' ) ) {
 		jQuery.ajax({
 			url:	'<?php echo pb_backupbuddy::ajax_url( 'backup_status' ); ?>',
 			type:	'post',
-			data:	{ serial: '<?php echo $serial_override; //pb_backupbuddy::$classes['backup']->_backup['serial']; ?>', action: 'pb_backupbuddy_backup_status' },
+			data:	{ serial: '<?php echo $serial_override; //pb_backupbuddy::$classes['backup']->_backup['serial']; ?>', initwaitretrycount: backup_init_complete_poll_retry_count, action: 'pb_backupbuddy_backup_status' },
 			context: document.body,
 			success: function( data ) {
 						jQuery('.pb_backupbuddy_loading').hide();
@@ -338,6 +337,8 @@ if ( 'true' == pb_backupbuddy::_GET( 'quickstart_wizard' ) ) {
 											jQuery( '#pb_backupbuddy_archive_url' ).attr( 'onClick', 'return false;' );
 											jQuery( '#pb_backupbuddy_archive_send' ).addClass( 'button-disabled' );
 											jQuery( '#pb_backupbuddy_archive_send' ).attr( 'onClick', 'var event = arguments[0] || window.event; event.stopPropagation(); return false;' );
+									} else if ( action_line[0] == 'wait_init' ) {
+										--backup_init_complete_poll_retry_count;
 									} else if ( action_line[0] == 'halt_script' ) {
 										jQuery( '.backup-step-status-working' ).removeClass( 'backup-step-status-working' ).addClass( 'backup-step-status-error' ); // Anything that was currently running turns into an error.
 										jQuery( '#pb_backupbuddy_stop' ).css( 'visibility', 'hidden' );
@@ -823,4 +824,3 @@ if ( 'true' == pb_backupbuddy::_GET( 'quickstart_wizard' ) ) {
 
 
 </div>
-

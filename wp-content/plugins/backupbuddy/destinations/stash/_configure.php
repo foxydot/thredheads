@@ -138,7 +138,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		
 		echo '<div style="text-align: center;">';
 		echo '
-		<b>Upgrade to get more Stash space:</b> &nbsp;
+		<b>Upgrade to more space:</b> &nbsp;
 		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 300;">+ 5GB</a>, &nbsp;
 		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 600; font-size: 1.1em;">+ 10GB</a>, &nbsp;
 		<a href="http://ithemes.com/member/cart.php?action=add&id=290" target="_new" style="text-decoration: none; font-weight: 800; font-size: 1.2em;">+ 25GB</a>
@@ -182,7 +182,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
 		'name'		=>		'db_archive_limit',
-		'title'		=>		__( 'Database only backup limit', 'it-l10n-backupbuddy' ),
+		'title'		=>		__( 'Database only limit', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of Database Only backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|int[0-9999999]',
 		'css'		=>		'width: 50px;',
@@ -191,7 +191,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
 		'name'		=>		'files_archive_limit',
-		'title'		=>		__( 'Files only backup limit', 'it-l10n-backupbuddy' ),
+		'title'		=>		__( 'Files only limit', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Example: 5] - Enter 0 for no limit. This is the maximum number of Files Only backup archives to be stored in this specific destination. If this limit is met the oldest backup of this type will be deleted.', 'it-l10n-backupbuddy' ),
 		'rules'		=>		'required|int[0-9999999]',
 		'css'		=>		'width: 50px;',
@@ -213,7 +213,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		'title'		=>		__( 'Encrypt connection', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Disabling this may aid in connection troubles but results in lessened security. Note: Once your files arrive on our server they are encrypted using AES256 encryption. They are automatically decrypted upon download as needed.', 'it-l10n-backupbuddy' ),
 		'css'		=>		'',
-		'after'		=>		'<span class="description"> ' . __('Enable connecting over SSL.', 'it-l10n-backupbuddy' ) . '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Files are always encrypted with AES256 upon arrival at Stash.</span>',
+		//'after'		=>		'<span class="description"> ' . __('Enable SSL.', 'it-l10n-backupbuddy' ) . '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Files are always encrypted with AES256 upon arrival at Stash.</span>',
 		'rules'		=>		'',
 	) );
 	if ( $mode !== 'edit' ) {
@@ -224,7 +224,7 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 			'title'		=>		__( 'Manage all files', 'it-l10n-backupbuddy' ),
 			'tip'		=>		__( '[Default: enabled] - When enabled, you have access to manage and view all files stored in your Stash account. You will be prompted for your password to access backups for sites other than this one.  If disabled the option is entirely removed for added security. For example, you may wish to disable this feature if a client has access and you want to keep them away from your files. This option can NOT be changed without deleting and re-creating the Stash destination for added security.', 'it-l10n-backupbuddy' ),
 			'css'		=>		'',
-			'after'		=>		'<span class="description"> ' . __('Enabling allows access to manage all Stash files (not just this site\'s).', 'it-l10n-backupbuddy' ) . '</span>',
+			//'after'		=>		'<span class="description"> ' . __('Enabling allows access to manage all Stash files (not just this site\'s).', 'it-l10n-backupbuddy' ) . '</span>',
 			'rules'		=>		'',
 		) );
 	}

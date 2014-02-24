@@ -1,7 +1,34 @@
 <?php
 // Incoming variables: $backup from controllers/pages/_backup_home.php
 
-pb_backupbuddy::$ui->title( 'Backup Site' . ' ' . pb_backupbuddy::video( '9ZHWGjBr84s', __('Backups page tutorial', 'it-l10n-backupbuddy' ), false ) );
+if ( '1' == pb_backupbuddy::_GET( 'skip_quicksetup' ) ) {
+	pb_backupbuddy::$options['skip_quicksetup'] = '1';
+	pb_backupbuddy::save();
+}
+
+
+// Popup Quickstart modal if appears to be new install & quickstart not skip.
+if (
+	( pb_backupbuddy::_GET( 'wizard' ) == '1' )
+	||
+	(
+		( '0' == pb_backupbuddy::$options['skip_quicksetup'] )
+			&&
+		( 0 == count( pb_backupbuddy::$options['schedules'] ) )
+			&&
+			( '' == pb_backupbuddy::$options['importbuddy_pass_hash'] )
+		)
+	)
+  {
+	pb_backupbuddy::$ui->title( 'BackupBuddy Quick Setup Wizard' );
+	//echo "tb_show( 'BackupBuddy Quick Setup', '" . pb_backupbuddy::ajax_url( 'quickstart' ) . "&TB_iframe=1&width=640&height=455', null );";
+	pb_backupbuddy::load_view( '_quicksetup', array() );
+	return;
+} else {
+	pb_backupbuddy::$ui->title( 'Backup Site' . ' ' . pb_backupbuddy::video( '9ZHWGjBr84s', __('Backups page tutorial', 'it-l10n-backupbuddy' ), false ) );
+}
+
+
 
 wp_enqueue_script( 'thickbox' );
 wp_print_scripts( 'thickbox' );
@@ -47,20 +74,6 @@ if ( pb_backupbuddy::_POST( 'add_profile' ) == 'true' ) {
 
 <script type="text/javascript">
 	jQuery(document).ready(function() {
-		
-		<?php
-		// Popup Quickstart modal if appears to be new install & quickstart not skip.
-		if ( 
-			  ( '0' == pb_backupbuddy::$options['skip_quicksetup'] )
-				&&
-			  ( 0 == count( pb_backupbuddy::$options['schedules'] ) )
-				&&
-				( '' == pb_backupbuddy::$options['importbuddy_pass_hash'] )
-			  )
-		  {
-			echo "tb_show( 'BackupBuddy Quick Setup', '" . pb_backupbuddy::ajax_url( 'quickstart' ) . "&TB_iframe=1&width=640&height=455', null );";
-		}
-		?>
 		
 		
 		jQuery( '.profile_item_select' ).click( function() {

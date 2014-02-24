@@ -1,0 +1,8 @@
+[06-Feb-2014 01:41:12 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[06-Feb-2014 09:59:48 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[06-Feb-2014 20:54:57 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[13-Feb-2014 13:22:07 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[13-Feb-2014 20:23:16 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[14-Feb-2014 02:01:48 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[14-Feb-2014 08:19:18 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36
+[14-Feb-2014 13:53:11 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/instagram/views/show.php on line 36

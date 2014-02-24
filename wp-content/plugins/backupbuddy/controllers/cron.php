@@ -179,7 +179,13 @@ class pb_backupbuddy_cron extends pb_backupbuddy_croncore {
 			pb_backupbuddy::status( 'details', 'Instantiating S3 object.' );
 			$s3 = new AmazonS3( $manage_data['credentials'] );
 			pb_backupbuddy::status( 'details', 'About to get Stash object `' . $file . '`...' );
-			$response = $s3->get_object( $manage_data['bucket'], $manage_data['subkey'] . '/' . $file, array( 'fileDownload' => $destination_file ) );
+			try {
+				$response = $s3->get_object( $manage_data['bucket'], $manage_data['subkey'] . pb_backupbuddy_destination_stash::get_remote_path() . $file, array( 'fileDownload' => $destination_file ) );
+			} catch (Exception $e) {
+				pb_backupbuddy::status( 'error', 'Error #5443984: ' . $e->getMessage() );
+				error_log( 'err:' . $e->getMessage() );
+				return false;
+			}
 			
 			if ( $response->isOK() ) {
 				pb_backupbuddy::status( 'details', 'Stash copy to local success.' );

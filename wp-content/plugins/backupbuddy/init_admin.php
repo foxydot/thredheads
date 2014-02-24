@@ -16,6 +16,15 @@ if ( $wp_version >= 3.8 ) {
 }
 
 
+// Enqueue styles for Dashboard Widget
+function enqueue_dashboard_stylesheet($hook) {
+	if( 'index.php' != $hook )
+		return;
+	wp_enqueue_style( 'bub_dashboard_widget', pb_backupbuddy::plugin_url() . '/css/dashboard_widget.css' );
+}
+add_action( 'admin_enqueue_scripts', 'enqueue_dashboard_stylesheet' );
+
+
 pb_backupbuddy::load();
 
 
@@ -148,6 +157,7 @@ pb_backupbuddy::add_ajax( 'email_error_test' ); // Test email error notification
 pb_backupbuddy::add_ajax( 'remotesend_details' ); // Display backup integrity status.
 pb_backupbuddy::add_ajax( 'remotesend_abort' ); // Abort an in-process remote destination send.
 pb_backupbuddy::add_ajax( 'destination_ftp_pathpicker' ); // FTP destination path picker.
+pb_backupbuddy::add_ajax( 'rollback' ); // Database roll back feature.
 
 /********** DASHBOARD (admin) **********/
 
@@ -156,7 +166,7 @@ pb_backupbuddy::add_ajax( 'destination_ftp_pathpicker' ); // FTP destination pat
 // Display stats in Dashboard.
 //if ( pb_backupbuddy::$options['dashboard_stats'] == '1' ) {
 	if ( ( !is_multisite() ) || ( is_multisite() && is_network_admin() ) ) { // Only show if standalon OR in main network admin.
-		pb_backupbuddy::add_dashboard_widget( 'stats', 'BackupBuddy', 'godmode' );
+		pb_backupbuddy::add_dashboard_widget( 'stats', 'BackupBuddy v' . pb_backupbuddy::settings( 'version' ), 'godmode' );
 	}
 //}
 

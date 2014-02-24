@@ -27,3 +27,5 @@
 	Bug Fix: Removed unneeded check on package-info.ithemes.com which was causing performance issues on some sites.
 1.3.3 - 2013-12-19 - Chris Jean
 	Bug Fix: Licensing will now be universal across all sites of a multisite network. This means that you will only need to license on one site to have the license apply across the entire network.
+1.3.4 - 2014-02-03 - Chris Jean
+	Bug Fix: Licensing on SSL-enabled sites now works properly.

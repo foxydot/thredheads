@@ -83,6 +83,12 @@ pb_backupbuddy::$ui->start_tabs(
 			'slug'		=>		'other',
 			'css'		=>		'margin-top: -11px;',
 		),
+		array(
+			'title'		=>		__( 'Licensing', 'it-l10n-backupbuddy' ),
+			'slug'		=>		'licensing',
+			'url'		=>		'options-general.php?page=ithemes-licensing',
+			'css'		=>		'float: right; margin-top: -2px; font-style: italic;',
+		),
 	),
 	'width: 100%;',
 	true,

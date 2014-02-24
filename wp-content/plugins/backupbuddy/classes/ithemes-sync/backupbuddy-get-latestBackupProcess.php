@@ -60,7 +60,11 @@ class Ithemes_Sync_Verb_Backupbuddy_Get_LatestBackupProcess extends Ithemes_Sync
 		$currentBackupStats['backupType'] = $currentBackup['type'];
 		$currentBackupStats['profileTitle'] = htmlentities( $currentBackup['profile']['title'] );
 		$currentBackupStats['scheduleTitle'] = $currentBackup['schedule_title'];
-		$currentBackupStats['archiveFile'] = basename( $currentBackup['archive_file'] );
+		if ( @file_exists( $currentBackup['archive_file'] ) ) {
+			$currentBackupStats['archiveFile'] = basename( $currentBackup['archive_file'] );
+		} else {
+			$currentBackupStats['archiveFile'] = '';
+		}
 		$currentBackupStats['archiveURL'] = '';
 		if ( isset( $currentBackup['archive_url'] ) ) {
 			$currentBackupStats['archiveURL'] = $currentBackup['archive_url'];

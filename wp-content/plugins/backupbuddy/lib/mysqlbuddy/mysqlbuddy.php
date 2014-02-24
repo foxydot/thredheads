@@ -52,6 +52,8 @@ class pb_backupbuddy_mysqlbuddy {
 	private $_mysql_directory = '';																		// Tested working mysql directory to use for actual dump.
 	private $_commandbuddy;
 	
+	private $_maxExecutionTime = '';
+	
 	/********** Methods **********/
 	
 	
@@ -65,9 +67,10 @@ class pb_backupbuddy_mysqlbuddy {
 	 *	@param		string		$database_pass			Pass of database to pull from.
 	 *	@param		string		$database_prefix		Prefix of tables in database to pull from / insert into (only used if base mode is `prefix`).
 	 *	@param		array		$force_methods			Optional parameter to override automatic method detection. Skips test and runs first method first.  Falls back to other methods if any failure. Possible methods:  commandline, php
+	 *	@param		int			$maxExecution			Maximum execution time to run for before stopping to allow for continuing the next import picking up where we left off.
 	 *	@return		
 	 */
-	public function __construct( $database_host, $database_name, $database_user, $database_pass, $database_prefix, $force_methods = array() ) {
+	public function __construct( $database_host, $database_name, $database_user, $database_pass, $database_prefix, $force_methods = array(), $maxExecution = '' ) {
 		
 		// Handles command line execution.
 		require_once( pb_backupbuddy::plugin_path() . '/lib/commandbuddy/commandbuddy.php' );
@@ -116,6 +119,19 @@ class pb_backupbuddy_mysqlbuddy {
 			$this->_methods = $this->available_dump_methods(); // Run after _calculate_mysql_dir().
 		}
 		pb_backupbuddy::status( 'message', 'mysqlbuddy: Detected database dump methods: `' . implode( ',', $this->_methods ) . '`.' );
+		
+		// Figure out max execution time allowed.
+		if ( ( '' != $maxExecution ) && ( is_numeric( $maxExecution ) ) ) {
+			$this->_maxExecutionTime = $maxExecution;
+		} else { // Not passed. Deduce.
+			if ( isset( pb_backupbuddy::$options['max_execution_time'] ) ) {
+				$this->_maxExecutionTime = pb_backupbuddy::$options['max_execution_time'];
+			} else {
+				// Detect max execution time.
+				$this->_maxExecutionTime = backupbuddy_core::detectMaxExecutionTime();
+			}
+		}
+		pb_backupbuddy::status( 'details', 'If applicable, breaking up with max execution time `' . $this->_maxExecutionTime . '` seconds.' );
 		
 	} // End __construct().
 	
@@ -635,9 +651,8 @@ class pb_backupbuddy_mysqlbuddy {
 			}
 		}
 		
-		
 		pb_backupbuddy::status( 'message', 'Starting database import procedure.' );
-		pb_backupbuddy::status( 'details', 'mysqlbuddy: Maximum execution time for this run: ' . pb_backupbuddy::$options['max_execution_time'] . ' seconds.' );
+		pb_backupbuddy::status( 'details', 'mysqlbuddy: Maximum execution time for this run: ' . $this->_maxExecutionTime . ' seconds.' );
 		pb_backupbuddy::status( 'details', 'mysqlbuddy: Old prefix: `' . $old_prefix . '`; New prefix: `' . $this->_database_prefix . '`.' );
 		pb_backupbuddy::status( 'details', "mysqlbuddy: Importing SQL file: `{$sql_file}`. Old prefix: `{$old_prefix}`. Query start: `{$query_start}`." );
 		pb_backupbuddy::status( 'details', 'About to flush...' );
@@ -771,7 +786,6 @@ class pb_backupbuddy_mysqlbuddy {
 			
 		$query_count = 0;
 		$file_data = '';
-		/* $in_create_table_block = false; */
 		
 		while ( ! feof( $file_stream ) ) {
 		
@@ -786,9 +800,6 @@ class pb_backupbuddy_mysqlbuddy {
 			} else {
 				$file_data = array_pop( $queries );
 			}
-			
-			// TODO: DEBUGGING:
-			//pb_backupbuddy::$options['max_execution_time'] = 0.41;
 			
 			// Loops through each full query.
 			foreach ( (array) $queries as $query ) {
@@ -805,16 +816,6 @@ class pb_backupbuddy_mysqlbuddy {
 					continue;
 				}
 				
-				/*
-				if ( $in_create_table_block === true ) {
-				} else { // Watch for beginning of CREATE TABLE block if not in one.
-					// Handle broken up CREATE TABLE blocks caused by mysqldump.
-					if ( $this->string_begins_with( $query, 'CREATE TABLE' ) ) {
-						$in_create_table_block = true;
-					}
-				}
-				*/
-				
 				$result = $this->_import_sql_dump_line( $query, $old_prefix, $ignore_existing );
 				
 				if ( false === $result ) { // Skipped query
@@ -824,22 +825,14 @@ class pb_backupbuddy_mysqlbuddy {
 				if ( 0 === ( $query_count % 2000 ) ) { // Display Working every 1500 queries imported.
 					pb_backupbuddy::status( 'message', 'Working... Imported ' . $query_count . ' queries so far.' );
 				}
-				/*
-				if ( 0 === ( $query_count % 6000 ) ) {
-					echo "<br>\n";
-				}
-				*/
 				
 				// If we are within 1 second of reaching maximum PHP runtime then stop here so that it can be picked up in another PHP process...
-				if ( ( ( microtime( true ) - $this->time_start ) + 1 ) >= pb_backupbuddy::$options['max_execution_time'] ) {
-					// TODO: Debugging:
-					//if ( ( ( microtime( true ) - $this->time_start ) ) >= pb_backupbuddy::$options['max_execution_time'] ) {
+				if ( ( ( microtime( true ) - $this->time_start ) + 1 ) >= $this->_maxExecutionTime ) {
+					
 					pb_backupbuddy::status( 'message', 'Exhausted available PHP time to import for this page load. Last query: ' . $query_count . '.' );
-					
 					fclose( $file_stream );
-					
 					return ( $query_count + 1 );
-					//break 2;
+					
 				} // End if.
 				
 			} // End foreach().
@@ -880,7 +873,7 @@ class pb_backupbuddy_mysqlbuddy {
 		}
 		
 		// Output which table we are able to create to help get an idea where we are in the import.
-		if ( 1 == preg_match( "/CREATE TABLE `?(\w+)`?/i", $query, $matches ) ) {
+		if ( 1 == preg_match( "/CREATE TABLE `?((\w|-)+)`?/i", $query, $matches ) ) {
 			pb_backupbuddy::status( 'details', 'Creating table `' . $matches[1] . '`.' );
 		}
 		

@@ -325,6 +325,7 @@ class pb_backupbuddy_backup {
 			$archiveURL = rtrim( site_url(), '/\\' ) . '/' . trim( $sitepath, '/\\' ) . '/' . basename( $archiveFile );
 		}
 		
+		
 		// Set up the backup data.
 		$this->_backup = array(
 			'data_version'			=>		0,												// Data structure version.
@@ -1011,11 +1012,28 @@ class pb_backupbuddy_backup {
 			$wp_config_parent = false;
 		}
 		
+		global $wp_version;
+		
+		$totalPosts = 0;
+		foreach( wp_count_posts( 'post' ) as $counttype => $count ) {
+			$totalPosts += $count;
+		}
+		$totalPages = 0;
+		foreach( wp_count_posts( 'page' ) as $counttype => $count ) {
+			$totalPages += $count;
+		}
+		$totalComments = 0;
+		foreach( wp_count_comments() as $counttype => $count ) {
+			$totalComments += $count;
+		}
+		$totalUsers = count_users();
+		$totalUsers = $totalUsers['total_users'];
 		
 		$dat_content = array(
 			
 			// Backup Info.
 			'backupbuddy_version'		=> pb_backupbuddy::settings( 'version' ),
+			'wordpress_version'			=>		$wp_version,											// WordPress version.
 			'backup_time'				=> $this->_backup['start_time'],
 			'backup_type'				=> $this->_backup['type'],
 			'profile'					=> $this->_backup['profile'],
@@ -1030,6 +1048,10 @@ class pb_backupbuddy_backup {
 			'blogname'					=> get_option( 'blogname' ),
 			'blogdescription'			=> get_option( 'blogdescription' ),
 			'active_plugins'			=> implode( ', ', get_option( 'active_plugins' ) ),
+			'posts'						=>		$totalPosts,											// Total WP posts, publishes, draft, private, trash, etc.
+			'pages'						=>		$totalPages,											// Total WP pages, publishes, draft, private, trash, etc.
+			'comments'					=>		$totalComments,											// Total WP comments, approved, spam, etc
+			'users'						=>		$totalUsers,											// Total users on site.st
 			
 			// Database Info. Remaining sensitive info added in after printing out DAT (for security).
 			'db_prefix'					=> $wpdb->prefix,
@@ -1176,16 +1198,38 @@ class pb_backupbuddy_backup {
 				pb_backupbuddy::status( 'details', 'Skipping saving meta data to zip comment based on settings.' );
 			} else {
 				pb_backupbuddy::status( 'details', 'Saving meta data to zip comment.' );
+				
+				$totalPosts = 0;
+				foreach( wp_count_posts( 'post' ) as $type => $count ) {
+					$totalPosts += $count;
+				}
+				$totalPages = 0;
+				foreach( wp_count_posts( 'page' ) as $type => $count ) {
+					$totalPages += $count;
+				}
+				$totalComments = 0;
+				foreach( wp_count_comments() as $type => $count ) {
+					$totalComments += $count;
+				}
+				$totalUsers = count_users();
+				$totalUsers = $totalUsers['total_users'];
+				
 				global $wp_version;
+				global $wpdb;
 				$meta = array(
 						'serial'		=>	$this->_backup['serial'],
 						'siteurl'		=>	site_url(),
 						'type'			=>	$this->_backup['type'],
 						'profile'		=>	$this->_backup['profile']['title'],
 						'created'		=>	$this->_backup['start_time'],
+						'db_prefix'		=>	$wpdb->prefix,
 						'bb_version'	=>	pb_backupbuddy::settings( 'version' ),
 						'wp_version'	=>	$wp_version,
 						'dat_path'		=>	str_replace( $this->_backup['backup_root'], '', $this->_backup['temp_directory'] . 'backupbuddy_dat.php' ),
+						'posts'			=>	$totalPosts,
+						'pages'			=>	$totalPages,
+						'comments'		=>	$totalComments,
+						'users'			=>	$totalUsers,
 						'note'			=>	'',
 					);
 				$comment = backupbuddy_core::normalize_comment_data( $meta );
@@ -1597,13 +1641,12 @@ class pb_backupbuddy_backup {
 	 */
 	public function ms_download_extract_wordpress() {
 		
-		pb_backupbuddy::status( 'message', 'Downloading latest WordPress ZIP file.' );
-		
 		// Step 1 - Download a copy of WordPress.
 		if ( !function_exists( 'download_url' ) ) {
 			pb_backupbuddy::status( 'details', 'download_url() function not found. Loading `/wp-admin/includes/file.php`.' );
 			require_once( ABSPATH . 'wp-admin/includes/file.php' );
 		}
+		pb_backupbuddy::status( 'message', 'Downloading latest WordPress ZIP file.' );
 		$wp_file = download_url( 'http://wordpress.org/latest.zip' );
 		if ( is_wp_error( $wp_file ) ) { // Grabbing WordPress ZIP failed.
 			pb_backupbuddy::status( 'error', 'Error getting latest WordPress ZIP file: `' . $wp_file->get_error_message() . '`.' );
@@ -1618,8 +1661,10 @@ class pb_backupbuddy_backup {
 		if ( !isset( pb_backupbuddy::$classes['zipbuddy'] ) ) {
 			pb_backupbuddy::$classes['zipbuddy'] = new pluginbuddy_zipbuddy( $this->_options['backup_directory'] );
 		}
+		pb_backupbuddy::status( 'details', 'About to unzip file.' );
 		ob_start();
 		pb_backupbuddy::$classes['zipbuddy']->unzip( $wp_file, dirname( $this->_backup['backup_root'] ) );
+		pb_backupbuddy::status( 'details', 'Unzip complete.' );
 		pb_backupbuddy::status( 'details', 'Debugging information: `' . ob_get_clean() . '`' );
 		
 		@unlink( $wp_file );
@@ -1983,14 +2028,20 @@ class pb_backupbuddy_backup {
 	private function _calculate_tables( $base_dump_mode, $additional_includes = array(), $additional_excludes = array() ) {
 		
 		global $wpdb;
+		$wpdb->show_errors(); // Turn on error display.
+		
 		$tables = array();
 		pb_backupbuddy::status( 'details', 'Calculating mysql database tables to backup.' );
 		pb_backupbuddy::status( 'details', 'Base database dump mode (before inclusions/exclusions): `' . $base_dump_mode . '`.' );
 		
 		// Calculate base tables.
 		if ( $base_dump_mode == 'all' ) { // All tables in database to start with.
-			$results = $wpdb->get_results( 'SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()', ARRAY_A );
-			foreach( $results as $result ) {
+			$sql = 'SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()';
+			$results = $wpdb->get_results( $sql, ARRAY_A );
+			if ( ( null === $results ) || ( false === $results ) ) {
+				pb_backupbuddy::status( 'error', 'Error #8493894a: Unable to calculate database tables with query: `' . $sql . '`. Check database permissions or contact host.' );
+			}
+			foreach( (array)$results as $result ) {
 				array_push( $tables, $result['table_name'] );
 			}
 			unset( $results );
@@ -2003,8 +2054,12 @@ class pb_backupbuddy_backup {
 			
 			pb_backupbuddy::status( 'details', 'Determining database tables with prefix `' . $wpdb->prefix . '`.' );
 			$prefix_sql = str_replace( '_', '\_', $wpdb->prefix );
-			$results = $wpdb->get_results( "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '{$prefix_sql}%' AND table_schema = DATABASE()", ARRAY_A );
-			foreach( $results as $result ) {
+			$sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '{$prefix_sql}%' AND table_schema = DATABASE()";
+			$results = $wpdb->get_results( $sql, ARRAY_A );
+			if ( ( null === $results ) || ( false === $results ) ) {
+				pb_backupbuddy::status( 'error', 'Error #8493894b: Unable to calculate database tables with query: `' . $sql . '`. Check database permissions or contact host.' );
+			}
+			foreach( (array)$results as $result ) {
 				array_push( $tables, $result['table_name'] );
 			}
 			unset( $results );

@@ -99,6 +99,28 @@ if (!class_exists("pluginbuddy_dbreplace")) {
 			
 			global $wpdb;
 			
+			// Get the total row count for this table
+			$total_rows = 0;
+			$tables_status = $wpdb->get_results( "SHOW TABLE STATUS", ARRAY_A );
+			
+			foreach ( $tables_status as $table_status ) {
+			
+				if ( $table === $table_status[ 'Name' ] ) {
+				
+					// Fix up row count and average row length for InnoDB engine which returns inaccurate
+					// (and changing) values for these
+					if ( 'InnoDB' === $table_status[ 'Engine' ] ) {
+						if ( false !== ( $count = $wpdb->get_var( "SELECT COUNT(1) FROM `{$table_status['Name']}`" ) ) ) {
+							$table_status[ 'Rows' ] = $count;
+						}
+					}
+			
+					$total_rows = $table_status[ 'Rows' ];
+				
+				}
+			
+			}
+			
 			// Prevent trying to replace data with the same data for performance.
 			$this->remove_matching_array_elements( $olds, $news );
 			$key_results = $wpdb->get_results( "show keys from {$table} WHERE Key_name='PRIMARY';", ARRAY_A );
@@ -123,7 +145,13 @@ if (!class_exists("pluginbuddy_dbreplace")) {
 			while ( true === $rows_remain ) { // Keep looping through rows until none remain. Looping through like this to limit memory usage as wpdb classes loads all results into memory.
 				$rowsResult = $wpdb->get_results( "SELECT `" . implode( '`,`', $rows ) . "`,`{$primary_key}` FROM `{$table}` LIMIT " . $rows_start . ',' . self::MAX_ROWS_PER_SELECT );
 				$rowsCount = count( $rowsResult );
-				pb_backupbuddy::status( 'details', 'Retrieved `' . $rowsCount . '` rows this round.' );
+
+				// Provide an update on progress
+				if ( 0 === $rowsCount ) {
+					pb_backupbuddy::status( 'details', 'Table: `'. $table . '` - processing ' . $rowsCount . ' rows ( of ' . $total_rows . ' )' );				
+				} else {
+					pb_backupbuddy::status( 'details', 'Table: `'. $table . '` - processing ' . $rowsCount . ' rows ( Rows ' . $rows_start . '-' . ( $rows_start + $rowsCount - 1 ) . ' of ' . $total_rows . ' )' );	
+				}
 				
 				$rows_start += self::MAX_ROWS_PER_SELECT; // Next loop we will begin at this offset.
 				if ( ( 0 == $rowsCount ) || ( $rowsCount < self::MAX_ROWS_PER_SELECT ) ) {
@@ -251,7 +279,29 @@ if (!class_exists("pluginbuddy_dbreplace")) {
 			
 			global $wpdb;
 			
-			$fields = $wpdb->get_results( "DESCRIBE `" . $table . "`", ARRAY_A );
+			// Get the total row count for this table
+			$total_rows = 0;
+			$tables_status = $wpdb->get_results( "SHOW TABLE STATUS", ARRAY_A );
+			
+			foreach ( $tables_status as $table_status ) {
+			
+				if ( $table === $table_status[ 'Name' ] ) {
+				
+					// Fix up row count and average row length for InnoDB engine which returns inaccurate
+					// (and changing) values for these
+					if ( 'InnoDB' === $table_status[ 'Engine' ] ) {
+						if ( false !== ( $count = $wpdb->get_var( "SELECT COUNT(1) FROM `{$table_status['Name']}`" ) ) ) {
+							$table_status[ 'Rows' ] = $count;
+						}
+					}
+			
+					$total_rows = $table_status[ 'Rows' ];
+				
+				}
+			
+			}
+			
+			$fields = $wpdb->get_results( "DESCRIBE `{$table}`", ARRAY_A );
 			$index_fields = '';  // Reset fields for each table.
 			$column_name = '';
 			$table_index = '';
@@ -269,58 +319,75 @@ if (!class_exists("pluginbuddy_dbreplace")) {
 			
 			// Skips migration of this table if there is no primary key. Modifying on any other key is not safe. mysql automatically returns a PRIMARY if a UNIQUE non-primary is found according to http://dev.mysql.com/doc/refman/5.1/en/create-table.html  @since 2.2.32.
 			if ( $found_primary_key === false ) {
-				pb_backupbuddy::status( 'message', 'Error #9029: Table `'.  $table .'` does not contain a primary key; BackupBuddy cannot safely modify the contents of this table. Skipping migration of this table. (bruteforce_table()).' );
+				pb_backupbuddy::status( 'message', 'Error #9029: Table `' . $table . '` does not contain a primary key; BackupBuddy cannot safely modify the contents of this table. Skipping migration of this table. (bruteforce_table()).' );
 				return false;
 			}
 			
-			$data = $wpdb->get_results( "SELECT * FROM `" . $table . "`", ARRAY_A );
-			if ( false === $data ) {
-				pb_backupbuddy::status( 'error', 'ERROR #44545343 ... SQL ERROR: ' . mysql_error() );
-			}
-			
 			$row_loop = 0;
-			foreach( $data as $row ) {
-				$need_to_update = false;
-				$UPDATE_SQL = 'UPDATE `' . $table . '` SET ';
-				$WHERE_SQL = ' WHERE ';
+
+			$rows_remain = true; // More rows remaining / aka another query for more rows needed.
+			$rows_start = 0;
+
+			while ( true === $rows_remain ) { // Keep looping through rows until none remain. Looping through like this to limit memory usage as wpdb classes loads all results into memory.
+
+				$data = $wpdb->get_results( "SELECT * FROM `{$table}` LIMIT {$rows_start}," . self::MAX_ROWS_PER_SELECT, ARRAY_A );
+				if ( false === $data ) {
+					pb_backupbuddy::status( 'error', 'ERROR #44545343 ... SQL ERROR: ' . mysql_error() );
+				}
 				
-				$j = 0;
-				foreach ( $column_name as $current_column ) {
-					$j++;
-					$count_items_checked++;
-					$row_loop++;
-					if ( $row_loop > 20000 ) {
-						pb_backupbuddy::status( 'message', 'Working... ' . $count_items_checked . ' rows checked.' );
-						$row_loop = 0;
-					}
+				// Provide an update on progress
+				$rowsCount = count( $data );
+				if ( 0 === $rowsCount ) {
+					pb_backupbuddy::status( 'details', 'Table: `'. $table . '` - processing ' . $rowsCount . ' rows ( of ' . $total_rows . ' )' );				
+				} else {
+					pb_backupbuddy::status( 'details', 'Table: `'. $table . '` - processing ' . $rowsCount . ' rows ( Rows ' . $rows_start . '-' . ( $rows_start + $rowsCount - 1 ) . ' of ' . $total_rows . ' )' );	
+				}
+				
+				$rows_start += self::MAX_ROWS_PER_SELECT; // Next loop we will begin at this offset.
+				if ( ( 0 == $rowsCount ) || ( $rowsCount < self::MAX_ROWS_PER_SELECT ) ) {
+					$rows_remain = false;
+				}
+		
+				foreach( $data as $row ) {
+					$need_to_update = false;
+					$UPDATE_SQL = 'UPDATE `' . $table . '` SET ';
+					$WHERE_SQL = ' WHERE ';
+				
+					$j = 0;
+					foreach ( $column_name as $current_column ) {
+						$j++;
+						$count_items_checked++;
 					
-					$data_to_fix = $row[$current_column];
-					if ( false !== ( $edited_data = $this->replace_maybe_serialized( $data_to_fix, $olds, $news ) ) ) { // no change needed
-						$count_items_changed++;
-						if ( $need_to_update != false ) { // If this isn't our first time here, we need to add a comma.
-							$UPDATE_SQL = $UPDATE_SQL . ',';
+						$data_to_fix = $row[$current_column];
+						if ( false !== ( $edited_data = $this->replace_maybe_serialized( $data_to_fix, $olds, $news ) ) ) { // no change needed
+							$count_items_changed++;
+							if ( $need_to_update != false ) { // If this isn't our first time here, we need to add a comma.
+								$UPDATE_SQL = $UPDATE_SQL . ',';
+							}
+							$UPDATE_SQL = $UPDATE_SQL . ' ' . $current_column . ' = "' . mysql_real_escape_string( $edited_data ) . '"';
+							$need_to_update = true; // Only set if we need to update - avoids wasted UPDATE statements.
 						}
-						$UPDATE_SQL = $UPDATE_SQL . ' ' . $current_column . ' = "' . mysql_real_escape_string( $edited_data ) . '"';
-						$need_to_update = true; // Only set if we need to update - avoids wasted UPDATE statements.
+					
+						if ( isset( $table_index[$j] ) ) {
+							$WHERE_SQL = $WHERE_SQL . '`' . $current_column . '` = "' . $row[$current_column] . '" AND ';
+						}
+					}
+				
+					if ( $need_to_update ) {
+						$WHERE_SQL = substr( $WHERE_SQL , 0, -4 ); // Strip off the excess AND - the easiest way to code this without extra flags, etc.
+						$UPDATE_SQL = $UPDATE_SQL . $WHERE_SQL;
+						$result = $wpdb->query( $UPDATE_SQL );
+						if ( false === $result ) {
+							pb_backupbuddy::status( 'error', 'ERROR: mysql error updating db: ' . mysql_error() . '. SQL Query: ' . htmlentities( $UPDATE_SQL ) );
+						} 
 					}
 					
-					if ( isset( $table_index[$j] ) ) {
-						$WHERE_SQL = $WHERE_SQL . '`' . $current_column . '` = "' . $row[$current_column] . '" AND ';
-					}
 				}
-				
-				if ( $need_to_update ) {
-					$WHERE_SQL = substr( $WHERE_SQL , 0, -4 ); // Strip off the excess AND - the easiest way to code this without extra flags, etc.
-					$UPDATE_SQL = $UPDATE_SQL . $WHERE_SQL;
-					$result = $wpdb->query( $UPDATE_SQL );
-					if ( false === $result ) {
-						pb_backupbuddy::status( 'error', 'ERROR: mysql error updating db: ' . mysql_error() . '. SQL Query: ' . htmlentities( $UPDATE_SQL ) );
-					} 
-				}
+
+				unset( $data );
 				
 			}
 			
-			unset( $main_result );
 			pb_backupbuddy::status( 'message', 'Brute force data migration for table `' . $table . '` complete. Checked ' . $count_items_checked . ' items; ' . $count_items_changed . ' changed.' );
 			
 			return $count_items_changed;

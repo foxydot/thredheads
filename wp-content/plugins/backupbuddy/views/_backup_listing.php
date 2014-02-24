@@ -11,30 +11,32 @@ $backup_directory = backupbuddy_core::getBackupDirectory(); // Normalize for Win
 $backup_directory = str_replace( '\\', '/', $backup_directory );
 $backup_directory = rtrim( $backup_directory, '/\\' ) . '/'; // Enforce single trailing slash.
 if ( ( $listing_mode != 'restore_files' ) && ( FALSE !== stristr( $backup_directory, ABSPATH ) ) ) {
-	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = 'Download file';
+	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = __( 'Download', 'it-l10n-backupbuddy' );
 }
 
+
 if ( $listing_mode == 'restore_files' ) {
-	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&zip_viewer='] = 'View & Restore files';
-	$hover_actions['note'] = 'Note';
+	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&zip_viewer='] = __( 'Browse & Restore Files', 'it-l10n-backupbuddy' );
+	$hover_actions['note'] = __( 'Note', 'it-l10n-backupbuddy' );
 	$bulk_actions = array();
 }
 
+
 if ( $listing_mode == 'default' ) {
 	
-	$hover_actions['send'] = 'Send file';
-	$hover_actions['zip_viewer'] = 'View & Restore files';
-	//$hover_actions['hash'] = 'Get hash';
-	$hover_actions['note'] = 'Note';
-	$hover_actions['hash'] = 'View Hash';
-	$bulk_actions = array( 'delete_backup' => 'Delete' );
+	$hover_actions['send'] = __( 'Send', 'it-l10n-backupbuddy' );
+	$hover_actions['zip_viewer'] = __( 'Browse & Restore Files', 'it-l10n-backupbuddy' );
+	$hover_actions['note'] = __( 'Note', 'it-l10n-backupbuddy' );
+	$hover_actions['hash'] = __( 'Checksum', 'it-l10n-backupbuddy' );
+	$bulk_actions = array( 'delete_backup' => __( 'Delete', 'it-l10n-backupbuddy' ) );
+
 }
 
+
 if ( $listing_mode == 'migrate' ) {
-	$hover_actions['migrate'] = 'Migrate this backup';
-	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = 'Download file';
-	//$hover_actions['hash'] = 'Get hash';
-	$hover_actions['note'] = 'Note';
+	$hover_actions['migrate'] = __( 'Migrate', 'it-l10n-backupbuddy' );
+	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = __( 'Download', 'it-l10n-backupbuddy' );
+	$hover_actions['note'] = __( 'Note', 'it-l10n-backupbuddy' );
 	$bulk_actions = array();
 	
 	foreach( $backups as $backup_id => $backup ) {
@@ -47,21 +49,27 @@ if ( $listing_mode == 'migrate' ) {
 
 
 if ( $listing_mode == 'restore_migrate' ) {
-	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = 'Download file';
-	$hover_actions['send'] = 'Send file';
-	$hover_actions['page=pb_backupbuddy_backup&zip_viewer'] = 'View & Restore files';
-	$hover_actions['migrate'] = 'Migrate to remote server';
-	//$hover_actions['hash'] = 'Get hash';
-	$hover_actions['note'] = 'Note';
+	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = __( 'Download', 'it-l10n-backupbuddy' );
+	$hover_actions['send'] = 'Send';
+	$hover_actions['page=pb_backupbuddy_backup&zip_viewer'] = __( 'Browse & Restore Files', 'it-l10n-backupbuddy' );
+	if ( '1' == pb_backupbuddy::$options['rollback_beta'] ) {
+		$hover_actions['rollback'] = __( 'Database Rollback', 'it-l10n-backupbuddy' ) . ' (BETA)';
+	}
+	$hover_actions['migrate'] = __( 'Migrate', 'it-l10n-backupbuddy' );
+	$hover_actions['note'] = __( 'Note', 'it-l10n-backupbuddy' );
 	$bulk_actions = array();
 	
+	/*
 	foreach( $backups as $backup_id => $backup ) {
 		if ( $backup[1] == 'Database' ) {
 			unset( $backups[$backup_id] );
 		}
 	}
+	*/
 	
 }
+
+
 
 if ( count( $backups ) == 0 ) {
 	_e( 'No backups have been created yet.', 'it-l10n-backupbuddy' );

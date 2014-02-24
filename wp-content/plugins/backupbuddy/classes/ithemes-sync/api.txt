@@ -42,7 +42,7 @@ backupbuddy-get-latestBackupProcess
 			backupType- Type of backup. full, db, files
 			profileTitle- Friendly profile title.
 			scheduleTitle- Friendly schedule title. Blank string if not launched by a schedule.
-			archiveFile- ZIP filename. eg: backup-backupbuddy-2014_01_13-05_53pm-full-zasmn27tn5.zip
+			archiveFile- ZIP filename. If this file no longer exists (deleted, moved offsite, etc) this will be set blank. eg: backup-backupbuddy-2014_01_13-05_53pm-full-zasmn27tn5.zip
 			archiveURL- URL to download the backup ZIP file. Eg: http://backupbuddy/wp-admin/admin-ajax.php?action=pb_backupbuddy_download_archive&backupbuddy_backup=backup-backupbuddy-2014_01_13-05_53pm-full-zasmn27tn5.zip
 			archiveSize- Current zip file size in bytes. Grows as the zip file is generated.
 			integrityStatus- Backup integrity scan status. -1 if integrity has not been scanned yet, true for OK, false for failure passing integrity scan.

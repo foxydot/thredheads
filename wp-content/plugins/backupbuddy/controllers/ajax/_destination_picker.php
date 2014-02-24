@@ -447,7 +447,7 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 		foreach( pb_backupbuddy::$options['remote_destinations'] as $destination_id => $destination ) {
 			
 			if ( $mode == 'migration' ) {
-				if ( ( $destination['type'] != 'local' ) && ( $destination['type'] != 'ftp' ) ) { // if not local or ftp when in migration mode then skip.
+				if ( ( $destination['type'] != 'local' ) && ( $destination['type'] != 'ftp' ) && ( $destination['type'] != 'sftp' ) ) { // if not local or ftp when in migration mode then skip.
 					continue;
 				}
 			}
@@ -521,8 +521,13 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 		
 		<?php
 		if ( 'true' != pb_backupbuddy::_GET( 'quickstart' ) ) {
+			if ( $mode == 'migration' ) {
+				echo '<h3>' . __( 'Or add new migration destination', 'it-l10n-backupbuddy' ) . ':</h3>';
+			} else {
+				echo '<h3>' . __( 'Or add new destination', 'it-l10n-backupbuddy' ) . ':</h3>';
+			}
 		?>
-		<h3>Or add new destination:</h3>
+		
 		<div class="bb-dest clearfix">
 			<div class="bb-dest-option">
 				<a href="<?php
@@ -534,8 +539,14 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 					?>&show_add=true&sending=<?php echo pb_backupbuddy::_GET( 'sending' ); ?>" class="info add-new open">
 					<span class="icon plus" style="background-image: url('<?php echo pb_backupbuddy::plugin_url(); ?>/images/dest_plus.png');"></span>
 					<span class="type">Add new</span>
-					<span class="bb-dest-name">FTP, Stash, S3, etc.</span>
-					<span class="button button-primary" style="float: right; margin-top: 5px;">+ Add New</span>
+					<?php
+					if ( $mode == 'migration' ) {
+						echo '<span class="bb-dest-name">FTP, sFTP, or Local</span>';
+					} else {
+						echo '<span class="bb-dest-name">Stash, FTP, S3, etc.</span>';
+					}
+					?>
+					<span class="button button-primary" style="float: right; margin: 0;">+ Add New</span>
 				</a>
 				<div class="settings add-new">
 					<div class="settings-inside">
@@ -562,7 +573,7 @@ if ( ( pb_backupbuddy::_GET( 'show_add' ) != 'true' ) && ( $destination_list_cou
 		foreach( pb_backupbuddy_destinations::get_destinations_list() as $destination_name => $destination ) {
 			
 			if ( $mode == 'migration' ) {
-				if ( ( $destination_name != 'local' ) && ( $destination_name != 'ftp' ) ) { // if not local or ftp when in migration mode then skip.
+				if ( ( $destination_name != 'local' ) && ( $destination_name != 'ftp' ) && ( $destination_name != 'sftp' ) ) { // if not local or ftp when in migration mode then skip.
 					continue;
 				}
 			}

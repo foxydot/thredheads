@@ -20,6 +20,16 @@ pb_backupbuddy::load_style( 'joyride.css' );
 	margin-right: 5px;
 }
 </style>
+
+
+<?php
+if ( '' != pb_backupbuddy::_GET( 'rollback' ) ) {
+	require_once( '_rollback.php' );
+	return;
+}
+?>
+
+
 <script type="text/javascript">
 jQuery(document).ready( function() {
 	jQuery('#screen-meta-links').append(

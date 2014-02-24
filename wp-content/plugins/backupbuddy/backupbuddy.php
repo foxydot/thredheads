@@ -4,7 +4,7 @@
  *	Plugin Name: BackupBuddy
  *	Plugin URI: http://ithemes.com/purchase/backupbuddy/
  *	Description: The most complete WordPress solution for Backup, Restoration, and Migration. Backs up a customizable selection of files, settings, and content for the complete snapshot of your site. Restore and/or migrate your site to a new host or new domain with complete ease-of-mind.
- *	Version: 4.2.13.0
+ *	Version: 4.2.14.11
  *	Author: iThemes
  *	Author URI: http://ithemes.com/
  *	iThemes Package: backupbuddy
@@ -33,6 +33,8 @@ $pluginbuddy_settings = array(
 												'data_version'						=>		'8',				// Data structure version. Added BB 2.0 to ease updating.												
 												'importbuddy_pass_hash'				=>		'',					// ImportBuddy password hash.
 												'importbuddy_pass_length'			=>		0,					// Length of the ImportBuddy password before it was hashed.
+												
+												'rollback_beta'						=>		0,					// 1 to enable beta. Option to be removed & increment data version to erase in future.
 												
 												'backup_reminders'					=>		1,					// Remind to backup after post, pre-upgrade, etc.
 												//'dashboard_stats'					=>		1,					// Stats box in dashboard.
@@ -100,6 +102,7 @@ $pluginbuddy_settings = array(
 												'no_new_backups_error_days'			=>		'45',				// Send an error email notification if no new backups have been created in X number of days.
 												'skip_quicksetup'					=>		'0',				// When 1 the quick setup will not pop up on Getting Started page.
 												'prevent_flush'						=>		'0',				// When 1 pb_backupbuddy::flush() will return instead of flushing to workaround some odd server issues on some servers.
+												'rollback_cleanups'					=>		array(),			// Array of rollback serial => time() pairs to run cleanups on, such as dropping temporary undo tables. Run X hours after the timestamp.
 												'profiles'							=>		array(
 																								0 => array(
 																													'type'							=>		'defaults',

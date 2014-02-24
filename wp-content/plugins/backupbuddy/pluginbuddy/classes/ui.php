@@ -518,16 +518,6 @@ class pb_backupbuddy_ui {
 	
 	
 	
-	/*
-	public function media_library( $save_point, $default_options_point ) {
-		require_once( pb_backupbuddy::plugin_path() . '/pluginbuddy/lib/media_library/media_library.php' );
-		$media_library = new pluginbuddy_medialibrary( $save_point, $default_options_point );
-		$media_library->display();
-	}
-	*/
-	
-	
-	
 	/*	start_tabs()
 	 *	
 	 *	Starts a tabbed interface.
@@ -572,6 +562,8 @@ class pb_backupbuddy_ui {
 			}
 			if ( isset( $tab['ajax'] ) && ( $tab['ajax_url'] != '' ) ) { // AJAX tab.
 				$return .= '<a class="nav-tab nav-tab-' . $i . ' ' . $active_tab_class . '" style="' . $tab['css'] . '" href="' . $tab['ajax_url'] . '">' . $tab['title'] . '</a>';
+			} elseif ( isset( $tab['url'] ) && ( $tab['url'] != '' ) ) {
+				$return .= '<a class="nav-tab nav-tab-' . $i . ' ' . $active_tab_class . '" style="' . $tab['css'] . '" href="' . $tab['url'] . '">' . $tab['title'] . '</a>';
 			} else { // Standard; NO AJAX.
 				$return .= '<a class="nav-tab nav-tab-' . $i . ' ' . $active_tab_class . '" style="' . $tab['css'] . '" href="#' . $prefix . $this->_tab_interface_tag . '_tab_' . $tab['slug'] . '">' . $tab['title'] . '</a>';
 			}
@@ -714,26 +706,14 @@ class pb_backupbuddy_ui {
 		}
 		
 		pb_backupbuddy::load_style( 'wp-admin.css' );
-		
-		echo '<style>
-			.form-table input[type=radio],.form-table input[type=checkbox] {
-				width: 16px;
-				height: 16px;
-			}
-			.form-table input[type=checkbox]:checked:before {
-				margin: -7px;
-			}
-			.form-table input[type=radio]:checked:before {
-				margin: 3px;
-			}
-			</style>';
+		pb_backupbuddy::load_style( 'thickboxed.css' );
 		
 		//echo '<link rel="stylesheet" href="' . pb_backupbuddy::plugin_url(); . '/css/admin.css" type="text/css" media="all" />';
 		pb_backupbuddy::load_script( 'admin.js', true );
 		pb_backupbuddy::load_style( 'admin.css', true );
 		pb_backupbuddy::load_script( 'tooltip.js', true );
 		
-		echo '<body class="wp-core-ui">';
+		echo '<body class="wp-core-ui" style="background: inherit;">';
 		if ( $padding === true ) {
 			echo '<div style="padding: 8px; padding-left: 12px; padding-right: 12px;">';
 		} else {

@@ -1,0 +1,52 @@
+[02-Feb-2014 23:04:47 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[02-Feb-2014 23:05:34 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[02-Feb-2014 23:55:27 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[03-Feb-2014 00:30:56 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[03-Feb-2014 00:31:08 America/Denver] PHP Fatal error:  Class 'SlideDeckPlugin' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-plugin-install.php on line 2
+[03-Feb-2014 06:36:44 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[03-Feb-2014 07:05:48 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[03-Feb-2014 09:18:55 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[03-Feb-2014 15:13:31 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[03-Feb-2014 16:11:35 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[03-Feb-2014 19:51:01 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[03-Feb-2014 20:25:15 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[03-Feb-2014 23:17:49 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[04-Feb-2014 07:12:27 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[04-Feb-2014 08:30:12 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[04-Feb-2014 15:18:25 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[04-Feb-2014 15:44:02 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[05-Feb-2014 08:34:15 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[05-Feb-2014 09:01:59 America/Denver] PHP Fatal error:  Class 'SlideDeckPlugin' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-plugin-install.php on line 2
+[05-Feb-2014 14:56:03 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[05-Feb-2014 15:55:48 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[06-Feb-2014 00:07:35 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[06-Feb-2014 06:21:29 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[06-Feb-2014 14:34:37 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[07-Feb-2014 00:21:14 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[07-Feb-2014 06:32:50 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[07-Feb-2014 06:40:17 America/Denver] PHP Fatal error:  Class 'SlideDeckPlugin' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-plugin-install.php on line 2
+[07-Feb-2014 08:49:00 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[07-Feb-2014 10:20:34 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[07-Feb-2014 16:27:21 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[07-Feb-2014 18:16:13 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[07-Feb-2014 19:27:16 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[07-Feb-2014 20:52:04 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[08-Feb-2014 01:31:02 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[08-Feb-2014 04:28:23 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[08-Feb-2014 08:55:20 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[08-Feb-2014 09:00:54 America/Denver] PHP Fatal error:  Class 'SlideDeckPlugin' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-plugin-install.php on line 2
+[08-Feb-2014 12:17:09 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[08-Feb-2014 19:09:23 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[08-Feb-2014 22:09:29 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[09-Feb-2014 02:44:45 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[09-Feb-2014 04:46:26 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[09-Feb-2014 10:40:25 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[09-Feb-2014 20:11:04 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[10-Feb-2014 02:24:10 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29
+[10-Feb-2014 05:29:20 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[10-Feb-2014 05:58:49 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[10-Feb-2014 06:09:53 America/Denver] PHP Fatal error:  Class 'SlideDeckPlugin' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-plugin-install.php on line 2
+[10-Feb-2014 07:10:39 America/Denver] PHP Fatal error:  Class 'WP_Widget' not found in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/widget.php on line 35
+[10-Feb-2014 13:52:18 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/flash.php on line 66
+[10-Feb-2014 14:33:42 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/slidedeck-auto-upgrade.php on line 17
+[12-Feb-2014 01:38:52 America/Denver] PHP Fatal error:  Cannot access self:: when no class scope is active in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/lib/constants.php on line 29

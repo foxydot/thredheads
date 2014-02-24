@@ -12,8 +12,8 @@ jQuery(document).ready(function() {
 		jQuery(this).addClass( 'nav-tab-active' );
 		
 		// Show the correct tab block.
-		targetDivID = jQuery(this).attr( 'href' ).substring(1);
-		thisTabBlock.find( '#' + targetDivID ).show();
+		//targetDivID = jQuery(this).attr( 'href' ).substring(1);
+		thisTabBlock.find( jQuery(this).attr( 'href' ) ).show();
 		
 		return false;
 	});

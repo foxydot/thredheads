@@ -137,7 +137,7 @@ class pluginbuddy_ms_import {
 		require_once( pb_backupbuddy::plugin_path() . '/classes/import.php' );
 		$import = new pb_backupbuddy_import();
 		
-		return $import->get_dat_file_array( $dat_file );
+		return backupbuddy_core::get_dat_file_array( $dat_file );
 	}
 	
 	
