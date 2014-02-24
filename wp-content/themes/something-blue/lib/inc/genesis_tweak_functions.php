@@ -14,6 +14,18 @@ function msdlab_pre_header(){
     </div>';
 }
 
+function msdlab_header_right(){
+    genesis_markup( array(
+            'html5'   => '<aside %s>',
+            'xhtml'   => '<div class="widget-area header-widget-area">',
+            'context' => 'header-widget-area',
+        ) );
+    dynamic_sidebar( 'header-right' );
+    genesis_markup( array(
+            'html5' => '</aside>',
+            'xhtml' => '</div>',
+        ) );
+}
 //add language widget after subnav
 
 function good_advice_subnav_right( $menu, $args ) {

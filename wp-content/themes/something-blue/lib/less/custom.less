@@ -24,34 +24,72 @@
  }
  
  .pre-header{
-   .phone{
-     display: inline-block;
-     color: @red;
-     font-weight: 700;
-     font-size: 1.4rem;
-     vertical-align: 1rem;
-   }
-   .social-media{
-     position: relative;
-     top: 0;
-     a, a:hover{
-       color: @white;
-       display: block;
-       float: left;
-       font-size: 2rem;
-       text-align: center;
-       width: 30px;
-       padding: 0.5rem 0;
-       text-decoration: none;
+   .wrap{
+     .header-widget-area{
+       margin: 0 1rem;
+       width: 240px;
+       display: inline-block;
+       vertical-align: 0.8rem;
+       section.widget{
+         margin: 0 auto;
+         .widget-wrap{
+           h4.widget-title{
+             margin: 0;
+             padding: 1rem;
+             cursor: pointer;
+           }
+           div.gform_wrapper{
+             display: block;
+             position: absolute;
+             z-index: 400;
+              background: @white;
+              form{
+                height: 0px;
+                overflow: hidden;
+                transition: height 1s ease;
+              }
+           }
+           div.gform_wrapper:after{
+             .clear;
+           }
+           div.gform_wrapper.open_form{
+             form{
+               height: auto;
+             }
+           }
+         }
+       }
      }
-     a.tw{
-       background-color:@twitter-blue;
+     .phone{
+       display: inline-block;
+       color: @red;
+       font-weight: 700;
+       font-size: 1.4rem;
+       vertical-align: 1rem;
      }
-     a.fb{
-       background-color:@facebook-blue;
-     }
-     a.pin{
-       background-color:@pinterest-red;
+     .social-media{
+       position: relative;
+       top: 0;
+       vertical-align: 0.4rem;
+       a, a:hover{
+         color: @white;
+         display: block;
+         float: left;
+         font-size: 2rem;
+         text-align: center;
+         width: 30px;
+         padding: 0.5rem 0;
+         text-decoration: none;
+       }
+       a.tw{
+         background-color:@twitter-blue;
+       }
+       a.fb{
+         background-color:@facebook-blue;
+       }
+       a.pin{
+         background-color:@pinterest-red;
+       }
      }
    }
  }
@@ -214,8 +252,3 @@ height: 24px !important;
 height: 24px !important;
 }
 
-.wpcart_gallery{
-  img{
-    border: 2px solid #F1F1F1;
-  }
-}

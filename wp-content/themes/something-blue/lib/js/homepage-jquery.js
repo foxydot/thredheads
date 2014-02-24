@@ -7,9 +7,10 @@ jQuery(document).ready(function($) {
     $('.carousel').carousel({
        interval: 10000
     });
-    $('.gform_widget .gform_footer').after('<div class="gform_post_footer"><a href="http://thredheads-store.com" target="_blank"><button type="button" class="button" data-dismiss="modal">Thanks, just browsing</button></a></div>');
-    $('.modal').wrapInner('<div class="modal-dialog"><div class="modal-content"></div></div>');
+   // $('.gform_widget .gform_footer').after('<div class="gform_post_footer"><a href="http://thredheads-store.com" target="_blank"><button type="button" class="button" data-dismiss="modal">Thanks, just browsing</button></a></div>');
+   /* $('.modal').wrapInner('<div class="modal-dialog"><div class="modal-content"></div></div>');
     setTimeout(function(){ 
         $('.modal').modal('show');
     }, 5000);
+    */
 });

@@ -47,6 +47,12 @@ jQuery(document).ready(function($) {
     $('.menu li[class*="icon-"]>a').prepend('<i></i>');
     
     $('.menu-primary .home-btn a').html('<i class="fa fa-home"></i>');
+    
+    $('.pre-header .wrap .header-widget-area .gform_widget .widget-title').toggle(function(){
+        $(this).siblings('.gform_wrapper').addClass('open_form');
+    },function(){
+        $(this).siblings('.gform_wrapper').removeClass('open_form');
+    });
 	
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
