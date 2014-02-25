@@ -441,7 +441,6 @@ function gct_random_testimonial_shortcode($atts) {
 			'post_status'     	=> 'publish'
 		);
 	}
-	
 	$temp = $wp_query;
 	$wp_query= null;
 	$wp_query = new WP_Query();
@@ -752,7 +751,7 @@ class GCT_Testimonial_Menu_Widget extends WP_Widget {
 		$args = array(
 			$term_taxonomy 		=> $term_slug,
 			'posts_per_page' 	=> $no,
-			'orderby'         	=> 'post_date',
+			'orderby'         	=> 'rand',
 			'order'				=> 'DESC',
 			'post_type' 		=> 'testimonial', 
 			'post_status'     	=> 'publish'
