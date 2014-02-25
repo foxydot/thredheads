@@ -32,6 +32,7 @@
        vertical-align: 0.8rem;
        section.widget{
          margin: 0 auto;
+         text-align: left;
          .widget-wrap{
            h4.widget-title{
              margin: 0;
@@ -39,6 +40,7 @@
              cursor: pointer;
            }
            div.gform_wrapper{
+            width: 240px;
              display: block;
              position: absolute;
              z-index: 400;
@@ -47,6 +49,13 @@
                 height: 0px;
                 overflow: hidden;
                 transition: height 1s ease;
+                margin-top:0;
+                font-size: 1.2rem;
+                .gfield_checkbox{
+                  li{
+                    margin-top: 0;
+                  }
+                }
               }
            }
            div.gform_wrapper:after{
