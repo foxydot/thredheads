@@ -455,7 +455,7 @@ function gold_shpcrt_display_gallery( $product_id, $invisible = false ) {
 
 					// always display the featured thumbnail first
 					if ( in_array( $post->ID, $featured_img ) ) {
-						array_unshift( $thumbnails, $link );
+						//array_unshift( $thumbnails, $link ); //edit to remove featured image from the main
 					} else {
 						$thumbnails[] = $link;
 					}

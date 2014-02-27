@@ -32,19 +32,49 @@
                             <?php echo wpsc_the_product_description(); ?>
                         </div><!--close product_description -->
                     <div class="row">
-						<?php if ( wpsc_the_product_thumbnail() ) : ?>
-						        <div class="col-sm-4 featured_image_holder">
-								<a rel="<?php echo wpsc_the_product_title(); ?>" class="aligncenter <?php echo wpsc_the_product_image_link_classes(); ?>" href="<?php echo esc_url( wpsc_the_product_image() ); ?>">
-									<img class="product_image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="<?php echo wpsc_the_product_title(); ?>" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo wpsc_the_product_thumbnail(); ?>"/>
-								</a>
-								</div>                              
-								<div class="col-sm-8">
-								<?php
-								if ( function_exists( 'gold_shpcrt_display_gallery' ) )
-									echo gold_shpcrt_display_gallery( wpsc_the_product_id() );
-								?>
-								</div>
-						<?php else: ?>
+                        <?php //get the secondary image array
+                        if( class_exists('Dynamic_Featured_Image') ) {
+                             global $dynamic_featured_image;
+                             $featured_images = $dynamic_featured_image->get_featured_images( $postId );
+                            $my_featured_image = array_pop($featured_images);
+                            //You can now loop through the image to display them as required
+                            if($my_featured_image){
+                                $image_urls = wp_get_attachment_image_src( $my_featured_image['attachment_id'], array(400,740) );
+                                $my_featured_image['product_image'] = $image_urls[0];
+                            }
+                         }
+                        ?>
+						<?php if ( $my_featured_image ) : ?>
+                                <div class="col-sm-4 featured_image_holder">
+                                <a rel="<?php echo wpsc_the_product_title(); ?>" class="aligncenter <?php echo wpsc_the_product_image_link_classes(); ?>" href="<?php echo esc_url( $my_featured_image['full'] ); ?>">
+                                    <img class="product_image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="<?php echo wpsc_the_product_title(); ?>" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo $my_featured_image['product_image']; ?>"/>
+                                </a>
+                                </div>                              
+                                <div class="col-sm-8">
+                                <?php
+                                if ( function_exists( 'gold_shpcrt_display_gallery' ) )
+                                    echo gold_shpcrt_display_gallery( wpsc_the_product_id() );
+                                ?>
+                                </div>
+                        <?php elseif ( function_exists( 'gold_shpcrt_display_gallery' ) ) : ?>                              
+                                <div class="col-sm-12">
+                                <?php
+                                    echo gold_shpcrt_display_gallery( wpsc_the_product_id() );
+                                ?>
+                                </div>
+                        <?php /*elseif ( wpsc_the_product_thumbnail() ) : ?>
+                                <div class="col-sm-4 featured_image_holder">
+                                <a rel="<?php echo wpsc_the_product_title(); ?>" class="aligncenter <?php echo wpsc_the_product_image_link_classes(); ?>" href="<?php echo esc_url( wpsc_the_product_image() ); ?>">
+                                    <img class="product_image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="<?php echo wpsc_the_product_title(); ?>" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo wpsc_the_product_thumbnail(); ?>"/>
+                                </a>
+                                </div>                              
+                                <div class="col-sm-8">
+                                <?php
+                                if ( function_exists( 'gold_shpcrt_display_gallery' ) )
+                                    echo gold_shpcrt_display_gallery( wpsc_the_product_id() );
+                                ?>
+                                </div>
+                        <?php */else: ?>
 									<a href="<?php echo esc_url( wpsc_the_product_permalink() ); ?>">
 									<img class="no-image" id="product_image_<?php echo wpsc_the_product_id(); ?>" alt="No Image" title="<?php echo wpsc_the_product_title(); ?>" src="<?php echo WPSC_CORE_THEME_URL; ?>wpsc-images/noimage.png" width="<?php echo get_option('product_image_width'); ?>" height="<?php echo get_option('product_image_height'); ?>" />
 									</a>
@@ -204,7 +234,7 @@
                         <?php if (wpsc_have_custom_meta()) : ?>
                         <div class="custom_meta">
                             <?php while ( wpsc_have_custom_meta() ) : wpsc_the_custom_meta(); ?>
-                                <?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE || (stripos(wpsc_custom_meta_name(),'bwps') !== FALSE)) continue; ?>
+                                <?php if (stripos(wpsc_custom_meta_name(),'g:') !== FALSE || (stripos(wpsc_custom_meta_name(),'bwps') !== FALSE) || (stripos(wpsc_custom_meta_name(),'dfi') !== FALSE)) continue; ?>
                                 <strong><?php echo wpsc_custom_meta_name(); ?>: </strong><?php echo wpsc_custom_meta_value(); ?><br />
                             <?php endwhile; ?>
                         </div><!--close custom_meta-->
