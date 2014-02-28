@@ -1,4 +1,8 @@
 <?php
+add_shortcode('wpshop_cart','msdlab_wpcart_function');
+function msdlab_wpcart_function(){
+    echo wpsc_shopping_cart(); 
+}
 add_shortcode('product-info','product_info_function');
 function product_info_function($atts,$content){
     $ret = '<div class="product-info-box container"><div class="row">';
