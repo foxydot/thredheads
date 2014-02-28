@@ -46,9 +46,9 @@
              z-index: 400;
               background: @white;
               form{
-                height: 0px;
+                max-height: 0px;
                 overflow: hidden;
-                transition: height 1s ease;
+                transition: max-height 2s ease;
                 margin-top:0;
                 font-size: 1.2rem;
                 .gfield_checkbox{
@@ -56,14 +56,22 @@
                     margin-top: 0;
                   }
                 }
+                textarea{
+                  max-height: 100px;
+                }
+                button{
+                  width: 100%;
+                }
               }
            }
            div.gform_wrapper:after{
              .clear;
            }
            div.gform_wrapper.open_form{
+              .box-shadow(0 0 4px rgba(20,20,20,0.5));
              form{
                height: auto;
+               max-height: 1000px;
              }
            }
          }

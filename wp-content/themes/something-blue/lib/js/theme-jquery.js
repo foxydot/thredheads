@@ -48,11 +48,16 @@ jQuery(document).ready(function($) {
     
     $('.menu-primary .home-btn a').html('<i class="fa fa-home"></i>');
     
-    $('.pre-header .wrap .header-widget-area .gform_widget .widget-title').toggle(function(){
-        $(this).siblings('.gform_wrapper').addClass('open_form');
-    },function(){
-        $(this).siblings('.gform_wrapper').removeClass('open_form');
+    $('.pre-header .wrap .header-widget-area .gform_widget .gform_wrapper .gform_footer').after('<br /><div class="gform_post_footer"><button type="button" class="button">Thanks, just browsing</button></div>');
+    var formwrapper = $('.pre-header .wrap .header-widget-area .gform_widget .gform_wrapper');
+    $('.pre-header .wrap .header-widget-area .gform_widget .widget-title,.pre-header .gform_widget .gform_post_footer .button,.pre-header .gform_widget .gform_post_footer .button').click(function(){
+        if(!formwrapper.hasClass('open_form')){
+            formwrapper.addClass('open_form');
+        } else {
+            formwrapper.removeClass('open_form');
+        }
     });
+    
 	
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
