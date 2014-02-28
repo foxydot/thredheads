@@ -47,6 +47,7 @@ jQuery(document).ready(function($) {
     $('.menu li[class*="icon-"]>a').prepend('<i></i>');
     
     $('.menu-primary .home-btn a').html('<i class="fa fa-home"></i>');
+    $('.menu-primary .cart-btn a').html('<i class="fa fa-shopping-cart"></i>');
     
     $('.pre-header .wrap .header-widget-area .gform_widget .gform_wrapper .gform_footer').after('<br /><div class="gform_post_footer"><button type="button" class="button">Thanks, just browsing</button></div>');
     var formwrapper = $('.pre-header .wrap .header-widget-area .gform_widget .gform_wrapper');
