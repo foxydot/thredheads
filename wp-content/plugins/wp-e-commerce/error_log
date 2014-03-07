@@ -1,0 +1,1 @@
+[27-Feb-2014 20:20:13 America/Denver] PHP Fatal error:  Call to undefined function add_action() in /home2/thredhea/public_html/wp-content/plugins/wp-e-commerce/wp-shopping-cart.php on line 31
