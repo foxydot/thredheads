@@ -15,11 +15,11 @@ endif;
 <h3><?php _e('Please review your order', 'wpsc'); ?></h3>
 <table class="checkout_cart">
    <tr class="header">
-      <th colspan="2" ><?php _e('Product', 'wpsc'); ?></th>
-      <th><?php _e('Quantity', 'wpsc'); ?></th>
-      <th><?php _e('Price', 'wpsc'); ?></th>
-      <th><?php _e('Total', 'wpsc'); ?></th>
-        <th>&nbsp;</th>
+      <th colspan="2" id="product_label"><?php _e('Product', 'wpsc'); ?></th>
+      <th id="quantity_label"><?php _e('Quantity', 'wpsc'); ?></th>
+      <th id="price_label"><?php _e('Price', 'wpsc'); ?></th>
+      <th id="total_label"><?php _e('Total', 'wpsc'); ?></th>
+        <th id="remove">&nbsp;</th>
    </tr>
    <?php while (wpsc_have_cart_items()) : wpsc_the_cart_item(); ?>
       <?php
@@ -37,7 +37,7 @@ endif;
          <td class="firstcol wpsc_product_image wpsc_product_image_<?php echo wpsc_the_cart_item_key(); ?>">
          <?php if('' != wpsc_cart_item_image()): ?>
 			<?php do_action ( "wpsc_before_checkout_cart_item_image" ); ?>
-            <img src="<?php echo wpsc_cart_item_image(); ?>" alt="<?php echo wpsc_cart_item_name(); ?>" title="<?php echo wpsc_cart_item_name(); ?>" class="product_image" />
+            <img src="<?php echo wpsc_cart_item_image(100,100); ?>" alt="<?php echo wpsc_cart_item_name(); ?>" title="<?php echo wpsc_cart_item_name(); ?>" class="product_image" />
 			<?php do_action ( "wpsc_after_checkout_cart_item_image" ); ?>
          <?php else:
          /* I dont think this gets used anymore,, but left in for backwards compatibility */
@@ -92,20 +92,22 @@ endif;
    if(wpsc_uses_coupons()): ?>
 
       <tr class="wpsc_total_before_shipping">
-         <td colspan="3"><?php _e('Cost before shipping:','wpsc'); ?></td>
+         <td colspan="2"><?php _e('Cost before shipping:','wpsc'); ?></td>
          <td colspan="3" class="wpsc_total_amount_before_shipping"><?php echo wpsc_cart_total_widget(false,false,false);?></td>
+         <td></td>
       </tr>
       <?php if(wpsc_coupons_error()): ?>
          <tr class="wpsc_coupon_row wpsc_coupon_error_row"><td colspan="6"><?php _e('Coupon is not valid.', 'wpsc'); ?></td></tr>
       <?php endif; ?>
       <tr class="wpsc_coupon_row">
          <td colspan="2"><?php _e('Enter coupon code :', 'wpsc'); ?></td>
-         <td  colspan="4" class="coupon_code">
+         <td  colspan="3" class="coupon_code">
             <form  method="post" action="<?php echo esc_url( get_option( 'shopping_cart_url' ) ); ?>">
                <input type="text" name="coupon_num" id="coupon_num" value="<?php echo $wpsc_cart->coupons_name; ?>" />
                <input type="submit" value="<?php _e('Update', 'wpsc') ?>" />
             </form>
          </td>
+         <td></td>
       </tr>
    <?php endif; ?>
    </table>

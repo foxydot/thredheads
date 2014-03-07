@@ -855,6 +855,64 @@ span.rating_saved{
 #checkout_page_container {
 	position:relative;
 	clear:both;
+	table.checkout_cart{
+	  tbody{
+	    tr.header{
+        th#product_label{
+          width: 60%;
+        }
+        th#quantity_label{
+          width: 10%;
+        }
+        th#price_label{
+          width: 10%;
+        }
+        th#total_label{
+          width: 10%;
+        }
+        th#remove{
+          width: 40px;
+        }
+	    }
+	    .wpsc_product_remove,.wpsc_product_quantity,.coupon_code{
+        form{
+          input[type="submit"]{
+            background: @red url(wpsc-images/delete.png) no-repeat scroll center center;
+            height: 20px;
+            width:20px;
+            padding: 0;
+            text-indent:-9999px;
+            border:none;
+            outline:none;
+            *line-height:1;
+            cursor:pointer; 
+            .border-radius(100px);
+          }
+        }
+      }
+      .wpsc_product_remove{
+        form{
+          input[type="submit"]{
+            background: @red url(wpsc-images/delete.png) no-repeat scroll center center;
+          }
+        }
+      }
+      .wpsc_product_quantity{
+        form{
+          input[type="submit"]{
+            background: @red url(wpsc-images/update.png) no-repeat scroll center center;
+          }
+        }
+      }
+      .coupon_code{
+        form{
+          input[type="submit"]{
+            background: @red url(wpsc-images/check.png) no-repeat scroll center center;
+          }
+        }
+      }
+	  }
+	}
 }
 
 #checkout_page_container textarea, #checkout_page_container input, #content #checkout_page_container textarea, #content #checkout_page_container input {
@@ -890,13 +948,17 @@ span.rating_saved{
 	vertical-align:middle;	
 }
 
-#checkout_page_container table.checkout_cart tr.wpsc_coupon_row td form input#coupon_num {
-	width: 293px;
-	padding: 0px;
-	margin: 0px 20px 0px 0px;
+#checkout_page_container table.checkout_cart tr.wpsc_coupon_row td form{
+  padding: 0 !important;
+   input#coupon_num {
+    	width: 180px;
+    	padding: 0px;
+    	margin: 7px 10px 0px 0px;
+    	float: left;
+    }
 }
 
-#checkout_page_container table.checkout_cart tr.wpsc_total_before_shipping td.wpsc_total_amount_before_shipping{
+#checkout_page_container table.checkout_cart tr.wpsc_total_before_shipping td{
 	text-align: right;
 }
 
@@ -958,8 +1020,13 @@ background-color: #f5f5f5;
 	border: none;
 }
 
-#checkout_page_container table.checkout_cart tr.wpsc_coupon_row tr {
+#checkout_page_container table.checkout_cart tr.wpsc_coupon_row {
+  td{
+    text-align: right;
+  }
+  tr{
 	border-bottom: 0px;
+  }
 }
 
 #checkout_page_container p.validation-error {
