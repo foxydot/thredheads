@@ -43,6 +43,7 @@ jQuery(document).ready(function($) {
         }
     });
     
+    $('.product-sidebar #menu-shirt-tools-1').addClass('fa-ul').find('li').prepend('<i class="fa fa-caret-right"></i> ');
 	
 	/*RESPONSIVE NAVIGATION, COMBINES MENUS EXCEPT FOR FOOTER MENU*/
 
