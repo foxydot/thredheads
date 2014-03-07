@@ -728,18 +728,49 @@ span.rating_saved{
 	width:100%;
 }
 
-.shopping-cart-wrapper .shoppingcart table th {
-	font-family: Arial, sans-serif;
-	padding:2px;
-}
-
-.shopping-cart-wrapper .shoppingcart table th:first-child {
-	text-align: left;
-}
-
-.shopping-cart-wrapper .shoppingcart table tbody td {	
-	padding:2px;
-	text-align:center;
+.shopping-cart-wrapper{
+  .shoppingcart{
+    table{
+      th{
+        .customsansserif;
+        padding:2px;
+      }
+      th:first-child {
+      	text-align: left;
+      }
+      th#product{}
+      th#quantity{width: 10%;}
+      th#price{width: 10%;}
+      th#remove{
+        width: 40px;
+      }
+      tbody{
+        td{
+          padding:2px;
+        	text-align:center;
+        	}
+      }
+    }
+  }
+  .remove_button {
+    background: @red url(wpsc-images/delete.png) no-repeat scroll center center;
+    height: 20px;
+    width:20px;
+    padding: 0;
+    text-indent:-9999px;
+    border:none;
+    outline:none;
+    *line-height:1;
+    cursor:pointer; 
+    .border-radius(100px);
+  }
+  tfoot{
+    text-align: right;
+  }
+  .gocheckout{
+    
+    .button();
+  }
 }
 
 .shopping-cart-wrapper .shoppingcart table .cart-widget-count{
@@ -752,16 +783,6 @@ span.rating_saved{
 
 .shopping-cart-wrapper .shoppingcart table tbody td a:hover {
 	text-decoration: underline;
-}
-
-.shopping-cart-wrapper .remove_button {
-	background:url(wpsc-images/delete.png) no-repeat scroll 0 4px transparent;
-	width:14px;
-	text-indent:-9999px;
-	border:none;
-	outline:none;
-	*line-height:1;
-	cursor:pointer;	
 }
 
 .shopping-cart-wrapper .shoppingcart table tbody td.cart-widget-remove{
