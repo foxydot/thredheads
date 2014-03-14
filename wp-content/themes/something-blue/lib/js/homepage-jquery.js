@@ -5,7 +5,7 @@ jQuery(document).ready(function($) {
     $('.featured-article .widget-icon i.fa').addClass('fa-bookmark-o');
     $('.right .readmore').append('<i class="fa fa-chevron-circle-right"></i>');
     $('.carousel').carousel({
-       interval: 10000
+       interval: 4000
     });
    // $('.gform_widget .gform_footer').after('<div class="gform_post_footer"><a href="http://thredheads-store.com" target="_blank"><button type="button" class="button" data-dismiss="modal">Thanks, just browsing</button></a></div>');
    /* $('.modal').wrapInner('<div class="modal-dialog"><div class="modal-content"></div></div>');
