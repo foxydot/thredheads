@@ -111,7 +111,7 @@ if( is_admin() ) {
 				$output = '';
 				if( isset( $product->stock ) ) {
 					if( $product->stock == '0' )
-						$output = 'product-disabled';
+						$output = 'product-nostock';
 				}
 				echo $output;
 				break;

@@ -1,5 +1,5 @@
 <tr id="product-<?php echo $product->ID; ?>" class="product <?php wpsc_mo_product_has_stock( $product, 'class' ); ?>">
-
+hahaha
 <?php $wpsc_variations = new wpsc_variations( $product->ID ); ?>
 <?php if( !empty( $wpsc_variations->variation_groups ) ) { ?>
 	<td colspan="4" class="align-left">

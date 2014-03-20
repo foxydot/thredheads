@@ -213,7 +213,7 @@
 										<select name="product_select" id="product_select" data-placeholder="<?php _e( 'Choose a Product...', 'wpsc_mo' ); ?>" class="chzn-select">
 											<option></option>
 	<?php foreach( $products as $product ) { ?>
-											<option value="<?php echo $product->ID; ?>"<?php echo disabled( $product->stock, 0 ); ?>><?php echo $product->name; ?><?php if( $product->sku ) { ?> (<?php echo $product->sku; ?>)<?php } ?></option>
+											<option value="<?php echo $product->ID; ?>"<?php //echo disabled( $product->stock, 0 ); ?>><?php echo $product->name; ?><?php if( $product->sku ) { ?> (<?php echo $product->sku; ?>)<?php } ?></option>
 	<?php } ?>
 										</select>
 										<button class="button" id="addproduct"><?php _e( 'Add Product', 'wpsc_mo' ); ?></button>
