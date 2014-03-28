@@ -113,7 +113,7 @@ if( is_admin() ) {
 		$products = (array)get_posts( array( 
 			'post_type' => $post_type,
 			'numberposts' => -1,
-			'post_status' => 'publish',
+			'post_status' => array('publish','private'),
 			'orderby' => 'menu_order',
 			'order' => 'ASC'
 		) );
