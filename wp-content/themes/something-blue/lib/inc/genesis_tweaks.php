@@ -1,6 +1,8 @@
 <?php
 global $wp_filter;
 //ts_var( $wp_filter['genesis_before_footer'] );
+
+add_theme_support( 'genesis-connect-woocommerce' );
 require_once('genesis_tweak_functions.php');
 /*** GENERAL ***/
 add_theme_support( 'html5' );//* Add HTML5 markup structure

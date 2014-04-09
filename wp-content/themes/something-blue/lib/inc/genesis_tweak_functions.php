@@ -247,7 +247,7 @@ function msd_add_blog_header(){
 /* WPSC Tweaks */
 function msdlab_single_product_layout(){
     global $wp_query;
-    if( 'wpsc-product' == $wp_query->post->post_type && !is_archive() && $wp_query->post_count <= 1 ){
+    if( 'product' == $wp_query->post->post_type && !is_archive() && $wp_query->post_count <= 1 ){
         add_filter( 'genesis_pre_get_option_site_layout', '__genesis_return_full_width_content' );
     }
 }
