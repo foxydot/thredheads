@@ -219,8 +219,20 @@ article.entry{
     }
   }
 }
+.woocommerce{
+  ul.products{
+    margin: 0;
+    li.product{
+      float: none;
+      width: 100%;
+      border-bottom: 0.5px solid #CCCCCC;
+      list-style: none outside none;
+      padding: 2rem 0;
+    }
+  }
+}
 
-.single-shirt, .single-wpsc-product{
+.single-shirt, .woocommerce.single-product{
   article{
     .entry-content{
       .product-images-box{
@@ -263,6 +275,37 @@ article.entry{
       }
     }
   }
+}
+
+.woocommerce{
+  .content{
+    .product{
+      label{
+        color: @dkgrey;
+      }
+      .thumbnails {
+        text-align: right;
+        margin-top: -3rem;
+        a{
+          display: inline-block;
+          padding: 3rem;
+        }
+        img{
+        margin: 0;
+        border:1px solid @ltgrey; 
+        }
+      }
+    }
+  }
+}
+
+input[type="button"].plus,input[type="button"].minus{
+  padding: 0;
+  width: 20px;
+  height: 20px;
+}
+.woocommerce #content div.product div.thumbnails a, .woocommerce div.product div.thumbnails a, .woocommerce-page #content div.product div.thumbnails a, .woocommerce-page div.product div.thumbnails a{
+  width: inherit;
 }
 .stButton .stButton_gradient {
 height: 24px !important;

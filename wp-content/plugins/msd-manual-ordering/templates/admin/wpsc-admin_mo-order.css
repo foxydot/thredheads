@@ -1,0 +1,157 @@
+/* Common */
+
+.store_page_wpsc_mo .align-left,
+.wpsc-product_page_wpsc_mo .align-left {
+	text-align:left;
+}
+.store_page_wpsc_mo .align-center,
+.wpsc-product_page_wpsc_mo .align-center {
+	text-align:center;
+}
+.store_page_wpsc_mo .align-right,
+.wpsc-product_page_wpsc_mo .align-right {
+	text-align:right;
+}
+
+.store_page_wpsc_mo form #normal-sortables .fields label, 
+.wpsc-product_page_wpsc_mo form #normal-sortables .fields label {
+	width:100px;
+	display:inline-block;
+}
+.store_page_wpsc_mo form #normal-sortables .wpsc_variation_forms label,
+.wpsc-product_page_wpsc_mo form #normal-sortables .wpsc_variation_forms label {
+	width:auto;
+	display:inline;
+}
+.store_page_wpsc_mo span.pricedisplay,
+.wpsc-product_page_wpsc_mo span.pricedisplay {
+	float:none;
+}
+.store_page_wpsc_mo span.required,
+.wpsc-product_page_wpsc_mo span.required {
+	font-size:10px;
+}
+
+/* Sale */
+
+.store_page_wpsc_mo .submitbox select,
+.wpsc-product_page_wpsc_mo .submitbox select {
+	overflow:auto;
+	width:100%;
+}
+	.store_page_wpsc_mo .submitbox select.auto-width,
+	.wpsc-product_page_wpsc_mo .submitbox select.auto-width {
+			width:auto;
+	}
+.store_page_wpsc_mo .submitbox label,
+.wpsc-product_page_wpsc_mo .submitbox label {
+	display:block;
+	margin:0.5em 0;
+}
+.store_page_wpsc_mo .submitbox input.small-text,
+.wpsc-product_page_wpsc_mo .submitbox input.small-text {
+	width:26px;
+}
+
+.store_page_wpsc_mo tr.product td,
+.wpsc-product_page_wpsc_mo tr.product td {
+	vertical-align:middle;
+}
+
+.store_page_wpsc_mo .submitbox textarea,
+.wpsc-product_page_wpsc_mo .submitbox textarea {
+	width:100%;
+}
+
+/* Products */
+
+.store_page_wpsc_mo #products-full-width,
+.wpsc-product_page_wpsc_mo #products-full-width {
+	margin-bottom:1.6em;
+}
+.store_page_wpsc_mo #products-full-width table,
+.wpsc-product_page_wpsc_mo #products-full-width table {
+	margin:0;
+}
+.store_page_wpsc_mo #products-full-width .column-qty,
+.wpsc-product_page_wpsc_mo #products-full-width .column-qty {
+	width:80px;
+}
+.store_page_wpsc_mo #products-full-width td.column-sku,
+.wpsc-product_page_wpsc_mo #products-full-width td.column-sku {
+	font-size:11px;
+}
+.store_page_wpsc_mo #products-full-width .column-price,
+.wpsc-product_page_wpsc_mo #products-full-width .column-price {
+	width:100px;
+}
+.wpsc-product_page_wpsc_mo #products-full-width tr.placeholder_row td,
+.wpsc-product_page_wpsc_mo #products-full-width tr.no_products td {
+	vertical-align:middle;
+}
+.store_page_wpsc_mo #products-full-width .column-remove,
+.wpsc-product_page_wpsc_mo #products-full-width .column-remove {
+	width:16px;
+}
+.wpsc-product_page_wpsc_mo #product_select_holder {
+	overflow:visible;
+}
+.wpsc-product_page_wpsc_mo #product_select {
+	width:50%;
+}
+.store_page_wpsc_mo tr.product-disabled td,
+.wpsc-product_page_wpsc_mo tr.product-disabled td {
+	color:#ccc;
+}
+.store_page_wpsc_mo tr.product td,
+.wpsc-product_page_wpsc_mo tr.product td {
+	vertical-align:middle;
+}
+.store_page_wpsc_mo tfoot th select,
+.wpsc-product_page_wpsc_mo tfoot th select {
+	font-family: sans-serif;
+	font-size: 12px;
+	width: 200px;
+}
+.store_page_wpsc_mo img.mo-loading,
+.wpsc-product_page_wpsc_mo img.mo-loading {
+	width: 17px;
+	height: 17px;
+	display: inline;
+}
+.store_page_wpsc_mo img.customer.mo-loading,
+.wpsc-product_page_wpsc_mo img.customer.mo-loading {
+	float: right;
+}
+.store_page_wpsc_mo tbody .remove,
+.wpsc-product_page_wpsc_mo tbody .remove {
+	width: 14px;
+	height: 14px;
+	cursor: pointer;
+}
+.store_page_wpsc_mo tbody .wpsc_variation_forms select,
+.wpsc-product_page_wpsc_mo tbody .wpsc_variation_forms select {
+	margin: 0 10px 2px 0;
+}
+.store_page_wpsc_mo .error,
+.wpsc-product_page_wpsc_mo .error {
+	border: 1px solid #d60000 !important;
+}
+
+/* Checkout */
+
+.store_page_wpsc_mo ul.fields li *,
+.wpsc-product_page_wpsc_mo ul.fields li * {
+	vertical-align:middle;
+}
+.store_page_wpsc_mo ul.fields li.field_type-textarea *,
+.wpsc-product_page_wpsc_mo ul.fields li.field_type-textarea * {
+	vertical-align:top;
+}
+
+/* Offline Credit Card Processing */
+
+.store_page_wpsc_mo div.wpsc_pppro_cc_cards,
+.wpsc-product_page_wpsc_mo div.wpsc_pppro_cc_cards {
+	margin-left:100px;
+}
