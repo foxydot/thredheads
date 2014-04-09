@@ -247,7 +247,7 @@ function trouble_scan() {
 	
 	// wp-config.php
 	if ( ! file_exists( ABSPATH . 'wp-config.php' ) ) {
-		$trouble[] = 'Warning only: wp-config.php file not found WordPress root. <i>This is normal for a database-only restore.</i>';
+		$trouble[] = 'Warning only: wp-config.php file not found WordPress root. <i>If this is a database-only restore you should restore a full backup first.</i>';
 	} else { // wp-config.php exists so check for unchanged URLs not updated due to provenance unknown.
 		
 		if ( 'files' == pb_backupbuddy::$options['dat_file']['backup_type'] ) {

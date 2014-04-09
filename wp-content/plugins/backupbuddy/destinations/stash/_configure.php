@@ -28,7 +28,7 @@ if ( $mode == 'add' ) { // ADD MODE.
 		'name'		=>		'itxapi_password_raw',
 		'title'		=>		__( 'iThemes password', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Example: 48dsds!s08K%x2s] - Your iThemes.com / PluginBuddy membership password.', 'it-l10n-backupbuddy' ),
-		'rules'		=>		'required|string[1-45]',
+		'rules'		=>		'required|string[1-250]',
 	) );
 	
 	$settings_result = $credentials_form->process();
@@ -161,15 +161,6 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		'rules'		=>		'required|string[1-45]',
 		'default'	=>		$default_name,
 	) );
-	/*
-	$settings_form->add_setting( array(
-		'type'		=>		'text',
-		'name'		=>		'directory',
-		'title'		=>		__( 'Directory (optional)', 'it-l10n-backupbuddy' ),
-		'tip'		=>		__( '[Example: database] - All Stash backups are already stored within a directory named after your site URL. You can however specify an additional directory within this for further organization.  For instance, you could set up a Stash destination for your database backups in one directory with one archive limit and full backups in another directory with a separate limit. This should only be one level deep.', 'it-l10n-backupbuddy' ),
-		'rules'		=>		'string[0-45]',
-	) );
-	*/
 	$settings_form->add_setting( array(
 		'type'		=>		'text',
 		'name'		=>		'full_archive_limit',
@@ -213,7 +204,6 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 		'title'		=>		__( 'Encrypt connection', 'it-l10n-backupbuddy' ),
 		'tip'		=>		__( '[Default: enabled] - When enabled, all transfers will be encrypted with SSL encryption. Disabling this may aid in connection troubles but results in lessened security. Note: Once your files arrive on our server they are encrypted using AES256 encryption. They are automatically decrypted upon download as needed.', 'it-l10n-backupbuddy' ),
 		'css'		=>		'',
-		//'after'		=>		'<span class="description"> ' . __('Enable SSL.', 'it-l10n-backupbuddy' ) . '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;* Files are always encrypted with AES256 upon arrival at Stash.</span>',
 		'rules'		=>		'',
 	) );
 	if ( $mode !== 'edit' ) {
@@ -224,7 +214,6 @@ if ( ( $mode == 'save' ) || ( $mode == 'edit' ) || ( $itxapi_username != '' ) ) 
 			'title'		=>		__( 'Manage all files', 'it-l10n-backupbuddy' ),
 			'tip'		=>		__( '[Default: enabled] - When enabled, you have access to manage and view all files stored in your Stash account. You will be prompted for your password to access backups for sites other than this one.  If disabled the option is entirely removed for added security. For example, you may wish to disable this feature if a client has access and you want to keep them away from your files. This option can NOT be changed without deleting and re-creating the Stash destination for added security.', 'it-l10n-backupbuddy' ),
 			'css'		=>		'',
-			//'after'		=>		'<span class="description"> ' . __('Enabling allows access to manage all Stash files (not just this site\'s).', 'it-l10n-backupbuddy' ) . '</span>',
 			'rules'		=>		'',
 		) );
 	}

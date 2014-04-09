@@ -24,3 +24,11 @@
 [02-Mar-2014 10:31:02 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39
 [02-Mar-2014 16:24:19 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 34
 [02-Mar-2014 16:24:19 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39
+[20-Mar-2014 23:55:01 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 34
+[20-Mar-2014 23:55:01 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39
+[21-Mar-2014 08:38:35 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 34
+[21-Mar-2014 08:38:35 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39
+[21-Mar-2014 15:34:23 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 34
+[21-Mar-2014 15:34:23 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39
+[22-Mar-2014 03:21:08 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 34
+[22-Mar-2014 03:21:08 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/flickr/views/show.php on line 39

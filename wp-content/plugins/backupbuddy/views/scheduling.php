@@ -91,7 +91,7 @@ echo '<br><br>';
 <br /><br />
 <div class="description">
 	<b>Note</b>: Due to the way schedules are triggered in WordPress your site must be accessed (frontend or admin area) for scheduled backups to occur.
-	WordPress scheduled events ("crons") may be viewed or run manually for testing from the <a href="?page=pb_backupbuddy_server_info">Server Tools page</a>.
+	WordPress scheduled events ("crons") may be viewed or run manually for testing from the <a href="?page=pb_backupbuddy_server_tools">Server Tools page</a>.
 	A <a href="https://www.google.com/search?q=free+website+uptime&oq=free+website+uptime" target="_new">free website uptime</a> service can be used to automatically access your site regularly to help trigger scheduled actions ("crons") in cases of low site activity, with the added perk of keeping track of your site uptime.
 </div>
 <br /><br />

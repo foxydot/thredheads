@@ -107,6 +107,7 @@ require_once( 'settings/_advanced.php' );
 pb_backupbuddy::$ui->end_tab();
 
 pb_backupbuddy::$ui->start_tab( 'other' );
+pb_backupbuddy::flush(); // Flush before we start loading in the log.
 require_once( 'settings/_other.php' );
 pb_backupbuddy::$ui->end_tab();
 

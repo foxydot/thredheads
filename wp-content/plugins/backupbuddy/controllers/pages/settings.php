@@ -12,13 +12,29 @@
 }
 </style>
 <script type="text/javascript">
-jQuery(document).ready( function() {
-	jQuery('#screen-meta-links').append(
-		'<div id="backupbuddy-meta-link-wrap" class="hide-if-no-js screen-meta-toggle">' +
-			'<a href="" class="show-settings pb_backupbuddy_begintour"><?php _e( "Tour Page", "it-l10n-backupbuddy" ); ?></a>' +
-		'</div>'
-	);
-});
+	jQuery(document).ready( function() {
+		jQuery('#screen-meta-links').append(
+			'<div id="backupbuddy-meta-link-wrap" class="hide-if-no-js screen-meta-toggle">' +
+				'<a href="" class="show-settings pb_backupbuddy_begintour"><?php _e( "Tour Page", "it-l10n-backupbuddy" ); ?></a>' +
+			'</div>'
+		);
+		
+		
+		jQuery( '.nav-tab-2' ).click( function(){
+			jQuery.post( '<?php echo pb_backupbuddy::ajax_url( 'getMainLog' ); ?>', { }, 
+				function(data) {
+					//data = jQuery.trim( data );
+					jQuery( '#backupbuddy_logFile' ).text( data );
+				}
+			);
+		});
+		
+		<?php if ( '2' == pb_backupbuddy::_GET( 'tab' ) ) { ?>
+		jQuery( '.nav-tab-2' ).trigger( 'click' );
+		<?php } ?>
+		
+	}); // end on ready.
+	
 </script>
 <?php
 // Tutorial

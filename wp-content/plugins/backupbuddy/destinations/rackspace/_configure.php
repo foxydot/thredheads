@@ -18,7 +18,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'username',
 	'title'		=>		__( 'Username', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Example: badger] - Your Rackspace Cloudfiles username.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[1-100]',
+	'rules'		=>		'required|string[1-250]',
 ) );
 
 if ( $mode == 'add' ) { // text mode to show secret key during adding.

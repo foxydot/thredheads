@@ -18,6 +18,7 @@ $settings_form->add_setting( array(
 	'rules'		=>		'required|string[0-99999]',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' days',
+	'rules'		=>		'int',
 ) );
 
 $settings_form->add_setting( array(
@@ -25,7 +26,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'email_notify_scheduled_start',
 	'title'		=>		__('Scheduled backup started email recipient(s)', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('Email address to send notifications to upon scheduled backup starting. Use commas to separate multiple email addresses. Notifications will not be sent for remote destination file transfers.', 'it-l10n-backupbuddy' ),
-	//'rules'		=>		'string[0-500]',
+	'rules'		=>		'string[0-500]|email',
 	'css'		=>		'width: 250px;',
 	'after'		=>		' <a href="" class="pb_backupbuddy_customize_email_scheduled_start" style="text-decoration: none;">Customize Email</a>',
 ) );
@@ -123,4 +124,5 @@ $settings_form->add_setting( array(
 	'tip'		=>		__('Email address listed as the `from` email address for any emails sent by BackupBuddy. Leave blank (default) to use the WordPress admin email.', 'it-l10n-backupbuddy' ) . ' Current default: ' . get_option( 'admin_email' ),
 	'css'		=>		'width: 250px;',
 	'after'		=>		' <span class="description">' . __( 'Blank for default', 'it-l10n-backupbuddy' ) . ': ' . get_option( 'admin_email' ) . '</span>',
+	'rules'		=>		'string[0-500]|email',
 ) );

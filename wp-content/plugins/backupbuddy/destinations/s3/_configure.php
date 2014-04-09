@@ -71,7 +71,7 @@ $settings_form->add_setting( array(
 	'tip'		=>		__( '[Example: wordpress_backups] - This bucket will be created for you automatically if it does not already exist. Bucket names must be globally unique amongst all Amazon S3 users.', 'it-l10n-backupbuddy' ),
 	'after'		=>		'',
 	'css'		=>		'width: 255px;',
-	'rules'		=>		'required|string[1-45]',
+	'rules'		=>		'required|string[1-500]',
 ) );
 
 
@@ -110,7 +110,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'directory',
 	'title'		=>		__( 'Directory (optional)', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Example: backupbuddy] - Directory name to place the backup within.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'string[0-45]',
+	'rules'		=>		'string[0-500]',
 ) );
 
 

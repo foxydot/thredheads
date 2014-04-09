@@ -52,9 +52,7 @@ if ( $listing_mode == 'restore_migrate' ) {
 	$hover_actions[pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup='] = __( 'Download', 'it-l10n-backupbuddy' );
 	$hover_actions['send'] = 'Send';
 	$hover_actions['page=pb_backupbuddy_backup&zip_viewer'] = __( 'Browse & Restore Files', 'it-l10n-backupbuddy' );
-	if ( '1' == pb_backupbuddy::$options['rollback_beta'] ) {
-		$hover_actions['rollback'] = __( 'Database Rollback', 'it-l10n-backupbuddy' ) . ' (BETA)';
-	}
+	$hover_actions['rollback'] = __( 'Database Rollback', 'it-l10n-backupbuddy' ) . ' (BETA)';
 	$hover_actions['migrate'] = __( 'Migrate', 'it-l10n-backupbuddy' );
 	$hover_actions['note'] = __( 'Note', 'it-l10n-backupbuddy' );
 	$bulk_actions = array();

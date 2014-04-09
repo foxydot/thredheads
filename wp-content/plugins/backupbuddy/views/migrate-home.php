@@ -167,17 +167,15 @@ site/backup specific.
 </ol>
 
 
-<?php if ( '1' == pb_backupbuddy::$options['rollback_beta'] ) {
-	echo '
-		<br>
-		<h3>Database Rollback</h3>
-		You may roll back the database on this site to a database contained in a backup (full or database only) by selecting the "Rollback Database" option when
-		hovering below. This lets you easily undo changes made to the site. You will be given the opportunity to verify the rollback was successful
-		before making it permanent.
-		<br><br><br>
-	';
-}
-?>
+
+<br>
+<h3>Database Rollback</h3>
+You may roll back the database on this site to a database contained in a backup (full or database only) by selecting the "Rollback Database" option when
+hovering below. This lets you easily undo changes made to the site. You will be given the opportunity to verify the rollback was successful
+before making it permanent.
+<br><br><br>
+
+
 
 <h3 id="pb_backupbuddy_restoremigratelisttitle">Hover Backup for Additional Options</h3>
 <?php

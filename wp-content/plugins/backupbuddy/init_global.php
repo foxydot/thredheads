@@ -1,9 +1,9 @@
-<?php // This code runs everywhere.
+<?php // This code runs everywhere. pb_backupbuddy::$options preloaded.
 include( 'classes/api0.php' );
 
 
 // Make localization happen.
-if ( ! defined( 'PB_STANDALONE' ) ) {
+if ( ( ! defined( 'PB_STANDALONE' ) ) && ( '1' != pb_backupbuddy::$options['disable_localization'] ) ) {
 	load_plugin_textdomain( 'it-l10n-backupbuddy', false, dirname( plugin_basename( __FILE__ ) ) . '/lang' );
 }
 
@@ -84,6 +84,7 @@ function backupbuddy_register_sync_verbs( $api ) {
 		'backupbuddy-get-overview'				=> 'Ithemes_Sync_Verb_Backupbuddy_Get_Overview',
 		'backupbuddy-get-latestBackupProcess'	=> 'Ithemes_Sync_Verb_Backupbuddy_Get_LatestBackupProcess',
 		'backupbuddy-get-everything'			=> 'Ithemes_Sync_Verb_Backupbuddy_Get_Everything',
+		'backupbuddy-get-importbuddy'			=> 'Ithemes_Sync_Verb_Backupbuddy_Get_Importbuddy',
 	);
 	foreach( $verbs as $name => $class ) {
 		$api->register( $name, $class, pb_backupbuddy::plugin_path() . "/classes/ithemes-sync/$name.php" );

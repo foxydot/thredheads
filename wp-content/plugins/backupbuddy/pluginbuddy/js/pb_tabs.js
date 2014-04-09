@@ -1,7 +1,9 @@
 jQuery(document).ready(function() {
 	
 	// Change tab on click.
-	jQuery( '.backupbuddy-tabs-wrap .nav-tab[href^="#"]' ).click( function(){ /* ignores any non hashtag links since they go direct to a URL... */
+	jQuery( '.backupbuddy-tabs-wrap .nav-tab[href^="#"]' ).click( function(e){ /* ignores any non hashtag links since they go direct to a URL... */
+		
+		e.preventDefault();
 		
 		// Hide all tab blocks.
 		thisTabBlock = jQuery(this).closest( '.backupbuddy-tabs-wrap' );
@@ -14,8 +16,6 @@ jQuery(document).ready(function() {
 		// Show the correct tab block.
 		//targetDivID = jQuery(this).attr( 'href' ).substring(1);
 		thisTabBlock.find( jQuery(this).attr( 'href' ) ).show();
-		
-		return false;
 	});
 	
 	// Auto-display the correct tab on load if specifying a non-default.

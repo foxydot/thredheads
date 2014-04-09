@@ -441,7 +441,7 @@ class pb_backupbuddy_ui {
 			$log_error = true;
 		}
 		if ( $error_code != '' ) {
-			$message .= ' <a href="http://ithemes.com/codex/page/' . pb_backupbuddy::settings( 'name' ) . ':_Error_Codes#' . $error_code . '" target="_new"><i>' . pb_backupbuddy::settings( 'name' ) . ' Error Code ' . $error_code . ' - Click for more details.</i></a>';
+			$message .= ' <a href="http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#' . $error_code . '" target="_new"><i>' . pb_backupbuddy::settings( 'name' ) . ' Error Code ' . $error_code . ' - Click for more details.</i></a>';
 			$log_error = true;
 		}
 		if ( $log_error === true ) {

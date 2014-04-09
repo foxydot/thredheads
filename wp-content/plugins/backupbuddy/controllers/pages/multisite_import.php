@@ -196,10 +196,13 @@ class pluginbuddy_ms_import {
 		$status_lines = pb_backupbuddy::get_status( 'ms_import', true, true, true ); // $serial = '', $clear_retrieved = true, $erase_retrieved = true, $hide_getting_status = false
 		if ( $status_lines !== false ) { // Only add lines if there is status contents.
 			foreach( $status_lines as $status_line ) {
-				$status_line[0] = pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $status_line[0] ) );
-				$status_line[1] .= 'sec';
-				$status_line[2] .= 'MB';
-				echo '<script type="text/javascript">jQuery( "#importbuddy_status" ).append( "\n' . implode( "\t", $status_line ) . '");	textareaelem = document.getElementById( "importbuddy_status" );	textareaelem.scrollTop = textareaelem.scrollHeight;	</script>';
+				$status_line = json_decode( $status_line, true );
+				$status_line['time'] = pb_backupbuddy::$format->date( pb_backupbuddy::$format->localize_time( $status_line['time'] ) );
+				$status_line['run'] .= 'sec';
+				$status_line['mem'] .= 'MB';
+				echo '<script type="text/javascript">jQuery( "#importbuddy_status" ).append( "\n' . 
+					$status_line['time'] . "\t" . $status_line['run'] . "\t" . $status_line['mem'] . "\t" . $status_line['event'] . "\t" . $status_line['data']
+				 . '");	textareaelem = document.getElementById( "importbuddy_status" );	textareaelem.scrollTop = textareaelem.scrollHeight;	</script>';
 				pb_backupbuddy::flush();
 			}
 		}

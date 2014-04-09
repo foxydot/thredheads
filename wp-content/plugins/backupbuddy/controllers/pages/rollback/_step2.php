@@ -9,8 +9,8 @@ pb_backupbuddy::load_script( 'jquery' );
 $nextStep = 3;
 
 $restoreData = unserialize( base64_decode( pb_backupbuddy::_POST( 'restoreData' ) ) );
-require_once( pb_backupbuddy::plugin_path() . '/classes/rollback.php' );
-$rollback = new backupbuddy_rollback( $restoreData );
+require_once( pb_backupbuddy::plugin_path() . '/classes/restore.php' );
+$rollback = new backupbuddy_restore( 'rollback', $restoreData );
 
 $status = $rollback->restoreDatabase();
 if ( false === $status ) {

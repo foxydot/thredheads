@@ -74,10 +74,15 @@ if ( 'add' == $mode ) { // ADD mode.
 	try {
 		$dropboxClient = new \Dropbox\Client( $accessToken, 'BackupBuddy v' . pb_backupbuddy::settings( 'version' ) );
 	} catch ( \Exception $e ) {
-		pb_backupbuddy::alert( 'Dropbox Error: ' . $e->getMessage() . '<br><br>' . pb_backupbuddy::$ui->button( pb_backupbuddy::page_url(), '&larr; go back & retry' ), true );
+		pb_backupbuddy::alert( 'Dropbox Error #143838: ' . $e->getMessage() . '<br><br>' . pb_backupbuddy::$ui->button( pb_backupbuddy::page_url(), '&larr; go back & retry' ), true );
 		return false;
 	}
-	$accountInfo = $dropboxClient->getAccountInfo();
+	try {
+		$accountInfo = $dropboxClient->getAccountInfo();
+	} catch ( \Exception $e ) {
+		pb_backupbuddy::alert( 'Dropbox Error #132852: ' . $e->getMessage() . '<br><br>' . pb_backupbuddy::$ui->button( pb_backupbuddy::page_url(), '&larr; go back & retry' ), true );
+		return false;
+	}
 	
 	$show_config_form = true; // Enable showing configuration form below.
 	

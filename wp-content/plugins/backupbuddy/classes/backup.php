@@ -204,7 +204,7 @@ class pb_backupbuddy_backup {
 	 */
 	function pre_backup( $serial, $profile, $trigger, $pre_backup = array(), $post_backup = array(), $schedule_title = '', $export_plugins = array() ) {
 		
-		pb_backupbuddy::status( 'action', 'start_function^pre_backup^Getting ready to backup' );
+		pb_backupbuddy::status( 'startFunction', json_encode( array( 'function' => 'pre_backup', 'title' => 'Getting ready to backup' ) ) );
 		
 		$type = $profile['type'];
 		
@@ -239,7 +239,7 @@ class pb_backupbuddy_backup {
 		pb_backupbuddy::status( 'details', 'Verifying directories ...' );
 		if ( false === backupbuddy_core::verify_directories() ) {
 			pb_backupbuddy::status( 'error', 'Error #18573. Error verifying directories. See details above. Backup halted.' );
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			die();
 		} else {
 			pb_backupbuddy::status( 'details', 'Directories verified.' );
@@ -269,7 +269,7 @@ class pb_backupbuddy_backup {
 		$this->_backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = false, $ignore_lock = false, $create_file = true );
 		if ( true !== ( $result = $this->_backup_options->is_ok() ) ) {
 			pb_backupbuddy::status( 'error', __('Fatal Error #9034 A. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error: ' . $result );
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			return false;
 		}
 		pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
@@ -277,9 +277,8 @@ class pb_backupbuddy_backup {
 		
 		
 		// Cleanup internal stats.
-		pb_backupbuddy::status( 'details', 'Resetting statistics for last backup time and number of edits since last backup.' );
+		pb_backupbuddy::status( 'details', 'Updating statistics for last backup start.' );
 		pb_backupbuddy::$options['last_backup_start'] = time(); // Reset time since last backup.
-		pb_backupbuddy::$options['edits_since_last'] = 0; // Reset edit stats for notifying user of how many posts/pages edited since last backup happened.
 		pb_backupbuddy::$options['last_backup_serial'] = $serial;
 		pb_backupbuddy::save();
 		
@@ -287,7 +286,7 @@ class pb_backupbuddy_backup {
 		// Output active plugins list for debugging...
 		$activePlugins = get_option( 'active_plugins' );
 		pb_backupbuddy::status( 'details', 'Active WordPress plugins: `' . implode( '; ', $activePlugins ) . '`.' );
-		pb_backupbuddy::status( 'action', 'start_subfunction^wp_plugins_found^Found ' . count( $activePlugins ) . ' active WordPress plugins.' );
+		pb_backupbuddy::status( 'startSubFunction', json_encode( array( 'function' => 'wp_plugins_found', 'title' => 'Found ' . count( $activePlugins ) . ' active WordPress plugins.' ) ) );
 		unset( $activePlugins );
 		
 		// Prepare some values for setting up the backup data.
@@ -366,7 +365,7 @@ class pb_backupbuddy_backup {
 		foreach( $fileExcludes as $fileExcludeId => $fileExclude ) {
 			pb_backupbuddy::status( 'warning', $fileExclude );
 		}
-		pb_backupbuddy::status( 'action', 'start_subfunction^file_excludes^Found ' . count( $fileExcludes ) . ' file or directory exclusions.' );
+		pb_backupbuddy::status( 'startSubFunction', json_encode( array( 'function' => 'file_excludes', 'title' => 'Found ' . count( $fileExcludes ) . ' file or directory exclusions.' ) ) );
 		
 		// Figure out paths.
 		if ( ( $this->_backup['type'] == 'full' ) || ( $this->_backup['type'] == 'files' ) ) {
@@ -381,7 +380,7 @@ class pb_backupbuddy_backup {
 			$this->_backup['backup_root'] = ABSPATH . 'wp-content/uploads/backupbuddy_temp/' . $serial . '/wordpress/';
 		} else {
 			pb_backupbuddy::status( 'error', __('Backup FAILED. Unknown backup type.', 'it-l10n-backupbuddy' ) );
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 		}
 		
 		
@@ -478,7 +477,7 @@ class pb_backupbuddy_backup {
 			
 			// Calculate tables to dump based on the provided information. $tables will be an array of tables.
 			$tables = $this->_calculate_tables( $base_dump_mode, $additional_tables, $this->_backup['additional_table_excludes'] );
-			pb_backupbuddy::status( 'action', 'start_subfunction^calculate_tabeles^Found ' . count( $tables ) . ' tables to backup based on settings.' );
+			pb_backupbuddy::status( 'startSubFunction', json_encode( array( 'function' => 'calculate_tabeles', 'title' => 'Found ' . count( $tables ) . ' tables to backup based on settings.' ) ) );
 			
 			// If calculations show NO database tables should be backed up then change mode to skip database dump.
 			if ( 0 == count( $tables ) ) {
@@ -499,11 +498,15 @@ class pb_backupbuddy_backup {
 					pb_backupbuddy::alert( 'Error #85473474: Unable to retrieve table status. Query: `' . $sql . '`.', true );
 					return false;
 				}
+				$totalDatabaseSize = 0;
 				foreach( $rows as $row ) {
 					$this->_backup['table_sizes'][ $row['Name'] ] = ( $row['Data_length'] + $row['Index_length'] );
+					$totalDatabaseSize += $this->_backup['table_sizes'][ $row['Name'] ];
 				}
 				unset( $rows );
 				unset( $tables_formatted );
+				
+				pb_backupbuddy::status( 'details', 'Total database size: `' . pb_backupbuddy::$format->file_size( $totalDatabaseSize ) . '`.' );
 				
 				// Tables we will try to break out into standalone steps if possible.
 				$breakout_tables_defaults = array(
@@ -647,7 +650,9 @@ class pb_backupbuddy_backup {
 		if ( $type == 'full' ) {
 			if ( pb_backupbuddy::$options['include_importbuddy'] == '1' ) {
 				pb_backupbuddy::status( 'details', 'Generating ImportBuddy tool to include in backup archive: `' . $this->_backup['temp_directory'] . 'importbuddy.php`.' );
+				pb_backupbuddy::status( 'startAction', 'importbuddyCreation' );
 				backupbuddy_core::importbuddy( $this->_backup['temp_directory'] . 'importbuddy.php' );
+				pb_backupbuddy::status( 'finishAction', 'importbuddyCreation' );
 				pb_backupbuddy::status( 'details', 'ImportBuddy generation complete.' );
 			} else { // dont include importbuddy.
 				pb_backupbuddy::status( 'details', 'ImportBuddy tool inclusion in ZIP backup archive skipped based on settings.' );
@@ -657,13 +662,12 @@ class pb_backupbuddy_backup {
 		// Save all of this.
 		$this->_backup['init_complete'] = true; // pre_backup() completed.
 		$this->_backup_options->save();
-		//pb_backupbuddy::save();
 		
 		
 		pb_backupbuddy::status( 'details', __('Finished pre-backup procedures.', 'it-l10n-backupbuddy' ) );
-		pb_backupbuddy::status( 'action', 'finish_settings' );
+		pb_backupbuddy::status( 'milestone', 'finish_settings' );
 		
-		pb_backupbuddy::status( 'action', 'finish_function^pre_backup' );
+		pb_backupbuddy::status( 'finishFunction', json_encode( array( 'function' => 'pre_backup' ) ) );
 		return true;
 		
 	} // End pre_backup().
@@ -679,7 +683,6 @@ class pb_backupbuddy_backup {
 	 *	@return		boolean					True on success, false otherwise.
 	 */
 	function process_backup( $serial, $trigger = 'manual' ) {
-		
 		pb_backupbuddy::status( 'details', 'Running process_backup() for serial `' . $serial . '`.' );
 		
 		// Assign reference to backup data structure for this backup.
@@ -706,7 +709,7 @@ class pb_backupbuddy_backup {
 				
 				if ( $lock_attempts > $max_attempts ) {
 					pb_backupbuddy::status( 'error', 'Backup halted. Maximum number of attempts made attempting to access locked fileoptions file. This may be caused by something causing backup steps to run out of order or file permission issues on the temporary directory holding the file `' . $fileoptions_file  . '`. Verify correct permissions.', $serial );
-					pb_backupbuddy::status( 'action', 'halt_script', $serial ); // Halt JS on page.
+					pb_backupbuddy::status( 'haltScript', '', $serial ); // Halt JS on page.
 					delete_transient( $attempt_transient_prefix . $serial );
 					return false;
 				}
@@ -717,13 +720,15 @@ class pb_backupbuddy_backup {
 				$this->cron_next_step( false, $wait_time );
 				return false;
 				
-				//pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
-				//return false;
 			} else { // Accessed fileoptions. Clear/reset any attempt count.
 				delete_transient( $attempt_transient_prefix . $serial );
 			}
 			pb_backupbuddy::status( 'details', 'Fileoptions data loaded.' );
 			$this->_backup = &$this->_backup_options->options;
+		}
+		
+		if ( $this->_backup_options->options['profile']['backup_mode'] != '1' ) { // Only check for cronPass action if in modern mode.
+			pb_backupbuddy::status( 'finishAction', 'cronPass' );
 		}
 		
 		// Handle cancelled backups (stop button).
@@ -741,7 +746,7 @@ class pb_backupbuddy_backup {
 			}
 			//pb_backupbuddy::save();
 			$this->_backup_options->save();
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			
 		}
 		
@@ -749,15 +754,24 @@ class pb_backupbuddy_backup {
 		$found_next_step = false;
 		
 		
-		foreach( (array)$this->_backup['steps'] as $step_index => $step ) { // Loop through steps finding first step that has not run.
+		// Loop through steps finding first step that has not run.
+		foreach( (array)$this->_backup['steps'] as $step_index => $step ) {
 			//pb_backupbuddy::status( 'details', 'step: ' . $step['function'] . 'start: ' . $step['start_time'] );
 			if ( ( $step['start_time'] != -1 ) && ( $step['start_time'] != 0 ) && ( $step['finish_time'] == 0 ) ) { // A step is not marked for skippage, has begun but has not finished. This should not happen but the WP cron is funky. Wait a while before continuing.
-				$this->_backup['steps'][$step_index]['attempts']++; // Increment this as an attempt.
-				$this->_backup_options->save();
+				
+				// Re-load, respecting locks to help avoid race conditions.
+				$this->_backup_options->load( $ignore_lock = false, $create_file = false, $retryCount = 0 );
+				if ( true !== ( $this->_backup_options->is_ok() ) ) { // Unable to access fileoptions.
+					pb_backupbuddy::status( 'warning', 'Unable to update out of order step attempt count due to file lock. It may be being written to by the other step at this moment.' );
+				} else {
+					pb_backupbuddy::status( 'details', 'Saving update to step attempt count.' );
+					$this->_backup['steps'][$step_index]['attempts']++; // Increment this as an attempt.
+					$this->_backup_options->save();
+				}
 				
 				if ( ( $step['attempts'] < 6 ) ) {
 					$wait_time = 60 * $step['attempts']; // Each attempt adds a minute of wait time.
-					pb_backupbuddy::status( 'message', 'A scheduled step attempted to run before the previous step completed. Waiting `' . $wait_time . '` seconds before continuing for it to catch up. Attempt number `' . $step['attempts'] . '`.' );
+					pb_backupbuddy::status( 'warning', 'A scheduled step attempted to run before the previous step completed. Waiting `' . $wait_time . '` seconds before continuing for it to catch up. Attempt number `' . $step['attempts'] . '`.' );
 					$this->cron_next_step( false, $wait_time );
 					return false;
 				} else { // Too many attempts to run this step.
@@ -812,9 +826,9 @@ class pb_backupbuddy_backup {
 			$functionTitle = $step['function'];
 			$subFunctionTitle = '';
 			$functionTitle = backupbuddy_core::prettyFunctionTitle( $step['function'], $step['args'] );
-			pb_backupbuddy::status( 'action', 'start_function^' . $step['function'] . '^' . $functionTitle );
+			pb_backupbuddy::status( 'startFunction', json_encode( array( 'function' => $step['function'], 'title' => $functionTitle ) ) );
 			if ( '' != $subFunctionTitle ) {
-				pb_backupbuddy::status( 'action', 'start_subfunction^' . $step['function'] . '_subfunctiontitle^' . $subFunctionTitle );
+				pb_backupbuddy::status( 'startSubFunction', json_encode( array( 'function' => $step['function'] . '_subfunctiontitle', 'title' => $subFunctionTitle ) ) );
 			}
 				
 			$response = call_user_func_array( array( &$this, $step['function'] ), $step['args'] );
@@ -829,14 +843,14 @@ class pb_backupbuddy_backup {
 			
 			// Failure caused by backup cancellation.
 			if ( true == get_transient( 'pb_backupbuddy_stop_backup-' . $serial ) ) {
-				pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+				pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 				return false;
 			}
 			
 			pb_backupbuddy::status( 'error', 'Failed function `' . $this->_backup['steps'][$step_index]['function'] . '`. Backup terminated.' );
-			pb_backupbuddy::status( 'action', 'error_function^' . $this->_backup['steps'][$step_index]['function'] );
+			pb_backupbuddy::status( 'errorFunction', $this->_backup['steps'][$step_index]['function'] );
 			pb_backupbuddy::status( 'details', __('Peak memory usage', 'it-l10n-backupbuddy' ) . ': ' . round( memory_get_peak_usage() / 1048576, 3 ) . ' MB' );
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			
 			$args = print_r( $this->_backup['steps'][$step_index]['args'], true );
 			$attachment = NULL;
@@ -854,7 +868,11 @@ class pb_backupbuddy_backup {
 			}
 			
 			// Send error notification email.
-			backupbuddy_core::mail_error( 'One or more backup steps reported a failure. ' . $attachment_note . ' Backup failure running function `' . $this->_backup['steps'][$step_index]['function'] . '` with the arguments `' . $args . '` with backup serial `' . $serial . '`. Please run a manual backup of the same type to verify backups are working properly or view the backup status log.', $attachment );
+			backupbuddy_core::mail_error(
+				'One or more backup steps reported a failure. ' . $attachment_note . ' Backup failure running function `' . $this->_backup['steps'][$step_index]['function'] . '` with the arguments `' . $args . '` with backup serial `' . $serial . '`. Please run a manual backup of the same type to verify backups are working properly or view the backup status log.',
+				NULL,
+				$attachment
+			);
 			
 			return false;
 			
@@ -865,7 +883,7 @@ class pb_backupbuddy_backup {
 			$this->_backup_options->save();
 			
 			pb_backupbuddy::status( 'details', sprintf( __('Finished function `%s`. Peak memory usage', 'it-l10n-backupbuddy' ) . ': ' . round( memory_get_peak_usage() / 1048576, 3 ) . ' MB', $this->_backup['steps'][$step_index]['function'] ) );
-			pb_backupbuddy::status( 'action', 'finish_function^' . $this->_backup['steps'][$step_index]['function'] );
+			pb_backupbuddy::status( 'finishFunction', json_encode( array( 'function' => $this->_backup['steps'][$step_index]['function'] ) ) );
 			pb_backupbuddy::status( 'details', '-----' );
 			
 			$found_another_step = false;
@@ -886,8 +904,8 @@ class pb_backupbuddy_backup {
 				pb_backupbuddy::status( 'details', __( 'No more backup steps remain. Finishing...', 'it-l10n-backupbuddy' ) );
 				$this->_backup['finish_time'] = time();
 				$this->_backup_options->save();
-				pb_backupbuddy::status( 'action', 'start_function^backup_success^Backup completed successfully.' );
-				pb_backupbuddy::status( 'action', 'finish_function^backup_success' );
+				pb_backupbuddy::status( 'startFunction', json_encode( array( 'function' => 'backup_success', 'title' => __( 'Backup completed successfully.', 'it-l10n-backupbuddy' ) ) ) );
+				pb_backupbuddy::status( 'finishFunction', json_encode( array( 'function' => 'backup_success' ) ) );
 			} else {
 				pb_backupbuddy::status( 'details', 'Completed step function `' . $step['function'] . '`.' );
 				//pb_backupbuddy::status( 'details', 'The next should run in a moment. If it does not please check for plugin conflicts and that the next step is scheduled in the cron on the Server Information page.' );
@@ -918,23 +936,16 @@ class pb_backupbuddy_backup {
 		pb_backupbuddy::status( 'details', 'Loading DB kicker in case database has gone away.' );
 		@include_once( pb_backupbuddy::plugin_path() . '/lib/wpdbutils/wpdbutils.php' );
 		if ( class_exists( 'pluginbuddy_wpdbutils' ) ) {
-			// This is the database object we want to use
 			global $wpdb;
-			
-			// Get our helper object and let it use us to output status messages
 			$dbhelper = new pluginbuddy_wpdbutils( $wpdb );
-			
-			// If we cannot kick the database into life then signal the error and return false which will stop the backup
-			// Otherwise all is ok and we can just fall through and let the function return true
-			if ( !$dbhelper->kick() ) {
+			if ( ! $dbhelper->kick() ) {
 				pb_backupbuddy::status( 'error', __('Database Server has gone away, unable to schedule next backup step. The backup cannot continue. This is most often caused by mysql running out of memory or timing out far too early. Please contact your host.', 'it-l10n-backupbuddy' ) );
-				pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+				pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 				return false;
 			} else {
 				pb_backupbuddy::status( 'details', 'Database seems to still be connected.' );
 			}
 		} else {
-			// Utils not available so cannot verify database connection status - just notify
 			pb_backupbuddy::status( 'details', __('Database Server connection status unverified.', 'it-l10n-backupbuddy' ) );
 		}
 		
@@ -948,6 +959,8 @@ class pb_backupbuddy_backup {
 			pb_backupbuddy::status( 'error', 'Unable to schedule next cron step. Verify that another plugin is not preventing / conflicting.' );
 		} else {
 			pb_backupbuddy::status( 'details', 'Next step scheduled.' );
+			pb_backupbuddy::status( 'startAction', 'cronPass' );
+			pb_backupbuddy::status( 'cronParams', base64_encode( json_encode( array( 'time' => $cron_time, 'tag' => $cron_tag, 'args' => $cron_args ) ) ) );
 		}
 		
 		// Spawn cron.
@@ -956,7 +969,7 @@ class pb_backupbuddy_backup {
 		}
 		update_option( '_transient_doing_cron', 0 ); // Prevent cron-blocking for next item.
 		
-		pb_backupbuddy::status( 'details', 'About to run next step. If the backup stalls at this point then something is interfering with the WordPress CRON system such as a caching or scheduling plugin. Try disabling other plugins to see if it resolves issue.  Check the Server Information page cron section to see if the next BackupBuddy step is scheduled to run. Enable "Classic" backup mode on the "Settings" page to rule out non-cron issues.' );
+		pb_backupbuddy::status( 'details', 'About to run next step. If the backup does not proceed within 15 seconds then something is interfering with the WordPress CRON system such as: server loopback issues, caching plugins, or scheduling plugins. Try disabling other plugins to see if it resolves issue.  Check the Server Information page cron section to see if the next BackupBuddy step is scheduled to run. Enable "Classic" backup mode on the "Settings" page to rule out non-cron issues.' );
 		return;
 		
 	} // End cron_next_step().
@@ -1122,7 +1135,7 @@ class pb_backupbuddy_backup {
 	 */
 	function backup_create_database_dump( $tables ) {
 		
-		pb_backupbuddy::status( 'action', 'start_database' );
+		pb_backupbuddy::status( 'milestone', 'start_database' );
 		pb_backupbuddy::status( 'message', __('Starting database backup process.', 'it-l10n-backupbuddy' ) );
 		
 		if ( pb_backupbuddy::$options['force_mysqldump_compatibility'] == '1' ) {
@@ -1142,6 +1155,9 @@ class pb_backupbuddy_backup {
 		
 		
 		// Check and make sure mysql server is still around. If it's missing at this point we may not be able to trust that it succeeded properly.
+		/*
+		// REMOVED 3-3-2014. PHP dump now checks connection status after each table and command line is not related to this. Settings are all stored in fileoptions so this is no longer relevant.
+		
 		global $wpdb;
 		if ( @mysql_ping( $wpdb->dbh ) === false ) { // No longer connected to database if false.
 			pb_backupbuddy::status( 'error', __( 'ERROR #9027b: The mySQL server went away at some point during the database dump step. This is almost always caused by mySQL running out of memory or the mysql server timing out far too early. Contact your host. The database dump integrity can no longer be guaranteed so the backup has been halted.' ) );
@@ -1150,9 +1166,10 @@ class pb_backupbuddy_backup {
 			} else {
 				pb_backupbuddy::status( 'details', 'The database dump reported FAILURE prior to this problem.' );
 			}
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			return false;
 		}
+		*/
 		
 		
 		return $result;
@@ -1169,11 +1186,32 @@ class pb_backupbuddy_backup {
 	 */
 	function backup_zip_files() {
 		
-		pb_backupbuddy::status( 'action', 'start_files' );
+		pb_backupbuddy::status( 'milestone', 'start_files' );
 		pb_backupbuddy::status( 'details', 'Backup root: `' . $this->_backup['backup_root'] . '`.' );
 		
 		// Set compression on / off.
 		//pb_backupbuddy::$classes['zipbuddy']->set_compression( $this->_backup['compression'] );
+		
+		
+		// Calculate some statistics to store in meta later. These need to be calculated before zipping in case the DB goes away later to prevent a possible failure.
+		$totalPosts = 0;
+		foreach( wp_count_posts( 'post' ) as $type => $count ) {
+			$totalPosts += $count;
+		}
+		$totalPages = 0;
+		foreach( wp_count_posts( 'page' ) as $type => $count ) {
+			$totalPages += $count;
+		}
+		$totalComments = 0;
+		foreach( wp_count_comments() as $type => $count ) {
+			$totalComments += $count;
+		}
+		$totalUsers = count_users();
+		$totalUsers = $totalUsers['total_users'];
+		
+		global $wpdb;
+		$db_prefix = $wpdb->prefix;
+		
 		
 		// Create zip file!
 		$zip_response = pb_backupbuddy::$classes['zipbuddy']->add_directory_to_zip(
@@ -1199,30 +1237,16 @@ class pb_backupbuddy_backup {
 			} else {
 				pb_backupbuddy::status( 'details', 'Saving meta data to zip comment.' );
 				
-				$totalPosts = 0;
-				foreach( wp_count_posts( 'post' ) as $type => $count ) {
-					$totalPosts += $count;
-				}
-				$totalPages = 0;
-				foreach( wp_count_posts( 'page' ) as $type => $count ) {
-					$totalPages += $count;
-				}
-				$totalComments = 0;
-				foreach( wp_count_comments() as $type => $count ) {
-					$totalComments += $count;
-				}
-				$totalUsers = count_users();
-				$totalUsers = $totalUsers['total_users'];
+				
 				
 				global $wp_version;
-				global $wpdb;
 				$meta = array(
 						'serial'		=>	$this->_backup['serial'],
 						'siteurl'		=>	site_url(),
 						'type'			=>	$this->_backup['type'],
 						'profile'		=>	$this->_backup['profile']['title'],
 						'created'		=>	$this->_backup['start_time'],
-						'db_prefix'		=>	$wpdb->prefix,
+						'db_prefix'		=>	$db_prefix,
 						'bb_version'	=>	pb_backupbuddy::settings( 'version' ),
 						'wp_version'	=>	$wp_version,
 						'dat_path'		=>	str_replace( $this->_backup['backup_root'], '', $this->_backup['temp_directory'] . 'backupbuddy_dat.php' ),
@@ -1233,7 +1257,9 @@ class pb_backupbuddy_backup {
 						'note'			=>	'',
 					);
 				$comment = backupbuddy_core::normalize_comment_data( $meta );
+				pb_backupbuddy::status( 'startAction', 'zipCommentMeta' );
 				$comment_result = pb_backupbuddy::$classes['zipbuddy']->set_comment( $this->_backup['archive_file'], $comment );
+				pb_backupbuddy::status( 'finishAction', 'zipCommentMeta' );
 				if ( $comment_result !== true ) {
 					pb_backupbuddy::status( 'warning', 'Unable to save meta data to zip comment. This is not a fatal warning & will not impact the backup itself.' );
 				} else {
@@ -1257,7 +1283,7 @@ class pb_backupbuddy_backup {
 			
 			pb_backupbuddy::status( 'error', __('Error #3382: Backup FAILED. Unable to successfully generate ZIP archive.', 'it-l10n-backupbuddy' ) );
 			pb_backupbuddy::status( 'error', __('Error #3382 help: http://ithemes.com/codex/page/BackupBuddy:_Error_Codes#3382', 'it-l10n-backupbuddy' ) );
-			pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			return false;
 			
 		} // end zip failure.
@@ -1418,7 +1444,7 @@ class pb_backupbuddy_backup {
 			
 			pb_backupbuddy::status( 'details', 'Running cleanup procedure now in current step as backup procedure is halting.' );
 			$this->post_backup( true ); // Post backup cleanup in fail mode.
-			//pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+			//pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 			
 			pb_backupbuddy::status( 'details', __( 'Sending integrity check failure email.', 'it-l10n-backupbuddy' ) );
 			backupbuddy_core::mail_error( $message );
@@ -1474,9 +1500,9 @@ class pb_backupbuddy_backup {
 			$this->_backup_options->save();
 			
 		} else { // Not cancelled.
-			$this->_backup['archive_size'] = filesize( $this->_backup['archive_file'] );
+			$this->_backup['archive_size'] = @filesize( $this->_backup['archive_file'] );
 			pb_backupbuddy::status( 'details', __('Final ZIP file size', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->file_size( $this->_backup['archive_size'] ) );
-			pb_backupbuddy::status( 'action', 'archive_size^' . pb_backupbuddy::$format->file_size( $this->_backup['archive_size'] ) );
+			pb_backupbuddy::status( 'archiveSize', pb_backupbuddy::$format->file_size( $this->_backup['archive_size'] ) );
 			
 			if ( $fail_mode === false ) { // Not cancelled and did not fail so mark finish time.
 				
@@ -1512,6 +1538,7 @@ class pb_backupbuddy_backup {
 					}
 				}
 				
+				pb_backupbuddy::status( 'details', 'Updating statistics for last backup completed and number of edits since last backup.' );
 				$finishTime = time();
 				pb_backupbuddy::$options['last_backup_finish'] = $finishTime;
 				pb_backupbuddy::$options['last_backup_stats'] = array(
@@ -1528,6 +1555,7 @@ class pb_backupbuddy_backup {
 																	'destinations'		=> $destinations, // Index is destination ID. Empty array if none.
 																);
 				//error_log( print_r( pb_backupbuddy::$options['last_backup_stats'], true ) );
+				pb_backupbuddy::$options['edits_since_last'] = 0; // Reset edit stats for notifying user of how many posts/pages edited since last backup happened.
 				pb_backupbuddy::save();
 			}
 			
@@ -1556,7 +1584,19 @@ class pb_backupbuddy_backup {
 			if ( true === $fail_mode ) {
 				pb_backupbuddy::status( 'details', __( 'As this backup did not pass the integrity check you should verify it manually or re-scan. Integrity checks can fail on good backups due to permissions, large file size exceeding memory limits, etc. You may manually disable integrity check on the Settings page but you will no longer be notified of potentially bad backups.', 'it-l10n-backupbuddy' ) );
 			} else {
-				pb_backupbuddy::status( 'action', 'archive_url^' . basename( $this->_backup['archive_file'] ) );
+				
+				//$stats = stat( $this->_backup['archive_file'] );
+				//$sizeFormatted = pb_backupbuddy::$format->file_size( $stats['size'] );
+				pb_backupbuddy::status(
+					'archiveInfo',
+					json_encode( array(
+						'file' => basename( $this->_backup['archive_file'] ),
+						'url' => pb_backupbuddy::ajax_url( 'download_archive' ) . '&backupbuddy_backup=' . basename( $this->_backup['archive_file'] ),
+						//'sizeBytes' => $stats,
+						//'sizeFormatted' => $sizeFormatted,
+					) )
+				);
+				
 			}
 		}
 		
@@ -1578,6 +1618,7 @@ class pb_backupbuddy_backup {
 	function send_remote_destination( $destination_id, $delete_after = false ) {
 		
 		pb_backupbuddy::status( 'details', 'Sending file to remote destination ID: `' . $destination_id . '`. Delete after: `' . $delete_after . '`.' );
+		pb_backupbuddy::status( 'details', 'IMPORTANT: If the transfer is set to be chunked then only the first chunk status will be displayed during this process. Subsequent chunks will happen after this has finished.' );
 		$response = backupbuddy_core::send_remote_destination( $destination_id, $this->_backup['archive_file'], '', false, $delete_after );
 		
 		if ( false === $response ) { // Send failure.
@@ -2037,7 +2078,9 @@ class pb_backupbuddy_backup {
 		// Calculate base tables.
 		if ( $base_dump_mode == 'all' ) { // All tables in database to start with.
 			$sql = 'SELECT table_name FROM information_schema.tables WHERE table_schema = DATABASE()';
+			pb_backupbuddy::status( 'startAction', 'schemaTables' );
 			$results = $wpdb->get_results( $sql, ARRAY_A );
+			pb_backupbuddy::status( 'finishAction', 'schemaTables' );
 			if ( ( null === $results ) || ( false === $results ) ) {
 				pb_backupbuddy::status( 'error', 'Error #8493894a: Unable to calculate database tables with query: `' . $sql . '`. Check database permissions or contact host.' );
 			}
@@ -2055,7 +2098,9 @@ class pb_backupbuddy_backup {
 			pb_backupbuddy::status( 'details', 'Determining database tables with prefix `' . $wpdb->prefix . '`.' );
 			$prefix_sql = str_replace( '_', '\_', $wpdb->prefix );
 			$sql = "SELECT table_name FROM information_schema.tables WHERE table_name LIKE '{$prefix_sql}%' AND table_schema = DATABASE()";
+			pb_backupbuddy::status( 'startAction', 'schemaTables' );
 			$results = $wpdb->get_results( $sql, ARRAY_A );
+			pb_backupbuddy::status( 'finishAction', 'schemaTables' );
 			if ( ( null === $results ) || ( false === $results ) ) {
 				pb_backupbuddy::status( 'error', 'Error #8493894b: Unable to calculate database tables with query: `' . $sql . '`. Check database permissions or contact host.' );
 			}

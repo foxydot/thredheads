@@ -13,41 +13,47 @@
  *
  */
 if ( !class_exists( "pluginbuddy_wpdbutils" ) ) {
-
-	class pluginbuddy_wpdbutils {
 	
+	class pluginbuddy_wpdbutils {
+		
 		// status method type parameter values - would like a class for this
 		const STATUS_TYPE_DETAILS = 'details';
 
 		public $_version = '1.0.1';
-
-        /**
-         * wpdb object 
-         * 
-         * @var wpdb
-         */
-        protected $_db = NULL;
-    
-        /**
-         * parent object
-         * 
-         * @var parent object
-         */
-        protected $_parent = NULL;
-
-        /**
-         * Whether or not we can call a status calback
-         * 
-         * @var have_status_callback bool
-         */
+		
+		/**
+		 * wpdb object 
+		 * 
+		 * @var wpdb
+		 */
+		protected $_db = NULL;
+		
+		/**
+		* Whether or not mysqli is in use.
+		*/
+		protected $_using_mysqli = false;
+		
+		/**
+		 * parent object
+		 * 
+		 * @var parent object
+		 */
+		protected $_parent = NULL;
+		
+		/**
+		 * Whether or not we can call a status calback
+		 * 
+		 * @var have_status_callback bool
+		 */
 		protected $_have_status_callback = false;
 		
-        /**
-         * Object->method array for status function
-         * 
-         * @var status_callback array
-         */
+		/**
+		 * Object->method array for status function
+		 * 
+		 * @var status_callback array
+		 */
 		protected $_status_callback = array();
+		
 		
 		/**
 		 *	__construct()
@@ -63,8 +69,17 @@ if ( !class_exists( "pluginbuddy_wpdbutils" ) ) {
 			pb_backupbuddy::status( 'details', 'Database kicker database object class: `' . get_class( $db ) . '`.' );
 			$this->_db = &$db;
 			
+			// As of WP 3.9 mysqli may be used.
+			if ( isset( $this->_db->use_mysqli ) && ( true === $this->_db->use_mysqli ) ) {
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __( 'Database is being accessed by mysqli.', 'it-l10n-backupbuddy' ) );
+				$this->_using_mysqli = true;
+			} else {
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __( 'Database is being accessed by mysql.', 'it-l10n-backupbuddy' ) );
+			}
+			
 		}
-				
+		
+		
 		/**
 		 *	__destruct()
 		 *	
@@ -76,7 +91,6 @@ if ( !class_exists( "pluginbuddy_wpdbutils" ) ) {
 		public function __destruct( ) {
 
 		}
-		
 		
 		
 		/**
@@ -94,48 +108,71 @@ if ( !class_exists( "pluginbuddy_wpdbutils" ) ) {
 			
 			// Use ping to check if server is still present - note will not reconnect automatically for MySQL >= 5.0.13
 			// and actually we don't want it to as that is bad karma
-			if ( !mysql_ping( $this->_db->dbh ) ) {
-			
-			  // Database connection appears to have gone away
-			  pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server has gone away, attempting to reconnect.','it-l10n-backupbuddy' ) );
-			  
-			  // Close things down cleanly (from a local perspective)
-			  @mysql_close( $this->_db->dbh );
-			  unset( $this->_db->dbh);
-			  $this->_db->ready = false;
-			  
-			  // And attempt to reconnect
-			  $this->_db->db_connect();
-
-			  // Reconnect failed if we have a null resource or ping fails
-			  if ( ( NULL == $this->_db->dbh ) || ( !mysql_ping( $this->_db->dbh ) ) ) {
-			  
-			    // Reconnection failed, make sure user knows
-			    pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server reconnection failed.','it-l10n-backupbuddy' ) );
-					
-				// Make sure failure is notified (no need to close things down locally as it's a wrap anyway)
-				$result = false;
+			// mysqli added as of WP 3.9.
+			if ( ! $this->_mysql_ping() ) {
 				
-			  } else {
-			  
-			    // Reconnection successful, make sure user knows
-			  	pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server reconnection successful.','it-l10n-backupbuddy' ) );
-			  	$result = true;
-			  	
-			  }
-			  
-			} else {
-			
-			  // Just to let user know that database is still connected
-			  pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server connection status verified.','it-l10n-backupbuddy' ) );
-			  $result = true;
-			  
+				// Database connection appears to have gone away
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server has gone away, attempting to reconnect.','it-l10n-backupbuddy' ) );
+				
+				// Close things down cleanly (from a local perspective)
+				if ( true === $this->_using_mysqli ) {
+					@mysqli_close( $this->_db->dbh );
+				} else {
+					@mysql_close( $this->_db->dbh );
+				}
+				unset( $this->_db->dbh);
+				$this->_db->ready = false;
+				
+				// And attempt to reconnect
+				$this->_db->db_connect();
+				
+				// Reconnect failed if we have a null resource or ping fails
+				if ( ( NULL == $this->_db->dbh ) || ( ! $this->_mysql_ping() ) ) {
+					
+					// Reconnection failed, make sure user knows
+					pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server reconnection failed.','it-l10n-backupbuddy' ) );
+						
+					// Make sure failure is notified (no need to close things down locally as it's a wrap anyway)
+					$result = false;
+					
+				} else {
+					
+					// Reconnection successful, make sure user knows
+					pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server reconnection successful.','it-l10n-backupbuddy' ) );
+					$result = true;
+					
+				}
+				
+			} else { // Ping went through; still connected.
+				
+				// Just to let user know that database is still connected
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __('Database Server connection status verified.','it-l10n-backupbuddy' ) );
+				$result = true;
+				
 			}
 			
 			return $result;
-		}		
+		} // End kick().
+		
+		
+		/* _mysql_ping()
+		 *
+		 * Ping mysql or mysqli as applicable.
+		 * @return	bool		Returns mysql[i] ping function response. (True on ping success, else false).
+		 */
+		private function _mysql_ping() {
+			
+			if ( true === $this->_using_mysqli ) {
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __( 'Pinging mysqli.', 'it-l10n-backupbuddy' ) );
+				return mysqli_ping( $this->_db->dbh );
+			} else {
+				pb_backupbuddy::status( self::STATUS_TYPE_DETAILS, __( 'Pinging mysql.', 'it-l10n-backupbuddy' ) );
+				return mysql_ping( $this->_db->dbh );
+			}
+			
+		} // End _mysql_ping().
+		
 		
 	} // end pluginbuddy_wpdbutils class.
 	
-}
-?>
+} // end if !class_exists.

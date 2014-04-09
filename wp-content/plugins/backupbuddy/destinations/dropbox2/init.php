@@ -111,12 +111,12 @@ class pb_backupbuddy_destination_dropbox2 { // Ends with destination slug.
 		if ( $settings['_chunk_upload_id'] != '' ) {
 			
 			$file = $settings['_chunk_file'];
-			pb_backupbuddy::status( 'details', 'Dropbox (PHP 5.3+) preparing to send chunked multipart upload part ' . ($settings['_chunk_sent_count']+1) . ' of ' . $settings['_chunk_total_count'] . '. Dropbox Upload ID: `' . $settings['_chunk_upload_id'] . '`.' );
+			pb_backupbuddy::status( 'details', 'Dropbox (PHP 5.3+) preparing to send chunked multipart upload part ' . ($settings['_chunk_sent_count']+1) . ' of ' . $settings['_chunk_total_count'] . ' with set chunk size of `' . $settings['max_chunk_size'] . '` MB. Dropbox Upload ID: `' . $settings['_chunk_upload_id'] . '`.' );
 			
 			pb_backupbuddy::status( 'details', 'Opening file `' . basename( $file ) . '` to send.' );
 			$f = @fopen( $file, 'rb' );
 			if ( false === $f ) {
-				pb_backupbuddy::status( 'error', 'Error #8457573. Unable to open file `' . $file . '` to send to Dropbox.' );
+				pb_backupbuddy::status( 'error', 'Error #87954435. Unable to open file `' . $file . '` to send to Dropbox.' );
 				return false;
 			}
 			

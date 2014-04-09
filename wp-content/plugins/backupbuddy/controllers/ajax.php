@@ -10,6 +10,9 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		$serial = str_replace( '/\\', '', $serial );
 		$init_wait_retry_count = (int)trim( pb_backupbuddy::_POST( 'initwaitretrycount' ) );
 		
+		// Forward all logging to this serial file.
+		pb_backupbuddy::set_status_serial( $serial );
+		
 		if ( true == get_transient( 'pb_backupbuddy_stop_backup-' . $serial ) ) {
 			pb_backupbuddy::status( 'message', 'Backup STOPPED. Post backup cleanup step has been scheduled to clean up any temporary files.', $serial );
 			
@@ -37,7 +40,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			
 			delete_transient( 'pb_backupbuddy_stop_backup-' . $serial );
 			pb_backupbuddy::status( 'details', 'Backup stopped. Any remaining processes or files will time out and be cleaned up by scheduled housekeeping functionality.', $serial );
-			pb_backupbuddy::status( 'action', 'halt_script', $serial ); // Halt JS on page.
+			pb_backupbuddy::status( 'haltScript', '', $serial ); // Halt JS on page.
 		}
 		
 		// Make sure the serial exists.
@@ -47,14 +50,21 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 			$backup_options = new pb_backupbuddy_fileoptions( $fileoptions_file, $read_only = true, $ignore_lock = true );
 			$backup = &$backup_options->options;
 			if ( true !== ( $result = $backup_options->is_ok() ) ) {
-				pb_backupbuddy::status( 'error', 'Error #8329754.  Error retrieving fileoptions file `' . $fileoptions_file . '`. Error details `' . $result . '`.', $serial );
-				pb_backupbuddy::status( 'action', 'halt_script', $serial );
-				die();
+				if ( 0 >= $init_wait_retry_count ) {
+					// Waited too long for init to complete, must be something wrong
+					pb_backupbuddy::status( 'error', 'Error #8329754.  Error retrieving fileoptions file `' . $fileoptions_file . '`. Error details `' . $result . '`.', $serial );
+					pb_backupbuddy::status( 'haltScript', '', $serial );
+					die();
+				} else {
+					pb_backupbuddy::status( 'details', 'Waiting for the fileoptions initialization for serial `' . $serial . '` to complete: ' . $init_wait_retry_count, $serial );				
+					pb_backupbuddy::status( 'wait_init', '', $serial );
+				}
+				
 			}
 		}
 		if ( ( $serial == '' ) || ( !is_array( $backup ) ) ) {
 			pb_backupbuddy::status( 'error', 'Error #9031. Invalid backup serial (' . htmlentities( $serial ) . '). Please check directory permissions for your wp-content/uploads/ directory recursively, your PHP error_log for any errors, and that you have enough free disk space. If seeking support please provide this full status log and PHP error log. Fatal error. Verify this fileoptions file exists `' . $fileoptions_file . '`', $serial );
-			pb_backupbuddy::status( 'action', 'halt_script', $serial );
+			pb_backupbuddy::status( 'haltScript', '', $serial );
 			die();
 		} else {
 			
@@ -63,12 +73,25 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				if ( 0 >= $init_wait_retry_count ) {
 					// Waited too long for init to complete, must be something wrong
 					pb_backupbuddy::status( 'error', 'Error #9033: The pre-backup initialization for serial `' . $serial . '` was unable save pre-backup initialization options (init_complete===false) possibly because the pre-backup initialization step did not complete. If the log indicates the pre-backup procedure did indeed complete then something prevented BackupBuddy from updating the database such as an misconfigured caching plugin. Check for any errors above or in logs. Verify permissions & that there is enough server memory. See the BackupBuddy "Server Information" page to help assess your server.', $serial );
-					pb_backupbuddy::status( 'action', 'halt_script', $serial );
+					pb_backupbuddy::status( 'haltScript', '', $serial );
 				} else {
 					pb_backupbuddy::status( 'details', 'Waiting for the pre-backup initialization for serial `' . $serial . '` to complete: ' . $init_wait_retry_count, $serial );				
-					pb_backupbuddy::status( 'action', 'wait_init', $serial );
+					pb_backupbuddy::status( 'wait_init', '', $serial );
 				}
 			}
+			
+			//***** Process any specialAction methods.
+			if ( 'checkSchedule' == pb_backupbuddy::_POST( 'specialAction' ) ) {
+				
+				if ( FALSE === ( $next_scheduled = wp_next_scheduled( 'pb_backupbuddy_process_backup', array( $serial ) ) ) ) {
+					//pb_backupbuddy::status( 'details', print_r( pb_backupbuddy::_POST(), true ), $serial );
+					pb_backupbuddy::status( 'warning', 'WordPress reports the next step is not currently scheduled. It is either in the process of running or went missing.', $serial, null, $echoNotWrite = true );
+				} else {
+					pb_backupbuddy::status( 'details', 'Checked cron schedule. Next run: `' . $next_scheduled . '`. ' . ( $next_scheduled - time() ) . ' seconds from now.', $serial, null, $echoNotWrite = true );
+				}
+				
+			}
+			//***** End processing any specialAction methods.
 			
 			//***** Begin outputting status of the current step.
 			foreach( $backup['steps'] as $step ) {
@@ -107,10 +130,8 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				while( $file = readdir( $directory ) ) {
 					if ( ( $file != '.' ) && ( $file != '..' ) && ( $file != 'exclusions.txt' ) && ( !preg_match( '/.*\.txt/', $file ) ) && ( !preg_match( '/pclzip.*\.gz/', $file) ) ) {
 						$stats = stat( $temporary_zip_directory . $file );
-						//$return_status .= '!' . pb_backupbuddy::$format->localize_time( time() ) . '|~|' . round ( microtime( true ) - pb_backupbuddy::$start_time, 2 ) . '|~|' . round( memory_get_peak_usage() / 1048576, 2 ) . '|~|details|~|' . __('Temporary ZIP file size', 'it-l10n-backupbuddy' ) .': ' . pb_backupbuddy::$format->file_size( $stats['size'] ) . "\n";;
 						pb_backupbuddy::status( 'details', __('Temporary ZIP file size', 'it-l10n-backupbuddy' ) .': ' . pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
-						//$return_status .= '!' . pb_backupbuddy::$format->localize_time( time() ) . '|~|' . round ( microtime( true ) - pb_backupbuddy::$start_time, 2 ) . '|~|' . round( memory_get_peak_usage() / 1048576, 2 ) . '|~|action|~|archive_size^' . pb_backupbuddy::$format->file_size( $stats['size'] ) . "\n";
-						pb_backupbuddy::status( 'action', 'archive_size^' . pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
+						pb_backupbuddy::status( 'archiveSize', pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
 					}
 				}
 				closedir( $directory );
@@ -125,11 +146,9 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 				// OUTPUT COMPLETED ZIP FINAL SIZE.
 				if( file_exists( $backup['archive_file'] ) ) { // Final zip file.
 					$stats = stat( $backup['archive_file'] );
-					//$return_status .= '!' . pb_backupbuddy::$format->localize_time( time() ) . '|~|' . round ( microtime( true ) - pb_backupbuddy::$start_time, 2 ) . '|~|' . round( memory_get_peak_usage() / 1048576, 2 ) . '|~|details|~|' . __('Completed backup final ZIP file size', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->file_size( $stats['size'] ) . "\n";;
 					pb_backupbuddy::status( 'details', '--- ' . __( 'New PHP process.' ), $serial );
 					pb_backupbuddy::status( 'details', __('Completed backup final ZIP file size', 'it-l10n-backupbuddy' ) . ': ' . pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
-					//$return_status .= '!' . pb_backupbuddy::$format->localize_time( time() ) . '|~|' . round ( microtime( true ) - pb_backupbuddy::$start_time, 2 ) . '|~|' . round( memory_get_peak_usage() / 1048576, 2 ) . '|~|action|~|archive_size^' . pb_backupbuddy::$format->file_size( $stats['size'] ) . "\n";
-					pb_backupbuddy::status( 'action', 'archive_size^' . pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
+					pb_backupbuddy::status( 'archiveSize', pb_backupbuddy::$format->file_size( $stats['size'] ), $serial );
 					$backup_finished = true;
 				} else {
 					$purposeful_deletion = false;
@@ -146,27 +165,19 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 						pb_backupbuddy::status( 'error', __( 'Backup reports success but unable to access final ZIP file. Verify permissions and ownership. If the error persists insure that server is properly configured with suphp and proper ownership & permissions.', 'it-l10n-backupbuddy' ), $serial );
 					}
 				}
-				pb_backupbuddy::status( 'message', __('Backup successfully completed in ', 'it-l10n-backupbuddy' ) . ' ' . pb_backupbuddy::$format->time_duration( $backup['finish_time'] - $backup['start_time'] ) . '.', $serial );
-				pb_backupbuddy::status( 'action', 'finish_backup', $serial );
+				pb_backupbuddy::status( 'message', __('Backup successfully completed in', 'it-l10n-backupbuddy' ) . ' ' . pb_backupbuddy::$format->time_duration( $backup['finish_time'] - $backup['start_time'] ) . '.', $serial );
+				pb_backupbuddy::status( 'milestone', 'finish_backup', $serial );
 			} else { // NOT FINISHED
 				//$return_status .= '!' . pb_backupbuddy::$format->localize_time( time() ) . "|~|0|~|0|~|ping\n";
-				pb_backupbuddy::status( 'message', __( 'Ping. Waiting for server . . .', 'it-l10n-backupbuddy' ), $serial );
 			}
 			
 			
 			//***** Begin getting status log information.
-			$return_status = '';
-			$status_lines = pb_backupbuddy::get_status( $serial, true, false, true ); // Clear file, dont unlink file (pclzip cant handle files unlinking mid-zip), dont show getting status message.
-			if ( $status_lines !== false ) { // Only add lines if there is status contents.
-				foreach( $status_lines as $status_line ) {
-					//$return_status .= '!' . $status_line[0] . '|' . $status_line[3] . '|' . $status_line[4] . '( ' . $status_line[1] . 'secs / ' . $status_line[2] . 'MB )' . "\n";
-					$return_status .= '!' . implode( '|~|', $status_line ) . "\n";
-				}
-			}
-			//***** End getting status log information.
+			$status_lines = pb_backupbuddy::get_status( $serial, true, false, true ); // Clear file, dont unlink file, supress status retrieval msg.
+			echo implode( '', $status_lines );
 			
-			
-			echo $return_status; // Return messages.
+			// Queue up a pong for the next response.
+			pb_backupbuddy::status( 'message', __( 'Pong! Server replied.', 'it-l10n-backupbuddy' ), $serial );
 		}
 		
 		
@@ -1402,7 +1413,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		pb_backupbuddy::$ui->ajax_header();
 		echo '<h2>Database Table Check</h2>';
 		echo 'Checking table `' . $table . '` using ' . $check_level . ' scan...<br><br>';
-		$rows = $wpdb->get_results( "CHECK TABLE `" . mysql_real_escape_string( $table ) . "` " . $check_level, ARRAY_A );
+		$rows = $wpdb->get_results( "CHECK TABLE `" . backupbuddy_core::dbEscape( $table ) . "` " . $check_level, ARRAY_A );
 		echo '<b>Results:</b><br><br>';
 		echo '<table class="widefat">';
 		foreach( $rows as $row ) {
@@ -1436,7 +1447,7 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		pb_backupbuddy::$ui->ajax_header();
 		echo '<h2>Database Table Repair</h2>';
 		echo 'Repairing table `' . $table . '`...<br><br>';
-		$rows = $wpdb->get_results( "REPAIR TABLE `" . mysql_real_escape_string( $table ) . "`", ARRAY_A );
+		$rows = $wpdb->get_results( "REPAIR TABLE `" . backupbuddy_core::dbEscape( $table ) . "`", ARRAY_A );
 		echo '<b>Results:</b><br><br>';
 		echo '<table class="widefat">';
 		foreach( $rows as $row ) {
@@ -2076,7 +2087,27 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		// Display log.
 		echo '<h3>Remote Send Log</h3>';
 		echo '<textarea style="width: 100%; height: 80%;" wrap="off">';
-		echo file_get_contents( $log_file );
+		$lines = file_get_contents( $log_file );
+		if ( false === $lines ) {
+			echo 'Error #849834: Unable to read log file `' . $log_file . '`.';
+		} else {
+			$lines = explode( "\n", $lines );
+			foreach( (array)$lines as $line ) {
+				$line = json_decode( $line, true );
+				//print_r( $line );
+				if ( is_array( $line ) ) {
+					$u = '';
+					if ( isset( $line['u'] ) ) { // As off v4.2.15.6. TODO: Remove this in a couple of versions once old logs without this will have cycled out.
+						$u = '.' . $line['u'];
+					}
+					echo pb_backupbuddy::$format->date( $line['time'], 'G:i:s' ) . $u . "\t\t";
+					echo $line['run'] . "sec\t";
+					echo $line['mem'] . "MB\t";
+					echo $line['event'] . "\t";
+					echo $line['data'] . "\n";
+				}
+			}
+		}
 		echo '</textarea>';
 		
 		pb_backupbuddy::$ui->ajax_footer();
@@ -2311,6 +2342,22 @@ class pb_backupbuddy_ajax extends pb_backupbuddy_ajaxcore {
 		
 		die();
 	} // End rollback().
+	
+	
+	/* getMainLog()
+	 *
+	 * Dump out contents of the main log file.
+	 *
+	 */
+	function getMainLog() {
+		$log_file = backupbuddy_core::getLogDirectory() . 'log-' . pb_backupbuddy::$options['log_serial'] . '.txt';
+		if ( file_exists( $log_file ) ) {
+			readfile( $log_file );
+		} else {
+			echo __('Nothing has been logged.', 'it-l10n-backupbuddy' );
+		}
+		die();
+	} // End getMainLog().
 	
 	
 } // end class.

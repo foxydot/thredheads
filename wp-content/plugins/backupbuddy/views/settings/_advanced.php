@@ -73,20 +73,18 @@ $settings_form->add_setting( array(
 	'name'		=>		'max_site_log_size',
 	'title'		=>		__('Maximum log file size', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Default: 10 MB] - If the log file exceeds this size then it will be cleared to prevent it from using too much space.' ),
-	'rules'		=>		'required',
+	'rules'		=>		'required|int',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' MB',
 ) );
-
-
 $settings_form->add_setting( array(
 	'type'		=>		'checkbox',
-	'name'		=>		'rollback_beta',
+	'name'		=>		'disable_localization',
 	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
-	'title'		=>		__( 'Database Rollback Feature (BETA)', 'it-l10n-backupbuddy' ),
-	'tip'		=>		__( '[Default: Disabled] When enabled a new Database Rollback feature will be available on the Restore / Migrate page for easily rolling back the database to a prior backup state..', 'it-l10n-backupbuddy' ) . '</span>',
+	'title'		=>		__( 'Disable language localization', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__( '[Default: Unchecked] When checked language localization support will be disabled. BackupBuddy will revert to full English language mode. Use this to display logs in English for support.', 'it-l10n-backupbuddy' ) . '</span>',
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __( 'Experimental in-progress beta feature.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __( 'Check to run BackupBuddy in English. This is useful for support.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 
@@ -96,7 +94,6 @@ $settings_form->add_setting( array(
 	'name'		=>		'title_advanced',
 	'title'		=>		__( 'Technical & Server Compatibility', 'it-l10n-backupbuddy' ),
 ) );
-
 
 
 $settings_form->add_setting( array(
@@ -200,6 +197,15 @@ $settings_form->add_setting( array(
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(
+	'type'		=>		'text',
+	'name'		=>		'phpmysqldump_maxrows',
+	'title'		=>		__('Compatibility mode max rows per select', 'it-l10n-backupbuddy' ),
+	'tip'		=>		__('[Default: *blank*] - When BackupBuddy is using compatibility mdoe mysql dumping (via PHP), BackupBuddy selects data from the database. Reducing this number has BackupBuddy grab smaller portions from the database at a time. Leave blank to use built in default (around 2000 rows per select).', 'it-l10n-backupbuddy' ),
+	'css'		=>		'width: 50px;',
+	'after'		=>		' rows. <span class="description"> ' . __( 'Blank for default.', 'it-l10n-backupbuddy' ) . ' (~2000 rows/select)</span>',
+	'rules'		=>		'int',
+) );
+$settings_form->add_setting( array(
 	'type'		=>		'checkbox',
 	'name'		=>		'ignore_command_length_check',
 	'options'	=>		array( 'unchecked' => '0', 'checked' => '1' ),
@@ -224,7 +230,7 @@ $settings_form->add_setting( array(
 	'title'		=>		__( 'Enable zip compression', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Default: enabled] - ZIP compression decreases file sizes of stored backups. If you are encountering timeouts due to the script running too long, disabling compression may allow the process to complete faster.', 'it-l10n-backupbuddy' ),
 	'css'		=>		'',
-	'after'		=>		'<span class="description"> ' . __('Typically DOUBLES the amount of data which may be zipped up before timeouts.', 'it-l10n-backupbuddy' ) . '</span>',
+	'after'		=>		'<span class="description"> ' . __('Unchecking typically DOUBLES the amount of data which may be zipped up before timeouts.', 'it-l10n-backupbuddy' ) . '</span>',
 	'rules'		=>		'required',
 ) );
 $settings_form->add_setting( array(

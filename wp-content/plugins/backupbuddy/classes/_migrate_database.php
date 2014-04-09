@@ -200,34 +200,34 @@ if ( ( $source_type == 'multisite_network' ) && ( $destination_type == 'multisit
 	
 	// Update blog path for all sites that had the old domain and started with the old path in BLOGS table.
 	if ( $old_path != '/' ) { // Used to be a subdomain so we can more safely replace.
-		mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET path=REPLACE( path, '" . mysql_real_escape_string( $old_path ) . "', '" . mysql_real_escape_string( $destination_path ) . "') WHERE domain='" . mysql_real_escape_string( $old_domain ) . "' AND path LIKE '" . mysql_real_escape_string( $old_path ) . "%'" );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in blogs table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was a subdirectory).' );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET path=REPLACE( path, '" . backupbuddy_core::dbEscape( $old_path ) . "', '" . backupbuddy_core::dbEscape( $destination_path ) . "') WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "' AND path LIKE '" . backupbuddy_core::dbEscape( $old_path ) . "%'" );
+		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in blogs table to `' . backupbuddy_core::dbEscape( $destination_path ) . '` (old path was a subdirectory).' );
 	} else { // Used to be in root so much prepend new path.
-		mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET path=concat( '" . mysql_real_escape_string( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in blogs table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was root).' );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET path=concat( '" . backupbuddy_core::dbEscape( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "'" );
+		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in blogs table to `' . backupbuddy_core::dbEscape( $destination_path ) . '` (old path was root).' );
 	}
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	// Update blog domain for all matching sites.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET domain='" . mysql_real_escape_string( $destination_domain ) . "' WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in blogs table to `' . mysql_real_escape_string( $destination_domain ) . '`.' );
+	mysql_query( "UPDATE `" . $destination_db_prefix . "blogs` SET domain='" . backupbuddy_core::dbEscape( $destination_domain ) . "' WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "'" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in blogs table to `' . backupbuddy_core::dbEscape( $destination_domain ) . '`.' );
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	// SITE TABLE-----
 	
 	// Update blog path for all matching sites in SITE table.
 	if ( $old_path != '/' ) { // Used to be a subdomain so we can more safely replace.
-		mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET path=REPLACE( path, '" . mysql_real_escape_string( $old_path ) . "', '" . mysql_real_escape_string( $destination_path ) . "') WHERE domain='" . mysql_real_escape_string( $old_domain ) . "' AND path LIKE '" . mysql_real_escape_string( $old_path ) . "%'" );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in site table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was a subdirectory).' );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET path=REPLACE( path, '" . backupbuddy_core::dbEscape( $old_path ) . "', '" . backupbuddy_core::dbEscape( $destination_path ) . "') WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "' AND path LIKE '" . backupbuddy_core::dbEscape( $old_path ) . "%'" );
+		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in site table to `' . backupbuddy_core::dbEscape( $destination_path ) . '` (old path was a subdirectory).' );
 	} else { // Used to be in root so much prepend new path.
-		mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET path=concat( '" . mysql_real_escape_string( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
-		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in site table to `' . mysql_real_escape_string( $destination_path ) . '` (old path was root).' );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET path=concat( '" . backupbuddy_core::dbEscape( rtrim( $destination_path, '/\\' ) ) . "', path ) WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "'" );
+		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating paths in site table to `' . backupbuddy_core::dbEscape( $destination_path ) . '` (old path was root).' );
 	}
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	// Update blog domain for all matching sites.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET domain='" . mysql_real_escape_string( $destination_domain ) . "' WHERE domain='" . mysql_real_escape_string( $old_domain ) . "'" );
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in site table to `' . mysql_real_escape_string( $destination_domain ) . '`.' );
+	mysql_query( "UPDATE `" . $destination_db_prefix . "site` SET domain='" . backupbuddy_core::dbEscape( $destination_domain ) . "' WHERE domain='" . backupbuddy_core::dbEscape( $old_domain ) . "'" );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating domain in site table to `' . backupbuddy_core::dbEscape( $destination_domain ) . '`.' );
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	pb_backupbuddy::status( 'details', 'Finished migration steps for `Network -> Network` sites.' );
@@ -261,7 +261,7 @@ if ( ( $source_type == 'standalone' ) && ( $destination_type == 'multisite_impor
 		mysql_query( "DELETE FROM `" . $destination_db_prefix . "options` WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
 		pb_backupbuddy::status( 'details', 'Deleted ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) as upload_path is no longer needed by Multisite.' );
 	} else {
-		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
 		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating uploads URL in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
 	}
 	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
@@ -272,7 +272,7 @@ if ( ( $source_type == 'standalone' ) && ( $destination_type == 'multisite_impor
 	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
 	
 	// Update fileupload_url in options table.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
 	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
 	
@@ -323,13 +323,13 @@ if ( ( $source_type == 'multisite_export' ) && ( $destination_type == 'multisite
 		pb_backupbuddy::status( 'details', 'Deleted ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) as upload_path is no longer needed by Multisite.' );
 		if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
 	} else {
-		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
+		mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( str_replace( $new_url . '/', '', $wp_upload_url_real ) ) . "' WHERE option_name='upload_path' LIMIT 1", $wpdb->dbh );
 		pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating upload_path in options table. New value: ' . str_replace( $new_url . '/', '', $wp_upload_url_real ) );
 		if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
 	}
 	
 	// Update fileupload_url in options table.
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( $wp_upload_url ) . "' WHERE option_name='fileupload_url' LIMIT 1", $wpdb->dbh );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows( $wpdb->dbh ) . ' row(s) while updating fileupload_url in options table. New value: `' . $wp_upload_url . '`.' );
 	if ( mysql_error( $wpdb->dbh ) != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error( $wpdb->dbh ) ); }
 	
@@ -508,15 +508,15 @@ if ( isset( pb_backupbuddy::$options['skip_database_bruteforce'] ) && ( true ===
 
 // Update table prefixes in some WordPress meta data. $multisite_network_db_prefix is set to the normal prefix in non-ms environment.
 $old_prefix = pb_backupbuddy::$options['dat_file']['db_prefix'];
-$new_prefix = mysql_real_escape_string( $destination_db_prefix );
+$new_prefix = backupbuddy_core::dbEscape( $destination_db_prefix );
 pb_backupbuddy::status( 'details', 'Old DB prefix: `' . $old_prefix . '`; New DB prefix: `' . $new_prefix . '`. Network prefix: `' . $multisite_network_db_prefix . '`' );
 if ($old_prefix != $new_prefix ) {
 	mysql_query("UPDATE `".$new_prefix."usermeta` SET meta_key = REPLACE(meta_key, '".$old_prefix."', '".$new_prefix."' );"); // usermeta table temporarily is in the new subsite's prefix until next step.
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating meta_key\'s for DB prefix in subsite\'s [temporary if multisite] usermeta table from `' . mysql_real_escape_string( $old_prefix ) . '` to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating meta_key\'s for DB prefix in subsite\'s [temporary if multisite] usermeta table from `' . backupbuddy_core::dbEscape( $old_prefix ) . '` to `' . backupbuddy_core::dbEscape( $new_prefix ) . '`.' );
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	mysql_query("UPDATE `".$new_prefix."options` SET option_name = '".$new_prefix."user_roles' WHERE option_name ='".$old_prefix."user_roles' LIMIT 1");
-	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating option_name user_roles DB prefix in [subsite if multisite] options table to `' . mysql_real_escape_string( $new_prefix ) . '`.' );
+	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating option_name user_roles DB prefix in [subsite if multisite] options table to `' . backupbuddy_core::dbEscape( $new_prefix ) . '`.' );
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 	
 	pb_backupbuddy::status( 'message', 'Updated prefix META data.' );
@@ -534,13 +534,13 @@ if ($old_prefix != $new_prefix ) {
 // LASTLY UPDATE SITE/HOME URLS to prevent double replacement; just in case!
 
 // Update SITEURL in options table. Usually mass replacement will cover this but set these here just in case.
-mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $destination_siteurl ) . "' WHERE option_name='siteurl' LIMIT 1" );
+mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( $destination_siteurl ) . "' WHERE option_name='siteurl' LIMIT 1" );
 pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating Site URL in options table `' . $destination_db_prefix . 'options` to `' . $destination_siteurl . '`.' );
 if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 
 // Update HOME URL in options table. Usually mass replacement will cover this but set these here just in case.
 if ( $destination_home != '' ) {
-	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . mysql_real_escape_string( $destination_home ) . "' WHERE option_name='home' LIMIT 1" );
+	mysql_query( "UPDATE `" . $destination_db_prefix . "options` SET option_value='" . backupbuddy_core::dbEscape( $destination_home ) . "' WHERE option_name='home' LIMIT 1" );
 	pb_backupbuddy::status( 'details', 'Modified ' . mysql_affected_rows() . ' row(s) while updating Home URL in options table to `' . $destination_home . '`.' );
 	if ( mysql_error() != '' ) { pb_backupbuddy::status( 'error', 'mysql error: ' . mysql_error() ); }
 }

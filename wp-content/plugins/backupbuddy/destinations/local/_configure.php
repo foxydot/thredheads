@@ -27,7 +27,7 @@ $settings_form->add_setting( array(
 	'tip'		=>		__( 'Provide the full path to the location\'s directory. This must map to the web location for the destination URL.', 'it-l10n-backupbuddy' ),
 	'default'	=>		$default_path,
 	'css'		=>		'width: 100%;',
-	'rules'		=>		'required|string[1-100]',
+	'rules'		=>		'required|string[1-500]',
 ) );
 
 
@@ -44,7 +44,7 @@ $settings_form->add_setting( array(
 	'css'		=>		'width: 100%;',
 	'default'	=>		$default_url,
 	'classes'	=>		'migration_url',
-	'rules'		=>		'string[0-100]',
+	'rules'		=>		'string[0-500]',
 ) );
 
 $settings_form->add_setting( array(

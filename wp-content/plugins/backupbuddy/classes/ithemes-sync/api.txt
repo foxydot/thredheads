@@ -136,3 +136,14 @@ backupbuddy-list-everything
 			schedules- Full response from calling backupbuddy-list-schedules.
 
 
+backupbuddy-get-importbuddy
+	Description:
+		Retrieve importbuddy.php contents, base64 encoded (to help maintain integrity through json encoding & transmission). Protected by provided password. If no password provided then uses default configured in Settings.
+	Arguments:
+		password- Passord to use. If blank then uses default.
+	Return Array:
+			api- API version of this function. Increments of the output of this function changes.
+			status- Whether or not the action succeeded. Possible values: ok, error
+			message- Text status message.
+			importbuddy- base64 encoded importbudy.php file contents.
+

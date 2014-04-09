@@ -180,6 +180,7 @@ class pb_backupbuddy_settings {
 	 *	TODO: Perhaps add callback ability to this?
 	 *	This must come after all form elements have been added.
 	 *	This should usually happen in the controller prior to loading a view.
+	 *	IMPORTANT: Applies trim() to all submitted form values!
 	 *	
 	 *	@return		null/array				When a savepoint was defined in class constructor nothing is returned. (normal operation)
 	 *										When savepoint === false an array is returned for custom form processing.
@@ -190,6 +191,12 @@ class pb_backupbuddy_settings {
 			// TODO:
 			$errors = array();
 			$_posts = pb_backupbuddy::_POST();
+			
+			// Cleanup
+			foreach( $_posts as &$post_value ) {
+				$post_value = trim( $post_value );
+			}
+			
 			// loop through all posted variables, if its prefix matches this form's name then
 			foreach( $_posts as $post_name => $post_value ) {
 				if ( substr( $post_name, 0, strlen( $this->_prefix ) ) == $this->_prefix ) { // This settings form.

@@ -630,7 +630,7 @@ class pb_backupbuddy_form {
 	 *											Ex: $callbacks = array( 'phone' => array( $this, 'my_phone_validator' ) );
 	 *	@return		true/array					true on success; array of error(s) encountered on failure.
 	 */
-		function test_rule( $ruleset, $value ) {
+	function test_rule( $ruleset, $value ) {
 		$errors = array();
 		if ( $ruleset == '' ) {
 			return true;
@@ -680,20 +680,23 @@ class pb_backupbuddy_form {
 			/* ***** INT TYPE *****
 			 * make sure that the value fits inside of bounds
 			 * make sure it doesn't include a decimal
+			 * accepts blank value
 			 * */
 			} elseif ( $rule_type == 'int' ) {
-				if( !is_numeric( $value ) || strpos($value, '.') !== false ) {
-					$errors[] = '`' . htmlentities( $value ) . '` is not a valid number.';
-				} else {
-						$subrule = strstr( $rule, '[' );
-						$hyphen_pos = strpos( $subrule, '-' );
-						if( $hyphen_pos != '' ) {
-							$first_number = substr( $subrule, 1, $hyphen_pos - 1 );
-							$second_number = substr( $subrule, $hyphen_pos + 1, -1 );
-							if( $value < $first_number || $value > $second_number ) {
-								$errors[] = 'Value `' . htmlentities( $value ) . '` is outside of the set bounds.';
+				if ( '' != $value ) {
+					if( !is_numeric( $value ) || strpos($value, '.') !== false ) {
+						$errors[] = '`' . htmlentities( $value ) . '` is not a valid number.';
+					} else {
+							$subrule = strstr( $rule, '[' );
+							$hyphen_pos = strpos( $subrule, '-' );
+							if( $hyphen_pos != '' ) {
+								$first_number = substr( $subrule, 1, $hyphen_pos - 1 );
+								$second_number = substr( $subrule, $hyphen_pos + 1, -1 );
+								if( $value < $first_number || $value > $second_number ) {
+									$errors[] = 'Value `' . htmlentities( $value ) . '` is outside of the set bounds.';
+								}
 							}
-						}
+					}
 				}
 			
 			
@@ -701,11 +704,12 @@ class pb_backupbuddy_form {
 			 * validate to make sure the e-mail address is actually an e-mail address.
 			 * */
 			} elseif ( $rule_type == 'email' ) {
-				// TODO: Add custom callback functionality here.
-				if( !filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
-					$errors[] = 'Value `' . htmlentities( $value ) . '` is not a valid e-mail address.';
+				if ( '' != $value ) {
+					// TODO: Add custom callback functionality here.
+					if( !filter_var( $value, FILTER_VALIDATE_EMAIL ) ) {
+						$errors[] = 'Value `' . htmlentities( $value ) . '` is not a valid e-mail address.';
+					}
 				}
-			
 			
 			
 			/* ***** SET TYPE *****

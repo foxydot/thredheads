@@ -33,13 +33,13 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 	$dbreplace = new pluginbuddy_dbreplace();
 	
 	// Set up variables by getting POST data.
-	$needle = mysql_real_escape_string( pb_backupbuddy::_POST( 'needle' ) );
+	$needle = backupbuddy_core::dbEscape( pb_backupbuddy::_POST( 'needle' ) );
 	if ( $needle == '' ) {
 		echo '<b>Error #4456582. Missing needle. You must enter text to search for.';
 		echo '<br><a href="' . pb_backupbuddy::page_url() . '&tab=1#database_replace" class="button secondary-button">&larr; ' .  __( 'back', 'it-l10n-backupbuddy' ) . '</a>';
 		return;
 	}
-	$replacement = mysql_real_escape_string( pb_backupbuddy::_POST( 'replacement' ) );
+	$replacement = backupbuddy_core::dbEscape( pb_backupbuddy::_POST( 'replacement' ) );
 	pb_backupbuddy::status( 'message', 'Replacing `' . $needle . '` with `' . $replacement . '`.' );
 	/*
 	if ( pb_backupbuddy::_POST( 'maybe_serialized' ) == 'true' ) {
@@ -71,12 +71,12 @@ if ( pb_backupbuddy::_GET( 'database_replace' ) == '1' ) {
 		
 		pb_backupbuddy::status( 'message', 'Replacement finished.' );
 	} elseif ( pb_backupbuddy::_POST( 'table_selection' ) == 'single_table' ) {
-		$table = mysql_real_escape_string( pb_backupbuddy::_POST( 'table' ) ); // Single specified table.
+		$table = backupbuddy_core::dbEscape( pb_backupbuddy::_POST( 'table' ) ); // Single specified table.
 		pb_backupbuddy::status( 'message', 'Replacing in single table `' . $table . '` based on settings.' );
 		$dbreplace->bruteforce_table( $table, array( $needle ), array( $replacement ) );
 		pb_backupbuddy::status( 'message', 'Replacement finished.' );
 	} elseif ( pb_backupbuddy::_POST( 'table_selection' ) == 'prefix' ) { // Matching table prefix.
-		$prefix = mysql_real_escape_string( pb_backupbuddy::_POST( 'table_prefix' ) );
+		$prefix = backupbuddy_core::dbEscape( pb_backupbuddy::_POST( 'table_prefix' ) );
 		pb_backupbuddy::status( 'message', 'Replacing in all tables matching prefix `' . $prefix . '`.' );
 		
 		$tables = array();

@@ -2,6 +2,7 @@
 var determine_media_to_migrate;
 var remote_media_files_unavailable = false;
 var remote_connection_data;
+var connection_info;
 
 (function($) {
 
@@ -38,15 +39,6 @@ var remote_connection_data;
 			}
 
 			$('.media-files-options').show();
-
-			if( 'push' == mig_type ){
-				$('.media-files-push').show();
-				$('.media-files-options ul').hide();
-				$('.media-migration-unavailable').hide();
-				disable_media_files_option();
-				return;
-			}
-
 			$('.media-files-push').hide();
 
 			if ( unavailable ) {
@@ -74,6 +66,12 @@ var remote_connection_data;
 
 		$.wpmdb.add_action( 'move_connection_info_box', function() { 
 			hide_show_options( remote_media_files_unavailable );
+			$('.remove-scope-1').html('remote');
+			$('.remove-scope-2').html('local');
+			if( migration_type() == 'pull' ){
+				$('.remove-scope-1').html('local');
+				$('.remove-scope-2').html('remote');
+			}
 		});
 
 		$.wpmdb.add_action( 'verify_connection_to_remote_site', function( connection_data ) {
@@ -83,13 +81,13 @@ var remote_connection_data;
 		});
 
 		$.wpmdb.add_filter('wpmdb_before_migration_complete_hooks',function(hooks) {
-			if( false == is_media_migration() || 'pull' != migration_type() ) return hooks;
+			if( false == is_media_migration() || 'savefile' == migration_type() ) return hooks;
 			hooks.push( 'determine_media_to_migrate' );
 			return hooks;
 		});
 
 		determine_media_to_migrate = function() {
-			var connection_info = $.trim( $('.pull-push-connection-info').val() ).split("\n");
+			connection_info = $.trim( $('.pull-push-connection-info').val() ).split("\n");
 			$('.progress-text').html('Determining which media files to migrate, please wait...');
 
 			var remove_local_media = 0;
@@ -109,6 +107,7 @@ var remote_connection_data;
 					intent:				migration_type(),
 					url: 				connection_info[0],
 					key: 				connection_info[1],
+					temp_prefix:		connection_data.temp_prefix
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					$('.progress-title').html('Migration failed');
@@ -180,6 +179,7 @@ var remote_connection_data;
 
 			var file_chunk_to_migrate = [];
 			var file_chunk_size = 0;
+			var number_of_files_to_migrate = 0;
 
 			$.each( args.files_to_migrate, function( index, value ) {
 				if( ! file_chunk_to_migrate.length ) {
@@ -187,9 +187,10 @@ var remote_connection_data;
 					file_chunk_size += value;
 					delete args.files_to_migrate[index];
 					++args.media_progress_image_number;
+					++number_of_files_to_migrate;
 				}
 				else {
-					if( ( file_chunk_size + value ) > args.bottleneck ) {
+					if( ( file_chunk_size + value ) > args.bottleneck || number_of_files_to_migrate >= remote_connection_data.media_files_max_file_uploads ) {
 						return false;
 					}
 					else {
@@ -197,6 +198,7 @@ var remote_connection_data;
 						file_chunk_size += value;
 						delete args.files_to_migrate[index];
 						++args.media_progress_image_number;
+						++number_of_files_to_migrate;
 					}
 				}
 			});
@@ -212,7 +214,9 @@ var remote_connection_data;
 					action: 			'wpmdbmf_migrate_media',
 					file_chunk:			file_chunk_to_migrate,
 					remote_uploads_url: args.remote_uploads_url,
+					intent:				migration_type(),
 					url: 				connection_info[0],
+					key: 				connection_info[1],
 				},
 				error: function(jqXHR, textStatus, errorThrown){
 					$('.progress-title').html('Migration failed');

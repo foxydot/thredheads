@@ -1,4 +1,4 @@
-<?php // This code runs whenever in the wp-admin.
+<?php // This code runs whenever in the wp-admin. pb_backupbuddy::$options preloaded.
 
 /********** MISC **********/
 
@@ -24,8 +24,6 @@ function enqueue_dashboard_stylesheet($hook) {
 }
 add_action( 'admin_enqueue_scripts', 'enqueue_dashboard_stylesheet' );
 
-
-pb_backupbuddy::load();
 
 
 
@@ -158,6 +156,7 @@ pb_backupbuddy::add_ajax( 'remotesend_details' ); // Display backup integrity st
 pb_backupbuddy::add_ajax( 'remotesend_abort' ); // Abort an in-process remote destination send.
 pb_backupbuddy::add_ajax( 'destination_ftp_pathpicker' ); // FTP destination path picker.
 pb_backupbuddy::add_ajax( 'rollback' ); // Database roll back feature.
+pb_backupbuddy::add_ajax( 'getMainLog' ); // Output main log file text.
 
 /********** DASHBOARD (admin) **********/
 

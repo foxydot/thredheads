@@ -17,7 +17,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'title',
 	'title'		=>		__( 'Destination name', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( 'Name of the new destination to create. This is for your convenience only.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-500]',
+	'rules'		=>		'required|string[1-45]',
 	'default'	=>		$default_name,
 ) );
 

@@ -115,10 +115,11 @@ class pb_backupbuddy_fileoptions {
 	 *
 	 * @param	bool		$ignore_lock	Whether or not to ignore the file being locked.
 	 * @param	bool		$create_file	Create file if it does not yet exist and mark is_ok value to true.
+	 * @param	int			$retryCount		If ERROR_EMPTY_FILE_NON_CREATE_MODE error then we will retry a couple of times after a slight pause in case there was a race condition while another process was updating the file.
 	 * @return	bool		true on load success, else false.
 	 *
 	 */
-	public function load( $ignore_lock = false, $create_file = false ) {
+	public function load( $ignore_lock = false, $create_file = false, $retryCount = 0 ) {
 		
 		// Handle locked file.
 		if ( ( false === $ignore_lock ) && ( true === $this->is_locked() ) ) {
@@ -167,7 +168,12 @@ class pb_backupbuddy_fileoptions {
 			$this->_is_ok = true;
 		} else {
 			$this->_is_ok = 'ERROR_EMPTY_FILE_NON_CREATE_MODE';
-			pb_backupbuddy::status( 'error', 'Fileoptions raw file contents for troubleshooting: `' . @file_get_contents( $this->_file ) . '`.' );
+			if ( $retryCount < 2 ) { // Give it one more chance by sleeping then loading once more. Return whatever result that gives.
+				$retryCount++;
+				pb_backupbuddy::status( 'details', 'Fileoptions file was EMPTY. Sleeping momentarily and then trying again. Attempt #1' . $retryCount );
+				sleep( 3 );
+				return $this->load( $ignore_lock, $create_file, $retryCount );
+			}
 		}
 		$this->options = $options;
 		$this->_loaded = true;
@@ -222,14 +228,14 @@ class pb_backupbuddy_fileoptions {
 		
 		$options = base64_encode( $serialized );
 		
-		if ( false === file_put_contents( $this->_file, $options ) ) { // unable to write.
+		if ( false === ( $bytesWritten = file_put_contents( $this->_file, $options ) ) ) { // unable to write.
 			pb_backupbuddy::status( 'error', 'Unable to write fileoptions file `' . $this->_file . '`. Verify permissions.' );
 			if ( true === $remove_lock ) {
 				$this->unlock();
 			}
 			return false;
 		} else { // wrote to file.
-			pb_backupbuddy::status( 'details', 'Fileoptions saved.' );
+			pb_backupbuddy::status( 'details', 'Fileoptions saved. ' . $bytesWritten . ' bytes written.' );
 			$this->_options_hash = $options_hash;
 			if ( true === $remove_lock ) {
 				$this->unlock();

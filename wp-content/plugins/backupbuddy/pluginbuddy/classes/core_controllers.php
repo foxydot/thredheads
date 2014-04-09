@@ -212,7 +212,7 @@ class pb_backupbuddy_pagescore {
  			require_once( $page_file );
 			echo '</div>';
 			
-			echo '<div id="footer-thankyou" style="float: right; color: #777; margin-right: 21px; margin-top: 20px; margin-bottom: -34px;">Running BackupBuddy v' . pb_backupbuddy::settings( 'version' ) . '.</div>';
+			//echo '<div id="footer-thankyou" style="float: right; color: #777; margin-right: 21px; margin-top: 20px; margin-bottom: -34px;">Running BackupBuddy v' . pb_backupbuddy::settings( 'version' ) . '.</div>';
 			
 		} else { // Not found
 			echo '{Missing pages method `' . $name . '`.}';

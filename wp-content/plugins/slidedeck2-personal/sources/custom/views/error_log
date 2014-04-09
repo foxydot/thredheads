@@ -61,3 +61,12 @@
 [02-Mar-2014 16:25:32 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/choose-type.php on line 3
 [02-Mar-2014 16:26:24 America/Denver] PHP Fatal error:  Call to undefined function get_the_title() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slide-editor.php on line 1
 [02-Mar-2014 19:30:56 America/Denver] PHP Fatal error:  Call to undefined function wp_nonce_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slides.php on line 24
+[21-Mar-2014 01:10:48 America/Denver] PHP Fatal error:  Call to undefined function wp_nonce_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slides.php on line 24
+[21-Mar-2014 08:40:41 America/Denver] PHP Fatal error:  Call to undefined function wp_nonce_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slides.php on line 24
+[21-Mar-2014 11:47:00 America/Denver] PHP Fatal error:  Call to undefined function get_the_title() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slide-editor.php on line 1
+[21-Mar-2014 16:50:08 America/Denver] PHP Fatal error:  Call to undefined function wp_nonce_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slides.php on line 24
+[22-Mar-2014 04:36:55 America/Denver] PHP Fatal error:  Call to undefined function wp_nonce_url() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slides.php on line 24
+[22-Mar-2014 07:08:59 America/Denver] PHP Fatal error:  Call to undefined function get_the_title() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/slide-editor.php on line 1
+[23-Mar-2014 05:33:48 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/choose-type.php on line 3
+[23-Mar-2014 11:52:42 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/choose-type.php on line 3
+[24-Mar-2014 03:02:11 America/Denver] PHP Fatal error:  Call to undefined function _e() in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/custom/views/choose-type.php on line 3

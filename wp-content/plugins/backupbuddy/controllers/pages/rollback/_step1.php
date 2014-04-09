@@ -19,8 +19,8 @@ if ( '1' == pb_backupbuddy::_POST( 'forceMysqlCompatibility' ) ) {
 
 
 // Instantiate rollback.
-require_once( pb_backupbuddy::plugin_path() . '/classes/rollback.php' );
-$rollback = new backupbuddy_rollback( $restoreData );
+require_once( pb_backupbuddy::plugin_path() . '/classes/restore.php' );
+$rollback = new backupbuddy_restore( 'rollback', $restoreData );
 
 
 $status = $rollback->extractDatabase();

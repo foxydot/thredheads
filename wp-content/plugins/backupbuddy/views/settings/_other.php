@@ -66,14 +66,10 @@ if ( pb_backupbuddy::_GET( 'reset_disalerts' ) != '' ) {
 By default only errors are logged. Enable Full Logging on the <a href="?page=pb_backupbuddy_settings&tab=1">Advanced Settings</a> tab.
 
 <?php
-$log_file = backupbuddy_core::getLogDirectory() . 'log-' . self::$options['log_serial'] . '.txt';
 
-echo '<textarea readonly="readonly" style="width: 100%;" wrap="off" cols="65" rows="7">';
-if ( file_exists( $log_file ) ) {
-	readfile( $log_file );
-} else {
-	echo __('Nothing has been logged.', 'it-l10n-backupbuddy' );
-}
+
+echo '<textarea readonly="readonly" style="width: 100%;" wrap="off" cols="65" rows="7" id="backupbuddy_logFile">';
+echo '*** Loading log file. Please wait . . .';
 echo '</textarea>';
 echo '<a href="' . pb_backupbuddy::page_url() . '&reset_log=true&tab=2" class="button secondary-button">' . __('Clear Log', 'it-l10n-backupbuddy' ) . '</a>';
 ?>

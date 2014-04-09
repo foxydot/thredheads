@@ -293,6 +293,12 @@ if ( pb_backupbuddy::$options['data_version'] < 8 ) {
 }
 // ********** END 4.2 UPGRADE **********
 
+// ********** BEGIN 4.2.14.22 UPGRADE **********
+if ( isset( pb_backupbuddy::$options['rollback_beta'] ) ) {
+	unset( pb_backupbuddy::$options['rollback_beta'] );
+	pb_backupbuddy::save();
+}
+// ********** END 4.2.14.22 UPGRADE **********
 
 
 

@@ -9,7 +9,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'title',
 	'title'		=>		__( 'Destination name', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( 'Name of the new destination to create. This is for your convenience only.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-45]',
+	'rules'		=>		'required|string[1-45]',
 	'default'	=>		$default_name,
 ) );
 
@@ -18,7 +18,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'address',
 	'title'		=>		__( 'Server address', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Example: ftp.foo.com] - FTP server address.  Do not include http:// or ftp:// or any other prefixes. You may specify an alternate port in the format of ftp_address:ip_address such as yourftp.com:21', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-45]',
+	'rules'		=>		'required|string[0-500]',
 ) );
 
 $settings_form->add_setting( array(
@@ -26,7 +26,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'username',
 	'title'		=>		__( 'Username', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Example: foo] - Username to use when connecting to the FTP server.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-100]',
+	'rules'		=>		'required|string[0-250]',
 ) );
 
 $settings_form->add_setting( array(
@@ -34,7 +34,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'password',
 	'title'		=>		__( 'Password', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__( '[Example: 1234xyz] - Password to use when connecting to the FTP server.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-100]',
+	'rules'		=>		'required|string[0-250]',
 ) );
 
 $settings_form->add_setting( array(

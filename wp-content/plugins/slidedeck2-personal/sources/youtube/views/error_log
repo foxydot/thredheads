@@ -44,3 +44,17 @@
 [02-Mar-2014 10:26:34 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
 [02-Mar-2014 16:24:08 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
 [02-Mar-2014 16:24:08 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[23-Mar-2014 01:46:25 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[23-Mar-2014 01:46:25 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[23-Mar-2014 10:36:57 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[23-Mar-2014 10:36:57 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[24-Mar-2014 01:46:24 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[24-Mar-2014 01:46:24 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[26-Mar-2014 04:09:45 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[26-Mar-2014 04:09:45 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[26-Mar-2014 11:33:53 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[26-Mar-2014 11:33:53 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[26-Mar-2014 18:05:56 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[26-Mar-2014 18:05:56 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38
+[27-Mar-2014 00:11:05 America/Denver] PHP Notice:  Undefined variable: slidedeck in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 34
+[27-Mar-2014 00:11:05 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/youtube/views/show.php on line 38

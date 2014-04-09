@@ -12,3 +12,6 @@
 [02-Mar-2014 04:56:50 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36
 [02-Mar-2014 10:34:33 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36
 [02-Mar-2014 16:25:22 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36
+[21-Mar-2014 21:02:12 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36
+[22-Mar-2014 14:24:17 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36
+[22-Mar-2014 20:43:18 America/Denver] PHP Fatal error:  Using $this when not in object context in /home2/thredhea/public_html/wp-content/plugins/slidedeck2-personal/sources/rss/views/show.php on line 36

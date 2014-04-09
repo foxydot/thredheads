@@ -6,8 +6,8 @@ if ( ! current_user_can( pb_backupbuddy::$options['role_access'] ) ) {
 pb_backupbuddy::load_script( 'jquery' );
 
 
-require_once( pb_backupbuddy::plugin_path() . '/classes/rollback.php' );
-$rollback = new backupbuddy_rollback();
+require_once( pb_backupbuddy::plugin_path() . '/classes/restore.php' );
+$rollback = new backupbuddy_restore( 'rollback' );
 $status = $rollback->start( backupbuddy_core::getBackupDirectory() . $backupFile );
 if ( false === $status ) {
 	$errors = $rollback->getErrors();
@@ -81,7 +81,7 @@ pb_backupbuddy::$ui->list_table(
 	<a class="button button-secondary" onclick="jQuery('#pb_backupbuddy_advanced').toggle();">Advanced Options</a>
 	<span id="pb_backupbuddy_advanced" style="display: none; margin-left: 15px;">
 		<label><input type="checkbox" name="autoAdvance" value="1" checked="checked"> Auto Advance</label>&nbsp;&nbsp;&nbsp;
-		<label><input type="checkbox" name="forceMysqlCompatibility" value="1"> Force Mysql Compatibility,</label>
+		<label><input type="checkbox" name="forceMysqlCompatibility" value="1" checked="checked"> Force Mysql Compatibility,</label>
 		<label>with chunk time limit: <input size="5" maxlength="5" type="text" name="maxExecutionTime" value="<?php echo backupbuddy_core::detectMaxExecutionTime(); ?>"> sec</label>
 	</span>
 	

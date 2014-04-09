@@ -91,6 +91,7 @@ class pb_backupbuddy {
 				}
 			}
 		}
+		
 		if ( isset( $_GET['page'] ) ) { // If in an admin page then append page querystring.
 			$arr = explode( '?', $_SERVER['REQUEST_URI'] ); // avoid reference error by setting here.
 			self::$_self_link = array_shift( $arr ) . '?page=' . htmlentities( $_GET['page'] );
@@ -669,7 +670,7 @@ class pb_backupbuddy {
 	 *										If self::$_status_serial has been set by set_status_serial() then it will override if $serial is blank.
 	 *	@return	null
 	 */
-	public static function status( $type, $message, $serials = '', $js_mode = false ) {
+	public static function status( $type, $message, $serials = '', $js_mode = false, $echoNotWrite = false ) {
 		
 		if ( ! class_exists( 'backupbuddy_core' ) ) {
 			require_once( pb_backupbuddy::plugin_path() . '/classes/core.php' );
@@ -701,7 +702,7 @@ class pb_backupbuddy {
 			}
 		}
 		
-		$delimiter = '|~|';
+		//$delimiter = '|~|';
 		
 		// Make sure we have a unique log serial for all logs for security.
 		if ( !isset( self::$options['log_serial'] ) || ( self::$options['log_serial'] == '' ) ) {
@@ -753,36 +754,53 @@ class pb_backupbuddy {
 			
 			// Function for writing actual log CSV data. Used later.
 			if ( !function_exists( 'write_status_line' ) ) {
-				function write_status_line( $file, $content_array, $delimiter ) {
-					$delimiter = '|~|';
-					if ( false !== ( $file_handle = @fopen( $file, 'a') ) ) { // Append mode.
-						//fputcsv ( $file_handle , $content_array );
-						@fwrite( $file_handle, trim( implode( $delimiter, $content_array ) ) . PHP_EOL );
-						@fclose( $file_handle );
+				function write_status_line( $file, $content_array, $echoNotWrite ) {
+					$writeData = json_encode( $content_array ) . PHP_EOL;
+					if ( true === $echoNotWrite ) { // echo data instead of writing to file. used by ajax when checking status log and needing to prepend before log.
+						echo $writeData;
 					} else {
-						//pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
+						//$delimiter = '|~|';
+						if ( false !== ( $file_handle = @fopen( $file, 'a') ) ) { // Append mode.
+							//fputcsv ( $file_handle , $content_array );
+							//@fwrite( $file_handle, trim( implode( $delimiter, $content_array ) ) . PHP_EOL );
+							@fwrite( $file_handle, $writeData );
+							@fclose( $file_handle );
+						} else {
+							//pb_backupbuddy::alert( 'Unable to open file handler for status file `' . $file . '`. Unable to write status log.' );
+						}
 					}
 				}
 			}
 			
+			/*
 			$content_array = array(
-								pb_backupbuddy::$format->localize_time( time() ), //time(),
-								sprintf( "%01.2f", round ( microtime( true ) - self::$start_time, 2 ) ),
-								sprintf( "%01.2f", round( memory_get_peak_usage() / 1048576, 2 ) ),
-								$type,
-								str_replace( chr(9), '   ', $message ),
-							);
+				pb_backupbuddy::$format->localize_time( time() ), //time(),
+				sprintf( "%01.2f", round ( microtime( true ) - self::$start_time, 2 ) ),
+				sprintf( "%01.2f", round( memory_get_peak_usage() / 1048576, 2 ) ),
+				$type,
+				str_replace( chr(9), '   ', $message ),
+			);
+			*/
+			
+			$content_array = array(
+				'event'		=> $type,
+				'time'		=> pb_backupbuddy::$format->localize_time( time() ), // Time this happened.
+				'u'			=> substr((string)microtime(), 2, 2),
+				'run'		=> sprintf( "%01.2f", round ( microtime( true ) - self::$start_time, 2 ) ), // Elapsed PHP time.
+				'mem'		=> sprintf( "%01.2f", round( memory_get_peak_usage() / 1048576, 2 ) ), // Memory used.	
+				'data'		=> str_replace( chr(9), '   ', $message ), // Body of the message.
+			);
 			
 			/********** MAIN LOG FILE **********/
 			if ( $write_main === true ) { // WRITE TO MAIN LOG FILE.
 				$main_file = $log_directory . 'status-' . self::$options['log_serial'] . '.txt';
-				write_status_line( $main_file, $content_array, $delimiter );
+				write_status_line( $main_file, $content_array, $echoNotWrite );
 			}
 			
 			/********** SERIAL LOG FILE **********/
 			if ( $write_serial === true ) {
 				$serial_file = $log_directory . 'status-' . $serial . '_' . self::$options['log_serial'] . '.txt';
-				write_status_line( $serial_file, $content_array, $delimiter );
+				write_status_line( $serial_file, $content_array, $echoNotWrite );
 			}
 		} // end foreach $serials.
 		
@@ -807,7 +825,7 @@ class pb_backupbuddy {
 	 *	@return		array								Array of arrays.  Each sub-array contains three values: timestamp, type of message, and the message itself. See function description for details. Empty array if non-existing log.
 	 */
 	public static function get_status( $serial = '', $clear_retrieved = true, $erase_retrieved = true, $hide_getting_status = false ) {
-		$delimiter = '|~|';
+		//$delimiter = '|~|';
 		
 		// Calculate log directory.
 		$log_directory = backupbuddy_core::getLogDirectory(); // Also handles when importbuddy.
@@ -829,11 +847,14 @@ class pb_backupbuddy {
 		if ( false !== ( $fh = @fopen( $status_file, 'r') ) ) { // Read write mode.
 			$status_lines = array();
 			while ( false !== ( $status_line = fgets( $fh ) ) ) {
+				/*
 				if ( stristr( $status_line, $delimiter ) ) { // Deliminator in line.
 					$status_lines[] = explode( $delimiter, trim( $status_line ) );
 				} else { // No deliminator. Just print line with blank values.
 					$status_lines[] = array( 0,0,0,'unknown', trim( $status_line ) );
 				}
+				*/
+				$status_lines[] = $status_line;
 			}
 			fclose( $fh );
 			
@@ -1674,16 +1695,13 @@ pb_backupbuddy::init( $pluginbuddy_settings, $pluginbuddy_init );
 unset( $pluginbuddy_settings );
 unset( $pluginbuddy_init );
 
-
+pb_backupbuddy::load();
 
 // ********** Load initialization files **********
 
 require_once( dirname( dirname( __FILE__ ) ) . '/init_global.php' );
-
 if ( is_admin() ) {
 	require_once( dirname( dirname( __FILE__ ) ) . '/init_admin.php' );
-} else {
-	require_once( dirname( dirname( __FILE__ ) ) . '/init_public.php' );
 }
 
 if ( defined( 'PB_STANDALONE' ) && PB_STANDALONE === true ) {

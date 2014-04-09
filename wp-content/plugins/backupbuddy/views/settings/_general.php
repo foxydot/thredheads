@@ -98,7 +98,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'archive_limit',
 	'title'		=>		__('Limit number of local backups to keep', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 10] - Maximum number of local archived backups to store (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-500]',
+	'rules'		=>		'required|string[0-500]|int',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' backups. <span class="description">0 for no limit.</span>',
 ) );
@@ -107,7 +107,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'archive_limit_size',
 	'title'		=>		__('Size limit of all local backups combined', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 350] - Maximum size (in MB) to allow your total local archives to reach (remote archive limits are configured per destination on their respective settings pages). Any new backups created after this limit is met will result in your oldest backup(s) being deleted to make room for the newer ones. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-500]',
+	'rules'		=>		'required|string[0-500]|int',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' MB. <span class="description">0 for no limit.</span>',
 ) );
@@ -116,7 +116,7 @@ $settings_form->add_setting( array(
 	'name'		=>		'archive_limit_age',
 	'title'		=>		__('Age limit of local backups', 'it-l10n-backupbuddy' ),
 	'tip'		=>		__('[Example: 90] - Maximum age (in days) to allow your local archives to reach (remote archive limits are configured per destination on their respective settings pages). Any backups exceeding this age will be deleted as new backups are created. Changes to this setting take place once a new backup is made. Set to zero (0) for no limit.', 'it-l10n-backupbuddy' ),
-	'rules'		=>		'required|string[0-99999]',
+	'rules'		=>		'required|string[0-99999]|int',
 	'css'		=>		'width: 50px;',
 	'after'		=>		' days. <span class="description">0 for no limit.</span>',
 ) );

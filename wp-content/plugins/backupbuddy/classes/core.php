@@ -107,7 +107,7 @@ class backupbuddy_core {
 			$backup_options = new pb_backupbuddy_fileoptions( backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt', $read_only = false, $ignore_lock = false, $create_file = true ); // Will create file to hold integrity data if nothing exists.
 			if ( true !== ( $result = $backup_options->is_ok() ) ) {
 				pb_backupbuddy::status( 'error', __('Fatal Error #9034 C. Unable to access fileoptions data.', 'it-l10n-backupbuddy' ) . ' Error on file `' . backupbuddy_core::getLogDirectory() . 'fileoptions/' . $serial . '.txt' . '`: ' . $result );
-				pb_backupbuddy::status( 'action', 'halt_script' ); // Halt JS on page.
+				pb_backupbuddy::status( 'haltScript', '' ); // Halt JS on page.
 				return false;
 			}
 		}
@@ -292,7 +292,7 @@ class backupbuddy_core {
 		$temp_details = pb_backupbuddy::get_status( 'zipbuddy_test' ); // Get zipbuddy scan log.
 		$scan_log = array();
 		foreach( $temp_details as $temp_detail ) {
-			$scan_log[] = $temp_detail[4];
+			$scan_log[] = json_decode( $temp_detail )->{ 'data' };
 		}
 		if ( true !== $skipLogRedirect ) {
 			pb_backupbuddy::set_status_serial( $previous_status_serial ); // Stop redirecting log to a specific file & set back to what it was prior.
@@ -505,7 +505,7 @@ class backupbuddy_core {
 		
 		// Add additional internal exclusions.
 		$abspath = str_replace( '\\', '/', ABSPATH );
-		$exclusions[] = str_replace( rtrim( $abspath, '\\\/' ), '', self::getBackupDirectory() ); // Exclude backup directory.
+		$exclusions[] = str_replace( rtrim( $abspath, '\\\/' ), '', str_replace( '\\', '/', self::getBackupDirectory() ) ); // Exclude backup directory.
 		$exclusions[] = '/' . ltrim( str_replace( ABSPATH, '', self::getLogDirectory() ), '\\/' ); // BackupBuddy logs & fileoptions data.
 		$exclusions[] = '/importbuddy/'; // Exclude importbuddy directory in root.
 		$exclusions[] = '/importbuddy.php'; // Exclude importbuddy.php script in root.
@@ -577,7 +577,7 @@ class backupbuddy_core {
 			$email = $override_recipient;
 			pb_backupbuddy::status( 'details', 'Overriding email recipient to: `' . $override_recipient . '`.' );
 		}
-		pb_backupbuddy::status( 'error', 'Sending email error notification. Subject: `' . $subject . '`; body: `' . $body . '`; recipient(s): `' . $email . '`.' );
+		pb_backupbuddy::status( 'error', 'Sending email error notification with subject `' . $subject . '` to recipient(s): `' . $email . '`.' );
 		if ( !empty( $email ) ) {
 			if ( pb_backupbuddy::$options['email_return'] != '' ) {
 				$email_return = pb_backupbuddy::$options['email_return'];
@@ -922,7 +922,7 @@ class backupbuddy_core {
 					self::mail_error( 'BackupBuddy was unable to delete local file `' . $file . '` after successful remove transfer though post-remote send deletion is enabled. You may want to delete it manually. This can be caused by permission problems or improper server configuration.' );
 				} else { // Deleted.
 					pb_backupbuddy::status( 'details', __('Deleted local archive after successful remote destination send based on settings.', 'it-l10n-backupbuddy' ) );
-					pb_backupbuddy::status( 'action', 'archive_deleted' );
+					pb_backupbuddy::status( 'archiveDeleted', '' );
 				}
 				
 			} else { // Delete after disabled.
@@ -1146,7 +1146,7 @@ class backupbuddy_core {
 	
 	// If output file not specified then outputs to browser as download.
 	// IMPORTANT: If outputting to browser (no output file) must die() after outputting content if using AJAX. Do not output to browser anything after this function in this case.
-	public static function importbuddy( $output_file = '', $importbuddy_pass_hash = '' ) {
+	public static function importbuddy( $output_file = '', $importbuddy_pass_hash = '', $return_not_echo = false ) {
 		
 		pb_backupbuddy::set_greedy_script_limits(); // Some people run out of PHP memory.
 		
@@ -1249,9 +1249,13 @@ class backupbuddy_core {
 			header( 'Expires: 0' );
 			header( 'Content-Length: ' . strlen( $output ) );
 			
-			pb_backupbuddy::flush();
-			echo $output;
-			pb_backupbuddy::flush();
+			if ( true === $return_not_echo ) {
+				return $output;
+			} else {
+				pb_backupbuddy::flush();
+				echo $output;
+				pb_backupbuddy::flush();
+			}
 			
 			// BE SURE TO die() AFTER THIS AND NOT OUTPUT TO BROWSER!
 		} else { // Write to file.
@@ -2463,7 +2467,6 @@ class backupbuddy_core {
 	/* detectMaxExecutionTime()
 	 *
 	 * Attempt to detect the max execution time allowed by PHP. Defaults to 30 if unable to detect or a suspicious value is detected.
-	 *
 	 */
 	public static function detectMaxExecutionTime() {
 		$detected_max_execution_time = str_ireplace( 's', '', ini_get( 'max_execution_time' ) );
@@ -2477,6 +2480,21 @@ class backupbuddy_core {
 		}
 		return $detected_max_execution_time;
 	} // End detectMaxExecutionTime().
+	
+	
+	/* dbEscape()
+	 *
+	 * Escape SQL using either mysql or mysqli based on whichever WordPress is using.
+	 * WP 3.9 introducing mysqli support.
+	 */
+	public static function dbEscape( $sql ) {
+		global $wpdb;
+		if ( isset( $wpdb->use_mysqli ) && ( true === $wpdb->use_mysqli ) ) { // Possible post WP 3.9
+			return mysqli_real_escape_string( $wpdb->dbh, $sql );
+		} else {
+			return mysql_real_escape_string( $sql );
+		}
+	} // End dbEscape().
 	
 	
 	
