@@ -31,7 +31,9 @@ function msdlab_reset_button($text){
 
 function msdlab_subcat_title_replacement($title){
     global $wp_query;
-    if(is_main_query() && $wp_query->query['product_cat']!=''){
+    if(strpos($_SERVER['REQUEST_URI'],'shop')){
+        return "Shop";
+    } elseif(is_main_query() && $wp_query->query['product_cat']!=''){
         return $wp_query->queried_object->name;
     } else {
         return $title;
