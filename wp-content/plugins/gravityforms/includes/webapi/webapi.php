@@ -1,13 +1,8 @@
 <?php
 
-/**
- * todo
- * - Support for Authorization header?
- * - Enforce maximum expiration?
- * - MVC pattern?
- * - support for JSONP
- * - API wrappers
- */
+if(!class_exists('GFForms')){
+    die();
+}
 
 
 if (!defined('GFWEBAPI_REQUIRE_SIGNATURE'))
@@ -921,6 +916,9 @@ if (class_exists("GFForms")) {
                 $sort_key = isset($_GET["sorting"]["key"]) && !empty($_GET["sorting"]["key"]) ? $_GET["sorting"]["key"] : "id";
                 $sort_dir = isset($_GET["sorting"]["direction"]) && !empty($_GET["sorting"]["direction"]) ? $_GET["sorting"]["direction"] : "DESC";
                 $sorting  = array('key' => $sort_key, 'direction' => $sort_dir);
+                if(isset($_GET["sorting"]["is_numeric"])){
+                    $sorting["is_numeric"] = $_GET["sorting"]["is_numeric"];
+                }
 
                 //paging parameters
                 $page_size = isset($_GET["paging"]["page_size"]) ? intval($_GET["paging"]["page_size"]) : 10;
@@ -1395,7 +1393,7 @@ if (class_exists("GFForms")) {
             if (time() >= $expires)
                 return false;
 
-            $is_valid = $signature == $calculated_sig;
+            $is_valid = $signature == $calculated_sig || $signature == rawurlencode($calculated_sig);
 
             return $is_valid;
         }

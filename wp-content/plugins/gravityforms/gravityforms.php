@@ -3,9 +3,11 @@
 Plugin Name: Gravity Forms
 Plugin URI: http://www.gravityforms.com
 Description: Easily create web forms and manage form entries within the WordPress admin.
-Version: 1.8.5
+Version: 1.8.7
 Author: rocketgenius
 Author URI: http://www.rocketgenius.com
+Text Domain: gravityforms
+Domain Path: /languages
 
 ------------------------------------------------------------------------
 Copyright 2009-2013 Rocketgenius Inc.
@@ -53,6 +55,10 @@ $gf_recaptcha_public_key = "";
 //define('GF_RECAPTCHA_PUBLIC_KEY','YOUR_PUBLIC_KEY_GOES_HERE');
 //------------------------------------------------------------------------------------------------------------------
 
+if(!defined("ABSPATH")){
+    die();
+}
+
 if(!defined("RG_CURRENT_PAGE"))
     define("RG_CURRENT_PAGE", basename($_SERVER['PHP_SELF']));
 
@@ -96,7 +102,7 @@ if(is_admin() && (RGForms::is_gravity_page() || RGForms::is_gravity_ajax_action(
 
 class GFForms {
 
-    public static $version = '1.8.5';
+    public static $version = '1.8.7';
 
     public static function has_members_plugin(){
         return function_exists( 'members_get_capabilities' );
@@ -443,6 +449,7 @@ class GFForms {
               user_id bigint(20),
               date_created datetime not null,
               value longtext,
+              note_type varchar(50),
               PRIMARY KEY  (id),
               KEY lead_id (lead_id),
               KEY lead_user_key (lead_id,user_id)
@@ -1096,9 +1103,9 @@ class GFForms {
 
         if (isset($_POST["gform_ajax"])) {
             parse_str($_POST["gform_ajax"]);
-
+            $tabindex = isset($tabindex) ? absint($tabindex) : 1;
             require_once(GFCommon::get_base_path() . "/form_display.php");
-           // GFCommon::$tab_index = $tabindex;
+
             $result = GFFormDisplay::get_form($form_id, $title, $description, false, $_POST["gform_field_values"], true, $tabindex);
             die($result);
         }
@@ -1956,7 +1963,9 @@ class GFForms {
             break;
 
             case "delete" :
-                RGFormsModel::delete_lead($lead_id);
+                if(GFCommon::current_user_can_any("gravityforms_delete_entries")){
+                    RGFormsModel::delete_lead($lead_id);
+                }
             break;
 
             default :
@@ -2021,6 +2030,9 @@ class GFForms {
         check_ajax_referer("rg_select_export_form", "rg_select_export_form");
         $form_id =  intval($_POST["form_id"]);
         $form = RGFormsModel::get_form_meta($form_id);
+
+        $form = apply_filters("gform_form_export_page_{$form_id}", apply_filters("gform_form_export_page", $form));
+
         $filter_settings = GFCommon::get_field_filter_settings($form);
         $filter_settings_json = json_encode($filter_settings);
         $fields = array();

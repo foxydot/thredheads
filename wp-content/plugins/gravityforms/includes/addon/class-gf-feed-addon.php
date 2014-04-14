@@ -1,4 +1,9 @@
 <?php
+
+if(!class_exists('GFForms')){
+    die();
+}
+
 /**
  * Specialist Add-On class designed for use by Add-Ons that require form feed settings
  * on the form settings tab.
