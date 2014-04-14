@@ -117,7 +117,7 @@ $states = array('ALABAMA'=>"AL",
         <tr valign="top">
             <th scope="row"><label for="bang_bar">Status Message:</label></th>
             <td>
-                <input name="bang_bar" type="text" id="bang_bar" value="<?php echo get_option('msdsocial_bang_bar'); ?>" class="regular-text" />
+                <input name="bang_bar" type="text" id="bang_bar" value="<?php echo stripslashes(get_option('msdsocial_bang_bar')); ?>" class="regular-text" />
             </td>
         </tr>
         </table>

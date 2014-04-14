@@ -39,6 +39,11 @@ add_action('woocommerce_single_product_summary','woocommerce_template_single_rat
 //add_action('woocommerce_single_product_summary','woocommerce_template_single_meta');
 //remove_action('woocommerce_after_single_product_summary','woocommerce_output_product_data_tabs');
 remove_all_actions('woocommerce_after_single_product_summary');
+global $wp_filter;
+ts_var( $wp_filter['woocommerce_single_product_summary'] );
+
+add_filter('the_content', 'st_remove_st_add_link', 20);
+add_action('woocommerce_after_single_product', 'st_add_widget');
 
 add_action( 'genesis_loop', 'gencwooc_single_product_loop' );
 /**
