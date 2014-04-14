@@ -110,7 +110,7 @@ function social_media($attr){
 
 function msdlab_bang_bar(){
     if(get_option('msdsocial_bang_bar')!=""){
-       print '<div class="bang-bar">'.get_option('msdsocial_bang_bar').'</div>';
+       print '<div class="bang-bar">'.stripslashes(get_option('msdsocial_bang_bar')).'</div>';
     }
 }
 
