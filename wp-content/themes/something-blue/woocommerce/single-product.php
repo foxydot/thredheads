@@ -50,7 +50,7 @@ remove_all_actions('woocommerce_after_single_product_summary');
 add_action('woocommerce_after_single_product', 'my_add_share_this');
 
 function my_add_share_this(){
-    print '<p>'.st_makeEntries().'</p>';
+    print '<p><br>'.st_makeEntries().'</p>';
 }
 
 add_action( 'genesis_loop', 'gencwooc_single_product_loop' );
