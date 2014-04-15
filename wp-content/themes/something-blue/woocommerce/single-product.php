@@ -30,6 +30,14 @@ remove_action( 'woocommerce_after_main_content', 'woocommerce_output_content_wra
 
 remove_action('woocommerce_before_single_product_summary','woocommerce_show_product_images',20);
 remove_all_actions('woocommerce_single_product_summary');
+
+function remove_share_this() {
+remove_filter( 'the_content', 'st_add_link' );
+remove_filter( 'the_excerpt', 'st_add_widget' );
+remove_filter('the_content', 'st_add_widget');
+remove_filter( 'the_excerpt', 'st_add_link' );
+}
+add_action( 'loop_start', 'remove_share_this' );
 add_action('woocommerce_single_product_summary','the_content');
 add_action('woocommerce_single_product_summary','woocommerce_show_product_images');
 add_action('woocommerce_single_product_summary','woocommerce_output_product_data_tabs');
@@ -39,11 +47,11 @@ add_action('woocommerce_single_product_summary','woocommerce_template_single_rat
 //add_action('woocommerce_single_product_summary','woocommerce_template_single_meta');
 //remove_action('woocommerce_after_single_product_summary','woocommerce_output_product_data_tabs');
 remove_all_actions('woocommerce_after_single_product_summary');
-global $wp_filter;
-//ts_var( $wp_filter['woocommerce_single_product_summary'] );
+add_action('woocommerce_after_single_product', 'my_add_share_this');
 
-add_filter('the_content', 'st_remove_st_add_link', 20);
-add_action('woocommerce_after_single_product', 'st_add_widget');
+function my_add_share_this(){
+    print '<p>'.st_makeEntries().'</p>';
+}
 
 add_action( 'genesis_loop', 'gencwooc_single_product_loop' );
 /**
@@ -74,9 +82,6 @@ function gencwooc_single_product_loop() {
     }
 
     if ( $wc_query->have_posts() ) while ( $wc_query->have_posts() ) : $wc_query->the_post(); ?>
-<?php global $wp_filter;
-//ts_var( $wp_filter['woocommerce_after_single_product_summary'] );
-?>
         <?php do_action('woocommerce_before_single_product'); ?>
 
         <div itemscope itemtype="http://schema.org/Product" id="product-<?php the_ID(); ?>" <?php post_class(); ?>>

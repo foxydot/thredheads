@@ -229,6 +229,7 @@ function sharethis_button() {
 }
 
 function st_remove_st_add_link($content) {
+    
 	remove_action('the_content', 'st_add_link');
 	remove_action('the_content', 'st_add_widget');
 	return $content;
