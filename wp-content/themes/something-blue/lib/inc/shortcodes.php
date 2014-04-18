@@ -1,5 +1,5 @@
 <?php
-add_shortcode('wpshop_cart','msdlab_wpcart_function');
+//add_shortcode('wpshop_cart','msdlab_wpcart_function');
 function msdlab_wpcart_function(){
     echo wpsc_shopping_cart(); 
 }
