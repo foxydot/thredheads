@@ -39,3 +39,24 @@ function msdlab_subcat_title_replacement($title){
         return $title;
     }
 }
+
+
+if(!class_exists('WPAlchemy_MetaBox')){
+    include_once WP_CONTENT_DIR.'/wpalchemy/MetaBox.php';
+}
+add_action('init','msdlab_payment_metabox',-1);
+function msdlab_payment_metabox(){
+    global $payment_metabox;
+    $payment_metabox = new WPAlchemy_MetaBox(array
+    (
+        'id' => '_payment_link',
+        'title' => 'Payment Link',
+        'types' => array('shop_order'),
+        'context' => 'side', // same as above, defaults to "normal"
+        'priority' => 'high', // same as above, defaults to "high"
+        'template' => get_stylesheet_directory() . '/lib/template/payment-meta.php',
+        'autosave' => TRUE,
+        'mode' => WPALCHEMY_MODE_EXTRACT, // defaults to WPALCHEMY_MODE_ARRAY
+        'prefix' => '_msdlab_' // defaults to NULL
+    ));
+}
