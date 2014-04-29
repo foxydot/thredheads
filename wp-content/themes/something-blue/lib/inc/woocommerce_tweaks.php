@@ -2,6 +2,8 @@
 remove_all_actions('woocommerce_before_main_content');
 add_action('woocommerce_before_main_content','msdlab_gravity_to_woo_header');
 add_action('woocommerce_after_main_content','msdlab_gravity_to_woo_footer');
+add_filter('woocommerce_cart_item_thumbnail','msdlab_cart_item_thumbnail');
+
 function msdlab_gravity_to_woo_header(){
     remove_action('genesis_entry_header', 'genesis_post_info', 12);
     add_filter('genesis_post_title_text','msdlab_subcat_title_replacement');
@@ -38,6 +40,10 @@ function msdlab_subcat_title_replacement($title){
     } else {
         return $title;
     }
+}
+
+function msdlab_cart_item_thumbnail($image){
+    return $image;
 }
 
 
