@@ -11,28 +11,37 @@
 # content. Or see git's documentation for more info on .gitignore files:
 # http://kernel.org/pub/software/scm/git/docs/gitignore.html
 
-# Ignore everything in the root except the "wp-content" directory.
+# Ignore everything in the root except the "assets" directory.
 /*
 !.gitignore
+!assets/
 !wp-content/
 !fonts/
 
-# Ignore everything in the "wp-content" directory, except the "plugins"
+# Ignore everything in the "assets" directory, except the "plugins"
 # and "themes" directories.
+assets/*
+!assets/plugins/
+!assets/themes/
 wp-content/*
 !wp-content/plugins/
 !wp-content/themes/
 
 # Ignore everything in the "plugins" directory, except the plugins you
 # specify (see the commented-out examples for hints on how to do this.)
-# wp-content/plugins/*
-# !wp-content/plugins/my-single-file-plugin.php
+assets/plugins/*
+!assets/plugins/msd*
+# !assets/plugins/my-directory-plugin/
+wp-content/plugins/*
+!wp-content/plugins/msd*
 # !wp-content/plugins/my-directory-plugin/
 
 # Ignore everything in the "themes" directory, except the themes you
 # specify (see the commented-out example for a hint on how to do this.)
-# wp-content/themes/*
-# !wp-content/themes/my-theme/
+assets/themes/twenty*
+assets/themes/genesis
+wp-content/themes/twenty*
+wp-content/themes/genesis
 
 .DS_Store
 .AppleDouble
@@ -43,7 +52,33 @@ Icon
 # Thumbnails
 ._*
 
+
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
+*.pydevproject
+.project
+.metadata
+bin/**
+tmp/**
+tmp/**/*
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.classpath
+.settings/
+.loadpath
 
+# External tool builders
+.externalToolBuilders/
+
+# Locally stored "Eclipse launch configurations"
+*.launch
+
+# CDT-specific
+.cproject
+
+# PDT-specific
+.buildpath

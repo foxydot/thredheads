@@ -1,1 +1,0 @@
-[27-Feb-2014 20:20:17 America/Denver] PHP Fatal error:  Call to undefined function get_option() in /home2/thredhea/public_html/wp-content/plugins/wp-e-commerce/wpsc-updates/updating_tasks.php on line 3

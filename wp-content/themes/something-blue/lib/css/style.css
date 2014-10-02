@@ -7374,6 +7374,9 @@ div.gform_wrapper .gform_footer input[type="submit"] {
   font-size: 1.4rem;
   width: 100%;
 }
+div.gform_wrapper.gform_validation_container {
+  display: none;
+}
 /* Jetpack
 --------------------------------------------- */
 img#wpstats {
