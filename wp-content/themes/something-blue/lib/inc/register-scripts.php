@@ -30,6 +30,7 @@ function msdlab_add_styles() {
 function msdlab_add_scripts() {
     global $is_IE;
     if(!is_admin()){
+        wp_enqueue_script( 'jquery' );
         //use cdn
             wp_enqueue_script('bootstrap-jquery','//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js',array('jquery'));
         //use local
