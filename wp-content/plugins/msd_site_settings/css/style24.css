@@ -1,1 +1,38 @@
-.msd-connected .social-media a{background:url(../images/social24.png) no-repeat;width:25px;height:25px;display:block;position:relative;margin:2px;text-indent:-9999px;text-decoration:none;text-align:left;float:left}.msd-connected .social-media .fb{background-position:-156px 0}.msd-connected .social-media .tw{background-position:-78px 0}.msd-connected .social-media .fl{background-position:-39px 0}.msd-connected .social-media .li{background-position:0 -117px}.msd-connected .social-media .yt{background-position:-156px -78px}.msd-connected .social-media .gl{background-position:-117px -117px}.msd-connected .social-media .rss{background-position:-117px -351px}.msd-connected .social-media .st{background-position:-120px 0}.msd-connected .social-media .wp{background-position:-39px -429px}.msd-connected .social-media .email{background-position:-156px -351px}
+/* Social Media */
+.social-media a {
+  background: url(../images/social24.png) no-repeat;
+  width: 25px;
+  height: 25px;
+  margin: 2px;
+  text-indent: -9999px;
+}
+.social-media .fb {
+  background-position: -156px 0px;
+}
+.social-media .tw {
+  background-position: -78px 0px;
+}
+.social-media .fl {
+  background-position: -39px 0;
+}
+.social-media .li {
+  background-position: 0 -117px;
+}
+.social-media .yt {
+  background-position: -156px -78px;
+}
+.social-media .gl {
+  background-position: -117px -117px;
+}
+.social-media .rss {
+  background-position: -117px -351px;
+}
+.social-media .st {
+  background-position: -120px 0;
+}
+.social-media .wp {
+  background-position: -39px -429px;
+}
+.social-media .email {
+  background-position: -156px -351px;
+}

@@ -1,0 +1,73 @@
+.social-media {
+  position: relative;
+  top: 0;
+  vertical-align: 0.4rem;
+  display: block;
+  float: left;
+}
+.social-media a,
+.social-media a:hover {
+  color: #ffffff;
+  display: block;
+  float: left;
+  font-size: 1.4rem;
+  text-align: center;
+  width: 2em;
+  height: 2em;
+  padding: 0;
+  text-decoration: none;
+  text-indent: 0;
+  margin: 0;
+  line-height: 2em;
+}
+.social-media a:before {
+  opacity: 0.5;
+}
+.social-media a:hover:before {
+  opacity: 1;
+}
+.social-media a.fa-facebook {
+  background-color: #345aa1;
+}
+.social-media a.fa-twitter {
+  background-color: #348db9;
+}
+.social-media a.fa-pinterest {
+  background-color: #ec1a22;
+}
+.social-media a.fa-google-plus {
+  background-color: #000000;
+}
+.social-media a.fa-linkedin {
+  background-color: #66b5d3;
+}
+.social-media a.fa-instagram {
+  background-color: #ec1a22;
+}
+.social-media a.fa-tumblr {
+  background-color: #3e5a70;
+}
+.social-media a.fa-reddit {
+  background-color: #ff4400;
+}
+.social-media a.fa-flickr {
+  background-color: #0062dd;
+}
+.social-media a.fa-youtube {
+  background-color: #cc181e;
+}
+.social-media a.fa-vimeo-square {
+  background-color: #232021;
+}
+.social-media a.fa-vine {
+  background-color: #00be8f;
+}
+.social-media a.fa-share-alt {
+  background-color: #00bf00;
+}
+.social-media a.fa-envelope {
+  background-color: #999999;
+}
+.social-media a.fa-rss {
+  background-color: #f37d2a;
+}

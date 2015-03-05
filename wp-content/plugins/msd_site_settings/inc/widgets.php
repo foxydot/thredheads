@@ -12,20 +12,72 @@ class MSDConnected extends WP_Widget {
 
 	function widget( $args, $instance ) {
 		extract($args);
+        extract($instance);
 		$title = apply_filters( 'widget_title', empty($instance['title']) ? '' : $instance['title'], $instance );
 		$text = apply_filters( 'widget_text', empty( $instance['text'] ) ? '' : $instance['text'], $instance );
 		echo $before_widget;
 		if ( !empty( $title ) ) { print $before_title.$title.$after_title; } 
-		?>
-		<p><?php echo $text; ?></p>
-		<?php do_shortcode('[msd-social]'); ?>
-	<div class="clear"></div>
-	<div id="digits">
-		<?php print (get_option('msdsocial_phone')!='')?'PHONE: '.get_option('msdsocial_phone').'<br /> ':''; ?>
-		<?php print (get_option('msdsocial_fax')!='')?'FAX: '.get_option('msdsocial_fax').'<br /> ':''; ?>
-		<?php print (get_option('msdsocial_email')!='')?'<a href="mailto:'.get_option('msdsocial_email').'">'.strtoupper(get_option('msdsocial_email')).'</a><br /> ':''; ?>
-	</div>
-		<?php 	
+        if ( !empty( $text )){ print '<div class="connected-text">'.$text.'</div>'; }
+        if ( $form_id > 0 ){
+            print '<div class="connected-form">';
+            print do_shortcode('[gravityform id="'.$form_id.'" title="true" description="true" ajax="true" tabindex=1000]');
+            print '</div>';
+        }
+        
+        if ( $address ){
+            $address = do_shortcode('[msd-address]'); 
+            if ( $address ){
+                print '<div class="connected-address">'.$address.'</div>';
+            }
+        }
+        if ( $phone ){
+            $phone = '';
+            if((get_option('msdsocial_tracking_phone')!='')){
+                if(wp_is_mobile()){
+                  $phone .= 'Phone: <a href="tel:+1'.get_option('msdsocial_tracking_phone').'">'.get_option('msdsocial_tracking_phone').'</a> ';
+                } else {
+                  $phone .= 'Phone: <span>'.get_option('msdsocial_tracking_phone').'</span> ';
+                }
+              $phone .= '<span itemprop="telephone" style="display: none;">'.get_option('msdsocial_phone').'</span> ';
+            } else {
+                if(wp_is_mobile()){
+                  $phone .= (get_option('msdsocial_phone')!='')?'Phone: <a href="tel:+1'.get_option('msdsocial_phone').'" itemprop="telephone">'.get_option('msdsocial_phone').'</a> ':'';
+                } else {
+                  $phone .= (get_option('msdsocial_phone')!='')?'Phone: <span itemprop="telephone">'.get_option('msdsocial_phone').'</span> ':'';
+                }
+            }
+            if ( $phone ){ print '<div class="connected-phone">'.$phone.'</div>'; }
+        }
+        if ( $tollfree ){
+            $tollfree = '';
+            if((get_option('msdsocial_tracking_tollfree')!='')){
+                if(wp_is_mobile()){
+                  $tollfree .= 'Toll Free: <a href="tel:+1'.get_option('msdsocial_tracking_tollfree').'">'.get_option('msdsocial_tracking_tollfree').'</a> ';
+                } else {
+                  $tollfree .= 'Toll Free: <span>'.get_option('msdsocial_tracking_tollfree').'</span> ';
+                }
+              $tollfree .= '<span itemprop="telephone" style="display: none;">'.get_option('msdsocial_tollfree').'</span> ';
+            } else {
+                if(wp_is_mobile()){
+                  $tollfree .= (get_option('msdsocial_tollfree')!='')?'Toll Free: <a href="tel:+1'.get_option('msdsocial_tollfree').'" itemprop="telephone">'.get_option('msdsocial_tollfree').'</a> ':'';
+                } else {
+                  $tollfree .= (get_option('msdsocial_tollfree')!='')?'Toll Free: <span itemprop="telephone">'.get_option('msdsocial_tollfree').'</span> ':'';
+                }
+            }
+            if ( $tollfree ){ print '<div class="connected-tollfree">'.$tollfree.'</div>'; }
+        }
+        if ( $fax ){
+            $fax = (get_option('msdsocial_fax')!='')?'Fax: <span itemprop="faxNumber">'.get_option('msdsocial_fax').'</span> ':'';
+            if ( $fax ){ print '<div class="connected-fax">'.$fax.'</div>'; }
+        }
+        if ( $email ){
+            $email = (get_option('msdsocial_email')!='')?'Email: <span itemprop="email"><a href="mailto:'.antispambot(get_option('msdsocial_email')).'">'.antispambot(get_option('msdsocial_email')).'</a></span> ':'';
+            if ( $email ){ print '<div class="connected-email">'.$email.'</div>'; }
+        }
+        if ( $social ){
+            $social = do_shortcode('[msd-social]');
+            if( $social ){ print '<div class="connected-social">'.$social.'</div>'; }
+        }	
 		echo $after_widget;
 	}
 
@@ -37,6 +89,11 @@ class MSDConnected extends WP_Widget {
 		else
 			$instance['text'] = stripslashes( wp_filter_post_kses( addslashes($new_instance['text']) ) ); // wp_filter_post_kses() expects slashed
 		
+        $instance['form_id'] = $new_instance['form_id'];
+        $shows = array('address','phone','tollfree','fax','email','social');
+        foreach($shows AS $s){
+        $instance[$s] = $new_instance[$s];
+        }
 		return $instance;
 	}
 
@@ -47,7 +104,31 @@ class MSDConnected extends WP_Widget {
 ?>
 		<p><label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title:'); ?></label>
 		<input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo esc_attr($title); ?>" /></p>	
-		<textarea class="widefat" rows="16" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
+		<textarea class="widefat" rows="5" cols="20" id="<?php echo $this->get_field_id('text'); ?>" name="<?php echo $this->get_field_name('text'); ?>"><?php echo $text; ?></textarea>
+        <?php if(class_exists('GFForms')){ ?>
+            <p><label for="<?php echo $this->get_field_id('form_id'); ?>"><?php _e('Show form:'); ?></label>
+            <select id="<?php echo $this->get_field_id( 'form_id' ); ?>" name="<?php echo $this->get_field_name( 'form_id' ); ?>" style="width:90%;">
+                <option value="0">Do not use form</option>
+                <?php
+                    $forms = RGFormsModel::get_forms(1, "title");
+                    foreach ($forms as $form) {
+                        $selected = '';
+                        if ($form->id == rgar($instance, 'form_id'))
+                            $selected = ' selected="selected"';
+                        echo '<option value="'.$form->id.'" '.$selected.'>'.$form->title.'</option>';
+                    }
+                ?>
+            </select>
+        <?php } ?>
+        <?php $shows = array('address','phone','tollfree','fax','email','social'); ?>
+        <p>
+            <?php foreach($shows AS $s){ ?>
+            <input type="checkbox" name="<?php echo $this->get_field_name( $s ); ?>" id="<?php echo $this->get_field_id( $s ); ?>" <?php checked($instance[$s]); ?> value="1" /> <label for="<?php echo $this->get_field_id( $s ); ?>"><?php _e("Display ".$s); ?></label><br/>
+            <?php } ?>
+        </p>
+
+
+
 <?php
 	}
 }
